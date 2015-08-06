@@ -64,7 +64,7 @@ public class DB_Access {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
         String sqlString = "SELECT TOP 1000 instanzname"
-                + "  FROM [FDISK].[dbo].[qry_alle_feuerwehren]";
+                + "  FROM FDISK.dbo.qry_alle_feuerwehren";
         ResultSet rs = stat.executeQuery(sqlString);
         while (rs.next()) {
             liInstanznamen.add(rs.getString("instanzname"));

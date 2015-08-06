@@ -9,9 +9,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="../semantic/dist/semantic.min.css">
-        <link rel="stylesheet" type="text/css" href="../css/standartDesign.css">
-        <link rel="stylesheet" type="text/css" href="../css/vordefiniert.css">
+        <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+        <link rel="stylesheet" type="text/css" href="css/standardDesign.css">
+        <link rel="stylesheet" type="text/css" href="css/vordefiniert.css">
         <title>Vordefiniert</title>
     </head>
     <body>
