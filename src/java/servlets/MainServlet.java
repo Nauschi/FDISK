@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Yvonne
+ * @author Philipp
  */
 @WebServlet(name = "MainServlet", urlPatterns =
 {
