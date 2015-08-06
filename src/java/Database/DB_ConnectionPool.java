@@ -5,11 +5,11 @@
  */
 package Database;
 
-import static Database.DB_config.DB_DRIVER;
-import static Database.DB_config.DB_NAME;
-import static Database.DB_config.DB_PASSWD;
-import static Database.DB_config.DB_URL;
-import static Database.DB_config.DB_USER;
+import static Database.DB_Config.DB_DRIVER;
+import static Database.DB_Config.DB_NAME;
+import static Database.DB_Config.DB_PASSWD;
+import static Database.DB_Config.DB_URL;
+import static Database.DB_Config.DB_USER;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.LinkedList;
