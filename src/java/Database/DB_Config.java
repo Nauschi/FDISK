@@ -8,6 +8,7 @@ package Database;
 /**
  *
  * @author philipp
+ * Hallo
  */
 public interface DB_Config {
     public static final String DB_NAME = "FDISK";
