@@ -13,16 +13,16 @@ import java.util.Objects;
  */
 public class Mitglied {
     private int intId_Personen;
-    private int intStammblattnummer;
+    private String strStammblattnummer;
     private String strDienstgrad;
     private String strTitel;
     private String strVorname;
     private String strZuname;
     private boolean boCheckbox;
 
-    public Mitglied(int intId_Personen, int intStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox) {
+    public Mitglied(int intId_Personen, String intStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox) {
         this.intId_Personen = intId_Personen;
-        this.intStammblattnummer = intStammblattnummer;
+        this.strStammblattnummer = strStammblattnummer;
         this.strDienstgrad = strDienstgrad;
         this.strTitel = strTitel;
         this.strVorname = strVorname;
@@ -38,12 +38,12 @@ public class Mitglied {
         this.intId_Personen = intId_Personen;
     }
 
-    public int getIntStammblattnummer() {
-        return intStammblattnummer;
+    public String getIntStammblattnummer() {
+        return strStammblattnummer;
     }
 
-    public void setIntStammblattnummer(int intStammblattnummer) {
-        this.intStammblattnummer = intStammblattnummer;
+    public void setIntStammblattnummer(String intStammblattnummer) {
+        this.strStammblattnummer = strStammblattnummer;
     }
 
     public String getStrDienstgrad() {
@@ -104,7 +104,7 @@ public class Mitglied {
         if (this.intId_Personen != other.intId_Personen) {
             return false;
         }
-        if (this.intStammblattnummer != other.intStammblattnummer) {
+        if (this.strStammblattnummer != other.strStammblattnummer) {
             return false;
         }
         if (!Objects.equals(this.strDienstgrad, other.strDienstgrad)) {
@@ -127,7 +127,7 @@ public class Mitglied {
 
     @Override
     public String toString() {
-        return "Mitglied{" + "intId_Personen=" + intId_Personen + ", intStammblattnummer=" + intStammblattnummer + ", strDienstgrad=" + strDienstgrad + ", strTitel=" + strTitel + ", strVorname=" + strVorname + ", strZuname=" + strZuname + ", boCheckbox=" + boCheckbox + '}';
+        return "Mitglied{" + "intId_Personen=" + intId_Personen + ", intStammblattnummer=" + strStammblattnummer + ", strDienstgrad=" + strDienstgrad + ", strTitel=" + strTitel + ", strVorname=" + strVorname + ", strZuname=" + strZuname + ", boCheckbox=" + boCheckbox + '}';
     }
 
     

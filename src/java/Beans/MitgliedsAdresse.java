@@ -20,8 +20,8 @@ public class MitgliedsAdresse extends Mitglied{
     private String strOrt;
     private boolean boBemerkung;
 
-    public MitgliedsAdresse(int intId_Personen, int intStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, int intId_Adressen, String strStrasse, int intNummer, String strStiege, int intPLZ, String strOrt, boolean boBemerkung) {
-        super(intId_Personen, intStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname, boCheckbox);
+    public MitgliedsAdresse(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, int intId_Adressen, String strStrasse, int intNummer, String strStiege, int intPLZ, String strOrt, boolean boBemerkung) {
+        super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname, boCheckbox);
         this.intId_Adressen = intId_Adressen;
         this.strStrasse = strStrasse;
         this.intNummer = intNummer;

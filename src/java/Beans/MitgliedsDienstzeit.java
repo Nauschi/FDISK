@@ -17,8 +17,8 @@ public class MitgliedsDienstzeit extends Mitglied
     private Date dateGeburtsdatum;
     private int intDienstalter;
 
-    public MitgliedsDienstzeit(int intId_Personen, int intStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, Date dateGeburtsdatum, int intDienstalter) {
-        super(intId_Personen, intStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname, boCheckbox);
+    public MitgliedsDienstzeit(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, Date dateGeburtsdatum, int intDienstalter) {
+        super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname, boCheckbox);
         this.dateGeburtsdatum = dateGeburtsdatum;
         this.intDienstalter = intDienstalter;
     }

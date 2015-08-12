@@ -17,8 +17,8 @@ public class MitgliedsGeburtstag extends Mitglied
     private Date dateGeburtsdatum;
     private int intAlter;
 
-    public MitgliedsGeburtstag(int intId_Personen, int intStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, Date dateGeburtsdatum, int intAlter) {
-        super(intId_Personen, intStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname, boCheckbox);
+    public MitgliedsGeburtstag(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, Date dateGeburtsdatum, int intAlter) {
+        super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname, boCheckbox);
         this.dateGeburtsdatum = dateGeburtsdatum;
         this.intAlter = intAlter;
     }
