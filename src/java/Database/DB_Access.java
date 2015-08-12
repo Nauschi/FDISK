@@ -5,6 +5,7 @@
  */
 package Database;
 
+import Beans.Mitglied;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -59,18 +60,36 @@ public class DB_Access {
 //        connPool.releaseConnection(conn);
 //        return movies;
 //    }
-    public LinkedList<String> getInstanznamen() throws Exception {
-        LinkedList<String> liInstanznamen = new LinkedList<>();
+    public LinkedList<Mitglied> getMitglieder() throws Exception {
+        LinkedList<Mitglied> liMitglieder = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
-        String sqlString = "SELECT TOP 1000 instanzname"
-                + "  FROM FDISK.dbo.qry_alle_feuerwehren";
+        String sqlString =  "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" " +
+                            "FROM FDISK.dbo.stmkmitglieder";
         ResultSet rs = stat.executeQuery(sqlString);
+        
+        String intSTB;
+        String strDGR;
+        String strTitel;
+        String strVorname;
+        String strZuname;
+        int intPersID;
+        int bla = 0;
+        
         while (rs.next()) {
-            liInstanznamen.add(rs.getString("instanzname"));
+            intPersID = rs.getInt("PersID");
+            intSTB = rs.getString("STB");
+            strDGR = rs.getString("DGR");
+            strTitel = rs.getString("Titel");
+            strVorname = rs.getString("Vorname");
+            strZuname = rs.getString("Zuname");
+            
+            bla = Integer.parseInt(strDGR);
+            //Mitglied mitglied = new Mitglied(intPersID, (int) intSTB, strDGR, strTitel, strVorname, strZuname, true);
+            //liMitglieder.add(mitglied);
         }
         connPool.releaseConnection(conn);
-        return liInstanznamen;
+        return liMitglieder;
     }
     
     public static void main(String[] args) {
@@ -79,14 +98,14 @@ public class DB_Access {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
-        LinkedList<String> lili = new LinkedList<>();
+        LinkedList<Mitglied> lili = new LinkedList<>();
         try {
-            lili = theInstance.getInstanznamen();
+            lili = theInstance.getMitglieder();
         } catch (Exception ex) {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (String instanzname : lili) {
-            System.out.println("Instanzname: "+instanzname);
+        for (Mitglied mitglied : lili) {
+            System.out.println(mitglied.toString());
         }
     }
 

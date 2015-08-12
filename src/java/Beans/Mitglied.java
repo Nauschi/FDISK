@@ -127,7 +127,7 @@ public class Mitglied {
 
     @Override
     public String toString() {
-        return "Mitglied{" + "intId_Personen=" + intId_Personen + ", intStammblattnummer=" + intStammblattnummer + ", strDienstgrad=" + strDienstgrad + ", strTitel=" + strTitel + ", strVorname=" + strVorname + ", strZuname=" + strZuname + ", boCheckbox=" + boCheckbox + '}';
+        return String.format("%3d, %8s, %10s, %20s, %25s", intStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
     }
 
     
