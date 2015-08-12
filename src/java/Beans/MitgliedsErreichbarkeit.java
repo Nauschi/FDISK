@@ -17,8 +17,8 @@ public class MitgliedsErreichbarkeit extends Mitglied
     private LinkedList<Erreichbarkeit> liErreichbarkeiten;
     private String strBemerkung;
 
-    public MitgliedsErreichbarkeit(int intStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, LinkedList<Erreichbarkeit> liErreichbarkeiten, String strBemerkung) {
-        super(intStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname, boCheckbox);
+    public MitgliedsErreichbarkeit(int intId_Personen, int intStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, LinkedList<Erreichbarkeit> liErreichbarkeiten, String strBemerkung) {
+        super(intId_Personen, intStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname, boCheckbox);
         this.liErreichbarkeiten = liErreichbarkeiten;
         this.strBemerkung = strBemerkung;
     }
@@ -62,15 +62,9 @@ public class MitgliedsErreichbarkeit extends Mitglied
         }
         return true;
     }
-    
-    
 
     @Override
     public String toString() {
         return "MitgliedsErreichbarkeit{" + "liErreichbarkeiten=" + liErreichbarkeiten + ", strBemerkung=" + strBemerkung + '}';
     }
-    
-    
-    
-    
 }
