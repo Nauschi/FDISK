@@ -68,25 +68,23 @@ public class DB_Access {
                             "FROM FDISK.dbo.stmkmitglieder";
         ResultSet rs = stat.executeQuery(sqlString);
         
-        String intSTB;
+        String strSTB;
         String strDGR;
         String strTitel;
         String strVorname;
         String strZuname;
         int intPersID;
-        int bla = 0;
         
         while (rs.next()) {
             intPersID = rs.getInt("PersID");
-            intSTB = rs.getString("STB");
+            strSTB = rs.getString("STB");
             strDGR = rs.getString("DGR");
             strTitel = rs.getString("Titel");
             strVorname = rs.getString("Vorname");
             strZuname = rs.getString("Zuname");
             
-            bla = Integer.parseInt(strDGR);
-            //Mitglied mitglied = new Mitglied(intPersID, (int) intSTB, strDGR, strTitel, strVorname, strZuname, true);
-            //liMitglieder.add(mitglied);
+            Mitglied mitglied = new Mitglied(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true);
+            liMitglieder.add(mitglied);
         }
         connPool.releaseConnection(conn);
         return liMitglieder;
@@ -104,7 +102,9 @@ public class DB_Access {
         } catch (Exception ex) {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
+        System.out.println("STB     DGR     Titel       Vorname     Zuname");
         for (Mitglied mitglied : lili) {
+            
             System.out.println(mitglied.toString());
         }
     }
