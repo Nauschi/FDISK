@@ -15,12 +15,12 @@ import java.util.Objects;
 public class MitgliedsErreichbarkeit extends Mitglied
 {
     private LinkedList<Erreichbarkeit> liErreichbarkeiten;
-    private String strBemerkung;
+    private boolean boBemerkung;
 
-    public MitgliedsErreichbarkeit(int intId_Personen, int intStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, LinkedList<Erreichbarkeit> liErreichbarkeiten, String strBemerkung) {
+    public MitgliedsErreichbarkeit(int intId_Personen, int intStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, LinkedList<Erreichbarkeit> liErreichbarkeiten, boolean strBemerkung) {
         super(intId_Personen, intStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname, boCheckbox);
         this.liErreichbarkeiten = liErreichbarkeiten;
-        this.strBemerkung = strBemerkung;
+        this.boBemerkung = boBemerkung;
     }
 
     public LinkedList<Erreichbarkeit> getLiErreichbarkeiten() {
@@ -31,12 +31,12 @@ public class MitgliedsErreichbarkeit extends Mitglied
         this.liErreichbarkeiten = liErreichbarkeiten;
     }
 
-    public String getStrBemerkung() {
-        return strBemerkung;
+    public boolean getBoBemerkung() {
+        return boBemerkung;
     }
 
-    public void setStrBemerkung(String strBemerkung) {
-        this.strBemerkung = strBemerkung;
+    public void setBoBemerkung(boolean boBemerkung) {
+        this.boBemerkung = boBemerkung;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class MitgliedsErreichbarkeit extends Mitglied
         if (!Objects.equals(this.liErreichbarkeiten, other.liErreichbarkeiten)) {
             return false;
         }
-        if (!Objects.equals(this.strBemerkung, other.strBemerkung)) {
+        if (!Objects.equals(this.boBemerkung, other.boBemerkung)) {
             return false;
         }
         return true;
@@ -65,6 +65,6 @@ public class MitgliedsErreichbarkeit extends Mitglied
 
     @Override
     public String toString() {
-        return "MitgliedsErreichbarkeit{" + "liErreichbarkeiten=" + liErreichbarkeiten + ", strBemerkung=" + strBemerkung + '}';
+        return "MitgliedsErreichbarkeit{" + "liErreichbarkeiten=" + liErreichbarkeiten + ", strBemerkung=" + boBemerkung + '}';
     }
 }
