@@ -20,7 +20,7 @@ public class Mitglied {
     private String strZuname;
     private boolean boCheckbox;
 
-    public Mitglied(int intId_Personen, String intStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox) {
+    public Mitglied(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox) {
         this.intId_Personen = intId_Personen;
         this.strStammblattnummer = strStammblattnummer;
         this.strDienstgrad = strDienstgrad;
