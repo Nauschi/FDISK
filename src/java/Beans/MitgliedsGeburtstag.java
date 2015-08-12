@@ -15,12 +15,12 @@ import java.util.Objects;
 public class MitgliedsGeburtstag extends Mitglied
 {
     private Date dateGeburtsdatum;
-    private int intAlter;
+    private int intZielalter;
 
     public MitgliedsGeburtstag(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, Date dateGeburtsdatum, int intAlter) {
         super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname, boCheckbox);
         this.dateGeburtsdatum = dateGeburtsdatum;
-        this.intAlter = intAlter;
+        this.intZielalter = intAlter;
     }
 
     public Date getDateGeburtsdatum() {
@@ -31,12 +31,12 @@ public class MitgliedsGeburtstag extends Mitglied
         this.dateGeburtsdatum = dateGeburtsdatum;
     }
 
-    public int getIntAlter() {
-        return intAlter;
+    public int getIntZielalter() {
+        return intZielalter;
     }
 
-    public void setIntAlter(int intAlter) {
-        this.intAlter = intAlter;
+    public void setIntZielalter(int intZielalter) {
+        this.intZielalter = intZielalter;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class MitgliedsGeburtstag extends Mitglied
         if (!Objects.equals(this.dateGeburtsdatum, other.dateGeburtsdatum)) {
             return false;
         }
-        if (this.intAlter != other.intAlter) {
+        if (this.intZielalter != other.intZielalter) {
             return false;
         }
         return true;
@@ -65,7 +65,7 @@ public class MitgliedsGeburtstag extends Mitglied
 
     @Override
     public String toString() {
-        return "MitgliedsGeburtstag{" + "dateGeburtsdatum=" + dateGeburtsdatum + ", intAlter=" + intAlter + '}';
+        return "MitgliedsGeburtstag{" + "dateGeburtsdatum=" + dateGeburtsdatum + ", intAlter=" + intZielalter + '}';
     }
     
     
