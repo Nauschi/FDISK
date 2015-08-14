@@ -6,6 +6,7 @@
 package Database;
 
 import Beans.Mitglied;
+import Beans.MitgliedsAdresse;
 import Beans.MitgliedsDienstzeit;
 import Beans.MitgliedsGeburtstag;
 import java.sql.Connection;
@@ -44,6 +45,11 @@ public class DB_Access {
         connPool = DB_ConnectionPool.getInstance();
     }
 
+    /**
+     * 
+     * @return
+     * @throws Exception 
+     */
     public LinkedList<Mitglied> getEinfacheMitgliederliste() throws Exception {
         LinkedList<Mitglied> liMitglieder = new LinkedList<>();
         Connection conn = connPool.getConnection();
@@ -74,6 +80,12 @@ public class DB_Access {
         return liMitglieder;
     }
 
+    /**
+     * 
+     * @param jahr
+     * @return
+     * @throws Exception 
+     */
     public LinkedList<MitgliedsGeburtstag> getGeburtstagsliste(int jahr) throws Exception {
         LinkedList<MitgliedsGeburtstag> liMitgliedsGeburtstage = new LinkedList<>();
         Connection conn = connPool.getConnection();
@@ -112,6 +124,11 @@ public class DB_Access {
         return liMitgliedsGeburtstage;
     }
 
+    /**
+     *
+     * @return
+     * @throws Exception 
+     */
     public LinkedList<MitgliedsDienstzeit> getDienstzeitListe() throws Exception {
         LinkedList<MitgliedsDienstzeit> liMitgliedsDienstzeiten = new LinkedList<>();
         Connection conn = connPool.getConnection();
@@ -164,6 +181,63 @@ public class DB_Access {
         connPool.releaseConnection(conn);
         return liMitgliedsDienstzeiten;
     }
+    
+    /**
+     * 
+     * @return
+     * @throws Exception 
+     */
+    public LinkedList<MitgliedsAdresse> getAdressListe() throws Exception
+    {
+        LinkedList<MitgliedsAdresse> liMitgliedsAdressen = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT TOP 1000 adressen.id_adressen \"AdressID\", adressen.strasse \"Strasse\", adressen.nummer \"Nummer\", "
+                + "adressen.stiege \"Stiege\", adressen.plz \"PLZ\", adressen.ort \"Ort\", mitglied.id_personen \"PersID\", "
+                + "mitglied.standesbuchnummer \"STB\", mitglied.dienstgrad \"DGR\", "
+                + "mitglied.titel \"Titel\", mitglied.vorname \"Vorname\", mitglied.zuname \"Zuname\", "
+                + "mitglied.geburtsdatum \"Geburtsdatum\" "
+                + "FROM FDISK.dbo.stmkadressen adressen INNER JOIN FDISK.dbo.stmkmitglieder mitglied "
+                + "ON (adressen.id_personen = mitglied.id_personen)";
+
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        String strSTB;
+        String strDGR;
+        String strTitel;
+        String strVorname;
+        String strZuname;
+        int intPersID;
+        int intId_Adressen;
+        String strStrasse;
+        String strNummer;
+        String strStiege;
+        int intPLZ;
+        String strOrt;
+
+        while (rs.next())
+        {
+            intPersID = rs.getInt("PersID");
+            strSTB = rs.getString("STB");
+            strDGR = rs.getString("DGR");
+            strTitel = rs.getString("Titel");
+            strVorname = rs.getString("Vorname");
+            strZuname = rs.getString("Zuname");
+
+            intId_Adressen = rs.getInt("AdressID");
+            strStrasse = rs.getString("Strasse");
+            strNummer = rs.getString("Nummer");
+            strStiege = rs.getString("Stiege");
+            intPLZ = rs.getInt("PLZ");
+            strOrt = rs.getString("Ort");
+
+            MitgliedsAdresse mitgliedsAdresse = new MitgliedsAdresse(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true, intId_Adressen, strStrasse, strNummer, strStiege, intPLZ, strOrt, true);
+            liMitgliedsAdressen.add(mitgliedsAdresse);
+        }
+        connPool.releaseConnection(conn);
+        return liMitgliedsAdressen;
+    }
 
     public static void main(String[] args) {
         try {
@@ -171,20 +245,26 @@ public class DB_Access {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
-        LinkedList<MitgliedsDienstzeit> lili = new LinkedList<>();
+        LinkedList<MitgliedsAdresse> lili = new LinkedList<>();
         try {
-            lili = theInstance.getDienstzeitListe();
+            lili = theInstance.getAdressListe();
         } catch (Exception ex) {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (MitgliedsDienstzeit md : lili) {
-            System.out.print(md.getIntStammblattnummer() + " - ");
-            System.out.print(md.getStrTitel() + " - ");
-            System.out.print(md.getStrDienstgrad() + " - ");
-            System.out.print(md.getStrVorname() + " - ");
-            System.out.print(md.getStrZuname() + " - ");
-            System.out.print(sdf.format(md.getDateGeburtsdatum()) + " - ");
-            System.out.println(md.getIntDienstalter());
+        for (MitgliedsAdresse ma : lili) {
+            System.out.print(ma.getIntId_Adressen() + " - ");
+            System.out.print(ma.getIntNummer() + " - ");
+            System.out.print(ma.getIntPLZ() + " - ");
+            System.out.print(ma.getStrOrt() + " - ");
+            System.out.print(ma.getStrStiege() + " - ");
+            System.out.print(ma.getStrStrasse() + " - ");
+            System.out.print(ma.getIntId_Personen() + " - ");
+            System.out.print(ma.getIntStammblattnummer() + " - ");
+            System.out.print(ma.getStrDienstgrad() + " - ");
+            System.out.print(ma.getStrVorname() + " - ");
+            System.out.print(ma.getStrZuname() + " - ");
+            System.out.print(ma.getStrTitel() + " - ");
+            System.out.println("\n");
         }
     }
 

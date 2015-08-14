@@ -14,13 +14,14 @@ import java.util.Objects;
 public class MitgliedsAdresse extends Mitglied{
     private int intId_Adressen;
     private String strStrasse;
-    private int intNummer;
+    private String intNummer;
     private String strStiege;
     private int intPLZ;
     private String strOrt;
     private boolean boBemerkung;
 
-    public MitgliedsAdresse(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, int intId_Adressen, String strStrasse, int intNummer, String strStiege, int intPLZ, String strOrt, boolean boBemerkung) {
+    public MitgliedsAdresse(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox,int intId_Adressen, String strStrasse, String intNummer, String strStiege, int intPLZ, String strOrt, boolean boBemerkung)
+    {
         super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname, boCheckbox);
         this.intId_Adressen = intId_Adressen;
         this.strStrasse = strStrasse;
@@ -30,109 +31,140 @@ public class MitgliedsAdresse extends Mitglied{
         this.strOrt = strOrt;
         this.boBemerkung = boBemerkung;
     }
-    
 
-  
-
-    public int getIntId_Adressen() {
+    public int getIntId_Adressen()
+    {
         return intId_Adressen;
     }
 
-    public void setIntId_Adressen(int intId_Adressen) {
+    public void setIntId_Adressen(int intId_Adressen)
+    {
         this.intId_Adressen = intId_Adressen;
     }
 
-    public String getStrStrasse() {
+    public String getStrStrasse()
+    {
         return strStrasse;
     }
 
-    public void setStrStrasse(String strStrasse) {
+    public void setStrStrasse(String strStrasse)
+    {
         this.strStrasse = strStrasse;
     }
 
-    public int getIntNummer() {
+    public String getIntNummer()
+    {
         return intNummer;
     }
 
-    public void setIntNummer(int intNummer) {
+    public void setIntNummer(String intNummer)
+    {
         this.intNummer = intNummer;
     }
 
-    public String getStrStiege() {
+    public String getStrStiege()
+    {
         return strStiege;
     }
 
-    public void setStrStiege(String strStiege) {
+    public void setStrStiege(String strStiege)
+    {
         this.strStiege = strStiege;
     }
 
-    public int getIntPLZ() {
+    public int getIntPLZ()
+    {
         return intPLZ;
     }
 
-    public void setIntPLZ(int intPLZ) {
+    public void setIntPLZ(int intPLZ)
+    {
         this.intPLZ = intPLZ;
     }
 
-    public String getStrOrt() {
+    public String getStrOrt()
+    {
         return strOrt;
     }
 
-    public void setStrOrt(String strOrt) {
+    public void setStrOrt(String strOrt)
+    {
         this.strOrt = strOrt;
     }
 
-    public boolean isBoBemerkung() {
+    public boolean isBoBemerkung()
+    {
         return boBemerkung;
     }
 
-    public void setBoBemerkung(boolean boBemerkung) {
+    public void setBoBemerkung(boolean boBemerkung)
+    {
         this.boBemerkung = boBemerkung;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 7;
         return hash;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
+    public boolean equals(Object obj)
+    {
+        if (obj == null)
+        {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (getClass() != obj.getClass())
+        {
             return false;
         }
         final MitgliedsAdresse other = (MitgliedsAdresse) obj;
-        if (this.intId_Adressen != other.intId_Adressen) {
+        if (this.intId_Adressen != other.intId_Adressen)
+        {
             return false;
         }
-        if (!Objects.equals(this.strStrasse, other.strStrasse)) {
+        if (!Objects.equals(this.strStrasse, other.strStrasse))
+        {
             return false;
         }
-        if (this.intNummer != other.intNummer) {
+        if (!Objects.equals(this.intNummer, other.intNummer))
+        {
             return false;
         }
-        if (!Objects.equals(this.strStiege, other.strStiege)) {
+        if (!Objects.equals(this.strStiege, other.strStiege))
+        {
             return false;
         }
-        if (this.intPLZ != other.intPLZ) {
+        if (this.intPLZ != other.intPLZ)
+        {
             return false;
         }
-        if (!Objects.equals(this.strOrt, other.strOrt)) {
+        if (!Objects.equals(this.strOrt, other.strOrt))
+        {
             return false;
         }
-        if (this.boBemerkung != other.boBemerkung) {
+        if (this.boBemerkung != other.boBemerkung)
+        {
             return false;
         }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "MitgliedsAdresse{" + "intId_Adressen=" + intId_Adressen + ", strStrasse=" + strStrasse + ", intNummer=" + intNummer + ", strStiege=" + strStiege + ", intPLZ=" + intPLZ + ", strOrt=" + strOrt + ", boBemerkung=" + boBemerkung + '}';
     }
+    
+    
+
+   
+
+   
+    
+  
     
     
 }
