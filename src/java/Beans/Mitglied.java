@@ -38,7 +38,7 @@ public class Mitglied {
         this.intId_Personen = intId_Personen;
     }
 
-    public String getIntStammblattnummer() {
+    public String getStrStammblattnummer() {
         return strStammblattnummer;
     }
 

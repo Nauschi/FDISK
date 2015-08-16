@@ -5,9 +5,11 @@
  */
 package Database;
 
+import Beans.Erreichbarkeit;
 import Beans.Mitglied;
 import Beans.MitgliedsAdresse;
 import Beans.MitgliedsDienstzeit;
+import Beans.MitgliedsErreichbarkeit;
 import Beans.MitgliedsGeburtstag;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -46,9 +48,8 @@ public class DB_Access {
     }
 
     /**
-     * 
-     * @return
-     * @throws Exception 
+     *
+     * @return @throws Exception
      */
     public LinkedList<Mitglied> getEinfacheMitgliederliste() throws Exception {
         LinkedList<Mitglied> liMitglieder = new LinkedList<>();
@@ -76,15 +77,16 @@ public class DB_Access {
             Mitglied mitglied = new Mitglied(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true);
             liMitglieder.add(mitglied);
         }
+
         connPool.releaseConnection(conn);
         return liMitglieder;
     }
 
     /**
-     * 
+     *
      * @param jahr
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     public LinkedList<MitgliedsGeburtstag> getGeburtstagsliste(int jahr) throws Exception {
         LinkedList<MitgliedsGeburtstag> liMitgliedsGeburtstage = new LinkedList<>();
@@ -126,8 +128,7 @@ public class DB_Access {
 
     /**
      *
-     * @return
-     * @throws Exception 
+     * @return @throws Exception
      */
     public LinkedList<MitgliedsDienstzeit> getDienstzeitListe() throws Exception {
         LinkedList<MitgliedsDienstzeit> liMitgliedsDienstzeiten = new LinkedList<>();
@@ -181,14 +182,12 @@ public class DB_Access {
         connPool.releaseConnection(conn);
         return liMitgliedsDienstzeiten;
     }
-    
+
     /**
-     * 
-     * @return
-     * @throws Exception 
+     *
+     * @return @throws Exception
      */
-    public LinkedList<MitgliedsAdresse> getAdressListe() throws Exception
-    {
+    public LinkedList<MitgliedsAdresse> getAdressListe() throws Exception {
         LinkedList<MitgliedsAdresse> liMitgliedsAdressen = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
@@ -216,8 +215,7 @@ public class DB_Access {
         int intPLZ;
         String strOrt;
 
-        while (rs.next())
-        {
+        while (rs.next()) {
             intPersID = rs.getInt("PersID");
             strSTB = rs.getString("STB");
             strDGR = rs.getString("DGR");
@@ -239,32 +237,95 @@ public class DB_Access {
         return liMitgliedsAdressen;
     }
 
+    public LinkedList<MitgliedsErreichbarkeit> getErreichbarkeitsliste() throws Exception {
+        LinkedList<MitgliedsErreichbarkeit> liMitgliedsErreichbarkeiten = new LinkedList<>();
+
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT TOP 1000 sm.id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\","
+                + " vorname \"Vorname\", zuname \"Zuname\", se.erreichbarkeitsart \"Erreichbarkeitsart\", se.code \"Code\","
+                + " se.sichtbarkeit \"Sichtbarkeit\", se.id_erreichbarkeiten \"ID_erreichbarkeit\""
+                + " FROM FDISK.dbo.stmkmitglieder sm INNER JOIN FDISK.dbo.stmkerreichbarkeiten se ON(sm.id_personen = se.id_personen)"
+                + " ORDER BY se.id_personen;";
+        ResultSet rs = stat.executeQuery(sqlString);
+        int intId_erreichbarkeit;
+        String strErreichbarkeitsart;
+        String strSichtbarkeit;
+        String strCode;
+
+        String strSTB;
+        String strDGR;
+        String strTitel;
+        String strVorname;
+        String strZuname;
+        int intPersID = 0;
+
+        LinkedList<Erreichbarkeit> liErreichbarkeiten = new LinkedList<>();
+        while (rs.next()) {
+
+            intPersID = rs.getInt("PersID");
+            intId_erreichbarkeit = rs.getInt("ID_erreichbarkeit");
+            strErreichbarkeitsart = rs.getString("Erreichbarkeitsart");
+            strSichtbarkeit = rs.getString("Sichtbarkeit");
+            strCode = rs.getString("Code");
+
+            strSTB = rs.getString("STB");
+            strDGR = rs.getString("DGR");
+            strTitel = rs.getString("Titel");
+            strVorname = rs.getString("Vorname");
+            strZuname = rs.getString("Zuname");
+
+            liErreichbarkeiten.add(new Erreichbarkeit(intId_erreichbarkeit, strErreichbarkeitsart, strSichtbarkeit, strCode, intPersID));
+
+        }
+        sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\""
+                + " FROM FDISK.dbo.stmkmitglieder"
+                + " ORDER BY id_personen;";
+        rs = stat.executeQuery(sqlString);
+        LinkedList<Erreichbarkeit> liErreichbarkeitZuMitglied = new LinkedList<>();
+
+        while (rs.next()) {
+            intPersID = rs.getInt("PersID");
+            strSTB = rs.getString("STB");
+            strDGR = rs.getString("DGR");
+            strTitel = rs.getString("Titel");
+            strVorname = rs.getString("Vorname");
+            strZuname = rs.getString("Zuname");
+            for (Erreichbarkeit erreichbarkeit : liErreichbarkeiten) {
+                if (erreichbarkeit.getIntPersID() == intPersID) {
+                    liErreichbarkeitZuMitglied.add(erreichbarkeit);
+                }
+            }
+            liMitgliedsErreichbarkeiten.add(new MitgliedsErreichbarkeit(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, false, liErreichbarkeitZuMitglied, false));
+        }
+        return liMitgliedsErreichbarkeiten;
+    }
+
     public static void main(String[] args) {
         try {
             theInstance = DB_Access.getInstance();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
-        LinkedList<MitgliedsAdresse> lili = new LinkedList<>();
+        LinkedList<MitgliedsErreichbarkeit> lili = new LinkedList<>();
         try {
-            lili = theInstance.getAdressListe();
+            lili = theInstance.getErreichbarkeitsliste();
         } catch (Exception ex) {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (MitgliedsAdresse ma : lili) {
-            System.out.print(ma.getIntId_Adressen() + " - ");
-            System.out.print(ma.getIntNummer() + " - ");
-            System.out.print(ma.getIntPLZ() + " - ");
-            System.out.print(ma.getStrOrt() + " - ");
-            System.out.print(ma.getStrStiege() + " - ");
-            System.out.print(ma.getStrStrasse() + " - ");
-            System.out.print(ma.getIntId_Personen() + " - ");
-            System.out.print(ma.getIntStammblattnummer() + " - ");
-            System.out.print(ma.getStrDienstgrad() + " - ");
-            System.out.print(ma.getStrVorname() + " - ");
-            System.out.print(ma.getStrZuname() + " - ");
-            System.out.print(ma.getStrTitel() + " - ");
-            System.out.println("\n");
+        for (MitgliedsErreichbarkeit me : lili) {
+            System.out.print(me.getStrStammblattnummer() + " - ");
+            System.out.print(me.getStrDienstgrad() + " - ");
+            System.out.print(me.getStrTitel() + " - ");
+            System.out.print(me.getStrVorname() + " - ");
+            System.out.print(me.getStrZuname() + " - ");
+            LinkedList<Erreichbarkeit> lili2 = new LinkedList<>();
+            lili2 = me.getLiErreichbarkeiten();
+            for (Erreichbarkeit er : lili2) {
+                System.out.print(er.getStrErreichbarkeitsArt() + " / " + er.getStrCode() + " - ");
+            }
+            System.out.println("");
         }
     }
 
