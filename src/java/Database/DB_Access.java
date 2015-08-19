@@ -6,6 +6,7 @@
 package Database;
 
 import Beans.Erreichbarkeit;
+import Beans.Kurs;
 import Beans.Mitglied;
 import Beans.MitgliedsAdresse;
 import Beans.MitgliedsDienstzeit;
@@ -302,31 +303,112 @@ public class DB_Access {
         return liMitgliedsErreichbarkeiten;
     }
 
+    
+    
+    /**
+     * 
+     * @return
+     * @throws Exception 
+     */
+    public LinkedList<Kurs> getKursstatistik() throws Exception
+    {
+        LinkedList<Kurs> liKurse = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT TOP 1000 stmkkurse.id_kurse \"KursID\""
+                + ",stmkkurse.id_kursarten \"Kursarten\""
+                + ",stmkkurse.lehrgangsnummer \"LGN\""
+                + ",stmkkurse.kursbezeichnung \"Kursbezeichnung\""
+                + ",stmkkurse.datum \"Datum\""
+                + ",stmkkurse.id_instanzen_veranstalter \"InstanzVeranstalter\""
+                + ",stmkkurse.id_instanzen_durchfuehrend \"InstanzDurchfuehrend\""
+                + ",stmkkurse.kursstatus \"Kursstatus\""
+                + ", COUNT(stmkkursmitglieder.id_kurse) \"Teilnehmer\""
+                + "FROM FDISK.dbo.stmkkurse stmkkurse INNER JOIN FDISK.dbo.stmkkursemitglieder stmkkursmitglieder "
+                + "ON (stmkkursmitglieder.id_kurse = stmkkurse.id_kurse) "
+                + "WHERE stmkkurse.id_instanzen_veranstalter = 29885 "
+                + "GROUP BY stmkkurse.id_kurse, stmkkurse.id_kursarten "
+                + ",stmkkurse.lehrgangsnummer "
+                + ",stmkkurse.kursbezeichnung "
+                + ",stmkkurse.datum "
+                + ",stmkkurse.id_instanzen_veranstalter "
+                + ",stmkkurse.id_instanzen_durchfuehrend "
+                + ",stmkkurse.kursstatus ";
+
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        int intId_kurse;
+        int intId_Kursarten;
+        int intLehrgangsnummer;
+        String strKursbezeichnung;
+        Date dateDatum;
+        int intId_instanzen_veranstalter;
+        int intId_instanzen_durchfuehrend;
+        String strKursstatus;
+        int intAnzahlBesucher;
+
+        while (rs.next())
+        {
+
+            intId_kurse = rs.getInt("KursID");
+            intId_Kursarten = rs.getInt("Kursarten");
+            intLehrgangsnummer = rs.getInt("LGN");
+            strKursbezeichnung = rs.getString("Kursbezeichnung");
+            dateDatum = new Date(rs.getDate("Datum").getTime());
+            intId_instanzen_veranstalter = rs.getInt("InstanzVeranstalter");
+            intId_instanzen_durchfuehrend = rs.getInt("InstanzDurchfuehrend");
+            strKursstatus = rs.getString("Kursstatus");
+            intAnzahlBesucher = rs.getInt("Teilnehmer");
+
+            Kurs kurs = new Kurs(intId_kurse, intId_Kursarten, intLehrgangsnummer, strKursbezeichnung, dateDatum, intId_instanzen_veranstalter, intId_instanzen_durchfuehrend, strKursstatus, intAnzahlBesucher);
+            liKurse.add(kurs);
+
+        }
+        connPool.releaseConnection(conn);
+        return liKurse;
+    }
+    
     public static void main(String[] args) {
         try {
             theInstance = DB_Access.getInstance();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
-        LinkedList<MitgliedsErreichbarkeit> lili = new LinkedList<>();
+        LinkedList<Kurs> lili = new LinkedList<>();
         try {
-            lili = theInstance.getErreichbarkeitsliste();
+            lili = theInstance.getKursstatistik();
         } catch (Exception ex) {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (MitgliedsErreichbarkeit me : lili) {
-            System.out.print(me.getStrStammblattnummer() + " - ");
-            System.out.print(me.getStrDienstgrad() + " - ");
-            System.out.print(me.getStrTitel() + " - ");
-            System.out.print(me.getStrVorname() + " - ");
-            System.out.print(me.getStrZuname() + " - ");
-            LinkedList<Erreichbarkeit> lili2 = new LinkedList<>();
-            lili2 = me.getLiErreichbarkeiten();
-            for (Erreichbarkeit er : lili2) {
-                System.out.print(er.getStrErreichbarkeitsArt() + " / " + er.getStrCode() + " - ");
-            }
-            System.out.println("");
+        for (Kurs k : lili) 
+        {
+            System.out.print(k.getIntId_Kurse() + " - ");
+            System.out.print(k.getIntId_Kursarten() + " - ");
+            System.out.print(k.getIntLehrgangsnummer() + " - ");
+            System.out.print(k.getDateDatum() + " - ");
+            System.out.print(k.getIntId_instanzen_veranstalter() + " - ");
+            System.out.print(k.getIntId_instanzen_durchfuehrend()+ " - ");
+            System.out.print(k.getStrKursstatus() + " - ");
+            System.out.print(k.getIntAnzahlBesucher() + "\n");
         }
+        
+        
+        
+//Nauschis Ausgabe...keine Ahnung ob du das no brauchst xD
+//        for (MitgliedsErreichbarkeit me : lili) {
+//            System.out.print(me.getStrStammblattnummer() + " - ");
+//            System.out.print(me.getStrDienstgrad() + " - ");
+//            System.out.print(me.getStrTitel() + " - ");
+//            System.out.print(me.getStrVorname() + " - ");
+//            System.out.print(me.getStrZuname() + " - ");
+//            LinkedList<Erreichbarkeit> lili2 = new LinkedList<>();
+//            lili2 = me.getLiErreichbarkeiten();
+//            for (Erreichbarkeit er : lili2) {
+//                System.out.print(er.getStrErreichbarkeitsArt() + " / " + er.getStrCode() + " - ");
+//            }
+//            System.out.println("");
+//        }
     }
 
 }

@@ -13,7 +13,7 @@ import java.util.Objects;
  * @author kinco_000
  */
 public class Kurs {
-    private int intId_kurse;
+    private int intId_Kurse;
     private int intId_Kursarten;
     private int intLehrgangsnummer;
     private String strKursbezeichnung;
@@ -24,7 +24,7 @@ public class Kurs {
     private int intAnzahlBesucher;
 
     public Kurs(int intId_kurse, int intId_Kursarten, int intLehrgangsnummer, String strKursbezeichnung, Date dateDatum, int intId_instanzen_veranstalter, int intId_instanzen_durchfuehrend, String strKursstatus, int intAnzahlBesucher) {
-        this.intId_kurse = intId_kurse;
+        this.intId_Kurse = intId_kurse;
         this.intId_Kursarten = intId_Kursarten;
         this.intLehrgangsnummer = intLehrgangsnummer;
         this.strKursbezeichnung = strKursbezeichnung;
@@ -35,12 +35,12 @@ public class Kurs {
         this.intAnzahlBesucher = intAnzahlBesucher;
     }
 
-    public int getIntId_kurse() {
-        return intId_kurse;
+    public int getIntId_Kurse() {
+        return intId_Kurse;
     }
 
-    public void setIntId_kurse(int intId_kurse) {
-        this.intId_kurse = intId_kurse;
+    public void setIntId_Kurse(int intId_Kurse) {
+        this.intId_Kurse = intId_Kurse;
     }
 
     public int getIntId_Kursarten() {
@@ -122,7 +122,7 @@ public class Kurs {
             return false;
         }
         final Kurs other = (Kurs) obj;
-        if (this.intId_kurse != other.intId_kurse) {
+        if (this.intId_Kurse != other.intId_Kurse) {
             return false;
         }
         if (this.intId_Kursarten != other.intId_Kursarten) {
@@ -154,7 +154,7 @@ public class Kurs {
 
     @Override
     public String toString() {
-        return "Kurs{" + "intId_kurse=" + intId_kurse + ", intId_Kursarten=" + intId_Kursarten + ", intLehrgangsnummer=" + intLehrgangsnummer + ", strKursbezeichnung=" + strKursbezeichnung + ", dateDatum=" + dateDatum + ", intId_instanzen_veranstalter=" + intId_instanzen_veranstalter + ", intId_instanzen_durchfuehrend=" + intId_instanzen_durchfuehrend + ", strKursstatus=" + strKursstatus + ", intAnzahlBesucher=" + intAnzahlBesucher + '}';
+        return "Kurs{" + "intId_kurse=" + intId_Kurse + ", intId_Kursarten=" + intId_Kursarten + ", intLehrgangsnummer=" + intLehrgangsnummer + ", strKursbezeichnung=" + strKursbezeichnung + ", dateDatum=" + dateDatum + ", intId_instanzen_veranstalter=" + intId_instanzen_veranstalter + ", intId_instanzen_durchfuehrend=" + intId_instanzen_durchfuehrend + ", strKursstatus=" + strKursstatus + ", intAnzahlBesucher=" + intAnzahlBesucher + '}';
     }
 
 }
