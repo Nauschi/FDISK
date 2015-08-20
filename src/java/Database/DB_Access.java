@@ -6,6 +6,7 @@
 package Database;
 
 import Beans.Erreichbarkeit;
+import Beans.Fahrzeug;
 import Beans.Kurs;
 import Beans.Mitglied;
 import Beans.MitgliedsAdresse;
@@ -14,13 +15,8 @@ import Beans.MitgliedsErreichbarkeit;
 import Beans.MitgliedsGeburtstag;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.Period;
-import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -369,28 +365,81 @@ public class DB_Access {
         return liKurse;
     }
     
+    /**
+     * 
+     * @return
+     * @throws Exception 
+     */
+    public LinkedList<Fahrzeug> getFahrtenbuch() throws Exception
+    {
+        LinkedList<Fahrzeug> liFahrzeuge = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT TOP 1000 " 
+                + "kennzeichen \"Kennzeichen\" " 
+                + ",id_fahrzeuge \"Id_Fahrzeuge\" " 
+                + ",fahrzeugtyp \"Fahrzeugtyp\" " 
+                + ",taktischebezeichnung \"Taktische Bezeichnung\" " 
+                + ",bezeichnung \"Bezeichnung\" " 
+                + ",status \"Status\" " 
+                + ",baujahr \"Baujahr\" " 
+                + ",fahrzeugmarke \"Fahrzeugmarke\" " 
+                + ",aufbaufirma \"Aufbaufirma\" " 
+                + "FROM FDISK.dbo.stmkfahrzeuge " 
+                + "WHERE status = 'aktiv'";
+
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        String strFahrzeugTyp;
+        String strKennzeichen;
+        int intBaujahr;
+        String strAufbaufirma;
+        String strTaktischeBezeichnung;
+        int intId_fahrzeuge;
+        String strBezeichnung;
+        String strFahrzeugmarke;
+
+        while (rs.next())
+        {
+            strFahrzeugTyp = rs.getString("Fahrzeugtyp");
+            strKennzeichen = rs.getString("Kennzeichen");
+            intBaujahr = rs.getInt("Baujahr");
+            strAufbaufirma = rs.getString("Aufbaufirma");
+            strTaktischeBezeichnung = rs.getString("Taktische Bezeichnung");
+            intId_fahrzeuge = rs.getInt("Id_Fahrzeuge");
+            strBezeichnung = rs.getString("Bezeichnung");
+            strFahrzeugmarke = rs.getString("Fahrzeugmarke");
+
+            Fahrzeug fahrzeug = new Fahrzeug(strFahrzeugTyp, strKennzeichen, intBaujahr, strAufbaufirma, strTaktischeBezeichnung, intId_fahrzeuge, strBezeichnung, strFahrzeugmarke);
+            liFahrzeuge.add(fahrzeug);
+        }
+        connPool.releaseConnection(conn);
+        return liFahrzeuge;
+    }
+    
     public static void main(String[] args) {
         try {
             theInstance = DB_Access.getInstance();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
-        LinkedList<Kurs> lili = new LinkedList<>();
+        LinkedList<Fahrzeug> lili = new LinkedList<>();
         try {
-            lili = theInstance.getKursstatistik();
+            lili = theInstance.getFahrtenbuch();
         } catch (Exception ex) {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (Kurs k : lili) 
+        for (Fahrzeug f : lili) 
         {
-            System.out.print(k.getIntId_Kurse() + " - ");
-            System.out.print(k.getIntId_Kursarten() + " - ");
-            System.out.print(k.getIntLehrgangsnummer() + " - ");
-            System.out.print(k.getDateDatum() + " - ");
-            System.out.print(k.getIntId_instanzen_veranstalter() + " - ");
-            System.out.print(k.getIntId_instanzen_durchfuehrend()+ " - ");
-            System.out.print(k.getStrKursstatus() + " - ");
-            System.out.print(k.getIntAnzahlBesucher() + "\n");
+            System.out.print(f.getIntBaujahr()+ " - ");
+            System.out.print(f.getIntId_fahrzeuge()+ " - ");
+            System.out.print(f.getStrAufbaufirma()+ " - ");
+            System.out.print(f.getStrBezeichnung()+ " - ");
+            System.out.print(f.getStrFahrzeugTyp()+ " - ");
+            System.out.print(f.getStrFahrzeugmarke()+ " - ");
+            System.out.print(f.getStrKennzeichen() + " - ");
+            System.out.print(f.getStrTaktischeBezeichnung()+ "\n");
         }
         
         
