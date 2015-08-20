@@ -7,11 +7,16 @@ and open the template in the editor.
     Created on : 02.08.2015, 14:48:36
     Author     : user
 */
+*
+{
+   font-family: Cambria; 
+}
+
 body
 {
     
     background-image: url("../res/bg.png");
-    background-size: 100%
+    background-size: 100%;
 }
 
 #div_oben
@@ -24,23 +29,16 @@ body
 #div_mitte
 {
     width: 80%;
-    height: 60%;
     margin: 0 auto;
+    background-color: white;
 }
 
 h1
 {
     text-align: center;
-    font-family: Cambria;
 }
 
-p
+button
 {
-   font-family: Cambria; 
+    color: white;
 }
-
-a
-{
-   font-family: Cambria; 
-}
-

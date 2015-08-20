@@ -4,15 +4,21 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 */
 /* 
-    Created on : 02.08.2015, 19:05:30
+    Created on : 18.08.2015, 17:52:25
     Author     : user
 */
 
-#div_abbrechen_bestaetigen
+table
 {
-    position: absolute;
-    bottom: 2%;
-    right: 2%;
-    width: 50%;
-    float: bottom;
+    border: 0px !important;
+}
+
+tr
+{
+    border: 0px !important;
+}
+
+td
+{
+    border: 0px !important;
 }
