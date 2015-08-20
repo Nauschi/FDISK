@@ -45,8 +45,11 @@ public class DB_Access {
     }
 
     /**
-     *
-     * @return @throws Exception
+     * Gibt eine LinkedList mit allen Mitarbeitern, aller Feuerwehren in ganz Steiermark, zurück.
+     * @return LinkedList
+     * @throws IOException 
+     * @see Mitglied
+     * @see LinkedList
      */
     public LinkedList<Mitglied> getEinfacheMitgliederliste() throws Exception {
         LinkedList<Mitglied> liMitglieder = new LinkedList<>();
@@ -80,19 +83,23 @@ public class DB_Access {
     }
 
     /**
-     *
+     * Gibt eine Geburtstagsliste aller Mitarbeiter als LinkedList zurück.
+     * @return LinkedList
      * @param jahr
-     * @return
-     * @throws Exception
+     * @throws IOException 
+     * @see MitgliedsGeburtstag
+     * @see Mitglied
+     * @see LinkedList
      */
     public LinkedList<MitgliedsGeburtstag> getGeburtstagsliste(int jahr) throws Exception {
+        
         LinkedList<MitgliedsGeburtstag> liMitgliedsGeburtstage = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
         String sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\" \n"
                 + "FROM FDISK.dbo.stmkmitglieder";
         ResultSet rs = stat.executeQuery(sqlString);
-
+        
         String strSTB;
         String strDGR;
         String strTitel;
@@ -124,8 +131,12 @@ public class DB_Access {
     }
 
     /**
-     *
-     * @return @throws Exception
+     * Gibt eine Dienstzeitliste aller Mitarbeiter als LinkedList zurück.
+     * @return LinkedList
+     * @throws IOException 
+     * @see Mitglied
+     * @see MitgliedsDienstzeit
+     * @see LinkedList
      */
     public LinkedList<MitgliedsDienstzeit> getDienstzeitListe() throws Exception {
         LinkedList<MitgliedsDienstzeit> liMitgliedsDienstzeiten = new LinkedList<>();
@@ -181,8 +192,12 @@ public class DB_Access {
     }
 
     /**
-     *
-     * @return @throws Exception
+     * Gibt eine Liste mit allen Adressen aller Mitarbeiter als LinkedList zurück.
+     * @return LinkedList
+     * @throws IOException 
+     * @see Mitglied
+     * @see MitgliedsAdresse
+     * @see LinkedList
      */
     public LinkedList<MitgliedsAdresse> getAdressListe() throws Exception {
         LinkedList<MitgliedsAdresse> liMitgliedsAdressen = new LinkedList<>();
@@ -234,6 +249,14 @@ public class DB_Access {
         return liMitgliedsAdressen;
     }
 
+    /**
+     * Gibt eine Liste der Erreichbarkeiten von jedem Mitarbeiter als LinkedList zurück.
+     * @return LinkedList
+     * @throws IOException 
+     * @see Mitglied
+     * @see MitgliedsErreichbarkeit
+     * @see LinkedList
+     */
     public LinkedList<MitgliedsErreichbarkeit> getErreichbarkeitsliste() throws Exception {
         LinkedList<MitgliedsErreichbarkeit> liMitgliedsErreichbarkeiten = new LinkedList<>();
 
@@ -302,9 +325,13 @@ public class DB_Access {
     
     
     /**
-     * 
-     * @return
-     * @throws Exception 
+     * Gibt spezielle Informationen zu der Tätigkeit "Kursbesuch an der FWZS" als 
+     * LinkedList zurück. Diese Informationen sind zum Beispiel Anzahl der 
+     * Mitarbeiter in einem Kurs.
+     * @return LinkedList
+     * @throws IOException 
+     * @see Kurs
+     * @see LinkedList
      */
     public LinkedList<Kurs> getKursstatistik() throws Exception
     {
@@ -366,9 +393,12 @@ public class DB_Access {
     }
     
     /**
-     * 
-     * @return
+     * Gibt alle relevanten Daten (Fahrzeugtype, Kennzeichen, Baujahr etc...) von
+     * jedem Fahrzeug als LinkedList zurück.
+     * @return LinkedList
      * @throws Exception 
+     * @see Fahrzeug
+     * @see LinkedList
      */
     public LinkedList<Fahrzeug> getFahrtenbuch() throws Exception
     {
@@ -441,23 +471,5 @@ public class DB_Access {
             System.out.print(f.getStrKennzeichen() + " - ");
             System.out.print(f.getStrTaktischeBezeichnung()+ "\n");
         }
-        
-        
-        
-//Nauschis Ausgabe...keine Ahnung ob du das no brauchst xD
-//        for (MitgliedsErreichbarkeit me : lili) {
-//            System.out.print(me.getStrStammblattnummer() + " - ");
-//            System.out.print(me.getStrDienstgrad() + " - ");
-//            System.out.print(me.getStrTitel() + " - ");
-//            System.out.print(me.getStrVorname() + " - ");
-//            System.out.print(me.getStrZuname() + " - ");
-//            LinkedList<Erreichbarkeit> lili2 = new LinkedList<>();
-//            lili2 = me.getLiErreichbarkeiten();
-//            for (Erreichbarkeit er : lili2) {
-//                System.out.print(er.getStrErreichbarkeitsArt() + " / " + er.getStrCode() + " - ");
-//            }
-//            System.out.println("");
-//        }
     }
-
 }
