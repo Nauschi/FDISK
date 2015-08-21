@@ -7,6 +7,7 @@ package Servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -95,4 +96,13 @@ public class MainServlet extends HttpServlet
         return "Short description";
     }// </editor-fold>
 
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config); //To change body of generated methods, choose Tools | Templates.
+        
+        //this.getServletContext().setAttribute("Name", "Value");
+    }
+
+    
+    
 }
