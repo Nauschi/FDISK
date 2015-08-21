@@ -17,5 +17,4 @@ Package.onUse(function(api) {
   api.addFiles([
     {files}
   ], 'client');
-
 });

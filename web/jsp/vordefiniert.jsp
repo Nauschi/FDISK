@@ -63,7 +63,7 @@
                     <div class="ui equal width grid">
                         <div class="column">
                             <select name="select_kA" class="ui fluid dropdown" id="select_kA">
-                                <option value="">Wir wissen nichtmehr was</option>
+                                <option value="">Land?</option>
                                 <option value="Test1">Test1</option>
                                 <option value="Test2">Test2</option>
                                 <option value="Test3">Test3</option>
