@@ -13,10 +13,11 @@
         <link rel="stylesheet" type="text/css" href="css/standardDesign.css">
         <link rel="stylesheet" type="text/css" href="css/vordefiniert.css">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet"type="text/css"/>
         <title>Vordefiniert</title>
     </head>
     <body>
-       <div class="ui segment" id="div_oben">
+        <div class="ui segment" id="div_oben">
             <div style="float: right">
                 <img class="ui small image" src="res/logo_oben.png">
                 </br>
@@ -30,8 +31,8 @@
                     Dynamisch
                     <i class="dropdown icon"></i>
                     <div class="menu">
-                        <div class="item" onclick="location.href='jsp/dynamisch_mitarbeiter.jsp'">Mitglieder</div>
-                        <div class="item" onclick="location.href='jsp/dynamisch_fahrzeuge_geraete.jsp'">Fahrzeuge und Geräte</div>
+                        <div class="item" onclick="location.href = 'jsp/dynamisch_mitarbeiter.jsp'">Mitglieder</div>
+                        <div class="item" onclick="location.href = 'jsp/dynamisch_fahrzeuge_geraete.jsp'">Fahrzeuge und Geräte</div>
                     </div>
                 </div>
             </div>
@@ -40,20 +41,17 @@
         <div class="ui grid" id="div_mitte">
             <div class="four wide column">
                 <div class="ui vertical fluid tabular menu" id="div_liste">
-                    
+
                     <%
-                        for (int i = 0; i < 10; i++)
-                        {
-                            if (i == 0)
-                            {
+                        for (int i = 0; i < 10; i++) {
+                            if (i == 0) {
                                 out.println("<a class='item active' onclick='onListItemClicked(this)'>Liste" + i + "</a>");
-                            } else
-                            {
+                            } else {
                                 out.println("<a class='item' onclick='onListItemClicked(this)'>Liste" + i + "</a>");
                             }
                         }
                     %>
-                    
+
                 </div>
             </div>
             <div class="twelve wide stretched column">
@@ -63,7 +61,7 @@
                     <div class="ui equal width grid">
                         <div class="column">
                             <select name="select_kA" class="ui fluid dropdown" id="select_kA">
-                                <option value="">Land?</option>
+                                <option value="">Abschnitt</option>
                                 <option value="Test1">Test1</option>
                                 <option value="Test2">Test2</option>
                                 <option value="Test3">Test3</option>
@@ -158,32 +156,41 @@
         </div>
         <br/>
 
-
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="semantic/dist/semantic.min.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-        <script type="text/javascript"
-                src="http://jquery-ui.googlecode.com/svn/tags/latest/ui/minified/i18n/jquery-ui-i18n.min.js">
-        </script>
+        <script type="text/javascript" src="http://jquery-ui.googlecode.com/svn/tags/latest/ui/minified/i18n/jquery-ui-i18n.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
+
         <script src="js/vordefiniert.js"></script>
-        
+
         <script>$('.ui.dropdown').dropdown();</script>
+
         <script>
             $(function () {
-
-                $("#input_von_datum").datepicker();
-                $("#input_von_datum").datepicker("option", "showAnim", "slideDown");
-                $("#input_von_datum").datepicker("option", "dateFormat", "dd.mm.yy");
-                $("#input_von_datum").datepicker("option", $.datepicker.regional['de']);
-
-                $("#input_bis_datum").datepicker();
-                $("#input_bis_datum").datepicker("option", "showAnim", "slideDown");
-                $("#input_bis_datum").datepicker("option", "dateFormat", "dd.mm.yy");
-                $("#input_bis_datum").datepicker("option", $.datepicker.regional['de']);
-
-
+                $("#input_von_datum").datepicker({
+                    onSelect: function (selected) {
+                        var dt = new Date(selected);
+                        dt.setDate(dt.getDate() + 1);                        
+                        $("#input_bis_datum").datepicker("option", "minDate", dt);
+                        $("#input_von_datum").datepicker("option", "showAnim", "slideDown");
+                        $("#input_von_datum").datepicker("option", "dateFormat", "dd.mm.yy");
+                        $("#input_von_datum").datepicker("option", $.datepicker.regional['de']);
+                    }
+                });
+                $("#input_bis_datum").datepicker({
+                    onSelect: function (selected) {
+                        var dt = new Date(selected);
+                        dt.setDate(dt.getDate() - 1);
+                        $("#input_von_datum").datepicker("option", "maxDate", dt);
+                        $("#input_bis_datum").datepicker("option", "showAnim", "slideDown");
+                        $("#input_bis_datum").datepicker("option", "dateFormat", "dd.mm.yy");
+                        $("#input_bis_datum").datepicker("option", $.datepicker.regional['de']);
+                    }
+                });
             });
-
         </script>
+
     </body>
 </html>
