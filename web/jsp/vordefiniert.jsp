@@ -36,7 +36,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>        
         <h1>Vordefiniert</h1>
         <div class="ui grid" id="div_mitte">
             <div class="four wide column">
@@ -54,6 +54,7 @@
 
                 </div>
             </div>
+
             <div class="twelve wide stretched column">
                 <div class="ui segment" id="div_daten">
                     <h2>Liste0</h2>
@@ -116,27 +117,29 @@
                         </div>
                     </div>
 
-                    <table class="ui celled table">
+                    <table id="table" class="ui sortable celled table">
                         <thead>
-                            <tr><th>Header</th>
-                                <th>Header</th>
-                                <th>Header</th>
-                            </tr></thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
                         <tbody>
                             <tr>
-                                <td>Cell</td>
-                                <td>Cell</td>
-                                <td>Cell</td>
+                                <td>John</td>
+                                <td>No Action</td>
+                                <td>None</td>
                             </tr>
                             <tr>
-                                <td>Cell</td>
-                                <td>Cell</td>
-                                <td>Cell</td>
+                                <td>Jamie</td>
+                                <td class="positive">Approved</td>
+                                <td class="warning">Requires call</td>
                             </tr>
                             <tr>
-                                <td>Cell</td>
-                                <td>Cell</td>
-                                <td>Cell</td>
+                                <td>Jill</td>
+                                <td class="negative">Denied</td>
+                                <td>None</td>
                             </tr>
                         </tbody>
                     </table>
@@ -159,20 +162,19 @@
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="semantic/dist/semantic.min.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-        <script type="text/javascript" src="http://jquery-ui.googlecode.com/svn/tags/latest/ui/minified/i18n/jquery-ui-i18n.min.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
 
         <script src="js/vordefiniert.js"></script>
 
         <script>$('.ui.dropdown').dropdown();</script>
+
+        <script>$('.sortable.table').tablesort();</script>
 
         <script>
             $(function () {
                 $("#input_von_datum").datepicker({
                     onSelect: function (selected) {
                         var dt = new Date(selected);
-                        dt.setDate(dt.getDate() + 1);                        
+                        dt.setDate(dt.getDate() + 1);
                         $("#input_bis_datum").datepicker("option", "minDate", dt);
                         $("#input_von_datum").datepicker("option", "showAnim", "slideDown");
                         $("#input_von_datum").datepicker("option", "dateFormat", "dd.mm.yy");
