@@ -68,4 +68,14 @@
     nbproject/build-impl.xml file. 
 
     -->
+	<target name="runserver" depends="compile"
+      description="Starts the development server.">
+    <dev_appserver war="war" />
+  </target>
+
+  <target name="update" depends="compile"
+      description="Uploads the application to App Engine.">
+    <appcfg action="update" war="war" />
+  </target>
+
 </project>
