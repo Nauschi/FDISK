@@ -13,5 +13,11 @@ function onListItemClicked(item)
         items[index].className = "item";
     }
     item.className = item.className + " active";
-    document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = item.innerHTML;
+    
+    var text = item.getElementsByTagName("div")[0].innerHTML;
+    
+    document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = item.getElementsByTagName("span")[0].innerHTML;
+    document.getElementById("div_table").innerHTML=text;
+    
+    
 }

@@ -5,9 +5,19 @@
  */
 package Servlet;
 
+import Beans.Rohbericht;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,6 +34,8 @@ import javax.servlet.http.HttpServletResponse;
 })
 public class MainServlet extends HttpServlet
 {
+    
+
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -99,10 +111,46 @@ public class MainServlet extends HttpServlet
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("MainServlet.init");
+        try
+        {
+            leseDatei();
+        } catch (IOException ex)
+        {
+            Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-        //this.getServletContext().setAttribute("Name", "Value");
     }
 
-    
+    public void leseDatei() throws UnsupportedEncodingException, IOException
+    {
+        ServletContext servletContext = this.getServletContext();
+        String contextPath = servletContext.getRealPath("/");
+        File file = new File(contextPath
+            + File.separator + "res"
+            + File.separator + "Rohberichte.csv");
+        LinkedList<Rohbericht> rohberichte = new LinkedList<>();
+        
+        FileInputStream fis = new FileInputStream(file);
+        InputStreamReader isr = new InputStreamReader(fis, "ISO-8859-1");
+        BufferedReader br = new BufferedReader(isr);
+        String reihe;
+        
+        
+        while ((reihe = br.readLine()) != null) {
+            String berichtname;
+            LinkedList<String> berichtSpalten = new LinkedList<>();
+            String[] elemente = reihe.split(";");
+            berichtname = elemente[0];
+            for (int i = 1; i < elemente.length; i++)
+            {
+                berichtSpalten.add(elemente[i]);
+            }
+            rohberichte.add(new Rohbericht(berichtname, berichtSpalten));
+        }
+        br.close();
+        
+        servletContext.setAttribute("Rohberichte", rohberichte);
+    }
     
 }

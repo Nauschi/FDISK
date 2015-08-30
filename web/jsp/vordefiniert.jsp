@@ -4,6 +4,8 @@
     Author     : user
 --%>
 
+<%@page import="Beans.Rohbericht"%>
+<%@page import="java.util.LinkedList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="de">
@@ -43,12 +45,11 @@
                 <div class="ui vertical fluid tabular menu" id="div_liste">
 
                     <%
-                        for (int i = 0; i < 10; i++) {
-                            if (i == 0) {
-                                out.println("<a class='item active' onclick='onListItemClicked(this)'>Liste" + i + "</a>");
-                            } else {
-                                out.println("<a class='item' onclick='onListItemClicked(this)'>Liste" + i + "</a>");
-                            }
+                        LinkedList<Rohbericht> rohberichte = (LinkedList<Rohbericht>) application.getAttribute("Rohberichte");
+                        for (int i = 0; i < rohberichte.size(); i++)
+                        {
+                            Rohbericht rohbericht = rohberichte.get(i);
+                            out.println(rohbericht.zuHTMLString());
                         }
                     %>
 
@@ -57,7 +58,7 @@
 
             <div class="twelve wide stretched column">
                 <div class="ui segment" id="div_daten">
-                    <h2>Liste0</h2>
+                    <h2></h2>
 
                     <div class="ui equal width grid">
                         <div class="column">
@@ -116,34 +117,34 @@
                             <button class="ui button" style="background-color: #707173; width: 100%; color: white;">Vorschau</button>
                         </div>
                     </div>
-
-                    <table id="table" class="ui sortable celled table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Status</th>
-                                <th>Notes</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>John</td>
-                                <td>No Action</td>
-                                <td>None</td>
-                            </tr>
-                            <tr>
-                                <td>Jamie</td>
-                                <td class="positive">Approved</td>
-                                <td class="warning">Requires call</td>
-                            </tr>
-                            <tr>
-                                <td>Jill</td>
-                                <td class="negative">Denied</td>
-                                <td>None</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
+                    <div id="div_table" style="margin-top: 20px">
+                        <table id="table" class="ui sortable celled table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>John</td>
+                                    <td>No Action</td>
+                                    <td>None</td>
+                                </tr>
+                                <tr>
+                                    <td>Jamie</td>
+                                    <td class="positive">Approved</td>
+                                    <td class="warning">Requires call</td>
+                                </tr>
+                                <tr>
+                                    <td>Jill</td>
+                                    <td class="negative">Denied</td>
+                                    <td>None</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div id="div_abbrechen_bestaetigen">
                         <div class="ui equal width grid">
                             <div class="column">
@@ -154,6 +155,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -193,6 +195,14 @@
                 });
             });
         </script>
-
+        <script>
+            $(document).ready(function () {
+                var items = document.getElementById("div_liste").getElementsByTagName("a");
+                items[0].className = "item active";
+                document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = items[0].getElementsByTagName("span")[0].innerHTML;
+                var text = items[0].getElementsByTagName("div")[0].innerHTML;
+                document.getElementById("div_table").innerHTML=text;
+            });
+        </script>
     </body>
 </html>
