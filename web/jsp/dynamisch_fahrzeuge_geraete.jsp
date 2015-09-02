@@ -16,7 +16,7 @@
     </head>
     <body>
         <div class="ui segment" id="div_oben">
-            <div style="float: right">
+            <div id="div_image">
                 <img class="ui small image" src="../res/logo_oben.png">
                 </br>
             </div>

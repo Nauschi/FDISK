@@ -16,7 +16,7 @@
     </head>
     <body>
         <div class="ui segment" id="div_oben">
-            <div style="float: right">
+            <div id="div_image">
                 <img class="ui small image" src="../res/logo_oben.png">
                 </br>
             </div>
@@ -24,14 +24,17 @@
                 <a class="item">
                     Vordefiniert
                 </a>
-                <div class="ui simple dropdown item">
+                <a class="item active">
+                    Dynamisch
+                </a>
+                <!--<div class="ui simple dropdown item">
                     Dynamisch
                     <i class="dropdown icon"></i>
                     <div class="menu">
                         <div class="item" onclick="location.href='jsp/dynamisch_mitarbeiter.jsp'">Mitglieder</div>
                         <div class="item" onclick="location.href='jsp/dynamisch_fahrzeuge_geraete.jsp'">Fahrzeuge und Geräte</div>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
 
