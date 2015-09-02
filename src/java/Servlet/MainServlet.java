@@ -34,8 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 })
 public class MainServlet extends HttpServlet
 {
-    
-
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -56,7 +54,7 @@ public class MainServlet extends HttpServlet
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet MainServlet</title>");            
+            out.println("<title>Servlet MainServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet MainServlet at " + request.getContextPath() + "</h1>");
@@ -78,7 +76,7 @@ public class MainServlet extends HttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
+        request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
         processRequest(request, response);
     }
 
@@ -94,6 +92,19 @@ public class MainServlet extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
+        if (request.getParameter("button_login") != null)
+        {
+            System.out.println("Benutzername: " + request.getParameter("input_benutzername"));
+            System.out.println("Kennwort: " + request.getParameter("input_kennwort"));
+            if (true) //Abfrage ob Daten korrekt
+            {
+                request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
+            }else
+            {
+                request.setAttribute("login_error", true);
+                request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
+            }
+        }
         processRequest(request, response);
     }
 
@@ -109,7 +120,8 @@ public class MainServlet extends HttpServlet
     }// </editor-fold>
 
     @Override
-    public void init(ServletConfig config) throws ServletException {
+    public void init(ServletConfig config) throws ServletException
+    {
         super.init(config); //To change body of generated methods, choose Tools | Templates.
         System.out.println("MainServlet.init");
         try
@@ -119,7 +131,7 @@ public class MainServlet extends HttpServlet
         {
             Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 
     public void leseDatei() throws UnsupportedEncodingException, IOException
@@ -127,17 +139,17 @@ public class MainServlet extends HttpServlet
         ServletContext servletContext = this.getServletContext();
         String contextPath = servletContext.getRealPath("/");
         File file = new File(contextPath
-            + File.separator + "res"
-            + File.separator + "Rohberichte.csv");
+                + File.separator + "res"
+                + File.separator + "Rohberichte.csv");
         LinkedList<Rohbericht> rohberichte = new LinkedList<>();
-        
+
         FileInputStream fis = new FileInputStream(file);
         InputStreamReader isr = new InputStreamReader(fis, "ISO-8859-1");
         BufferedReader br = new BufferedReader(isr);
         String reihe;
-        
-        
-        while ((reihe = br.readLine()) != null) {
+
+        while ((reihe = br.readLine()) != null)
+        {
             String berichtname;
             LinkedList<String> berichtSpalten = new LinkedList<>();
             String[] elemente = reihe.split(";");
@@ -149,8 +161,8 @@ public class MainServlet extends HttpServlet
             rohberichte.add(new Rohbericht(berichtname, berichtSpalten));
         }
         br.close();
-        
+
         servletContext.setAttribute("Rohberichte", rohberichte);
     }
-    
+
 }
