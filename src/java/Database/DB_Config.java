@@ -9,8 +9,7 @@ package Database;
  *
  * @author philipp
  * Hallo
- */
-public interface DB_Config {
+ */public interface DB_Config {
     public static final String DB_NAME = "FDISK";
     public static final String DB_USER = "Admin";
     public static final String DB_PASSWD = "htlk";
@@ -18,3 +17,4 @@ public interface DB_Config {
     //public static final String DB_URL = "jdbc:sqlserver://TestServer\\SQLEXPRESS;databaseName=FDISK";
     public static final String DB_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 }
+

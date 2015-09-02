@@ -8,6 +8,7 @@ package Database;
 import Beans.Erreichbarkeit;
 import Beans.Fahrzeug;
 import Beans.Kurs;
+import Beans.LoginMitglied;
 import Beans.Mitglied;
 import Beans.MitgliedsAdresse;
 import Beans.MitgliedsDienstzeit;
@@ -27,31 +28,38 @@ import java.util.logging.Logger;
  *
  * @author philipp
  */
-public class DB_Access {
+public class DB_Access
+{
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
     private DB_ConnectionPool connPool;
     private static DB_Access theInstance = null;
 
-    public static DB_Access getInstance() throws ClassNotFoundException {
-        if (theInstance == null) {
+    public static DB_Access getInstance() throws ClassNotFoundException
+    {
+        if (theInstance == null)
+        {
             theInstance = new DB_Access();
         }
         return theInstance;
     }
 
-    private DB_Access() throws ClassNotFoundException {
+    private DB_Access() throws ClassNotFoundException
+    {
         connPool = DB_ConnectionPool.getInstance();
     }
 
     /**
-     * Gibt eine LinkedList mit allen Mitarbeitern, aller Feuerwehren in ganz Steiermark, zurück.
+     * Gibt eine LinkedList mit allen Mitarbeitern, aller Feuerwehren in ganz
+     * Steiermark, zurück.
+     *
      * @return LinkedList
-     * @throws IOException 
+     * @throws IOException
      * @see Mitglied
      * @see LinkedList
      */
-    public LinkedList<Mitglied> getEinfacheMitgliederliste() throws Exception {
+    public LinkedList<Mitglied> getEinfacheMitgliederliste() throws Exception
+    {
         LinkedList<Mitglied> liMitglieder = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
@@ -66,7 +74,8 @@ public class DB_Access {
         String strZuname;
         int intPersID;
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             intPersID = rs.getInt("PersID");
             strSTB = rs.getString("STB");
             strDGR = rs.getString("DGR");
@@ -84,22 +93,24 @@ public class DB_Access {
 
     /**
      * Gibt eine Geburtstagsliste aller Mitarbeiter als LinkedList zurück.
+     *
      * @return LinkedList
      * @param jahr
-     * @throws IOException 
+     * @throws IOException
      * @see MitgliedsGeburtstag
      * @see Mitglied
      * @see LinkedList
      */
-    public LinkedList<MitgliedsGeburtstag> getGeburtstagsliste(int jahr) throws Exception {
-        
+    public LinkedList<MitgliedsGeburtstag> getGeburtstagsliste(int jahr) throws Exception
+    {
+
         LinkedList<MitgliedsGeburtstag> liMitgliedsGeburtstage = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
         String sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\" \n"
                 + "FROM FDISK.dbo.stmkmitglieder";
         ResultSet rs = stat.executeQuery(sqlString);
-        
+
         String strSTB;
         String strDGR;
         String strTitel;
@@ -109,7 +120,8 @@ public class DB_Access {
         Date dateGeburtsdatum;
         int intZielalter;
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             intPersID = rs.getInt("PersID");
             strSTB = rs.getString("STB");
             strDGR = rs.getString("DGR");
@@ -132,20 +144,22 @@ public class DB_Access {
 
     /**
      * Gibt eine Dienstzeitliste aller Mitarbeiter als LinkedList zurück.
+     *
      * @return LinkedList
-     * @throws IOException 
+     * @throws IOException
      * @see Mitglied
      * @see MitgliedsDienstzeit
      * @see LinkedList
      */
-    public LinkedList<MitgliedsDienstzeit> getDienstzeitListe() throws Exception {
+    public LinkedList<MitgliedsDienstzeit> getDienstzeitListe() throws Exception
+    {
         LinkedList<MitgliedsDienstzeit> liMitgliedsDienstzeiten = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
         String sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
                 + "FROM FDISK.dbo.stmkmitglieder";
         ResultSet rs = stat.executeQuery(sqlString);
-        
+
         String strSTB;
         String strDGR;
         String strTitel;
@@ -156,8 +170,10 @@ public class DB_Access {
         Date dateEintrittsdatum;
         int intVordienstzeit;
 
-        while (rs.next()) {
-            if (rs.getDate("Datum_abgemeldet") == null) {
+        while (rs.next())
+        {
+            if (rs.getDate("Datum_abgemeldet") == null)
+            {
                 intPersID = rs.getInt("PersID");
                 strSTB = rs.getString("STB");
                 strDGR = rs.getString("DGR");
@@ -172,11 +188,13 @@ public class DB_Access {
 
                 int intDienstzeit = Calendar.getInstance().get(Calendar.YEAR) - calEintrittsdatum.get(Calendar.YEAR);
 
-                if (Calendar.getInstance().get(Calendar.MONTH) < calEintrittsdatum.get(Calendar.MONTH)) {
+                if (Calendar.getInstance().get(Calendar.MONTH) < calEintrittsdatum.get(Calendar.MONTH))
+                {
                     intDienstzeit--;
                 }
 
-                if ((Calendar.getInstance().get(Calendar.MONTH) == calEintrittsdatum.get(Calendar.MONTH)) && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) < calEintrittsdatum.get(Calendar.DAY_OF_MONTH)) {
+                if ((Calendar.getInstance().get(Calendar.MONTH) == calEintrittsdatum.get(Calendar.MONTH)) && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) < calEintrittsdatum.get(Calendar.DAY_OF_MONTH))
+                {
                     intDienstzeit--;
                 }
 
@@ -192,14 +210,17 @@ public class DB_Access {
     }
 
     /**
-     * Gibt eine Liste mit allen Adressen aller Mitarbeiter als LinkedList zurück.
+     * Gibt eine Liste mit allen Adressen aller Mitarbeiter als LinkedList
+     * zurück.
+     *
      * @return LinkedList
-     * @throws IOException 
+     * @throws IOException
      * @see Mitglied
      * @see MitgliedsAdresse
      * @see LinkedList
      */
-    public LinkedList<MitgliedsAdresse> getAdressListe() throws Exception {
+    public LinkedList<MitgliedsAdresse> getAdressListe() throws Exception
+    {
         LinkedList<MitgliedsAdresse> liMitgliedsAdressen = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
@@ -227,7 +248,8 @@ public class DB_Access {
         int intPLZ;
         String strOrt;
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             intPersID = rs.getInt("PersID");
             strSTB = rs.getString("STB");
             strDGR = rs.getString("DGR");
@@ -250,14 +272,17 @@ public class DB_Access {
     }
 
     /**
-     * Gibt eine Liste der Erreichbarkeiten von jedem Mitarbeiter als LinkedList zurück.
+     * Gibt eine Liste der Erreichbarkeiten von jedem Mitarbeiter als LinkedList
+     * zurück.
+     *
      * @return LinkedList
-     * @throws IOException 
+     * @throws IOException
      * @see Mitglied
      * @see MitgliedsErreichbarkeit
      * @see LinkedList
      */
-    public LinkedList<MitgliedsErreichbarkeit> getErreichbarkeitsliste() throws Exception {
+    public LinkedList<MitgliedsErreichbarkeit> getErreichbarkeitsliste() throws Exception
+    {
         LinkedList<MitgliedsErreichbarkeit> liMitgliedsErreichbarkeiten = new LinkedList<>();
 
         Connection conn = connPool.getConnection();
@@ -282,7 +307,8 @@ public class DB_Access {
         int intPersID = 0;
 
         LinkedList<Erreichbarkeit> liErreichbarkeiten = new LinkedList<>();
-        while (rs.next()) {
+        while (rs.next())
+        {
 
             intPersID = rs.getInt("PersID");
             intId_erreichbarkeit = rs.getInt("ID_erreichbarkeit");
@@ -305,15 +331,18 @@ public class DB_Access {
         rs = stat.executeQuery(sqlString);
         LinkedList<Erreichbarkeit> liErreichbarkeitZuMitglied = new LinkedList<>();
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             intPersID = rs.getInt("PersID");
             strSTB = rs.getString("STB");
             strDGR = rs.getString("DGR");
             strTitel = rs.getString("Titel");
             strVorname = rs.getString("Vorname");
             strZuname = rs.getString("Zuname");
-            for (Erreichbarkeit erreichbarkeit : liErreichbarkeiten) {
-                if (erreichbarkeit.getIntPersID() == intPersID) {
+            for (Erreichbarkeit erreichbarkeit : liErreichbarkeiten)
+            {
+                if (erreichbarkeit.getIntPersID() == intPersID)
+                {
                     liErreichbarkeitZuMitglied.add(erreichbarkeit);
                 }
             }
@@ -322,14 +351,13 @@ public class DB_Access {
         return liMitgliedsErreichbarkeiten;
     }
 
-    
-    
     /**
-     * Gibt spezielle Informationen zu der Tätigkeit "Kursbesuch an der FWZS" als 
-     * LinkedList zurück. Diese Informationen sind zum Beispiel Anzahl der 
+     * Gibt spezielle Informationen zu der Tätigkeit "Kursbesuch an der FWZS"
+     * als LinkedList zurück. Diese Informationen sind zum Beispiel Anzahl der
      * Mitarbeiter in einem Kurs.
+     *
      * @return LinkedList
-     * @throws IOException 
+     * @throws IOException
      * @see Kurs
      * @see LinkedList
      */
@@ -391,12 +419,13 @@ public class DB_Access {
         connPool.releaseConnection(conn);
         return liKurse;
     }
-    
+
     /**
-     * Gibt alle relevanten Daten (Fahrzeugtype, Kennzeichen, Baujahr etc...) von
-     * jedem Fahrzeug als LinkedList zurück.
+     * Gibt alle relevanten Daten (Fahrzeugtype, Kennzeichen, Baujahr etc...)
+     * von jedem Fahrzeug als LinkedList zurück.
+     *
      * @return LinkedList
-     * @throws Exception 
+     * @throws Exception
      * @see Fahrzeug
      * @see LinkedList
      */
@@ -406,17 +435,17 @@ public class DB_Access {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 
-        String sqlString = "SELECT TOP 1000 " 
-                + "kennzeichen \"Kennzeichen\" " 
-                + ",id_fahrzeuge \"Id_Fahrzeuge\" " 
-                + ",fahrzeugtyp \"Fahrzeugtyp\" " 
-                + ",taktischebezeichnung \"Taktische Bezeichnung\" " 
-                + ",bezeichnung \"Bezeichnung\" " 
-                + ",status \"Status\" " 
-                + ",baujahr \"Baujahr\" " 
-                + ",fahrzeugmarke \"Fahrzeugmarke\" " 
-                + ",aufbaufirma \"Aufbaufirma\" " 
-                + "FROM FDISK.dbo.stmkfahrzeuge " 
+        String sqlString = "SELECT TOP 1000 "
+                + "kennzeichen \"Kennzeichen\" "
+                + ",id_fahrzeuge \"Id_Fahrzeuge\" "
+                + ",fahrzeugtyp \"Fahrzeugtyp\" "
+                + ",taktischebezeichnung \"Taktische Bezeichnung\" "
+                + ",bezeichnung \"Bezeichnung\" "
+                + ",status \"Status\" "
+                + ",baujahr \"Baujahr\" "
+                + ",fahrzeugmarke \"Fahrzeugmarke\" "
+                + ",aufbaufirma \"Aufbaufirma\" "
+                + "FROM FDISK.dbo.stmkfahrzeuge "
                 + "WHERE status = 'aktiv'";
 
         ResultSet rs = stat.executeQuery(sqlString);
@@ -447,29 +476,114 @@ public class DB_Access {
         connPool.releaseConnection(conn);
         return liFahrzeuge;
     }
-    
-    public static void main(String[] args) {
-        try {
-            theInstance = DB_Access.getInstance();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        LinkedList<Fahrzeug> lili = new LinkedList<>();
-        try {
-            lili = theInstance.getFahrtenbuch();
-        } catch (Exception ex) {
-            Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        for (Fahrzeug f : lili) 
+
+    /**
+     * !!!Nicht fertig!!!!
+     * Sucht Vorname, Nachname und Titel zu einer bestimmten UserId
+     * @param intId_User
+     * @return
+     * @throws Exception 
+     */
+    public LinkedList<LoginMitglied> login(int intId_User) throws Exception
+    {
+        LinkedList<LoginMitglied> liLoginMitglied = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT TOP 1000 IDUser \"IDUser\""
+                + " ,Vorname \"Vorname\""
+                + " ,Nachname \"Nachname\""
+                + " FROM FDISK.dbo.tbl_login_benutzerdetail"
+                + " WHERE IDUser = " + intId_User;
+
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        String strVorname;
+        String strNachname;
+        String strTitel = null;
+        LoginMitglied loginMitglied = null;
+
+        /**
+         * ToDo: 
+         * Wenn in Vorname Fam. bla steht
+         * Wenn Vorname und Nachname = null
+         * Wenn Titel dabeistehen
+         */
+        while (rs.next())
         {
-            System.out.print(f.getIntBaujahr()+ " - ");
-            System.out.print(f.getIntId_fahrzeuge()+ " - ");
-            System.out.print(f.getStrAufbaufirma()+ " - ");
-            System.out.print(f.getStrBezeichnung()+ " - ");
-            System.out.print(f.getStrFahrzeugTyp()+ " - ");
-            System.out.print(f.getStrFahrzeugmarke()+ " - ");
-            System.out.print(f.getStrKennzeichen() + " - ");
-            System.out.print(f.getStrTaktischeBezeichnung()+ "\n");
+
+            strVorname = rs.getString("Vorname").trim();
+            strNachname = rs.getString("Nachname");
+
+            int intLength = strVorname.replaceAll("[^ ]", "").length();
+
+            //Bei optimalem Eintrag ohne Titel
+            if (strNachname != null && !strVorname.contains(" ") && intLength == 0)
+            {
+                strNachname = strNachname.trim();
+                loginMitglied = new LoginMitglied(intId_User, strVorname, strNachname, strTitel);
+            } 
+
+            //Wenn Nachname = null ohne Titel
+            else if (strNachname == null && intLength == 1)
+            {
+                String[] strTeile = strVorname.split(" ");
+                String strTeil1 = strTeile[0];
+                String strTeil2 = strTeile[1];
+
+                //Wenn das erste Wort in Vorname groß geschrieben ist => Teil1 = Nachname
+                if (strTeil1.toUpperCase().equals(strTeil1) && !strTeil2.toUpperCase().equals(strTeil2))
+                {
+                    loginMitglied = new LoginMitglied(intId_User, strTeil2, strTeil1, strTitel);
+                } //Wenn das zweite Wort in Vorname groß geschrieben ist => Teil2 = Nachname
+                else if (!strTeil1.toUpperCase().equals(strTeil1) && strTeil2.toUpperCase().equals(strTeil2))
+                {
+                    loginMitglied = new LoginMitglied(intId_User, strTeil1, strTeil2, strTitel);
+
+                } //Wenn beide Wörter klein geschrieben sind => Teil1 = Nachname
+                else if (!strTeil1.toUpperCase().equals(strTeil1) && !strTeil2.toUpperCase().equals(strTeil2))
+                {
+                    loginMitglied = new LoginMitglied(intId_User, strTeil2, strTeil1, strTitel);
+
+                }
+
+            } 
+            
+            else
+            {
+                System.out.println("so ein scheiß mit der DB -.-");
+            }
+
+            liLoginMitglied.add(loginMitglied);
+        }
+        connPool.releaseConnection(conn);
+        return liLoginMitglied;
+    }
+
+    public static void main(String[] args) throws Exception
+    {
+        try
+        {
+            theInstance = DB_Access.getInstance();
+        } catch (ClassNotFoundException ex)
+        {
+            Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        LinkedList<LoginMitglied> lili = new LinkedList<>();
+        try
+        {
+            lili = theInstance.login(4218);
+        } catch (Exception ex)
+        {
+            Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for (LoginMitglied l : lili)
+        {
+            System.out.print(l.getIntId_User() + " - ");
+            System.out.print(l.getStrNachname() + " - ");
+            System.out.print(l.getStrVorname() + " - ");
+            System.out.print(l.getStrTitel() + "\n");
         }
     }
 }
