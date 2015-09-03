@@ -99,7 +99,8 @@ public class MainServlet extends HttpServlet
             if (true) //Abfrage ob Daten korrekt
             {
                 request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
-            }else
+            }
+            else
             {
                 request.setAttribute("login_error", true);
                 request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
