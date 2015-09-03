@@ -6,6 +6,7 @@
 package Servlet;
 
 import Beans.Rohbericht;
+import Database.DB_Access;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 })
 public class MainServlet extends HttpServlet
 {
+     private DB_Access access;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -76,6 +78,7 @@ public class MainServlet extends HttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
+        
         request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
         processRequest(request, response);
     }
@@ -131,6 +134,13 @@ public class MainServlet extends HttpServlet
     public void init(ServletConfig config) throws ServletException
     {
         super.init(config); //To change body of generated methods, choose Tools | Templates.
+         try
+         {
+             access = DB_Access.getInstance();
+         } catch (ClassNotFoundException ex)
+         {
+             Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+         }
         System.out.println("MainServlet.init");
         try
         {

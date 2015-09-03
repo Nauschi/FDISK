@@ -563,7 +563,6 @@ public class DB_Access
                 System.out.println("Woher soll i wissen ob da Titel als erstes steht? Evtl. schauen ob ein Punkt nach dem Titel steht");
             }
             
-            
             if(loginMitglied != null)
             {
                 liLoginMitglied.add(loginMitglied);
