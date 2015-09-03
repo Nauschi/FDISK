@@ -61,65 +61,67 @@
 
             <div class="twelve wide stretched column">
                 <div class="ui segment" id="div_daten">
-                    <h2></h2>
+                    <form action="MainServlet" method="POST">
+                        <h2></h2>
 
-                    <div class="ui equal width grid">
-                        <div class="column">
-                            <select name="select_kA" class="ui fluid dropdown" id="select_kA">
-                                <option value="">Abschnitt</option>
-                                <option value="Test1">Test1</option>
-                                <option value="Test2">Test2</option>
-                                <option value="Test3">Test3</option>
-                                <option value="Test4">Test4</option>
-                                <option value="Test5">Test5</option>
-                                <option value="Test6">Test6</option>
-                                <option value="Test7">Test7</option>
-                                <option value="Test8">Test8</option>
-                            </select>
-                        </div>
-                        <div class="column">
-                            <select name="select_bezirk" class="ui fluid dropdown" id="select_bezirk">
-                                <option value="">Bezirk</option>
-                                <option value="Bezirk1">Bezirk1</option>
-                                <option value="Bezirk2">Bezirk2</option>
-                                <option value="Bezirk3">Bezirk3</option>
-                                <option value="Bezirk4">Bezirk4</option>
-                                <option value="Bezirk5">Bezirk5</option>
-                                <option value="Bezirk6">Bezirk6</option>
-                                <option value="Bezirk7">Bezirk7</option>
-                                <option value="Bezirk8">Bezirk8</option>
-                            </select>
-                        </div>
-                        <div class="column">
+                        <div class="ui equal width grid">
+                            <div class="column">
+                                <select name="select_kA" class="ui fluid dropdown" id="select_kA">
+                                    <option value="">Abschnitt</option>
+                                    <option value="Test1">Test1</option>
+                                    <option value="Test2">Test2</option>
+                                    <option value="Test3">Test3</option>
+                                    <option value="Test4">Test4</option>
+                                    <option value="Test5">Test5</option>
+                                    <option value="Test6">Test6</option>
+                                    <option value="Test7">Test7</option>
+                                    <option value="Test8">Test8</option>
+                                </select>
+                            </div>
+                            <div class="column">
+                                <select name="select_bezirk" class="ui fluid dropdown" id="select_bezirk">
+                                    <option value="">Bezirk</option>
+                                    <option value="Bezirk1">Bezirk1</option>
+                                    <option value="Bezirk2">Bezirk2</option>
+                                    <option value="Bezirk3">Bezirk3</option>
+                                    <option value="Bezirk4">Bezirk4</option>
+                                    <option value="Bezirk5">Bezirk5</option>
+                                    <option value="Bezirk6">Bezirk6</option>
+                                    <option value="Bezirk7">Bezirk7</option>
+                                    <option value="Bezirk8">Bezirk8</option>
+                                </select>
+                            </div>
+                            <div class="column">
 
-                            <select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr">
-                                <option value="">Feuerwehr</option>
-                                <option value="Feuerwehr1">Feuerwehr1</option>
-                                <option value="Feuerwehr2">Feuerwehr2</option>
-                                <option value="Feuerwehr3">Feuerwehr3</option>
-                                <option value="Feuerwehr4">Feuerwehr4</option>
-                                <option value="Feuerwehr5">Feuerwehr5</option>
-                                <option value="Feuerwehr6">Feuerwehr6</option>
-                                <option value="Feuerwehr7">Feuerwehr7</option>
-                                <option value="Feuerwehr8">Feuerwehr8</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="ui equal width grid">
-                        <div class="column">
-                            <div class="ui input" style="width: 100%">
-                                <input id="input_von_datum" placeholder="von..." type="text">
+                                <select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr">
+                                    <option value="">Feuerwehr</option>
+                                    <option value="Feuerwehr1">Feuerwehr1</option>
+                                    <option value="Feuerwehr2">Feuerwehr2</option>
+                                    <option value="Feuerwehr3">Feuerwehr3</option>
+                                    <option value="Feuerwehr4">Feuerwehr4</option>
+                                    <option value="Feuerwehr5">Feuerwehr5</option>
+                                    <option value="Feuerwehr6">Feuerwehr6</option>
+                                    <option value="Feuerwehr7">Feuerwehr7</option>
+                                    <option value="Feuerwehr8">Feuerwehr8</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="column" >
-                            <div class="ui input" style="width: 100%">
-                                <input id="input_bis_datum" placeholder="bis..." type="text">
+                        <div class="ui equal width grid">
+                            <div class="column">
+                                <div class="ui input" style="width: 100%">
+                                    <input id="input_von_datum" placeholder="von..." type="text">
+                                </div>
+                            </div>
+                            <div class="column" >
+                                <div class="ui input" style="width: 100%">
+                                    <input id="input_bis_datum" placeholder="bis..." type="text">
+                                </div>
+                            </div>
+                            <div class="column">
+                                <button type="submit" name="button_vorschau" class="ui button" style="background-color: #707173; width: 100%; color: white;">Vorschau</button>
                             </div>
                         </div>
-                        <div class="column">
-                            <button class="ui button" style="background-color: #707173; width: 100%; color: white;">Vorschau</button>
-                        </div>
-                    </div>
+                    </form>
                     <div id="div_table" style="margin-top: 20px">
                         <table id="table" class="ui sortable celled table">
                             <thead>
@@ -204,7 +206,7 @@
                 items[0].className = "item active";
                 document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = items[0].getElementsByTagName("span")[0].innerHTML;
                 var text = items[0].getElementsByTagName("div")[0].innerHTML;
-                document.getElementById("div_table").innerHTML=text;
+                document.getElementById("div_table").innerHTML = text;
             });
         </script>
     </body>
