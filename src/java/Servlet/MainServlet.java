@@ -106,8 +106,9 @@ public class MainServlet extends HttpServlet
             }
         }else if(request.getParameter("button_vorschau")!=null)
         {
-            String bericht = request.getParameter("h2_bericht");
-            System.out.println("Vorschau");
+            
+            String strBericht = request.getParameter("input_aktbericht");
+            System.out.println("Bericht: "+strBericht);
             request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
         }
         processRequest(request, response);
@@ -142,32 +143,32 @@ public class MainServlet extends HttpServlet
     public void leseDatei() throws UnsupportedEncodingException, IOException
     {
         ServletContext servletContext = this.getServletContext();
-        String contextPath = servletContext.getRealPath("/");
-        File file = new File(contextPath
+        String strContextPath = servletContext.getRealPath("/");
+        File file = new File(strContextPath
                 + File.separator + "res"
                 + File.separator + "Rohberichte.csv");
-        LinkedList<Rohbericht> rohberichte = new LinkedList<>();
+        LinkedList<Rohbericht> liRohberichte = new LinkedList<>();
 
         FileInputStream fis = new FileInputStream(file);
         InputStreamReader isr = new InputStreamReader(fis, "ISO-8859-1");
         BufferedReader br = new BufferedReader(isr);
-        String reihe;
+        String strReihe;
 
-        while ((reihe = br.readLine()) != null)
+        while ((strReihe = br.readLine()) != null)
         {
-            String berichtname;
-            LinkedList<String> berichtSpalten = new LinkedList<>();
-            String[] elemente = reihe.split(";");
-            berichtname = elemente[0];
-            for (int i = 1; i < elemente.length; i++)
+            String strBerichtname;
+            LinkedList<String> liBerichtSpalten = new LinkedList<>();
+            String[] strElemente = strReihe.split(";");
+            strBerichtname = strElemente[0];
+            for (int i = 1; i < strElemente.length; i++)
             {
-                berichtSpalten.add(elemente[i]);
+                liBerichtSpalten.add(strElemente[i]);
             }
-            rohberichte.add(new Rohbericht(berichtname, berichtSpalten));
+            liRohberichte.add(new Rohbericht(strBerichtname, liBerichtSpalten));
         }
         br.close();
 
-        servletContext.setAttribute("Rohberichte", rohberichte);
+        servletContext.setAttribute("rohberichte", liRohberichte);
     }
 
 }

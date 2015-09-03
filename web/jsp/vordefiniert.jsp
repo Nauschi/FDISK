@@ -48,10 +48,10 @@
                 <div class="ui vertical fluid tabular menu" id="div_liste">
 
                     <%
-                        LinkedList<Rohbericht> rohberichte = (LinkedList<Rohbericht>) application.getAttribute("Rohberichte");
-                        for (int i = 0; i < rohberichte.size(); i++)
+                        LinkedList<Rohbericht> liRohberichte = (LinkedList<Rohbericht>) application.getAttribute("rohberichte");
+                        for (int i = 0; i < liRohberichte.size(); i++)
                         {
-                            Rohbericht rohbericht = rohberichte.get(i);
+                            Rohbericht rohbericht = liRohberichte.get(i);
                             out.println(rohbericht.toHTMLString());
                         }
                     %>
@@ -62,7 +62,8 @@
             <div class="twelve wide stretched column">
                 <div class="ui segment" id="div_daten">
                     <form action="MainServlet" method="POST">
-                        <h2 name="h2_bericht"></h2>
+                        <h2></h2>
+                        <input type="hidden" name="input_aktbericht" value="test">
 
                         <div class="ui equal width grid">
                             <div class="column">
@@ -201,13 +202,29 @@
             });
         </script>
         <script>
+
             $(document).ready(function () {
-                var items = document.getElementById("div_liste").getElementsByTagName("a");
-                items[0].className = "item active";
-                document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = items[0].getElementsByTagName("span")[0].innerHTML;
-                var text = items[0].getElementsByTagName("div")[0].innerHTML;
+            <%
+                if (request.getParameter("h2_bericht") == null)
+                {
+            %>
+                alert("Null");
+                var item = document.getElementById("div_liste").getElementsByTagName("a")[0];
+            <%
+            } else
+            {
+            %>
+                alert("NotNull");
+                var item = document.getElementById(<%=request.getParameter("h2_bericht")%>);
+            <%
+                }
+            %>
+                item.className = "item active";
+                document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = item.getElementsByTagName("span")[0].innerHTML;
+                var text = item.getElementsByTagName("div")[0].innerHTML;
                 document.getElementById("div_table").innerHTML = text;
             });
+
         </script>
     </body>
 </html>

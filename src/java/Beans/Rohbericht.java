@@ -45,7 +45,7 @@ public class Rohbericht
 
     public String toHTMLString()
     {
-        String strHTML = "<a class='item' onclick='onListItemClicked(this)'>"
+        String strHTML = "<a class='item' onclick='onListItemClicked(this)' id='"+strBerichtname+"'>"
                 + "<span>" + strBerichtname + "</span>"
                 + "<div style='display:none'>"
                 + "<table id='table' class='ui sortable celled table'>"
