@@ -505,9 +505,7 @@ public class DB_Access
 
         /**
          * ToDo: 
-         * Wenn in Vorname Fam. bla steht
-         * Wenn Vorname und Nachname = null
-         * Wenn Titel dabeistehen
+         * Wenn Titel dabeistehen aka größter scheiß überhaupt
          */
         while (rs.next())
         {
@@ -523,7 +521,20 @@ public class DB_Access
                 strNachname = strNachname.trim();
                 loginMitglied = new LoginMitglied(intId_User, strVorname, strNachname, strTitel);
             } 
-
+            //Wenn Fa. davor steht und Nachname = null z.B. Fa. Center Communication Systems GmbH
+            //Familie wird als Vorname verwendet
+            else if(strNachname == null && strVorname.contains("Fa."))
+            {
+                String[] strTeile = strVorname.split("\\.");
+                String strTeilNachname = strTeile[1].trim();
+                loginMitglied = new LoginMitglied(intId_User, "Familie", strTeilNachname, strTitel);
+            }
+            //Wenn Nachname = null und in Vorname nur ein Wort steht (3185)
+            else if(strNachname == null && intLength == 0)
+            {
+                strNachname = strVorname; 
+                loginMitglied = new LoginMitglied(intId_User, null, strNachname, strTitel);
+            }
             //Wenn Nachname = null ohne Titel
             else if (strNachname == null && intLength == 1)
             {
@@ -544,17 +555,24 @@ public class DB_Access
                 else if (!strTeil1.toUpperCase().equals(strTeil1) && !strTeil2.toUpperCase().equals(strTeil2))
                 {
                     loginMitglied = new LoginMitglied(intId_User, strTeil2, strTeil1, strTitel);
-
                 }
-
             } 
+            //Wenn in Vorname ein Titel dabei steht
+            else if(strNachname != null && intLength == 1)
+            {
+                System.out.println("Woher soll i wissen ob da Titel als erstes steht? Evtl. schauen ob ein Punkt nach dem Titel steht");
+            }
             
+            
+            if(loginMitglied != null)
+            {
+                liLoginMitglied.add(loginMitglied);
+            }
             else
             {
-                System.out.println("so ein scheiß mit der DB -.-");
+                System.out.println("Fehler");
             }
-
-            liLoginMitglied.add(loginMitglied);
+            
         }
         connPool.releaseConnection(conn);
         return liLoginMitglied;
@@ -573,7 +591,7 @@ public class DB_Access
         LinkedList<LoginMitglied> lili = new LinkedList<>();
         try
         {
-            lili = theInstance.login(4218);
+            lili = theInstance.login(3185);
         } catch (Exception ex)
         {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
