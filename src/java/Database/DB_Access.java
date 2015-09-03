@@ -477,6 +477,43 @@ public class DB_Access
         return liFahrzeuge;
     }
 
+    
+    public void joinUserIdUndPersId(LinkedList<LoginMitglied> liLoginMitglied) throws Exception
+    {
+        String strLoginMitgliedVorname = null; 
+        String strLoginMitgliedNachname = null; 
+        String strVorname = null; 
+        String strNachname = null; 
+        int intPersId = -1; 
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+        for (LoginMitglied loginMitglied : liLoginMitglied)
+        {
+            strLoginMitgliedVorname = loginMitglied.getStrVorname();
+            strLoginMitgliedNachname = loginMitglied.getStrNachname(); 
+        }
+
+        String sqlString = "SELECT id_personen \"PersID\""
+                            + " ,vorname \"Vorname\""
+                            + " ,zuname \"Zuname\""
+                            + " FROM FDISK.dbo.stmkmitglieder"
+                            + " WHERE UPPER(Vorname) = UPPER('"+strLoginMitgliedVorname+"')"
+                            + " AND UPPER(zuname) = UPPER('"+strLoginMitgliedNachname+"')";
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        while (rs.next())
+        {
+            intPersId = rs.getInt("PersID");
+            strVorname = rs.getString("Vorname");
+            strNachname = rs.getString("Zuname");
+                
+
+            System.out.println("Datensatz mit PersId: ");
+            System.out.println(intPersId + " - " + strNachname  + " - " +strVorname + "\n");
+        }
+        connPool.releaseConnection(conn);
+    }
+    
     /**
      * !!!Nicht fertig!!!!
      * Sucht Vorname, Nachname und Titel zu einer bestimmten UserId
@@ -490,7 +527,7 @@ public class DB_Access
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 
-        String sqlString = "SELECT TOP 1000 IDUser \"IDUser\""
+        String sqlString = "SELECT IDUser \"IDUser\""
                 + " ,Vorname \"Vorname\""
                 + " ,Nachname \"Nachname\""
                 + " FROM FDISK.dbo.tbl_login_benutzerdetail"
@@ -506,37 +543,79 @@ public class DB_Access
         /**
          * ToDo: 
          * Wenn Titel dabeistehen aka größter scheiß überhaupt
+         * Alle de in stmkmitglieder stehen abfragen?
          */
         while (rs.next())
         {
-
-            strVorname = rs.getString("Vorname").trim();
+            
+            strVorname = rs.getString("Vorname");
             strNachname = rs.getString("Nachname");
-
-            int intLength = strVorname.replaceAll("[^ ]", "").length();
-
-            //Bei optimalem Eintrag ohne Titel
-            if (strNachname != null && !strVorname.contains(" ") && intLength == 0)
+            int intLaengeVorname = -1; 
+            int intLaengeNachname = -1; 
+            
+            if(strVorname != null)
             {
-                strNachname = strNachname.trim();
+                strVorname = strVorname.trim(); 
+                intLaengeVorname = strVorname.replaceAll("[^ ]", "").length();
+            }
+            if(strNachname != null)
+            {
+                strNachname = strNachname.trim(); 
+                intLaengeNachname = strNachname.replaceAll("[^ ]", "").length();
+            }
+          
+
+            //Wenn nur der Nachname angegeben ist (19119)
+            if(strNachname != null && strVorname == null && intLaengeNachname == 0)
+            {
+                loginMitglied = new LoginMitglied(intId_User, strVorname, strNachname, strTitel);
+            }
+            //Wenn Vorname = null ohne Titel
+            else if(strNachname != null && strVorname == null && intLaengeNachname == 1)
+            {
+                
+                String[] strTeile = strNachname.split(" ");
+                String strTeil1 = strTeile[0];
+                String strTeil2 = strTeile[1];
+
+                //Wenn das erste Wort in Nachname groß geschrieben ist => Teil1 = Nachname
+                if (strTeil1.toUpperCase().equals(strTeil1) && !strTeil2.toUpperCase().equals(strTeil2))
+                {
+                    loginMitglied = new LoginMitglied(intId_User, strTeil2, strTeil1, strTitel);
+                } 
+                //Wenn das zweite Wort in Nachname groß geschrieben ist => Teil2 = Nachname
+                else if (!strTeil1.toUpperCase().equals(strTeil1) && strTeil2.toUpperCase().equals(strTeil2))
+                {
+                    loginMitglied = new LoginMitglied(intId_User, strTeil1, strTeil2, strTitel);
+
+                } //Wenn beide Wörter klein geschrieben sind => Teil1 = Nachname
+                else if (!strTeil1.toUpperCase().equals(strTeil1) && !strTeil2.toUpperCase().equals(strTeil2))
+                {
+                    loginMitglied = new LoginMitglied(intId_User, strTeil2, strTeil1, strTitel);
+                }
+            }
+            
+            //Bei optimalem Eintrag ohne Titel
+            else if (strNachname != null && strVorname != null && intLaengeVorname == 0 && intLaengeNachname == 0)
+            {
                 loginMitglied = new LoginMitglied(intId_User, strVorname, strNachname, strTitel);
             } 
-            //Wenn Fa. davor steht und Nachname = null z.B. Fa. Center Communication Systems GmbH
+            //Wenn Fa. davor steht und Nachname = null z.B. Fa. Center Communication Systems GmbH (3191)
             //Familie wird als Vorname verwendet
-            else if(strNachname == null && strVorname.contains("Fa."))
+            else if(strNachname == null &&  strVorname != null && strVorname.contains("Fa."))
             {
                 String[] strTeile = strVorname.split("\\.");
                 String strTeilNachname = strTeile[1].trim();
                 loginMitglied = new LoginMitglied(intId_User, "Familie", strTeilNachname, strTitel);
             }
             //Wenn Nachname = null und in Vorname nur ein Wort steht (3185)
-            else if(strNachname == null && intLength == 0)
+            else if(strNachname == null && intLaengeVorname == 0)
             {
                 strNachname = strVorname; 
                 loginMitglied = new LoginMitglied(intId_User, null, strNachname, strTitel);
             }
             //Wenn Nachname = null ohne Titel
-            else if (strNachname == null && intLength == 1)
+            else if (strNachname == null && intLaengeVorname == 1)
             {
                 String[] strTeile = strVorname.split(" ");
                 String strTeil1 = strTeile[0];
@@ -558,7 +637,7 @@ public class DB_Access
                 }
             } 
             //Wenn in Vorname ein Titel dabei steht
-            else if(strNachname != null && intLength == 1)
+            else if(strNachname != null && intLaengeVorname == 1)
             {
                 System.out.println("Woher soll i wissen ob da Titel als erstes steht? Evtl. schauen ob ein Punkt nach dem Titel steht");
             }
@@ -590,13 +669,15 @@ public class DB_Access
         LinkedList<LoginMitglied> lili = new LinkedList<>();
         try
         {
-            lili = theInstance.login(3185);
+            lili = theInstance.login(3206);
+            theInstance.joinUserIdUndPersId(lili);
         } catch (Exception ex)
         {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
         for (LoginMitglied l : lili)
         {
+            System.out.println("Datensatz mit UserId: ");
             System.out.print(l.getIntId_User() + " - ");
             System.out.print(l.getStrNachname() + " - ");
             System.out.print(l.getStrVorname() + " - ");
