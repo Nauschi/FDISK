@@ -58,15 +58,15 @@ public class Rohbericht
         }
         strHTML += "</tr></thead><tbody>";
 
-        for (int i = 0; i < 3; i++)
-        {
-            strHTML += "<tr>";
-            for (int t = 0; t < liBerichtSpalten.size(); t++)
-            {
-                strHTML += "<td>...</td>";
-            }
-            strHTML += "</tr>";
-        }
+//        for (int i = 0; i < 3; i++)
+//        {
+//            strHTML += "<tr>";
+//            for (int t = 0; t < liBerichtSpalten.size(); t++)
+//            {
+//                strHTML += "<td>...</td>";
+//            }
+//            strHTML += "</tr>";
+//        }
 
         strHTML += "</tbody></table></div></a>";
         return strHTML;

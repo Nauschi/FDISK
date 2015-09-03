@@ -7,17 +7,18 @@
 
 function onListItemClicked(item)
 {
-    var items = document.getElementById("div_liste").getElementsByTagName("a");
+    var liItems = document.getElementById("div_liste").getElementsByTagName("a");
     var index;
-    for (index = 0; index < items.length; ++index) {
-        items[index].className = "item";
+    for (index = 0; index < liItems.length; ++index) {
+        liItems[index].className = "item";
     }
     item.className = item.className + " active";
-    
-    var text = item.getElementsByTagName("div")[0].innerHTML;
-    
-    document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = item.getElementsByTagName("span")[0].innerHTML;
-    document.getElementById("div_table").innerHTML=text;
-    
-    
+
+    var strTable = item.getElementsByTagName("div")[0].innerHTML;
+    var strBerichtname = item.getElementsByTagName("span")[0].innerHTML;
+    document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = strBerichtname;
+    document.getElementById("input_hidden").value = strBerichtname;
+    document.getElementById("div_table").innerHTML = strTable;
+
+
 }

@@ -108,6 +108,7 @@ public class MainServlet extends HttpServlet
         {
             
             String strBericht = request.getParameter("input_aktbericht");
+            
             System.out.println("Bericht: "+strBericht);
             request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
         }
@@ -140,6 +141,12 @@ public class MainServlet extends HttpServlet
 
     }
 
+    
+    /**
+     * Liest Informationen über Berichte von einem .csv File
+     * @throws UnsupportedEncodingException
+     * @throws IOException 
+     */
     public void leseDatei() throws UnsupportedEncodingException, IOException
     {
         ServletContext servletContext = this.getServletContext();
