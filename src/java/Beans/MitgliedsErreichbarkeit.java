@@ -65,15 +65,7 @@ public class MitgliedsErreichbarkeit extends Mitglied
 
     @Override
     public String toString() {
-        return "MitgliedsErreichbarkeit{" + "liErreichbarkeiten=" + liErreichbarkeiten + ", strBemerkung=" + boBemerkung + '}';
-    }
-    
-    /**
-     * HTML String für vereinfachtes einfügen in die Tabellen
-     * @return 
-     */
-    public String toHTMLString()
-    {
+        //return "MitgliedsErreichbarkeit{" + "liErreichbarkeiten=" + liErreichbarkeiten + ", strBemerkung=" + boBemerkung + '}';
         String strHtml = "<tr><td>" 
                 + strStammblattnummer + "</td><td>"
                 + strDienstgrad + "</td><td>"
@@ -98,4 +90,6 @@ public class MitgliedsErreichbarkeit extends Mitglied
 
         return strHtml;
     }
+    
+
 }

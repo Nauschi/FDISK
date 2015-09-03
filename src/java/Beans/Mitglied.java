@@ -167,20 +167,4 @@ public class Mitglied
         return strHtml;
     }
 
-    /**
-     * HTML String für vereinfachtes einfügen in die Tabellen
-     * @return 
-     */
-    public String toHTMLString()
-    {
-        String strHtml = "<tr><td>" 
-                + strStammblattnummer + "</td><td>"
-                + strDienstgrad + "</td><td>"
-                + strTitel + "</td><td>"
-                + strVorname + "</td><td>"
-                + strZuname + "</td><td></td></tr>";
-
-        return strHtml;
-    }
-
 }

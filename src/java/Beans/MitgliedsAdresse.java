@@ -157,16 +157,7 @@ public class MitgliedsAdresse extends Mitglied
     @Override
     public String toString()
     {
-        return "MitgliedsAdresse{" + "intId_Adressen=" + intId_Adressen + ", strStrasse=" + strStrasse + ", intNummer=" + intNummer + ", strStiege=" + strStiege + ", intPLZ=" + intPLZ + ", strOrt=" + strOrt + ", boBemerkung=" + boBemerkung + '}';
-    }
-
-    /**
-     * HTML String für vereinfachtes einfügen in die Tabellen
-     *
-     * @return
-     */
-    public String toHTMLString()
-    {
+        //return "MitgliedsAdresse{" + "intId_Adressen=" + intId_Adressen + ", strStrasse=" + strStrasse + ", intNummer=" + intNummer + ", strStiege=" + strStiege + ", intPLZ=" + intPLZ + ", strOrt=" + strOrt + ", boBemerkung=" + boBemerkung + '}';
         String strHtml = "<tr><td>"
                 + strStammblattnummer + "</td><td>"
                 + strDienstgrad + "</td><td>"

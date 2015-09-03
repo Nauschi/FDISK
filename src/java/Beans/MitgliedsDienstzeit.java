@@ -67,15 +67,7 @@ public class MitgliedsDienstzeit extends Mitglied
 
     @Override
     public String toString() {
-        return "MitgliedsDienstzeit{" + "dateGeburtsdatum=" + dateGeburtsdatum + ", intDienstalter=" + intDienstalter + '}';
-    }
-    
-    /**
-     * HTML String für vereinfachtes einfügen in die Tabellen
-     * @return 
-     */
-    public String toHTMLString()
-    {
+        //return "MitgliedsDienstzeit{" + "dateGeburtsdatum=" + dateGeburtsdatum + ", intDienstalter=" + intDienstalter + '}';
         String strHtml = "<tr><td>" 
                 + strStammblattnummer + "</td><td>"
                 + strDienstgrad + "</td><td>"

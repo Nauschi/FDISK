@@ -6,6 +6,10 @@
 package Servlet;
 
 import Beans.Mitglied;
+import Beans.MitgliedsAdresse;
+import Beans.MitgliedsDienstzeit;
+import Beans.MitgliedsErreichbarkeit;
+import Beans.MitgliedsGeburtstag;
 import Beans.Rohbericht;
 import Database.DB_Access;
 import java.io.BufferedReader;
@@ -36,7 +40,8 @@ import javax.servlet.http.HttpServletResponse;
 })
 public class MainServlet extends HttpServlet
 {
-     private DB_Access access;
+
+    private DB_Access access;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -79,7 +84,7 @@ public class MainServlet extends HttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        
+
         request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
         processRequest(request, response);
     }
@@ -103,28 +108,44 @@ public class MainServlet extends HttpServlet
             if (true) //Abfrage ob Daten korrekt
             {
                 request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
-            }
-            else
+            } else
             {
                 request.setAttribute("login_error", true);
                 request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
             }
-        }else if(request.getParameter("button_vorschau")!=null)
+        } else if (request.getParameter("button_vorschau") != null)
         {
-            
-            String strBericht = request.getParameter("input_aktbericht");
-            if(strBericht.equals("Einfache Mitgliederliste"))
+            try
             {
-                try
+                LinkedList<Rohbericht> liRohberichte = (LinkedList<Rohbericht>)this.getServletContext().getAttribute("rohberichte");
+                String strBericht = request.getParameter("input_aktbericht");
+                if (strBericht.equals(liRohberichte.get(0).getStrBerichtname()))
                 {
+
                     LinkedList<Mitglied> liMitglieder = access.getEinfacheMitgliederliste();
                     request.setAttribute("liste", liMitglieder);
-                } catch (Exception ex)
+
+                } else if (strBericht.equals(liRohberichte.get(1).getStrBerichtname()))
                 {
-                    Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                    LinkedList<MitgliedsErreichbarkeit> liErreichtbarkeiten = access.getErreichbarkeitsliste();
+//                    request.setAttribute("liste", liErreichtbarkeiten);
+                }else if(strBericht.equals(liRohberichte.get(2).getStrBerichtname()))
+                {
+                    LinkedList<MitgliedsAdresse> liAdressen = access.getAdressListe();
+                    request.setAttribute("liste", liAdressen);
+                }else if(strBericht.equals(liRohberichte.get(3).getStrBerichtname()))
+                {
+                    LinkedList<MitgliedsGeburtstag> liGeburtstage = access.getGeburtstagsliste(2014);//welche Zahl??
+                    request.setAttribute("liste", liGeburtstage);
+                }else if(strBericht.equals(liRohberichte.get(4).getStrBerichtname()))
+                {
+                    LinkedList<MitgliedsDienstzeit> liDienstzeiten = access.getDienstzeitListe();
+                    request.setAttribute("liste", liDienstzeiten);
                 }
+            } catch (Exception ex)
+            {
+                Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            System.out.println("Berichtname: "+strBericht);
             request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
         }
         processRequest(request, response);
@@ -145,13 +166,13 @@ public class MainServlet extends HttpServlet
     public void init(ServletConfig config) throws ServletException
     {
         super.init(config); //To change body of generated methods, choose Tools | Templates.
-         try
-         {
-             access = DB_Access.getInstance();
-         } catch (ClassNotFoundException ex)
-         {
-             Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
-         }
+        try
+        {
+            access = DB_Access.getInstance();
+        } catch (ClassNotFoundException ex)
+        {
+            Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.out.println("MainServlet.init");
         try
         {
@@ -163,11 +184,11 @@ public class MainServlet extends HttpServlet
 
     }
 
-    
     /**
      * Liest Informationen über Berichte von einem .csv File
+     *
      * @throws UnsupportedEncodingException
-     * @throws IOException 
+     * @throws IOException
      */
     public void leseDatei() throws UnsupportedEncodingException, IOException
     {
