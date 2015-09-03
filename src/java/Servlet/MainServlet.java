@@ -113,7 +113,7 @@ public class MainServlet extends HttpServlet
             
             String strBericht = request.getParameter("input_aktbericht");
             
-            System.out.println("Bericht: "+strBericht);
+            System.out.println("Berichtname: "+strBericht);
             request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
         }
         processRequest(request, response);
