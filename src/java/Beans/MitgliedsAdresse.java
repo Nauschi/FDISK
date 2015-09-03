@@ -11,7 +11,9 @@ import java.util.Objects;
  *
  * @author kinco_000
  */
-public class MitgliedsAdresse extends Mitglied{
+public class MitgliedsAdresse extends Mitglied
+{
+
     private int intId_Adressen;
     private String strStrasse;
     private String intNummer;
@@ -20,7 +22,7 @@ public class MitgliedsAdresse extends Mitglied{
     private String strOrt;
     private boolean boBemerkung;
 
-    public MitgliedsAdresse(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox,int intId_Adressen, String strStrasse, String intNummer, String strStiege, int intPLZ, String strOrt, boolean boBemerkung)
+    public MitgliedsAdresse(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, int intId_Adressen, String strStrasse, String intNummer, String strStiege, int intPLZ, String strOrt, boolean boBemerkung)
     {
         super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname, boCheckbox);
         this.intId_Adressen = intId_Adressen;
@@ -157,14 +159,24 @@ public class MitgliedsAdresse extends Mitglied{
     {
         return "MitgliedsAdresse{" + "intId_Adressen=" + intId_Adressen + ", strStrasse=" + strStrasse + ", intNummer=" + intNummer + ", strStiege=" + strStiege + ", intPLZ=" + intPLZ + ", strOrt=" + strOrt + ", boBemerkung=" + boBemerkung + '}';
     }
-    
-    
 
-   
+    /**
+     * HTML String für vereinfachtes einfügen in die Tabellen
+     *
+     * @return
+     */
+    public String toHTMLString()
+    {
+        String strHtml = "<tr><td>"
+                + strStammblattnummer + "</td><td>"
+                + strDienstgrad + "</td><td>"
+                + strTitel + "</td><td>"
+                + strVorname + "</td><td>"
+                + strZuname + "</td><td>"
+                + strStrasse + " " + intNummer + ", " + intPLZ + " " + strOrt + "</td>"
+                + "<td></td></tr>";
 
-   
-    
-  
-    
-    
+        return strHtml;
+    }
+
 }

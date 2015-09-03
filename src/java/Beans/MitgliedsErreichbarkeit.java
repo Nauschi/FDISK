@@ -67,4 +67,35 @@ public class MitgliedsErreichbarkeit extends Mitglied
     public String toString() {
         return "MitgliedsErreichbarkeit{" + "liErreichbarkeiten=" + liErreichbarkeiten + ", strBemerkung=" + boBemerkung + '}';
     }
+    
+    /**
+     * HTML String für vereinfachtes einfügen in die Tabellen
+     * @return 
+     */
+    public String toHTMLString()
+    {
+        String strHtml = "<tr><td>" 
+                + strStammblattnummer + "</td><td>"
+                + strDienstgrad + "</td><td>"
+                + strTitel + "</td><td>"
+                + strVorname + "</td><td>"
+                + strZuname + "</td><td>";
+        
+        
+        for (Erreichbarkeit erreichbarkeit : liErreichbarkeiten)
+        {
+            if(erreichbarkeit!=liErreichbarkeiten.getLast())
+            {
+                strHtml+= erreichbarkeit.getStrErreichbarkeitsArt() +":&nbsp;"+ erreichbarkeit.getStrCode()+"<br/>";
+            }
+            else
+            {
+                strHtml+= erreichbarkeit.getStrErreichbarkeitsArt() +":&nbsp;"+ erreichbarkeit.getStrCode();
+            }
+        }
+        
+        strHtml+= "</td><td></td></tr>";
+
+        return strHtml;
+    }
 }

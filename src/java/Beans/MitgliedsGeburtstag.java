@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -16,6 +17,7 @@ public class MitgliedsGeburtstag extends Mitglied
 {
     private Date dateGeburtsdatum;
     private int intZielalter;
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
     public MitgliedsGeburtstag(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, Date dateGeburtsdatum, int intAlter) {
         super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname, boCheckbox);
@@ -68,7 +70,23 @@ public class MitgliedsGeburtstag extends Mitglied
         return "MitgliedsGeburtstag{" + "dateGeburtsdatum=" + dateGeburtsdatum + ", intAlter=" + intZielalter + '}';
     }
     
-    
+       /**
+     * HTML String für vereinfachtes einfügen in die Tabellen
+     * @return 
+     */
+    public String toHTMLString()
+    {
+        String strHtml = "<tr><td>" 
+                + strStammblattnummer + "</td><td>"
+                + strDienstgrad + "</td><td>"
+                + strTitel + "</td><td>"
+                + strVorname + "</td><td>"
+                + strZuname + "</td><td>"
+                + sdf.format(dateGeburtsdatum)+"</td><td>"
+                + intZielalter+"</td></tr>";
+
+        return strHtml;
+    }
     
     
 }
