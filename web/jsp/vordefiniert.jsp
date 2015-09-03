@@ -63,7 +63,7 @@
                 <div class="ui segment" id="div_daten">
                     <form action="MainServlet" method="POST">
                         <h2></h2>
-                        <input type="hidden" name="input_aktbericht" value="test">
+                        <input type="hidden" name="input_aktbericht" id="input_hidden"/>
 
                         <div class="ui equal width grid">
                             <div class="column">
@@ -205,24 +205,24 @@
 
             $(document).ready(function () {
             <%
-                if (request.getParameter("h2_bericht") == null)
+                if (request.getParameter("input_aktbericht") == null)
                 {
             %>
-                alert("Null");
                 var item = document.getElementById("div_liste").getElementsByTagName("a")[0];
             <%
             } else
             {
             %>
-                alert("NotNull");
-                var item = document.getElementById(<%=request.getParameter("h2_bericht")%>);
+                var item = document.getElementById("<%=request.getParameter("input_aktbericht")%>");
             <%
                 }
             %>
                 item.className = "item active";
-                document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = item.getElementsByTagName("span")[0].innerHTML;
-                var text = item.getElementsByTagName("div")[0].innerHTML;
-                document.getElementById("div_table").innerHTML = text;
+                var strBerichtname = item.getElementsByTagName("span")[0].innerHTML;
+                document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = strBerichtname;
+                document.getElementById("input_hidden").value = strBerichtname;
+                var strTable = item.getElementsByTagName("div")[0].innerHTML;
+                document.getElementById("div_table").innerHTML = strTable;
             });
 
         </script>
