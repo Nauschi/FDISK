@@ -52,7 +52,7 @@
                         for (int i = 0; i < rohberichte.size(); i++)
                         {
                             Rohbericht rohbericht = rohberichte.get(i);
-                            out.println(rohbericht.zuHTMLString());
+                            out.println(rohbericht.toHTMLString());
                         }
                     %>
 
@@ -62,7 +62,7 @@
             <div class="twelve wide stretched column">
                 <div class="ui segment" id="div_daten">
                     <form action="MainServlet" method="POST">
-                        <h2></h2>
+                        <h2 name="h2_bericht"></h2>
 
                         <div class="ui equal width grid">
                             <div class="column">

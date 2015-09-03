@@ -106,6 +106,7 @@ public class MainServlet extends HttpServlet
             }
         }else if(request.getParameter("button_vorschau")!=null)
         {
+            String bericht = request.getParameter("h2_bericht");
             System.out.println("Vorschau");
             request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
         }
