@@ -14,62 +14,62 @@ import java.util.LinkedList;
 public class Rohbericht
 {
 
-    private String berichtname;
-    private LinkedList<String> berichtSpalten;
+    private String strBerichtname;
+    private LinkedList<String> liBerichtSpalten;
 
     public Rohbericht(String berichtname, LinkedList<String> berichtSpalten)
     {
-        this.berichtname = berichtname;
-        this.berichtSpalten = berichtSpalten;
+        this.strBerichtname = berichtname;
+        this.liBerichtSpalten = berichtSpalten;
     }
 
-    public String getBerichtname()
+    public String getStrBerichtname()
     {
-        return berichtname;
+        return strBerichtname;
     }
 
-    public void setBerichtname(String berichtname)
+    public void setStrBerichtname(String strBerichtname)
     {
-        this.berichtname = berichtname;
+        this.strBerichtname = strBerichtname;
     }
 
-    public LinkedList<String> getBerichtSpalten()
+    public LinkedList<String> getLiBerichtSpalten()
     {
-        return berichtSpalten;
+        return liBerichtSpalten;
     }
 
-    public void setBerichtSpalten(LinkedList<String> berichtSpalten)
+    public void setLiBerichtSpalten(LinkedList<String> liBerichtSpalten)
     {
-        this.berichtSpalten = berichtSpalten;
+        this.liBerichtSpalten = liBerichtSpalten;
     }
 
-    public String zuHTMLString()
+    public String toHTMLString()
     {
-        String htmlString = "<a class='item' onclick='onListItemClicked(this)'>"
-                + "<span>" + berichtname + "</span>"
+        String strHTML = "<a class='item' onclick='onListItemClicked(this)'>"
+                + "<span>" + strBerichtname + "</span>"
                 + "<div style='display:none'>"
                 + "<table id='table' class='ui sortable celled table'>"
                 + " <thead>"
                 + "     <tr>";
-        for (int i = 0; i < berichtSpalten.size(); i++)
+        for (int i = 0; i < liBerichtSpalten.size(); i++)
         {
-            String spalte = berichtSpalten.get(i);
-            htmlString += "<th>" + spalte + "</th>";
+            String strSpalte = liBerichtSpalten.get(i);
+            strHTML += "<th>" + strSpalte + "</th>";
         }
-        htmlString += "</tr></thead><tbody>";
+        strHTML += "</tr></thead><tbody>";
 
         for (int i = 0; i < 3; i++)
         {
-            htmlString += "<tr>";
-            for (int t = 0; t < berichtSpalten.size(); t++)
+            strHTML += "<tr>";
+            for (int t = 0; t < liBerichtSpalten.size(); t++)
             {
-                htmlString += "<td>...</td>";
+                strHTML += "<td>...</td>";
             }
-            htmlString += "</tr>";
+            strHTML += "</tr>";
         }
 
-        htmlString += "</tbody></table></div></a>";
-        return htmlString;
+        strHTML += "</tbody></table></div></a>";
+        return strHTML;
     }
 
 }
