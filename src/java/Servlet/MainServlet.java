@@ -5,6 +5,7 @@
  */
 package Servlet;
 
+import Beans.Mitglied;
 import Beans.Rohbericht;
 import Database.DB_Access;
 import java.io.BufferedReader;
@@ -112,7 +113,17 @@ public class MainServlet extends HttpServlet
         {
             
             String strBericht = request.getParameter("input_aktbericht");
-            
+            if(strBericht.equals("Einfache Mitgliederliste"))
+            {
+                try
+                {
+                    LinkedList<Mitglied> liMitglieder = access.getEinfacheMitgliederliste();
+                    request.setAttribute("liste", liMitglieder);
+                } catch (Exception ex)
+                {
+                    Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
             System.out.println("Berichtname: "+strBericht);
             request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
         }

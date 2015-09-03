@@ -156,8 +156,15 @@ public class Mitglied
     @Override
     public String toString()
     {
-        return String.format("%15s %8s %10s %20s %25s", strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
+        //return String.format("%15s %8s %10s %20s %25s", strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
+        String strHtml = "<tr><td>" 
+                + strStammblattnummer + "</td><td>"
+                + strDienstgrad + "</td><td>"
+                + strTitel + "</td><td>"
+                + strVorname + "</td><td>"
+                + strZuname + "</td><td></td></tr>";
 
+        return strHtml;
     }
 
     /**

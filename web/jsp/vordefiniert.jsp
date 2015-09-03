@@ -4,6 +4,7 @@
     Author     : user
 --%>
 
+<%@page import="java.lang.Object"%>
 <%@page import="Beans.Rohbericht"%>
 <%@page import="java.util.LinkedList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -223,6 +224,21 @@
                 document.getElementById("input_hidden").value = strBerichtname;
                 var strTable = item.getElementsByTagName("div")[0].innerHTML;
                 document.getElementById("div_table").innerHTML = strTable;
+            <%
+                if (request.getAttribute("liste") != null)
+                {
+                    LinkedList<Object> liBerichtDaten = (LinkedList<Object>) request.getAttribute("liste");
+                    String strHTML = "";
+                    for (int i = 0; i < 5; i++)
+                    {
+                        Object zeile = liBerichtDaten.get(i);
+                        strHTML += zeile.toString();
+                    }
+            %>
+                    document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
+            <%
+                }
+            %>
             });
 
         </script>
