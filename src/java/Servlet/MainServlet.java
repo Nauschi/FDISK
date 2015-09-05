@@ -113,7 +113,14 @@ public class MainServlet extends HttpServlet
                 request.setAttribute("login_error", true);
                 request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
             }
-        } else if (request.getParameter("button_vorschau") != null)
+        }else if(request.getParameter("dynamisch")!=null)
+        {
+            request.getRequestDispatcher("jsp/dynamisch_mitarbeiter.jsp").forward(request, response);
+        }else if(request.getParameter("vordefiniert")!=null)
+        {
+            request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
+        }
+        else if (request.getParameter("button_vorschau") != null)
         {
             try
             {

@@ -28,12 +28,16 @@ aaaaasdfsdf
             </div>
 
             <div class="ui menu" style="background-color: #C00518; width: 100%">
+
                 <a class="item active">
                     Vordefiniert
                 </a>
-                <a class="item">
-                    Dynamisch
-                </a>
+                <form action="MainServlet" method="POST" name="form_dynamisch">
+                    <input type="hidden" name="dynamisch">
+                    <a href="#" onclick="document.form_dynamisch.submit();" class="item">
+                        Dynamisch
+                    </a>
+                </form>
                 <!--<div class="ui simple dropdown item">
                     Dynamisch
                     <i class="dropdown icon"></i>
@@ -42,8 +46,8 @@ aaaaasdfsdf
                         <div class="item" onclick="location.href = 'jsp/dynamisch_fahrzeuge_geraete.jsp'">Fahrzeuge und Geräte</div>
                     </div>
                 </div>-->
-                
-                
+
+
             </div>
         </div>        
         <h1>Vordefiniert</h1>
@@ -238,7 +242,7 @@ aaaaasdfsdf
                         strHTML += zeile.toString();
                     }
             %>
-                    document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
+                document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
             <%
                 }
             %>
