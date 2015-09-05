@@ -45,7 +45,7 @@ public class PDFCreator {
      */
     public void createPdf(String strDateiNamePDF, String strHTMLInhalt, String strFormat) throws IOException, DocumentException, CssResolverException {
         Document docPDF;
-
+        strDateiNamePDF+=".pdf";
         if (strFormat.equals("quer")) {
             docPDF = new Document(PageSize.A4.rotate());
         } else {
@@ -62,7 +62,7 @@ public class PDFCreator {
         CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(false);
         
         //hier das (falls benötigt) CSS File einbinden für die .pdf Datei
-        cssResolver.addCssFile(System.getProperty("user.home") + "/Desktop/styles.css", true);
+        //cssResolver.addCssFile(System.getProperty("user.home") + "/Desktop/styles.css", true);
 
         Pipeline<?> pipeline = new CssResolverPipeline(cssResolver, new HtmlPipeline(htmlContext, new PdfWriterPipeline(docPDF, writer)));
 
@@ -78,7 +78,7 @@ public class PDFCreator {
 
     //nur zum Testen!
     public static void main(String[] args) throws IOException, DocumentException {
-        String pdf = System.getProperty("user.home") + "/Desktop/test.pdf";
+        String pdf = System.getProperty("user.home") + "/Desktop/test";
         try {
             new PDFCreator().createPdf(pdf, "<html><h1>Lorem ipsum</h1></html>", "quer");
         } catch (CssResolverException ex) {
