@@ -20,7 +20,9 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -477,28 +479,6 @@ public class DB_Access
         return liFahrzeuge;
     }
 
-    public int getUserId(String strUsername, String strPasswort) throws Exception
-    {
-        int intUserId = -1; 
-        Connection conn = connPool.getConnection();
-        Statement stat = conn.createStatement();
-
-        String sqlString = "SELECT IDUser \"IdUser\""
-                + "  ,username \"Username\""
-                + "  ,passwort \"Passwort\""
-                + "  FROM FDISK.dbo.tbl_login_benutzer"
-                + "  WHERE username = '"+strUsername+"' AND passwort = '"+strPasswort+"'";
-
-        ResultSet rs = stat.executeQuery(sqlString);
-
-        while (rs.next())
-        {
-            intUserId = rs.getInt("IdUser"); 
-        }
-        connPool.releaseConnection(conn);
-      //  login(intUserId); 
-        return intUserId; 
-    }
     
     public void joinUserIdUndPersId(LinkedList<LoginMitglied> liLoginMitglied) throws Exception
     {
@@ -677,6 +657,40 @@ public class DB_Access
         connPool.releaseConnection(conn);
         return liLoginMitglied;
     }
+    
+    public HashMap<String, LinkedList<String>> getFilterFuerTyp(String typ) throws Exception
+    {
+        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
+        LinkedList<String> liFilter = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT DISTINCT " + typ + "\"Typ\"" +
+                           " FROM FDISK.dbo.stmkmitglieder";
+        ResultSet rs = stat.executeQuery(sqlString);
+        
+        while (rs.next())
+        {
+            String strFilter;
+            if(rs.getString("Typ")==null)
+            {
+                strFilter = "unbekannt";
+                continue;
+            }
+            strFilter = rs.getString("Typ");
+            
+            if(strFilter.equals("") || strFilter.equals(" "))
+            {
+                strFilter = "unbekannt";
+            }
+            liFilter.add(strFilter);
+        }
+        
+        hmFilter.put(typ, liFilter);
+        connPool.releaseConnection(conn);
+        
+        return hmFilter;
+    }
 
     public static void main(String[] args) throws Exception
     {
@@ -688,23 +702,19 @@ public class DB_Access
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        LinkedList<LoginMitglied> lili = new LinkedList<>();
+        HashMap<String, LinkedList<String>> hm = new HashMap<>();
         try
         {
-            int userIdTest = theInstance.getUserId("41033002", "vo4905"); 
-            lili = theInstance.login(userIdTest);
-            theInstance.joinUserIdUndPersId(lili);
+            hm = theInstance.getFilterFuerTyp("vordienstzeit");
+
         } catch (Exception ex)
         {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (LoginMitglied l : lili)
+        for (Map.Entry e : hm.entrySet())
         {
-            System.out.println("Datensatz mit UserId: ");
-            System.out.print(l.getIntId_User() + " - ");
-            System.out.print(l.getStrNachname() + " - ");
-            System.out.print(l.getStrVorname() + " - ");
-            System.out.print(l.getStrTitel() + "\n");
+            System.out.println(e.getKey()+"---"+e.getValue());
+            
         }
     }
 }
