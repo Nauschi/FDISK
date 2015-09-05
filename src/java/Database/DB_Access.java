@@ -30,20 +30,24 @@ import java.util.logging.Logger;
  *
  * @author philipp
  */
-public class DB_Access {
+public class DB_Access
+{
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
     private DB_ConnectionPool connPool;
     private static DB_Access theInstance = null;
 
-    public static DB_Access getInstance() throws ClassNotFoundException {
-        if (theInstance == null) {
+    public static DB_Access getInstance() throws ClassNotFoundException
+    {
+        if (theInstance == null)
+        {
             theInstance = new DB_Access();
         }
         return theInstance;
     }
 
-    private DB_Access() throws ClassNotFoundException {
+    private DB_Access() throws ClassNotFoundException
+    {
         connPool = DB_ConnectionPool.getInstance();
     }
 
@@ -56,7 +60,8 @@ public class DB_Access {
      * @see Mitglied
      * @see LinkedList
      */
-    public LinkedList<Mitglied> getEinfacheMitgliederliste() throws Exception {
+    public LinkedList<Mitglied> getEinfacheMitgliederliste() throws Exception
+    {
         LinkedList<Mitglied> liMitglieder = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
@@ -71,7 +76,8 @@ public class DB_Access {
         String strZuname;
         int intPersID;
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             intPersID = rs.getInt("PersID");
             strSTB = rs.getString("STB");
             strDGR = rs.getString("DGR");
@@ -97,7 +103,8 @@ public class DB_Access {
      * @see Mitglied
      * @see LinkedList
      */
-    public LinkedList<MitgliedsGeburtstag> getGeburtstagsliste(int jahr) throws Exception {
+    public LinkedList<MitgliedsGeburtstag> getGeburtstagsliste(int jahr) throws Exception
+    {
 
         LinkedList<MitgliedsGeburtstag> liMitgliedsGeburtstage = new LinkedList<>();
         Connection conn = connPool.getConnection();
@@ -115,7 +122,8 @@ public class DB_Access {
         Date dateGeburtsdatum;
         int intZielalter;
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             intPersID = rs.getInt("PersID");
             strSTB = rs.getString("STB");
             strDGR = rs.getString("DGR");
@@ -145,7 +153,8 @@ public class DB_Access {
      * @see MitgliedsDienstzeit
      * @see LinkedList
      */
-    public LinkedList<MitgliedsDienstzeit> getDienstzeitListe() throws Exception {
+    public LinkedList<MitgliedsDienstzeit> getDienstzeitListe() throws Exception
+    {
         LinkedList<MitgliedsDienstzeit> liMitgliedsDienstzeiten = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
@@ -163,8 +172,10 @@ public class DB_Access {
         Date dateEintrittsdatum;
         int intVordienstzeit;
 
-        while (rs.next()) {
-            if (rs.getDate("Datum_abgemeldet") == null) {
+        while (rs.next())
+        {
+            if (rs.getDate("Datum_abgemeldet") == null)
+            {
                 intPersID = rs.getInt("PersID");
                 strSTB = rs.getString("STB");
                 strDGR = rs.getString("DGR");
@@ -179,11 +190,13 @@ public class DB_Access {
 
                 int intDienstzeit = Calendar.getInstance().get(Calendar.YEAR) - calEintrittsdatum.get(Calendar.YEAR);
 
-                if (Calendar.getInstance().get(Calendar.MONTH) < calEintrittsdatum.get(Calendar.MONTH)) {
+                if (Calendar.getInstance().get(Calendar.MONTH) < calEintrittsdatum.get(Calendar.MONTH))
+                {
                     intDienstzeit--;
                 }
 
-                if ((Calendar.getInstance().get(Calendar.MONTH) == calEintrittsdatum.get(Calendar.MONTH)) && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) < calEintrittsdatum.get(Calendar.DAY_OF_MONTH)) {
+                if ((Calendar.getInstance().get(Calendar.MONTH) == calEintrittsdatum.get(Calendar.MONTH)) && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) < calEintrittsdatum.get(Calendar.DAY_OF_MONTH))
+                {
                     intDienstzeit--;
                 }
 
@@ -208,7 +221,8 @@ public class DB_Access {
      * @see MitgliedsAdresse
      * @see LinkedList
      */
-    public LinkedList<MitgliedsAdresse> getAdressListe() throws Exception {
+    public LinkedList<MitgliedsAdresse> getAdressListe() throws Exception
+    {
         LinkedList<MitgliedsAdresse> liMitgliedsAdressen = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
@@ -236,7 +250,8 @@ public class DB_Access {
         int intPLZ;
         String strOrt;
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             intPersID = rs.getInt("PersID");
             strSTB = rs.getString("STB");
             strDGR = rs.getString("DGR");
@@ -259,55 +274,6 @@ public class DB_Access {
     }
 
     /**
-     * Gibt eine Liste der Erreichbarkeiten von jedem Mitarbeiter als LinkedList
-     * zurück.
-     *
-     * @return LinkedList
-     * @throws IOException
-     * @see Mitglied
-     * @see MitgliedsErreichbarkeit
-     * @see LinkedList
-     */
-    public LinkedList<MitgliedsErreichbarkeit> getErreichbarkeitsliste() throws Exception {
-        LinkedList<MitgliedsErreichbarkeit> liMitgliedsErreichbarkeiten = new LinkedList<>();
-
-        Connection conn = connPool.getConnection();
-        Statement stat = conn.createStatement();
-
-        String sqlString = "SELECT TOP 100 id_erreichbarkeiten, erreichbarkeitsart, sichtbarkeit, code, mit.id_personen \"persID\", mit.vorname \"Vorname\", mit.zuname \"Zuname\", mit.dienstgrad \"Dienstgrad\", mit.titel \"Titel\", mit.standesbuchnummer \"Standesbuchnummer\""
-                + " FROM FDISK.dbo.stmkerreichbarkeiten err INNER JOIN FDISK.dbo.stmkmitglieder mit ON(err.id_personen = mit.id_personen)"
-                + " ORDER BY 5;";
-        ResultSet rs = stat.executeQuery(sqlString);
-        int intId_erreichbarkeit;
-        String strErreichbarkeitsart;
-        String strSichtbarkeit;
-        String strCode;
-
-        String strSTB;
-        String strDGR;
-        String strTitel;
-        String strVorname;
-        String strZuname;
-        int intPersID = 0;
-
-        while (rs.next()) {
-            intId_erreichbarkeit = rs.getInt("id_erreichbarkeiten");
-            strErreichbarkeitsart = rs.getString("erreichbarkeitsart");
-            strSichtbarkeit = rs.getString("sichtbarkeit");
-            strCode = rs.getString("code");
-            intPersID = rs.getInt("persID");
-            strVorname = rs.getString("Vorname");
-            strZuname = rs.getString("Zuname");
-            strTitel = rs.getString("Titel");
-            strDGR = rs.getString("Dienstgrad");
-            strSTB = rs.getString("Standesbuchnummer");
-            MitgliedsErreichbarkeit mitgliedserreichbarkeit = new MitgliedsErreichbarkeit(intId_erreichbarkeit, strErreichbarkeitsart, strSichtbarkeit, strCode, false, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname);
-            liMitgliedsErreichbarkeiten.add(mitgliedserreichbarkeit);
-        }
-        return liMitgliedsErreichbarkeiten;
-    }
-
-    /**
      * Gibt spezielle Informationen zu der Tätigkeit "Kursbesuch an der FWZS"
      * als LinkedList zurück. Diese Informationen sind zum Beispiel Anzahl der
      * Mitarbeiter in einem Kurs.
@@ -317,7 +283,8 @@ public class DB_Access {
      * @see Kurs
      * @see LinkedList
      */
-    public LinkedList<Kurs> getKursstatistik() throws Exception {
+    public LinkedList<Kurs> getKursstatistik() throws Exception
+    {
         LinkedList<Kurs> liKurse = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
@@ -354,7 +321,8 @@ public class DB_Access {
         String strKursstatus;
         int intAnzahlBesucher;
 
-        while (rs.next()) {
+        while (rs.next())
+        {
 
             intId_kurse = rs.getInt("KursID");
             intId_Kursarten = rs.getInt("Kursarten");
@@ -383,7 +351,8 @@ public class DB_Access {
      * @see Fahrzeug
      * @see LinkedList
      */
-    public LinkedList<Fahrzeug> getFahrtenbuch() throws Exception {
+    public LinkedList<Fahrzeug> getFahrtenbuch() throws Exception
+    {
         LinkedList<Fahrzeug> liFahrzeuge = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
@@ -412,7 +381,8 @@ public class DB_Access {
         String strBezeichnung;
         String strFahrzeugmarke;
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             strFahrzeugTyp = rs.getString("Fahrzeugtyp");
             strKennzeichen = rs.getString("Kennzeichen");
             intBaujahr = rs.getInt("Baujahr");
@@ -429,7 +399,8 @@ public class DB_Access {
         return liFahrzeuge;
     }
 
-    public void joinUserIdUndPersId(LinkedList<LoginMitglied> liLoginMitglied) throws Exception {
+    public void joinUserIdUndPersId(LinkedList<LoginMitglied> liLoginMitglied) throws Exception
+    {
         String strLoginMitgliedVorname = null;
         String strLoginMitgliedNachname = null;
         String strVorname = null;
@@ -437,7 +408,8 @@ public class DB_Access {
         int intPersId = -1;
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
-        for (LoginMitglied loginMitglied : liLoginMitglied) {
+        for (LoginMitglied loginMitglied : liLoginMitglied)
+        {
             strLoginMitgliedVorname = loginMitglied.getStrVorname();
             strLoginMitgliedNachname = loginMitglied.getStrNachname();
         }
@@ -450,7 +422,8 @@ public class DB_Access {
                 + " AND UPPER(zuname) = UPPER('" + strLoginMitgliedNachname + "')";
         ResultSet rs = stat.executeQuery(sqlString);
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             intPersId = rs.getInt("PersID");
             strVorname = rs.getString("Vorname");
             strNachname = rs.getString("Zuname");
@@ -469,7 +442,8 @@ public class DB_Access {
      * @return
      * @throws Exception
      */
-    public LinkedList<LoginMitglied> login(int intId_User) throws Exception {
+    public LinkedList<LoginMitglied> login(int intId_User) throws Exception
+    {
         LinkedList<LoginMitglied> liLoginMitglied = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
@@ -491,81 +465,99 @@ public class DB_Access {
          * ToDo: Wenn Titel dabeistehen aka größter scheiß überhaupt Alle de in
          * stmkmitglieder stehen abfragen?
          */
-        while (rs.next()) {
+        while (rs.next())
+        {
 
             strVorname = rs.getString("Vorname");
             strNachname = rs.getString("Nachname");
             int intLaengeVorname = -1;
             int intLaengeNachname = -1;
 
-            if (strVorname != null) {
+            if (strVorname != null)
+            {
                 strVorname = strVorname.trim();
                 intLaengeVorname = strVorname.replaceAll("[^ ]", "").length();
             }
-            if (strNachname != null) {
+            if (strNachname != null)
+            {
                 strNachname = strNachname.trim();
                 intLaengeNachname = strNachname.replaceAll("[^ ]", "").length();
             }
 
             //Wenn nur der Nachname angegeben ist (19119)
-            if (strNachname != null && strVorname == null && intLaengeNachname == 0) {
+            if (strNachname != null && strVorname == null && intLaengeNachname == 0)
+            {
                 loginMitglied = new LoginMitglied(intId_User, strVorname, strNachname, strTitel);
             } //Wenn Vorname = null ohne Titel
-            else if (strNachname != null && strVorname == null && intLaengeNachname == 1) {
+            else if (strNachname != null && strVorname == null && intLaengeNachname == 1)
+            {
 
                 String[] strTeile = strNachname.split(" ");
                 String strTeil1 = strTeile[0];
                 String strTeil2 = strTeile[1];
 
                 //Wenn das erste Wort in Nachname groß geschrieben ist => Teil1 = Nachname
-                if (strTeil1.toUpperCase().equals(strTeil1) && !strTeil2.toUpperCase().equals(strTeil2)) {
+                if (strTeil1.toUpperCase().equals(strTeil1) && !strTeil2.toUpperCase().equals(strTeil2))
+                {
                     loginMitglied = new LoginMitglied(intId_User, strTeil2, strTeil1, strTitel);
                 } //Wenn das zweite Wort in Nachname groß geschrieben ist => Teil2 = Nachname
-                else if (!strTeil1.toUpperCase().equals(strTeil1) && strTeil2.toUpperCase().equals(strTeil2)) {
+                else if (!strTeil1.toUpperCase().equals(strTeil1) && strTeil2.toUpperCase().equals(strTeil2))
+                {
                     loginMitglied = new LoginMitglied(intId_User, strTeil1, strTeil2, strTitel);
 
                 } //Wenn beide Wörter klein geschrieben sind => Teil1 = Nachname
-                else if (!strTeil1.toUpperCase().equals(strTeil1) && !strTeil2.toUpperCase().equals(strTeil2)) {
+                else if (!strTeil1.toUpperCase().equals(strTeil1) && !strTeil2.toUpperCase().equals(strTeil2))
+                {
                     loginMitglied = new LoginMitglied(intId_User, strTeil2, strTeil1, strTitel);
                 }
             } //Bei optimalem Eintrag ohne Titel
-            else if (strNachname != null && strVorname != null && intLaengeVorname == 0 && intLaengeNachname == 0) {
+            else if (strNachname != null && strVorname != null && intLaengeVorname == 0 && intLaengeNachname == 0)
+            {
                 loginMitglied = new LoginMitglied(intId_User, strVorname, strNachname, strTitel);
             } //Wenn Fa. davor steht und Nachname = null z.B. Fa. Center Communication Systems GmbH (3191)
             //Familie wird als Vorname verwendet
-            else if (strNachname == null && strVorname != null && strVorname.contains("Fa.")) {
+            else if (strNachname == null && strVorname != null && strVorname.contains("Fa."))
+            {
                 String[] strTeile = strVorname.split("\\.");
                 String strTeilNachname = strTeile[1].trim();
                 loginMitglied = new LoginMitglied(intId_User, "Familie", strTeilNachname, strTitel);
             } //Wenn Nachname = null und in Vorname nur ein Wort steht (3185)
-            else if (strNachname == null && intLaengeVorname == 0) {
+            else if (strNachname == null && intLaengeVorname == 0)
+            {
                 strNachname = strVorname;
                 loginMitglied = new LoginMitglied(intId_User, null, strNachname, strTitel);
             } //Wenn Nachname = null ohne Titel
-            else if (strNachname == null && intLaengeVorname == 1) {
+            else if (strNachname == null && intLaengeVorname == 1)
+            {
                 String[] strTeile = strVorname.split(" ");
                 String strTeil1 = strTeile[0];
                 String strTeil2 = strTeile[1];
 
                 //Wenn das erste Wort in Vorname groß geschrieben ist => Teil1 = Nachname
-                if (strTeil1.toUpperCase().equals(strTeil1) && !strTeil2.toUpperCase().equals(strTeil2)) {
+                if (strTeil1.toUpperCase().equals(strTeil1) && !strTeil2.toUpperCase().equals(strTeil2))
+                {
                     loginMitglied = new LoginMitglied(intId_User, strTeil2, strTeil1, strTitel);
                 } //Wenn das zweite Wort in Vorname groß geschrieben ist => Teil2 = Nachname
-                else if (!strTeil1.toUpperCase().equals(strTeil1) && strTeil2.toUpperCase().equals(strTeil2)) {
+                else if (!strTeil1.toUpperCase().equals(strTeil1) && strTeil2.toUpperCase().equals(strTeil2))
+                {
                     loginMitglied = new LoginMitglied(intId_User, strTeil1, strTeil2, strTitel);
 
                 } //Wenn beide Wörter klein geschrieben sind => Teil1 = Nachname
-                else if (!strTeil1.toUpperCase().equals(strTeil1) && !strTeil2.toUpperCase().equals(strTeil2)) {
+                else if (!strTeil1.toUpperCase().equals(strTeil1) && !strTeil2.toUpperCase().equals(strTeil2))
+                {
                     loginMitglied = new LoginMitglied(intId_User, strTeil2, strTeil1, strTitel);
                 }
             } //Wenn in Vorname ein Titel dabei steht
-            else if (strNachname != null && intLaengeVorname == 1) {
+            else if (strNachname != null && intLaengeVorname == 1)
+            {
                 System.out.println("Woher soll i wissen ob da Titel als erstes steht? Evtl. schauen ob ein Punkt nach dem Titel steht");
             }
 
-            if (loginMitglied != null) {
+            if (loginMitglied != null)
+            {
                 liLoginMitglied.add(loginMitglied);
-            } else {
+            } else
+            {
                 System.out.println("Fehler");
             }
 
@@ -574,7 +566,8 @@ public class DB_Access {
         return liLoginMitglied;
     }
 
-    public HashMap<String, LinkedList<String>> getFilterFuerTyp(String typ) throws Exception {
+    public HashMap<String, LinkedList<String>> getFilterFuerTyp(String typ) throws Exception
+    {
         HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
         LinkedList<String> liFilter = new LinkedList<>();
         Connection conn = connPool.getConnection();
@@ -584,15 +577,18 @@ public class DB_Access {
                 + " FROM FDISK.dbo.stmkmitglieder";
         ResultSet rs = stat.executeQuery(sqlString);
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             String strFilter;
-            if (rs.getString("Typ") == null) {
+            if (rs.getString("Typ") == null)
+            {
                 strFilter = "unbekannt";
                 continue;
             }
             strFilter = rs.getString("Typ");
 
-            if (strFilter.equals("") || strFilter.equals(" ")) {
+            if (strFilter.equals("") || strFilter.equals(" "))
+            {
                 strFilter = "unbekannt";
             }
             liFilter.add(strFilter);
@@ -604,21 +600,98 @@ public class DB_Access {
         return hmFilter;
     }
 
-    public static void main(String[] args) throws Exception {
-        try {
+    /**
+     * Gibt eine Liste der Erreichbarkeiten von jedem Mitarbeiter als LinkedList
+     * zurück.
+     *
+     * @return LinkedList
+     * @throws IOException
+     * @see Mitglied
+     * @see MitgliedsErreichbarkeit
+     * @see LinkedList
+     */
+    public LinkedList<MitgliedsErreichbarkeit> getErreichbarkeitsliste() throws Exception
+    {
+        LinkedList<MitgliedsErreichbarkeit> liMitgliedsErreichbarkeiten = new LinkedList<>();
+
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT TOP 1000 sm.id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\","
+                + " vorname \"Vorname\", zuname \"Zuname\", se.erreichbarkeitsart \"Erreichbarkeitsart\", se.code \"Code\","
+                + " se.sichtbarkeit \"Sichtbarkeit\", se.id_erreichbarkeiten \"ID_erreichbarkeit\""
+                + " FROM FDISK.dbo.stmkmitglieder sm INNER JOIN FDISK.dbo.stmkerreichbarkeiten se ON(sm.id_personen = se.id_personen)"
+                + " ORDER BY se.id_personen;";
+        ResultSet rs = stat.executeQuery(sqlString);
+        int intId_erreichbarkeit;
+        String strErreichbarkeitsart;
+        String strSichtbarkeit;
+        String strCode;
+
+        String strSTB;
+        String strDGR;
+        String strTitel;
+        String strVorname;
+        String strZuname;
+        int intPersID = 0;
+        int intLetztePersID = 0;
+
+        LinkedList<Erreichbarkeit> liErreichbarkeiten = new LinkedList<>();
+        while (rs.next())
+        {
+
+            intPersID = rs.getInt("PersID");
+            intId_erreichbarkeit = rs.getInt("ID_erreichbarkeit");
+            strErreichbarkeitsart = rs.getString("Erreichbarkeitsart");
+            strSichtbarkeit = rs.getString("Sichtbarkeit");
+            strCode = rs.getString("Code");
+
+            strSTB = rs.getString("STB");
+            strDGR = rs.getString("DGR");
+            strTitel = rs.getString("Titel");
+            strVorname = rs.getString("Vorname");
+            strZuname = rs.getString("Zuname");
+
+            if (intPersID == intLetztePersID)
+            {
+                liErreichbarkeiten.add(new Erreichbarkeit(intId_erreichbarkeit, strErreichbarkeitsart, strSichtbarkeit, strCode, intPersID));
+            } else
+            {
+                if (liMitgliedsErreichbarkeiten.size() > 0)
+                {
+                    liMitgliedsErreichbarkeiten.getLast().setLiErreichbarkeiten(liErreichbarkeiten);
+                    liErreichbarkeiten = new LinkedList<Erreichbarkeit>();
+                }
+                intLetztePersID = intPersID;
+                liMitgliedsErreichbarkeiten.add(new MitgliedsErreichbarkeit(false, intPersID, strSTB, strTitel, strTitel, strVorname, strZuname));
+                liErreichbarkeiten.add(new Erreichbarkeit(intId_erreichbarkeit, strErreichbarkeitsart, strSichtbarkeit, strCode, intPersID));
+            }
+
+        }
+        return liMitgliedsErreichbarkeiten;
+    }
+
+    public static void main(String[] args) throws Exception
+    {
+        try
+        {
             theInstance = DB_Access.getInstance();
-        } catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException ex)
+        {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         HashMap<String, LinkedList<String>> hm = new HashMap<>();
-        try {
+        try
+        {
             hm = theInstance.getFilterFuerTyp("vordienstzeit");
 
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (Map.Entry e : hm.entrySet()) {
+        for (Map.Entry e : hm.entrySet())
+        {
             System.out.println(e.getKey() + "---" + e.getValue());
 
         }
