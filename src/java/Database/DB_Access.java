@@ -83,7 +83,7 @@ public class DB_Access
             strVorname = rs.getString("Vorname");
             strZuname = rs.getString("Zuname");
 
-            Mitglied mitglied = new Mitglied(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true);
+            Mitglied mitglied = new Mitglied(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname);
             liMitglieder.add(mitglied);
         }
 

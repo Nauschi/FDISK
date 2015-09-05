@@ -18,7 +18,7 @@ public class MitgliedsErreichbarkeit extends Mitglied
     private boolean boBemerkung;
 
     public MitgliedsErreichbarkeit(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, LinkedList<Erreichbarkeit> liErreichbarkeiten, boolean strBemerkung) {
-        super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname, boCheckbox);
+        super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
         this.liErreichbarkeiten = liErreichbarkeiten;
         this.boBemerkung = boBemerkung;
     }

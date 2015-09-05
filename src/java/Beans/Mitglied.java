@@ -20,9 +20,8 @@ public class Mitglied
     public String strTitel;
     public String strVorname;
     public String strZuname;
-    private boolean boCheckbox;
 
-    public Mitglied(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox)
+    public Mitglied(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname)
     {
         this.intId_Personen = intId_Personen;
         this.strStammblattnummer = strStammblattnummer;
@@ -30,7 +29,6 @@ public class Mitglied
         this.strTitel = strTitel;
         this.strVorname = strVorname;
         this.strZuname = strZuname;
-        this.boCheckbox = boCheckbox;
     }
 
     public int getIntId_Personen()
@@ -93,20 +91,10 @@ public class Mitglied
         this.strZuname = strZuname;
     }
 
-    public boolean isBoCheckbox()
-    {
-        return boCheckbox;
-    }
-
-    public void setBoCheckbox(boolean boCheckbox)
-    {
-        this.boCheckbox = boCheckbox;
-    }
-
     @Override
     public int hashCode()
     {
-        int hash = 7;
+        int hash = 5;
         return hash;
     }
 
@@ -126,7 +114,7 @@ public class Mitglied
         {
             return false;
         }
-        if (this.strStammblattnummer != other.strStammblattnummer)
+        if (!Objects.equals(this.strStammblattnummer, other.strStammblattnummer))
         {
             return false;
         }
@@ -146,12 +134,12 @@ public class Mitglied
         {
             return false;
         }
-        if (this.boCheckbox != other.boCheckbox)
-        {
-            return false;
-        }
         return true;
     }
+
+
+
+   
 
     @Override
     public String toString()

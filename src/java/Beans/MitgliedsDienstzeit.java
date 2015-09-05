@@ -20,7 +20,7 @@ public class MitgliedsDienstzeit extends Mitglied
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
     public MitgliedsDienstzeit(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, Date dateGeburtsdatum, int intDienstalter) {
-        super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname, boCheckbox);
+        super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
         this.dateGeburtsdatum = dateGeburtsdatum;
         this.intDienstalter = intDienstalter;
     }
