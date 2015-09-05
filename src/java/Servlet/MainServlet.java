@@ -117,7 +117,7 @@ public class MainServlet extends HttpServlet
         {
             try
             {
-                LinkedList<Rohbericht> liRohberichte = (LinkedList<Rohbericht>)this.getServletContext().getAttribute("rohberichte");
+                LinkedList<Rohbericht> liRohberichte = (LinkedList<Rohbericht>) this.getServletContext().getAttribute("rohberichte");
                 String strBericht = request.getParameter("input_aktbericht");
                 if (strBericht.equals(liRohberichte.get(0).getStrBerichtname()))
                 {
@@ -129,15 +129,15 @@ public class MainServlet extends HttpServlet
                 {
 //                    LinkedList<MitgliedsErreichbarkeit> liErreichtbarkeiten = access.getErreichbarkeitsliste();
 //                    request.setAttribute("liste", liErreichtbarkeiten);
-                }else if(strBericht.equals(liRohberichte.get(2).getStrBerichtname()))
+                } else if (strBericht.equals(liRohberichte.get(2).getStrBerichtname()))
                 {
                     LinkedList<MitgliedsAdresse> liAdressen = access.getAdressListe();
                     request.setAttribute("liste", liAdressen);
-                }else if(strBericht.equals(liRohberichte.get(3).getStrBerichtname()))
+                } else if (strBericht.equals(liRohberichte.get(3).getStrBerichtname()))
                 {
                     LinkedList<MitgliedsGeburtstag> liGeburtstage = access.getGeburtstagsliste(2014);//welche Zahl??
                     request.setAttribute("liste", liGeburtstage);
-                }else if(strBericht.equals(liRohberichte.get(4).getStrBerichtname()))
+                } else if (strBericht.equals(liRohberichte.get(4).getStrBerichtname()))
                 {
                     LinkedList<MitgliedsDienstzeit> liDienstzeiten = access.getDienstzeitListe();
                     request.setAttribute("liste", liDienstzeiten);
@@ -173,13 +173,28 @@ public class MainServlet extends HttpServlet
         {
             Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("MainServlet.init");
+        String strPath = "";
         try
         {
-            leseDatei();
+            String strContextPath = this.getServletContext().getRealPath("/");
+            strPath = strContextPath
+                    + File.separator + "res"
+                    + File.separator + "Rohberichte.csv";
+            leseDatei(strPath);
         } catch (IOException ex)
         {
-            Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+            try
+            {
+                strPath = System.getProperty("user.dir")
+                        + File.separator + "web"
+                        + File.separator + "res"
+                        + File.separator + "Rohberichte.csv";
+
+                leseDatei(strPath);
+            } catch (IOException ex1)
+            {
+                Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex1);
+            }
         }
 
     }
@@ -190,13 +205,11 @@ public class MainServlet extends HttpServlet
      * @throws UnsupportedEncodingException
      * @throws IOException
      */
-    public void leseDatei() throws UnsupportedEncodingException, IOException
+    public void leseDatei(String strPath) throws UnsupportedEncodingException, IOException
     {
         ServletContext servletContext = this.getServletContext();
-        String strContextPath = servletContext.getRealPath("/");
-        File file = new File(strContextPath
-                + File.separator + "res"
-                + File.separator + "Rohberichte.csv");
+
+        File file = new File(strPath);
         LinkedList<Rohbericht> liRohberichte = new LinkedList<>();
 
         FileInputStream fis = new FileInputStream(file);
