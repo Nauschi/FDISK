@@ -477,6 +477,28 @@ public class DB_Access
         return liFahrzeuge;
     }
 
+    public int getUserId(String strUsername, String strPasswort) throws Exception
+    {
+        int intUserId = -1; 
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT IDUser \"IdUser\""
+                + "  ,username \"Username\""
+                + "  ,passwort \"Passwort\""
+                + "  FROM FDISK.dbo.tbl_login_benutzer"
+                + "  WHERE username = '"+strUsername+"' AND passwort = '"+strPasswort+"'";
+
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        while (rs.next())
+        {
+            intUserId = rs.getInt("IdUser"); 
+        }
+        connPool.releaseConnection(conn);
+      //  login(intUserId); 
+        return intUserId; 
+    }
     
     public void joinUserIdUndPersId(LinkedList<LoginMitglied> liLoginMitglied) throws Exception
     {
@@ -669,7 +691,8 @@ public class DB_Access
         LinkedList<LoginMitglied> lili = new LinkedList<>();
         try
         {
-            lili = theInstance.login(3206);
+            int userIdTest = theInstance.getUserId("41033002", "vo4905"); 
+            lili = theInstance.login(userIdTest);
             theInstance.joinUserIdUndPersId(lili);
         } catch (Exception ex)
         {
