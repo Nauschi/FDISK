@@ -399,6 +399,83 @@ public class DB_Access
         return liFahrzeuge;
     }
 
+    /**
+     * Gibt eine Liste der Erreichbarkeiten von jedem Mitarbeiter als LinkedList
+     * zurück.
+     *
+     * @return LinkedList
+     * @throws IOException
+     * @see Mitglied
+     * @see MitgliedsErreichbarkeit
+     * @see LinkedList
+     */
+    public LinkedList<MitgliedsErreichbarkeit> getErreichbarkeitsliste() throws Exception
+    {
+        LinkedList<MitgliedsErreichbarkeit> liMitgliedsErreichbarkeiten = new LinkedList<>();
+
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT TOP 1000 sm.id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\","
+                + " vorname \"Vorname\", zuname \"Zuname\", se.erreichbarkeitsart \"Erreichbarkeitsart\", se.code \"Code\","
+                + " se.sichtbarkeit \"Sichtbarkeit\", se.id_erreichbarkeiten \"ID_erreichbarkeit\""
+                + " FROM FDISK.dbo.stmkmitglieder sm INNER JOIN FDISK.dbo.stmkerreichbarkeiten se ON(sm.id_personen = se.id_personen)"
+                + " ORDER BY se.id_personen;";
+        ResultSet rs = stat.executeQuery(sqlString);
+        int intId_erreichbarkeit;
+        String strErreichbarkeitsart;
+        String strSichtbarkeit;
+        String strCode;
+
+        String strSTB;
+        String strDGR;
+        String strTitel;
+        String strVorname;
+        String strZuname;
+        int intPersID = 0;
+        int intLetztePersID = 0;
+
+        LinkedList<Erreichbarkeit> liErreichbarkeiten = new LinkedList<>();
+        while (rs.next())
+        {
+
+            intPersID = rs.getInt("PersID");
+            intId_erreichbarkeit = rs.getInt("ID_erreichbarkeit");
+            strErreichbarkeitsart = rs.getString("Erreichbarkeitsart");
+            strSichtbarkeit = rs.getString("Sichtbarkeit");
+            strCode = rs.getString("Code");
+
+            strSTB = rs.getString("STB");
+            strDGR = rs.getString("DGR");
+            strTitel = rs.getString("Titel");
+            strVorname = rs.getString("Vorname");
+            strZuname = rs.getString("Zuname");
+
+            if (intPersID == intLetztePersID)
+            {
+                liErreichbarkeiten.add(new Erreichbarkeit(intId_erreichbarkeit, strErreichbarkeitsart, strSichtbarkeit, strCode, intPersID));
+            } else
+            {
+                if (liMitgliedsErreichbarkeiten.size() > 0)
+                {
+                    liMitgliedsErreichbarkeiten.getLast().setLiErreichbarkeiten(liErreichbarkeiten);
+                    liErreichbarkeiten = new LinkedList<Erreichbarkeit>();
+                }
+                intLetztePersID = intPersID;
+                liMitgliedsErreichbarkeiten.add(new MitgliedsErreichbarkeit(false, intPersID, strSTB, strTitel, strTitel, strVorname, strZuname));
+                liErreichbarkeiten.add(new Erreichbarkeit(intId_erreichbarkeit, strErreichbarkeitsart, strSichtbarkeit, strCode, intPersID));
+            }
+
+        }
+        return liMitgliedsErreichbarkeiten;
+    }
+
+    /**
+     * Sucht die PersId für einen bestimmten User
+     *
+     * @param liLoginMitglied
+     * @throws Exception
+     */
     public void joinUserIdUndPersId(LinkedList<LoginMitglied> liLoginMitglied) throws Exception
     {
         String strLoginMitgliedVorname = null;
@@ -566,6 +643,50 @@ public class DB_Access
         return liLoginMitglied;
     }
 
+    /**
+     * Ruft die richtige Methode für einen Typ auf
+     *
+     * @param typ
+     * @throws Exception
+     */
+    public void getMethodeFuerTyp(String typ) throws Exception
+    {
+        if (typ.toUpperCase().equals("GRUPPE"))
+        {
+            getFilterFuerGruppe(typ);
+        } else if (typ.toUpperCase().equals("KURSBEZEICHNUNG") || typ.toUpperCase().equals("KURSDATUM"))
+        {
+            if (typ.toUpperCase().equals("KURSDATUM"))
+            {
+                typ = "DATUM";
+            }
+            getFilterFuerKurs(typ);
+        } else if (typ.toUpperCase().equals("FUNKTIONSBEZEICHNUNG") || typ.toUpperCase().equals("FUNKTION VON") || typ.toUpperCase().equals("FUNKTION BIS"))
+        {
+            if (typ.toUpperCase().equals("FUNKTIONSBEZEICHNUNG"))
+            {
+                typ = "BEZEICHNUNG";
+            } else if (typ.toUpperCase().equals("FUNKTION VON"))
+            {
+                typ = "DATUM_VON";
+            } else
+            {
+                typ = "DATUM_BIS";
+            }
+            getFilterFuerFunktion(typ);
+        } else
+        {
+            getFilterFuerTyp(typ);
+        }
+    }
+
+    /**
+     * Sucht den passenden Filter für einen Typ
+     *
+     * @param typ
+     * @return
+     * @throws Exception
+     */
     public HashMap<String, LinkedList<String>> getFilterFuerTyp(String typ) throws Exception
     {
         HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
@@ -597,80 +718,170 @@ public class DB_Access
         hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
 
+        for (Map.Entry e : hmFilter.entrySet())
+        {
+            System.out.println(e.getKey() + "---" + e.getValue());
+        }
+
         return hmFilter;
     }
 
     /**
-     * Gibt eine Liste der Erreichbarkeiten von jedem Mitarbeiter als LinkedList
-     * zurück.
+     * Sucht den passenden Filter für den Typ "Gruppe"
      *
-     * @return LinkedList
-     * @throws IOException
-     * @see Mitglied
-     * @see MitgliedsErreichbarkeit
-     * @see LinkedList
+     * @param typ
+     * @return
+     * @throws Exception
      */
-    public LinkedList<MitgliedsErreichbarkeit> getErreichbarkeitsliste() throws Exception
+    public HashMap<String, LinkedList<String>> getFilterFuerGruppe(String typ) throws Exception
     {
-        LinkedList<MitgliedsErreichbarkeit> liMitgliedsErreichbarkeiten = new LinkedList<>();
-
+        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
+        LinkedList<String> liFilter = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 
-        String sqlString = "SELECT TOP 1000 sm.id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\","
-                + " vorname \"Vorname\", zuname \"Zuname\", se.erreichbarkeitsart \"Erreichbarkeitsart\", se.code \"Code\","
-                + " se.sichtbarkeit \"Sichtbarkeit\", se.id_erreichbarkeiten \"ID_erreichbarkeit\""
-                + " FROM FDISK.dbo.stmkmitglieder sm INNER JOIN FDISK.dbo.stmkerreichbarkeiten se ON(sm.id_personen = se.id_personen)"
-                + " ORDER BY se.id_personen;";
+        String sqlString = "SELECT DISTINCT Bezeichnung"
+                + " FROM FDISK.dbo.tbl_login_gruppe";
+
         ResultSet rs = stat.executeQuery(sqlString);
-        int intId_erreichbarkeit;
-        String strErreichbarkeitsart;
-        String strSichtbarkeit;
-        String strCode;
 
-        String strSTB;
-        String strDGR;
-        String strTitel;
-        String strVorname;
-        String strZuname;
-        int intPersID = 0;
-        int intLetztePersID = 0;
-
-        LinkedList<Erreichbarkeit> liErreichbarkeiten = new LinkedList<>();
         while (rs.next())
         {
+            String strFilter = rs.getString("Bezeichnung");
 
-            intPersID = rs.getInt("PersID");
-            intId_erreichbarkeit = rs.getInt("ID_erreichbarkeit");
-            strErreichbarkeitsart = rs.getString("Erreichbarkeitsart");
-            strSichtbarkeit = rs.getString("Sichtbarkeit");
-            strCode = rs.getString("Code");
-
-            strSTB = rs.getString("STB");
-            strDGR = rs.getString("DGR");
-            strTitel = rs.getString("Titel");
-            strVorname = rs.getString("Vorname");
-            strZuname = rs.getString("Zuname");
-
-            if (intPersID == intLetztePersID)
+            if (strFilter.equals("") || strFilter.equals(" "))
             {
-                liErreichbarkeiten.add(new Erreichbarkeit(intId_erreichbarkeit, strErreichbarkeitsart, strSichtbarkeit, strCode, intPersID));
-            } else
-            {
-                if (liMitgliedsErreichbarkeiten.size() > 0)
-                {
-                    liMitgliedsErreichbarkeiten.getLast().setLiErreichbarkeiten(liErreichbarkeiten);
-                    liErreichbarkeiten = new LinkedList<Erreichbarkeit>();
-                }
-                intLetztePersID = intPersID;
-                liMitgliedsErreichbarkeiten.add(new MitgliedsErreichbarkeit(false, intPersID, strSTB, strTitel, strTitel, strVorname, strZuname));
-                liErreichbarkeiten.add(new Erreichbarkeit(intId_erreichbarkeit, strErreichbarkeitsart, strSichtbarkeit, strCode, intPersID));
+                strFilter = "unbekannt";
             }
 
+            liFilter.add(strFilter);
         }
-        return liMitgliedsErreichbarkeiten;
+
+        hmFilter.put(typ, liFilter);
+        connPool.releaseConnection(conn);
+
+        for (Map.Entry e : hmFilter.entrySet())
+        {
+            System.out.println(e.getKey() + "---" + e.getValue());
+        }
+
+        return hmFilter;
     }
 
+    /**
+     * Sucht den passenden Filter für Kurse
+     *
+     * @param typ
+     * @return
+     * @throws Exception
+     */
+    public HashMap<String, LinkedList<String>> getFilterFuerKurs(String typ) throws Exception
+    {
+        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
+        LinkedList<String> liFilter = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT DISTINCT " + typ + "\"Typ\""
+                + " FROM FDISK.dbo.stmkkurse";
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        while (rs.next())
+        {
+            String strFilter;
+            if (rs.getString("Typ") == null)
+            {
+                strFilter = "unbekannt";
+                continue;
+            }
+            strFilter = rs.getString("Typ");
+
+            if (strFilter.equals("") || strFilter.equals(" "))
+            {
+                strFilter = "unbekannt";
+            }
+            liFilter.add(strFilter);
+        }
+
+        if (typ.toUpperCase().equals("DATUM"))
+        {
+            typ = "KURSDATUM";
+        }
+        hmFilter.put(typ, liFilter);
+        connPool.releaseConnection(conn);
+
+        for (Map.Entry e : hmFilter.entrySet())
+        {
+            System.out.println(e.getKey() + "---" + e.getValue());
+        }
+
+        return hmFilter;
+    }
+
+    /**
+     * Sucht den passenden Filter für Kurse
+     *
+     * @param typ
+     * @return
+     * @throws Exception
+     */
+    public HashMap<String, LinkedList<String>> getFilterFuerFunktion(String typ) throws Exception
+    {
+        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
+        LinkedList<String> liFilter = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT DISTINCT " + typ + "\"Typ\""
+                + " FROM FDISK.dbo.stmkfunktionen funktionen INNER JOIN"
+                + " FDISK.dbo.stmkfunktionenmitglieder mitglieder"
+                + " ON(mitglieder.id_funktionen = funktionen.id_funktionen)";
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        while (rs.next())
+        {
+            String strFilter;
+            if (rs.getString("Typ") == null)
+            {
+                strFilter = "unbekannt";
+                continue;
+            }
+            strFilter = rs.getString("Typ");
+
+            if (strFilter.equals("") || strFilter.equals(" "))
+            {
+                strFilter = "unbekannt";
+            }
+            liFilter.add(strFilter);
+        }
+
+        if (typ.toUpperCase().equals("BEZEICHNUNG"))
+        {
+            typ = "FUNKTIONSBEZEICHNUNG";
+        } else if (typ.toUpperCase().equals("DATUM_VON"))
+        {
+            typ = "FUNKTION VON";
+        } else if (typ.toUpperCase().equals("DATUM_BIS"))
+        {
+            typ = "FUNKTION BIS";
+        }
+
+        hmFilter.put(typ, liFilter);
+        connPool.releaseConnection(conn);
+
+        for (Map.Entry e : hmFilter.entrySet())
+        {
+            System.out.println(e.getKey() + "---" + e.getValue());
+        }
+
+        return hmFilter;
+    }
+
+    /**
+     *
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception
     {
         try
@@ -684,16 +895,17 @@ public class DB_Access
         HashMap<String, LinkedList<String>> hm = new HashMap<>();
         try
         {
-            hm = theInstance.getFilterFuerTyp("vordienstzeit");
+            theInstance.getMethodeFuerTyp("FUNKTION VON");
+            // hm = theInstance.getFilterFuerGruppe("gruppe");
 
         } catch (Exception ex)
         {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (Map.Entry e : hm.entrySet())
-        {
-            System.out.println(e.getKey() + "---" + e.getValue());
-
-        }
+//        for (Map.Entry e : hm.entrySet())
+//        {
+//            System.out.println(e.getKey() + "---" + e.getValue());
+//
+//        }
     }
 }
