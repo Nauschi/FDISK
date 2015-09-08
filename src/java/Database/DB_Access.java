@@ -695,6 +695,10 @@ public class DB_Access
             getFilterFuerErreichbarkeit(typ);
         } else
         {
+            if(typ.toUpperCase().equals("ISCO-BERUF"))
+            {
+                typ = "BERUF";
+            }
             getFilterFuerTyp(typ);
         }
     }
@@ -730,6 +734,10 @@ public class DB_Access
             if (strFilter.equals("") || strFilter.equals(" "))
             {
                 strFilter = "unbekannt";
+            }
+            if(typ.toUpperCase().equals("BERUF"))
+            {
+                typ = "ISCO-BERUF";
             }
             liFilter.add(strFilter);
         }
@@ -1055,7 +1063,7 @@ public class DB_Access
         HashMap<String, LinkedList<String>> hm = new HashMap<>();
         try
         {
-            theInstance.getMethodeFuerTyp("Funktionsinstanz");
+            theInstance.getMethodeFuerTyp("isco-beruf");
             // hm = theInstance.getFilterFuerGruppe("gruppe");
 
         } catch (Exception ex)
