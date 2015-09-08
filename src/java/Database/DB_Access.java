@@ -345,8 +345,8 @@ public class DB_Access
     }
 
     /**
-     * Gibt alle relevanten Daten (Fahrzeugtype, Kennzeichen, Baujahr etc...)
-     * von jedem Fahrzeug als LinkedList zurück.
+     * Gibt alle relevanten Daten (Fahrzeugtyp, Kennzeichen, Baujahr etc...) von
+     * jedem Fahrzeug als LinkedList zurück.
      *
      * @return LinkedList
      * @throws Exception
@@ -684,8 +684,10 @@ public class DB_Access
             getFilterFuerFunktion(typ);
         } else if (typ.toUpperCase().equals("ALTER"))
         {
-
             getFilterFuerAlter(typ);
+        } else if (typ.toUpperCase().equals("STATUS"))
+        {
+            getFilterFuerStatus(typ);
         } else if (typ.toUpperCase().equals("ERREICHBARKEITSART") || typ.toUpperCase().equals("ERREICHBARKEIT"))
         {
             if (typ.toUpperCase().equals("ERREICHBARKEIT"))
@@ -693,17 +695,36 @@ public class DB_Access
                 typ = "CODE";
             }
             getFilterFuerErreichbarkeit(typ);
-        } 
-        else if (typ.toUpperCase().equals("ANREDE"))
+        } else if (typ.toUpperCase().equals("ANREDE"))
         {
             getFilterFuerAnrede(typ);
-        }else
+        } else if (typ.toUpperCase().equals("AUSZEICHNUNGSART") || typ.toUpperCase().equals("AUSZEICHNUNGSSTUFE") || typ.toUpperCase().equals("AUSZEICHNUNGSDATUM"))
         {
-            if(typ.toUpperCase().equals("ISCO-BERUF"))
+            if (typ.toUpperCase().equals("AUSZEICHNUNGSDATUM"))
+            {
+                typ = "VERLEIHUNGSDATUM";
+            }
+            getFilterFuerAuszeichnung(typ);
+        } else if (typ.toUpperCase().equals("LEISTUNGSABZEICHENBEZEICHNUNG") || typ.toUpperCase().equals("LEISTUNGSABZEICHENSTUFE") || typ.toUpperCase().equals("LEISTUNGSABZEICHENDATUM"))
+        {
+            if (typ.toUpperCase().equals("LEISTUNGSABZEICHENBEZEICHNUNG"))
+            {
+                typ = "BEZEICHNUNG";
+            } else if (typ.toUpperCase().equals("LEISTUNGSABZEICHENSTUFE"))
+            {
+                typ = "STUFE";
+            } else if (typ.toUpperCase().equals("LEISTUNGSABZEICHENDATUM"))
+            {
+                typ = "DATUM";
+            }
+            getFilterFuerLeistungsabzeichen(typ);
+        } else
+        {
+            if (typ.toUpperCase().equals("ISCO-BERUF"))
             {
                 typ = "BERUF";
             }
-            
+
             getFilterFuerTyp(typ);
         }
     }
@@ -731,16 +752,16 @@ public class DB_Access
             String strFilter;
             if (rs.getString("Typ") == null)
             {
-                strFilter = "unbekannt";
+                strFilter = "Unbekannt";
                 continue;
             }
             strFilter = rs.getString("Typ");
 
             if (strFilter.equals("") || strFilter.equals(" "))
             {
-                strFilter = "unbekannt";
+                strFilter = "Unbekannt";
             }
-            if(typ.toUpperCase().equals("BERUF"))
+            if (typ.toUpperCase().equals("BERUF"))
             {
                 typ = "ISCO-BERUF";
             }
@@ -757,7 +778,7 @@ public class DB_Access
 
         return hmFilter;
     }
-    
+
     /**
      * Sucht den passenden Filter für den Typ "Anrede"
      *
@@ -783,13 +804,11 @@ public class DB_Access
 
             if (strFilter.equals("") || strFilter.equals(" "))
             {
-                strFilter = "unbekannt";
-            }
-            else if(strFilter.equals("m"))
+                strFilter = "Unbekannt";
+            } else if (strFilter.equals("m"))
             {
                 strFilter = "Herr";
-            }
-            else if(strFilter.equals("w"))
+            } else if (strFilter.equals("w"))
             {
                 strFilter = "Frau";
             }
@@ -833,7 +852,7 @@ public class DB_Access
 
             if (strFilter.equals("") || strFilter.equals(" "))
             {
-                strFilter = "unbekannt";
+                strFilter = "Unbekannt";
             }
 
             liFilter.add(strFilter);
@@ -873,14 +892,14 @@ public class DB_Access
             String strFilter;
             if (rs.getString("Typ") == null)
             {
-                strFilter = "unbekannt";
+                strFilter = "Unbekannt";
                 continue;
             }
             strFilter = rs.getString("Typ");
 
             if (strFilter.equals("") || strFilter.equals(" "))
             {
-                strFilter = "unbekannt";
+                strFilter = "Unbekannt";
             }
             liFilter.add(strFilter);
         }
@@ -925,14 +944,14 @@ public class DB_Access
             String strFilter;
             if (rs.getString("Typ") == null)
             {
-                strFilter = "unbekannt";
+                strFilter = "Unbekannt";
                 continue;
             }
             strFilter = rs.getString("Typ");
 
             if (strFilter.equals("") || strFilter.equals(" "))
             {
-                strFilter = "unbekannt";
+                strFilter = "Unbekannt";
             }
             liFilter.add(strFilter);
         }
@@ -962,6 +981,14 @@ public class DB_Access
         return hmFilter;
     }
 
+    /**
+     * Gibt alle verfügbaren Filter für Alter zurück (Also alle Alterszahlen,
+     * die zurzeit aktuell sind.)
+     *
+     * @param typ
+     * @return
+     * @throws Exception
+     */
     public HashMap<String, LinkedList<String>> getFilterFuerAlter(String typ) throws Exception
     {
         HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
@@ -998,14 +1025,14 @@ public class DB_Access
 
                 if (intAlter <= 0)
                 {
-                    strFilter = "unbekannt";
+                    strFilter = "Unbekannt";
                 } else
                 {
                     strFilter = intAlter + "";
                 }
             } else
             {
-                strFilter = "unbekannt";
+                strFilter = "Unbekannt";
             }
 
             if (!liFilter.contains(strFilter))
@@ -1032,20 +1059,35 @@ public class DB_Access
             }
         });
 
-        if (liFilter.contains("unbekannt"))
+        if (liFilter.contains("Unbekannt"))
         {
-            liFilter.remove("unbekannt");
-            liFilter.addFirst("unbekannt");
+            liFilter.remove("Unbekannt");
+            liFilter.addFirst("Unbekannt");
         }
 
         hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
+        return hmFilter;
+    }
 
-        for (Map.Entry e : hmFilter.entrySet())
-        {
-            System.out.println(e.getKey() + "---" + e.getValue());
-        }
+    /**
+     * Gibt die passenden Filter für die Status zurück
+     *
+     * @param typ
+     * @return
+     * @throws Exception
+     */
+    public HashMap<String, LinkedList<String>> getFilterFuerStatus(String typ) throws Exception
+    {
+        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
+        LinkedList<String> liFilter = new LinkedList<>();
+        liFilter.add("Jugend");
+        liFilter.add("Aktiv");
+        liFilter.add("Reserve");
+        liFilter.add("Ehrenmitglied");
+        liFilter.add("Unbekannt");
 
+        hmFilter.put(typ, liFilter);
         return hmFilter;
     }
 
@@ -1072,22 +1114,128 @@ public class DB_Access
             String strFilter;
             if (rs.getString("Typ") == null)
             {
-                strFilter = "unbekannt";
+                strFilter = "Unbekannt";
                 continue;
             }
             strFilter = rs.getString("Typ");
 
             if (strFilter.equals("") || strFilter.equals(" ") || strFilter.equals("-") || strFilter.equals("--"))
             {
-                strFilter = "unbekannt";
+                strFilter = "Unbekannt";
             }
-           
+
             liFilter.add(strFilter.trim());
         }
 
         if (typ.toUpperCase().equals("ERREICHBARKEIT"))
         {
             typ = "CODE";
+        }
+
+        hmFilter.put(typ, liFilter);
+        connPool.releaseConnection(conn);
+
+        for (Map.Entry e : hmFilter.entrySet())
+        {
+            System.out.println(e.getKey() + "---" + e.getValue());
+        }
+
+        return hmFilter;
+    }
+
+    /**
+     * Gibt die passenden Filter für Auszeichnungen zurück
+     *
+     * @param typ
+     * @return
+     * @throws Exception
+     */
+    public HashMap<String, LinkedList<String>> getFilterFuerAuszeichnung(String typ) throws Exception
+    {
+        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
+        LinkedList<String> liFilter = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT DISTINCT " + typ + "\"Typ\""
+                + " FROM FDISK.dbo.stmkauszeichnungenmitglieder mitglieder INNER JOIN"
+                + " FDISK.dbo.stmkauszeichnungen auszeichnungen"
+                + " ON(mitglieder.id_auszeichnungen = auszeichnungen.id_auszeichnungen)";
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        while (rs.next())
+        {
+            String strFilter;
+            if (rs.getString("Typ") == null)
+            {
+                strFilter = "Unbekannt";
+                continue;
+            }
+            strFilter = rs.getString("Typ");
+
+            if (strFilter.equals("") || strFilter.equals(" "))
+            {
+                strFilter = "Unbekannt";
+            }
+            liFilter.add(strFilter);
+        }
+
+        if (typ.toUpperCase().equals("VERLEIHUNGSDATUM"))
+        {
+            typ = "DATUM";
+        }
+
+        hmFilter.put(typ, liFilter);
+        connPool.releaseConnection(conn);
+
+        for (Map.Entry e : hmFilter.entrySet())
+        {
+            System.out.println(e.getKey() + "---" + e.getValue());
+        }
+
+        return hmFilter;
+    }
+
+    /**
+     * Gibt die passenden Filter für Leistungsabzeichen zurück.
+     *
+     * @param typ
+     * @return
+     * @throws Exception
+     */
+    public HashMap<String, LinkedList<String>> getFilterFuerLeistungsabzeichen(String typ) throws Exception
+    {
+        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
+        LinkedList<String> liFilter = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT DISTINCT " + typ + "\"Typ\""
+                + " FROM FDISK.dbo.stmkleistungsabzeichen leistungsabzeichen INNER JOIN"
+                + " FDISK.dbo.stmkleistungsabzeichenmitglieder mitglieder"
+                + " ON(mitglieder.id_leistungsabzeichenstufe = leistungsabzeichen.id_leistungsabzeichenstufe)";
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        while (rs.next())
+        {
+            String strFilter;
+            if (rs.getString("Typ") == null)
+            {
+                strFilter = "Unbekannt";
+                continue;
+            }
+            strFilter = rs.getString("Typ");
+
+            if (strFilter.equals("") || strFilter.equals(" "))
+            {
+                strFilter = "Unbekannt";
+            }
+            liFilter.add(strFilter);
+        }
+
+        if (typ.toUpperCase().equals("DATUM"))
+        {
+            typ = "LEISTUNGSABZEICHENDATUM";
         }
 
         hmFilter.put(typ, liFilter);
@@ -1119,7 +1267,7 @@ public class DB_Access
         HashMap<String, LinkedList<String>> hm = new HashMap<>();
         try
         {
-            theInstance.getMethodeFuerTyp("anrede");
+            theInstance.getMethodeFuerTyp("LEISTUNGSABZEICHENDATUM");
             // hm = theInstance.getFilterFuerGruppe("gruppe");
 
         } catch (Exception ex)
