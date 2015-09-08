@@ -52,6 +52,9 @@ aaaaasdfsdf
         </div>        
         <h1>Vordefiniert</h1>
         <div class="ui grid" id="div_mitte">
+            <div id="div_loader" class="ui active inverted dimmer">
+                <div class="ui text loader">Loading..</div>
+            </div>
             <div class="four wide column">
                 <div class="ui vertical fluid tabular menu" id="div_liste">
 
@@ -127,38 +130,13 @@ aaaaasdfsdf
                                 </div>
                             </div>
                             <div class="column">
-                                <button type="submit" name="button_vorschau" class="ui button" style="background-color: #707173; width: 100%; color: white;">Vorschau</button>
+                                <button type="submit" name="button_vorschau" class="ui button" onclick="document.getElementById('div_loader').className = 'ui active inverted dimmer';" style="background-color: #707173; width: 100%; color: white;">Vorschau</button>
                             </div>
                         </div>
                     </form>
 
                     <div id="div_table" style="margin-top: 20px">
-                        <table id="table" class="ui sortable celled table">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Status</th>
-                                    <th>Notes</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>John</td>
-                                    <td>No Action</td>
-                                    <td>None</td>
-                                </tr>
-                                <tr>
-                                    <td>Jamie</td>
-                                    <td class="positive">Approved</td>
-                                    <td class="warning">Requires call</td>
-                                </tr>
-                                <tr>
-                                    <td>Jill</td>
-                                    <td class="negative">Denied</td>
-                                    <td>None</td>
-                                </tr>
-                            </tbody>
-                        </table>
+
                     </div>
                     <div id="div_abbrechen_bestaetigen" style="display:none" class="ui segment">
                         <div class="ui equal width grid">
@@ -182,33 +160,33 @@ aaaaasdfsdf
 
         <script src="js/vordefiniert.js"></script>
 
-        <script>$('.ui.dropdown').dropdown();</script>
 
-        <script>$('.sortable.table').tablesort();</script>
+
 
         <script>
-            $(function () {
-                $("#input_von_datum").datepicker({
-                    onSelect: function (selected) {
-                        var dt = new Date(selected);
-                        dt.setDate(dt.getDate() + 1);
-                        $("#input_bis_datum").datepicker("option", "minDate", dt);
-                        $("#input_von_datum").datepicker("option", "showAnim", "slideDown");
-                        $("#input_von_datum").datepicker("option", "dateFormat", "dd.mm.yy");
-                        $("#input_von_datum").datepicker("option", $.datepicker.regional['de']);
-                    }
-                });
-                $("#input_bis_datum").datepicker({
-                    onSelect: function (selected) {
-                        var dt = new Date(selected);
-                        dt.setDate(dt.getDate() - 1);
-                        $("#input_von_datum").datepicker("option", "maxDate", dt);
-                        $("#input_bis_datum").datepicker("option", "showAnim", "slideDown");
-                        $("#input_bis_datum").datepicker("option", "dateFormat", "dd.mm.yy");
-                        $("#input_bis_datum").datepicker("option", $.datepicker.regional['de']);
-                    }
-                });
-            });
+                        $(function () {
+                            $("#input_von_datum").datepicker({
+                                onSelect: function (selected)
+                                {
+                                    var dt = new Date(selected);
+                                    dt.setDate(dt.getDate() + 1);
+                                    $("#input_bis_datum").datepicker("option", "minDate", dt);
+                                    $("#input_von_datum").datepicker("option", "showAnim", "slideDown");
+                                    $("#input_von_datum").datepicker("option", "dateFormat", "dd.mm.yy");
+                                    $("#input_von_datum").datepicker("option", $.datepicker.regional['de']);
+                                }
+                            });
+                            $("#input_bis_datum").datepicker({
+                                onSelect: function (selected) {
+                                    var dt = new Date(selected);
+                                    dt.setDate(dt.getDate() - 1);
+                                    $("#input_von_datum").datepicker("option", "maxDate", dt);
+                                    $("#input_bis_datum").datepicker("option", "showAnim", "slideDown");
+                                    $("#input_bis_datum").datepicker("option", "dateFormat", "dd.mm.yy");
+                                    $("#input_bis_datum").datepicker("option", $.datepicker.regional['de']);
+                                }
+                            });
+                        });
         </script>
         <script>
 
@@ -226,7 +204,7 @@ aaaaasdfsdf
             <%
                 }
             %>
-                
+
                 item.className = "item active";
                 var strBerichtname = item.getElementsByTagName("span")[0].innerHTML;
                 document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = strBerichtname;
@@ -244,13 +222,19 @@ aaaaasdfsdf
                         strHTML += zeile.toString();
                     }
             %>
-                document.getElementById("div_abbrechen_bestaetigen").style.display="block";
+                document.getElementById("div_abbrechen_bestaetigen").style.display = "block";
                 document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
+                //$('.sortable.table').tablesort();
             <%
                 }
             %>
+                document.getElementById("div_loader").className = "ui disabled loader";
             });
+            
+            
 
         </script>
+
+        <script>$('.ui.dropdown').dropdown();</script>
     </body>
 </html>

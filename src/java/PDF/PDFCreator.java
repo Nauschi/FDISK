@@ -20,6 +20,7 @@ import com.itextpdf.tool.xml.pipeline.css.CssResolverPipeline;
 import com.itextpdf.tool.xml.pipeline.end.PdfWriterPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
@@ -32,6 +33,12 @@ import java.util.logging.Logger;
  */
 public class PDFCreator
 {
+    
+    
+    private String strPath = System.getProperty("user.dir")
+                        + File.separator + "web"
+                        + File.separator + "css"
+                        + File.separator + "pdf.css";
 
     /**
      * Creates a PDF with a specified name and with the content of an HTML
@@ -67,8 +74,7 @@ public class PDFCreator
         CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(false);
 
         //hier das (falls benötigt) CSS File einbinden für die .pdf Datei
-        //cssResolver.addCssFile(System.getProperty("user.home") + "/Desktop/semantic/dist/semantic.css", true);
-        cssResolver.addCssFile(System.getProperty("user.home") + "/Desktop/test.css", true);
+        cssResolver.addCssFile(strPath, true);
         Pipeline<?> pipeline = new CssResolverPipeline(cssResolver, new HtmlPipeline(htmlContext, new PdfWriterPipeline(docPDF, writer)));
 
         XMLWorker worker = new XMLWorker(pipeline, true);
@@ -85,16 +91,30 @@ public class PDFCreator
     //nur zum Testen!
     public static void main(String[] args) throws IOException, DocumentException
     {
+        PDFCreator pdfCreator = new PDFCreator();
+        
         String strHtml = "<html>"
                 + "<body>"
-                + "<table class=\"ui celled table\">"
+                + "<h1>Liste</h1>"
+                + "<table>"
+                + "<thead>"
+                + "<tr>"
+                + "<th>Überschrift1</th>"
+                + "<th>Überschrift2</th>"
+                + "<th>Überschrift3</th>"
+                + "</tr>"
+                + "</thead>"
                 + "<tbody>"
                 + "<tr>"
                 + "<td>Test</td>"
                 + "<td>Test2</td>"
                 + "<td>Test2</td>"
                 + "</tr>"
-                + "<tr><td>Test1</td></tr>"
+                + "<tr>"
+                + "<td>Test1</td>"
+                + "<td></td>"
+                + "<td></td>"
+                + "</tr>"
                 + "</tbody>"
                 + "</table>"
                 + "</body>"
@@ -103,7 +123,7 @@ public class PDFCreator
         String pdf = System.getProperty("user.home") + "/Desktop/test";
         try
         {
-            new PDFCreator().createPdf(pdf, strHtml, "hoch");
+            pdfCreator.createPdf(pdf, strHtml, "hoch");
         } catch (CssResolverException ex)
         {
             Logger.getLogger(PDFCreator.class.getName()).log(Level.SEVERE, null, ex);
