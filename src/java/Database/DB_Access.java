@@ -693,12 +693,17 @@ public class DB_Access
                 typ = "CODE";
             }
             getFilterFuerErreichbarkeit(typ);
-        } else
+        } 
+        else if (typ.toUpperCase().equals("ANREDE"))
+        {
+            getFilterFuerAnrede(typ);
+        }else
         {
             if(typ.toUpperCase().equals("ISCO-BERUF"))
             {
                 typ = "BERUF";
             }
+            
             getFilterFuerTyp(typ);
         }
     }
@@ -739,6 +744,56 @@ public class DB_Access
             {
                 typ = "ISCO-BERUF";
             }
+            liFilter.add(strFilter);
+        }
+
+        hmFilter.put(typ, liFilter);
+        connPool.releaseConnection(conn);
+
+        for (Map.Entry e : hmFilter.entrySet())
+        {
+            System.out.println(e.getKey() + "---" + e.getValue());
+        }
+
+        return hmFilter;
+    }
+    
+    /**
+     * Sucht den passenden Filter für den Typ "Anrede"
+     *
+     * @param typ
+     * @return
+     * @throws Exception
+     */
+    public HashMap<String, LinkedList<String>> getFilterFuerAnrede(String typ) throws Exception
+    {
+        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
+        LinkedList<String> liFilter = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT DISTINCT Geschlecht"
+                + " FROM FDISK.dbo.stmkmitglieder";
+
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        while (rs.next())
+        {
+            String strFilter = rs.getString("Geschlecht");
+
+            if (strFilter.equals("") || strFilter.equals(" "))
+            {
+                strFilter = "unbekannt";
+            }
+            else if(strFilter.equals("m"))
+            {
+                strFilter = "Herr";
+            }
+            else if(strFilter.equals("w"))
+            {
+                strFilter = "Frau";
+            }
+
             liFilter.add(strFilter);
         }
 
@@ -1026,6 +1081,7 @@ public class DB_Access
             {
                 strFilter = "unbekannt";
             }
+           
             liFilter.add(strFilter.trim());
         }
 
@@ -1063,7 +1119,7 @@ public class DB_Access
         HashMap<String, LinkedList<String>> hm = new HashMap<>();
         try
         {
-            theInstance.getMethodeFuerTyp("isco-beruf");
+            theInstance.getMethodeFuerTyp("anrede");
             // hm = theInstance.getFilterFuerGruppe("gruppe");
 
         } catch (Exception ex)
