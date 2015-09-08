@@ -666,11 +666,14 @@ public class DB_Access
                 typ = "DATUM";
             }
             getFilterFuerKurs(typ);
-        } else if (typ.toUpperCase().equals("FUNKTIONSBEZEICHNUNG") || typ.toUpperCase().equals("FUNKTION VON") || typ.toUpperCase().equals("FUNKTION BIS"))
+        } else if (typ.toUpperCase().equals("FUNKTIONSINSTANZ") || typ.toUpperCase().equals("FUNKTIONSBEZEICHNUNG") || typ.toUpperCase().equals("FUNKTION VON") || typ.toUpperCase().equals("FUNKTION BIS"))
         {
             if (typ.toUpperCase().equals("FUNKTIONSBEZEICHNUNG"))
             {
                 typ = "BEZEICHNUNG";
+            } else if (typ.toUpperCase().equals("FUNKTIONSINSTANZ"))
+            {
+                typ = "ID_INSTANZTYPEN";
             } else if (typ.toUpperCase().equals("FUNKTION VON"))
             {
                 typ = "DATUM_VON";
@@ -683,6 +686,13 @@ public class DB_Access
         {
 
             getFilterFuerAlter(typ);
+        } else if (typ.toUpperCase().equals("ERREICHBARKEITSART") || typ.toUpperCase().equals("ERREICHBARKEIT"))
+        {
+            if (typ.toUpperCase().equals("ERREICHBARKEIT"))
+            {
+                typ = "CODE";
+            }
+            getFilterFuerErreichbarkeit(typ);
         } else
         {
             getFilterFuerTyp(typ);
@@ -867,6 +877,9 @@ public class DB_Access
         if (typ.toUpperCase().equals("BEZEICHNUNG"))
         {
             typ = "FUNKTIONSBEZEICHNUNG";
+        } else if (typ.toUpperCase().equals("ID_INSTANZTYPEN"))
+        {
+            typ = "FUNKTIONSINSTANZ";
         } else if (typ.toUpperCase().equals("DATUM_VON"))
         {
             typ = "FUNKTION VON";
@@ -974,6 +987,57 @@ public class DB_Access
     }
 
     /**
+     * Sucht den passenden Filter für Erreichbarkeiten
+     *
+     * @param typ
+     * @return
+     * @throws Exception
+     */
+    public HashMap<String, LinkedList<String>> getFilterFuerErreichbarkeit(String typ) throws Exception
+    {
+        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
+        LinkedList<String> liFilter = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT DISTINCT " + typ + "\"Typ\""
+                + " FROM FDISK.dbo.stmkerreichbarkeiten";
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        while (rs.next())
+        {
+            String strFilter;
+            if (rs.getString("Typ") == null)
+            {
+                strFilter = "unbekannt";
+                continue;
+            }
+            strFilter = rs.getString("Typ");
+
+            if (strFilter.equals("") || strFilter.equals(" ") || strFilter.equals("-") || strFilter.equals("--"))
+            {
+                strFilter = "unbekannt";
+            }
+            liFilter.add(strFilter.trim());
+        }
+
+        if (typ.toUpperCase().equals("ERREICHBARKEIT"))
+        {
+            typ = "CODE";
+        }
+
+        hmFilter.put(typ, liFilter);
+        connPool.releaseConnection(conn);
+
+        for (Map.Entry e : hmFilter.entrySet())
+        {
+            System.out.println(e.getKey() + "---" + e.getValue());
+        }
+
+        return hmFilter;
+    }
+
+    /**
      *
      * @param args
      * @throws Exception
@@ -991,7 +1055,7 @@ public class DB_Access
         HashMap<String, LinkedList<String>> hm = new HashMap<>();
         try
         {
-            theInstance.getMethodeFuerTyp("alter");
+            theInstance.getMethodeFuerTyp("Funktionsinstanz");
             // hm = theInstance.getFilterFuerGruppe("gruppe");
 
         } catch (Exception ex)
