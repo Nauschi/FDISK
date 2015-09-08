@@ -12,6 +12,7 @@ import Beans.MitgliedsErreichbarkeit;
 import Beans.MitgliedsGeburtstag;
 import Beans.Rohbericht;
 import Database.DB_Access;
+import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,6 +30,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -153,6 +155,17 @@ public class MainServlet extends HttpServlet
                 Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
+        }else if(request.getParameter("button_bestaetigen")!=null)
+        {
+            System.out.println("In bestätigen");
+//            JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir")); ????????????????
+//            fileChooser.showSaveDialog(); 
+//            File file = fileChooser.getSelectedFile();
+//            if(file!=null)
+//            {
+//                //save
+//                System.out.println("Test");
+//            }
         }
         processRequest(request, response);
     }

@@ -16,3 +16,10 @@ and open the template in the editor.
     width: 30%;
     float: bottom;
 }
+
+#div_loader
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+}

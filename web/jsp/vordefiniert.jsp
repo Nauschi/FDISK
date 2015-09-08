@@ -21,6 +21,7 @@ aaaaasdfsdf
         <title>Vordefiniert</title>
     </head>
     <body>
+        
         <div class="ui segment" id="div_oben">
             <div id="div_image">
                 <img class="ui small image" src="res/logo_oben.png">
@@ -53,7 +54,7 @@ aaaaasdfsdf
         <h1>Vordefiniert</h1>
         <div class="ui grid" id="div_mitte">
             <div id="div_loader" class="ui active inverted dimmer">
-                <div class="ui text loader">Loading..</div>
+                <div class="ui large text loader">Loading..</div>
             </div>
             <div class="four wide column">
                 <div class="ui vertical fluid tabular menu" id="div_liste">
@@ -134,21 +135,21 @@ aaaaasdfsdf
                             </div>
                         </div>
                     </form>
+                    <form action="MainServlet" method="POST">
+                        <div id="div_table" style="margin-top: 20px">
 
-                    <div id="div_table" style="margin-top: 20px">
-
-                    </div>
-                    <div id="div_abbrechen_bestaetigen" style="display:none" class="ui segment">
-                        <div class="ui equal width grid">
-                            <div class="column">
-                                <button class="ui button" style="background-color: #C00518; width: 100%; color: white;">Zurücksetzen</button>
-                            </div>
-                            <div class="column">
-                                <button class="ui button" style="background-color: #007336; width: 100%; color: white;">Bestätigen</button>
+                        </div>
+                        <div id="div_abbrechen_bestaetigen" style="display:none" class="ui segment">
+                            <div class="ui equal width grid">
+                                <div class="column">
+                                    <button class="ui button" style="background-color: #C00518; width: 100%; color: white;">Zurücksetzen</button>
+                                </div>
+                                <div class="column">
+                                    <button type="submit" name="button_bestaetigen" class="ui button"  style="background-color: #007336; width: 100%; color: white;">Bestätigen</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
+                    </form>
                 </div>
             </div>
         </div>
@@ -159,34 +160,33 @@ aaaaasdfsdf
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
         <script src="js/vordefiniert.js"></script>
-
-
-
+        <script src="js/tablesort.js"></script>
+        <script>$('.ui.dropdown').dropdown();</script>
 
         <script>
-                        $(function () {
-                            $("#input_von_datum").datepicker({
-                                onSelect: function (selected)
-                                {
-                                    var dt = new Date(selected);
-                                    dt.setDate(dt.getDate() + 1);
-                                    $("#input_bis_datum").datepicker("option", "minDate", dt);
-                                    $("#input_von_datum").datepicker("option", "showAnim", "slideDown");
-                                    $("#input_von_datum").datepicker("option", "dateFormat", "dd.mm.yy");
-                                    $("#input_von_datum").datepicker("option", $.datepicker.regional['de']);
-                                }
-                            });
-                            $("#input_bis_datum").datepicker({
-                                onSelect: function (selected) {
-                                    var dt = new Date(selected);
-                                    dt.setDate(dt.getDate() - 1);
-                                    $("#input_von_datum").datepicker("option", "maxDate", dt);
-                                    $("#input_bis_datum").datepicker("option", "showAnim", "slideDown");
-                                    $("#input_bis_datum").datepicker("option", "dateFormat", "dd.mm.yy");
-                                    $("#input_bis_datum").datepicker("option", $.datepicker.regional['de']);
-                                }
-                            });
-                        });
+            $(function () {
+                $("#input_von_datum").datepicker({
+                    onSelect: function (selected)
+                    {
+                        var dt = new Date(selected);
+                        dt.setDate(dt.getDate() + 1);
+                        $("#input_bis_datum").datepicker("option", "minDate", dt);
+                        $("#input_von_datum").datepicker("option", "showAnim", "slideDown");
+                        $("#input_von_datum").datepicker("option", "dateFormat", "dd.mm.yy");
+                        $("#input_von_datum").datepicker("option", $.datepicker.regional['de']);
+                    }
+                });
+                $("#input_bis_datum").datepicker({
+                    onSelect: function (selected) {
+                        var dt = new Date(selected);
+                        dt.setDate(dt.getDate() - 1);
+                        $("#input_von_datum").datepicker("option", "maxDate", dt);
+                        $("#input_bis_datum").datepicker("option", "showAnim", "slideDown");
+                        $("#input_bis_datum").datepicker("option", "dateFormat", "dd.mm.yy");
+                        $("#input_bis_datum").datepicker("option", $.datepicker.regional['de']);
+                    }
+                });
+            });
         </script>
         <script>
 
@@ -216,7 +216,7 @@ aaaaasdfsdf
                 {
                     LinkedList<Object> liBerichtDaten = (LinkedList<Object>) request.getAttribute("liste");
                     String strHTML = "";
-                    for (int i = 0; i < liBerichtDaten.size(); i++)
+                    for (int i = 0; i < liBerichtDaten.size() - 1; i++)
                     {
                         Object zeile = liBerichtDaten.get(i);
                         strHTML += zeile.toString();
@@ -224,17 +224,17 @@ aaaaasdfsdf
             %>
                 document.getElementById("div_abbrechen_bestaetigen").style.display = "block";
                 document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
-                //$('.sortable.table').tablesort();
+                $('.sortable.table').tablesort();
             <%
                 }
             %>
                 document.getElementById("div_loader").className = "ui disabled loader";
             });
-            
-            
+
+
 
         </script>
 
-        <script>$('.ui.dropdown').dropdown();</script>
+
     </body>
 </html>
