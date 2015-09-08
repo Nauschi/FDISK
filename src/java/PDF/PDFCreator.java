@@ -30,29 +30,34 @@ import java.util.logging.Logger;
  *
  * @author kinco_000
  */
-public class PDFCreator {
+public class PDFCreator
+{
 
     /**
-     * Creates a PDF with a specified name and with the content of an HTML String.
-     * The format can be specified with either "hoch" or "quer". A .css file can 
-     * also be included for an improved user interface. 
+     * Creates a PDF with a specified name and with the content of an HTML
+     * String. The format can be specified with either "hoch" or "quer". A .css
+     * file can also be included for an improved user interface.
+     *
      * @param strDateiNamePDF
      * @param strHTMLInhalt
      * @param strFormat
      * @throws IOException
      * @throws DocumentException
-     * @throws CssResolverException 
+     * @throws CssResolverException
      */
-    public void createPdf(String strDateiNamePDF, String strHTMLInhalt, String strFormat) throws IOException, DocumentException, CssResolverException {
+    public void createPdf(String strDateiNamePDF, String strHTMLInhalt, String strFormat) throws IOException, DocumentException, CssResolverException
+    {
         Document docPDF;
-        strDateiNamePDF+=".pdf";
-        if (strFormat.equals("quer")) {
+        strDateiNamePDF += ".pdf";
+        if (strFormat.equals("quer"))
+        {
             docPDF = new Document(PageSize.A4.rotate());
-        } else {
+        } else
+        {
             docPDF = new Document(PageSize.A4);
         }
         PdfWriter writer = PdfWriter.getInstance(docPDF, new FileOutputStream(strDateiNamePDF));
-        
+
         docPDF.addAuthor("HTL Kaindorf - Yvonne Hartner, Corinna Kindlhofer, Philipp Nauschnegg, Marcel Schmidt, Christoph Schöllauf");
         docPDF.addCreationDate();
         docPDF.open();
@@ -60,28 +65,47 @@ public class PDFCreator {
         HtmlPipelineContext htmlContext = new HtmlPipelineContext(null);
         htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
         CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(false);
-        
-        //hier das (falls benötigt) CSS File einbinden für die .pdf Datei
-        //cssResolver.addCssFile(System.getProperty("user.home") + "/Desktop/styles.css", true);
 
+        //hier das (falls benötigt) CSS File einbinden für die .pdf Datei
+        //cssResolver.addCssFile(System.getProperty("user.home") + "/Desktop/semantic/dist/semantic.css", true);
+        cssResolver.addCssFile(System.getProperty("user.home") + "/Desktop/test.css", true);
         Pipeline<?> pipeline = new CssResolverPipeline(cssResolver, new HtmlPipeline(htmlContext, new PdfWriterPipeline(docPDF, writer)));
 
         XMLWorker worker = new XMLWorker(pipeline, true);
         XMLParser p = new XMLParser(worker);
         p.parse(new StringReader(strHTMLInhalt));
 
-        if (docPDF.isOpen()) {
+        if (docPDF.isOpen())
+        {
             docPDF.close();
         }
 
     }
 
     //nur zum Testen!
-    public static void main(String[] args) throws IOException, DocumentException {
+    public static void main(String[] args) throws IOException, DocumentException
+    {
+        String strHtml = "<html>"
+                + "<body>"
+                + "<table class=\"ui celled table\">"
+                + "<tbody>"
+                + "<tr>"
+                + "<td>Test</td>"
+                + "<td>Test2</td>"
+                + "<td>Test2</td>"
+                + "</tr>"
+                + "<tr><td>Test1</td></tr>"
+                + "</tbody>"
+                + "</table>"
+                + "</body>"
+                + "</html>";
+
         String pdf = System.getProperty("user.home") + "/Desktop/test";
-        try {
-            new PDFCreator().createPdf(pdf, "<html><h1>Lorem ipsum</h1></html>", "quer");
-        } catch (CssResolverException ex) {
+        try
+        {
+            new PDFCreator().createPdf(pdf, strHtml, "hoch");
+        } catch (CssResolverException ex)
+        {
             Logger.getLogger(PDFCreator.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

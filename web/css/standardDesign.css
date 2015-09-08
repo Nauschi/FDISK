@@ -7,11 +7,12 @@ and open the template in the editor.
     Created on : 02.08.2015, 14:48:36
     Author     : user
 */
-*
-{
-   font-family: Cambria; 
-}
 
+
+*,h2, h1
+{
+   font-family: Cambria;
+}
 
 
 body

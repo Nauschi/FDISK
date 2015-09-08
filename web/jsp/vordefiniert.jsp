@@ -131,6 +131,7 @@ aaaaasdfsdf
                             </div>
                         </div>
                     </form>
+
                     <div id="div_table" style="margin-top: 20px">
                         <table id="table" class="ui sortable celled table">
                             <thead>
@@ -159,7 +160,7 @@ aaaaasdfsdf
                             </tbody>
                         </table>
                     </div>
-                    <div id="div_abbrechen_bestaetigen">
+                    <div id="div_abbrechen_bestaetigen" style="display:none" class="ui segment">
                         <div class="ui equal width grid">
                             <div class="column">
                                 <button class="ui button" style="background-color: #C00518; width: 100%; color: white;">Zurücksetzen</button>
@@ -225,6 +226,7 @@ aaaaasdfsdf
             <%
                 }
             %>
+                
                 item.className = "item active";
                 var strBerichtname = item.getElementsByTagName("span")[0].innerHTML;
                 document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = strBerichtname;
@@ -236,12 +238,13 @@ aaaaasdfsdf
                 {
                     LinkedList<Object> liBerichtDaten = (LinkedList<Object>) request.getAttribute("liste");
                     String strHTML = "";
-                    for (int i = 0; i < 5; i++)
+                    for (int i = 0; i < liBerichtDaten.size(); i++)
                     {
                         Object zeile = liBerichtDaten.get(i);
                         strHTML += zeile.toString();
                     }
             %>
+                document.getElementById("div_abbrechen_bestaetigen").style.display="block";
                 document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
             <%
                 }

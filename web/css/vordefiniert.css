@@ -10,9 +10,9 @@ and open the template in the editor.
 
 #div_abbrechen_bestaetigen
 {
-    position: absolute;
-    bottom: 2%;
-    right: 2%;
-    width: 50%;
+    position: fixed;
+    bottom: 0px;
+    right: 11%;
+    width: 30%;
     float: bottom;
 }

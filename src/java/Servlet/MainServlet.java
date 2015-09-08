@@ -119,8 +119,7 @@ public class MainServlet extends HttpServlet
         }else if(request.getParameter("vordefiniert")!=null)
         {
             request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
-        }
-        else if (request.getParameter("button_vorschau") != null)
+        } else if (request.getParameter("button_vorschau") != null)
         {
             try
             {
