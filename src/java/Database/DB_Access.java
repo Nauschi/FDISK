@@ -495,18 +495,20 @@ public class DB_Access
             getFilterFuerKurs(typ);
         } else if (typ.toUpperCase().equals("FUNKTIONSINSTANZ") || typ.toUpperCase().equals("FUNKTIONSBEZEICHNUNG") || typ.toUpperCase().equals("FUNKTION VON") || typ.toUpperCase().equals("FUNKTION BIS"))
         {
-            if (typ.toUpperCase().equals("FUNKTIONSBEZEICHNUNG"))
+            switch (typ.toUpperCase())
             {
-                typ = "BEZEICHNUNG";
-            } else if (typ.toUpperCase().equals("FUNKTIONSINSTANZ"))
-            {
-                typ = "ID_INSTANZTYPEN";
-            } else if (typ.toUpperCase().equals("FUNKTION VON"))
-            {
-                typ = "DATUM_VON";
-            } else
-            {
-                typ = "DATUM_BIS";
+                case "FUNKTIONSBEZEICHNUNG":
+                    typ = "BEZEICHNUNG";
+                    break;
+                case "FUNKTIONSINSTANZ":
+                    typ = "ID_INSTANZTYPEN";
+                    break;
+                case "FUNKTION VON":
+                    typ = "DATUM_VON";
+                    break;
+                default:
+                    typ = "DATUM_BIS";
+                    break;
             }
             getFilterFuerFunktion(typ);
         } else if (typ.toUpperCase().equals("ALTER"))
@@ -534,15 +536,17 @@ public class DB_Access
             getFilterFuerAuszeichnung(typ);
         } else if (typ.toUpperCase().equals("LEISTUNGSABZEICHENBEZEICHNUNG") || typ.toUpperCase().equals("LEISTUNGSABZEICHENSTUFE") || typ.toUpperCase().equals("LEISTUNGSABZEICHENDATUM"))
         {
-            if (typ.toUpperCase().equals("LEISTUNGSABZEICHENBEZEICHNUNG"))
+            switch (typ.toUpperCase())
             {
-                typ = "BEZEICHNUNG";
-            } else if (typ.toUpperCase().equals("LEISTUNGSABZEICHENSTUFE"))
-            {
-                typ = "STUFE";
-            } else if (typ.toUpperCase().equals("LEISTUNGSABZEICHENDATUM"))
-            {
-                typ = "DATUM";
+                case "LEISTUNGSABZEICHENBEZEICHNUNG":
+                    typ = "BEZEICHNUNG";
+                    break;
+                case "LEISTUNGSABZEICHENSTUFE":
+                    typ = "STUFE";
+                    break;
+                case "LEISTUNGSABZEICHENDATUM":
+                    typ = "DATUM";
+                    break;
             }
             getFilterFuerLeistungsabzeichen(typ);
         } else
@@ -629,15 +633,18 @@ public class DB_Access
         {
             String strFilter = rs.getString("Geschlecht");
 
-            if (strFilter.equals("") || strFilter.equals(" "))
+            switch (strFilter)
             {
-                strFilter = "Unbekannt";
-            } else if (strFilter.equals("m"))
-            {
-                strFilter = "Herr";
-            } else if (strFilter.equals("w"))
-            {
-                strFilter = "Frau";
+                case "":
+                case " ":
+                    strFilter = "Unbekannt";
+                    break;
+                case "m":
+                    strFilter = "Herr";
+                    break;
+                case "w":
+                    strFilter = "Frau";
+                    break;
             }
 
             liFilter.add(strFilter);
@@ -783,18 +790,20 @@ public class DB_Access
             liFilter.add(strFilter);
         }
 
-        if (typ.toUpperCase().equals("BEZEICHNUNG"))
+        switch (typ.toUpperCase())
         {
-            typ = "FUNKTIONSBEZEICHNUNG";
-        } else if (typ.toUpperCase().equals("ID_INSTANZTYPEN"))
-        {
-            typ = "FUNKTIONSINSTANZ";
-        } else if (typ.toUpperCase().equals("DATUM_VON"))
-        {
-            typ = "FUNKTION VON";
-        } else if (typ.toUpperCase().equals("DATUM_BIS"))
-        {
-            typ = "FUNKTION BIS";
+            case "BEZEICHNUNG":
+                typ = "FUNKTIONSBEZEICHNUNG";
+                break;
+            case "ID_INSTANZTYPEN":
+                typ = "FUNKTIONSINSTANZ";
+                break;
+            case "DATUM_VON":
+                typ = "FUNKTION VON";
+                break;
+            case "DATUM_BIS":
+                typ = "FUNKTION BIS";
+                break;
         }
 
         hmFilter.put(typ, liFilter);
