@@ -14,16 +14,16 @@ import java.util.Objects;
 public class LoginMitglied
 {
     int intId_User; 
-    String strVorname;
-    String strNachname;
-    String strTitel; 
+    int intFubwehr;
+    int intIDGruppe;
+    String strGruppe;
 
-    public LoginMitglied(int intId_User, String strVorname, String strNachname, String strTitel)
+    public LoginMitglied(int intId_User, int intFubwehr, int intIDGruppe, String strGruppe)
     {
         this.intId_User = intId_User;
-        this.strVorname = strVorname;
-        this.strNachname = strNachname;
-        this.strTitel = strTitel;
+        this.intFubwehr = intFubwehr;
+        this.intIDGruppe = intIDGruppe;
+        this.strGruppe = strGruppe;
     }
 
     public int getIntId_User()
@@ -36,34 +36,34 @@ public class LoginMitglied
         this.intId_User = intId_User;
     }
 
-    public String getStrVorname()
+    public int getIntFubwehr()
     {
-        return strVorname;
+        return intFubwehr;
     }
 
-    public void setStrVorname(String strVorname)
+    public void setIntFubwehr(int intFubwehr)
     {
-        this.strVorname = strVorname;
+        this.intFubwehr = intFubwehr;
     }
 
-    public String getStrNachname()
+    public int getIntIDGruppe()
     {
-        return strNachname;
+        return intIDGruppe;
     }
 
-    public void setStrNachname(String strNachname)
+    public void setIntIDGruppe(int intIDGruppe)
     {
-        this.strNachname = strNachname;
+        this.intIDGruppe = intIDGruppe;
     }
 
-    public String getStrTitel()
+    public String getStrGruppe()
     {
-        return strTitel;
+        return strGruppe;
     }
 
-    public void setStrTitel(String strTitel)
+    public void setStrGruppe(String strGruppe)
     {
-        this.strTitel = strTitel;
+        this.strGruppe = strGruppe;
     }
 
     @Override
@@ -89,15 +89,15 @@ public class LoginMitglied
         {
             return false;
         }
-        if (!Objects.equals(this.strVorname, other.strVorname))
+        if (this.intFubwehr != other.intFubwehr)
         {
             return false;
         }
-        if (!Objects.equals(this.strNachname, other.strNachname))
+        if (this.intIDGruppe != other.intIDGruppe)
         {
             return false;
         }
-        if (!Objects.equals(this.strTitel, other.strTitel))
+        if (!Objects.equals(this.strGruppe, other.strGruppe))
         {
             return false;
         }
@@ -107,8 +107,10 @@ public class LoginMitglied
     @Override
     public String toString()
     {
-        return "LoginMitglied{" + "intId_User=" + intId_User + ", strVorname=" + strVorname + ", strNachname=" + strNachname + ", strTitel=" + strTitel + '}';
+        return "LoginMitglied{" + "intId_User=" + intId_User + ", intFubwehr=" + intFubwehr + ", intIDGruppe=" + intIDGruppe + ", strGruppe=" + strGruppe + '}';
     }
+    
+    
     
     
 }

@@ -16,6 +16,7 @@ import Beans.MitgliedsErreichbarkeit;
 import Beans.MitgliedsGeburtstag;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -51,6 +52,59 @@ public class DB_Access
     private DB_Access() throws ClassNotFoundException
     {
         connPool = DB_ConnectionPool.getInstance();
+    }
+
+    public int getUserID(String strUsername, String strPasswort) throws SQLException, Exception
+    {
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+        String sqlString = "SELECT IDUser \"IDUser\", username \"username\", passwort \"passwort\" "
+                + " FROM FDISK.dbo.tbl_login_benutzer "
+                + " WHERE username = '" + strUsername
+                + "' AND passwort = '" + strPasswort+"'";
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        if (!rs.next())
+        {
+            connPool.releaseConnection(conn);
+                return -1;
+        }
+
+
+        int intIDUser = rs.getInt("IDUser");
+        connPool.releaseConnection(conn);
+
+        return intIDUser;
+
+    }
+    
+    public LinkedList<LoginMitglied> getLoginBerechtigung(int intUserID) throws SQLException, Exception
+    {
+        LinkedList<LoginMitglied> liMitglieder = new LinkedList<>();
+        
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+        String sqlString = "SELECT fubwehr \"Fubwehr\", gruppe.IDGruppe \"IDGruppe\", Bezeichnung \"Bezeichnung\" " +
+                           "FROM FDISK.dbo.tbl_login_benutzerdetail benutzerdetail INNER JOIN FDISK.dbo.tbl_login_gruppenbenutzer gruppenbenutzer ON(benutzerdetail.IDUser = gruppenbenutzer.IDUser) " +
+                           "INNER JOIN FDISK.dbo.tbl_login_gruppe gruppe ON(gruppe.IDGruppe = gruppenbenutzer.IDGruppe) " +
+                           "WHERE benutzerdetail.IDUser = "+intUserID;
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        while (rs.next())
+        {
+            int intFubwehr = rs.getInt("Fubwehr");
+            int intIDGruppe = rs.getInt("IDGruppe");
+            String strBezeichnung = rs.getString("Bezeichnung");
+            
+            LoginMitglied lm = new LoginMitglied(intUserID, intFubwehr, intIDGruppe, strBezeichnung);
+            
+            liMitglieder.add(lm);
+            
+        }
+
+        connPool.releaseConnection(conn);
+        return liMitglieder;
+
     }
 
     /**
@@ -1103,17 +1157,20 @@ public class DB_Access
         HashMap<String, LinkedList<String>> hm = new HashMap<>();
         try
         {
-            theInstance.getMethodeFuerTyp("LEISTUNGSABZEICHENDATUM");
-            // hm = theInstance.getFilterFuerGruppe("gruppe");
+            int user = theInstance.getUserID("ljgglpjhlpkh", "brdfFred");
+            
+            LinkedList<LoginMitglied> lm = theInstance.getLoginBerechtigung(user);
+            
+            for (LoginMitglied lm1 : lm)
+            {
+                System.out.println(lm1.getIntId_User() + "-" + lm1.getIntFubwehr()+"-"+lm1.getIntIDGruppe());
+            }
+            
 
         } catch (Exception ex)
         {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        for (Map.Entry e : hm.entrySet())
-//        {
-//            System.out.println(e.getKey() + "---" + e.getValue());
-//
-//        }
+
     }
 }

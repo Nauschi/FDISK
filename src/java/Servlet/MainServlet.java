@@ -12,7 +12,6 @@ import Beans.MitgliedsErreichbarkeit;
 import Beans.MitgliedsGeburtstag;
 import Beans.Rohbericht;
 import Database.DB_Access;
-import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
