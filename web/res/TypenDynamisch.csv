@@ -1,46 +1,46 @@
-Anrede;
-Geschlecht;
-Titel;
-Amtstitel;
-Vorname;
-Zuname;
-Namenszusatz;
-Geburtsdatum;
-Alter;
-Geburtsort;
-SVNR;
-StaatsbÃ¼rgerschaft;
-ISCO-Beruf;
-Familienstand;
-Blutgruppe;
-Standesbuchnummer;
-Eintrittsdatum ;
-Dienstalter;
-Angelobungsdatum;
-Status;
-Dienstgrad;
-Vordienstzeit in Jahren;
-Zug;
-Gruppe;
-StraÃŸe;
-Hausnummer;
-Stiege/Stock/TÃ¼r;
-Ort;
-Erreichbarkeitsart;
-Erreichbarkeit;
-Auszeichnungsart;
-Auszeichnungsstufe;
-Auszeichnungsdatum;
-FÃ¼hrerscheinklasse;
-GÃ¼ltig bis;
-Funktionsinstanz;
-Funktionsbezeichnung;
-Funktion von;
-Funktion bis;
-Kursbezeichnung;
-Kursdatum;
-Leistungsabzeichenbezeichnung;
-Leistungsabzeichen Stufe;
-Leistungsabzeichendatum;
-Untersuchungsart;
-Untersuchungsdatum;
+Anrede
+Geschlecht
+Titel
+Amtstitel
+Vorname
+Zuname
+Namenszusatz
+Geburtsdatum
+Alter
+Geburtsort
+SVNR
+Staatsbürgerschaft
+ISCO-Beruf
+Familienstand
+Blutgruppe
+Standesbuchnummer
+Eintrittsdatum
+Dienstalter
+Angelobungsdatum
+Status
+Dienstgrad
+Vordienstzeit in Jahren
+Zug
+Gruppe
+Straße
+Hausnummer
+Stiege/Stock/Tür
+Ort
+Erreichbarkeitsart
+Erreichbarkeit
+Auszeichnungsart
+Auszeichnungsstufe
+Auszeichnungsdatum
+Führerscheinklasse
+Gültig bis
+Funktionsinstanz
+Funktionsbezeichnung
+Funktion von
+Funktion bis
+Kursbezeichnung
+Kursdatum
+Leistungsabzeichenbezeichnung
+Leistungsabzeichen Stufe
+Leistungsabzeichendatum
+Untersuchungsart
+Untersuchungsdatum

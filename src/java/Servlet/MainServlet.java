@@ -15,6 +15,7 @@ import Database.DB_Access;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -116,7 +117,7 @@ public class MainServlet extends HttpServlet
             }
         }else if(request.getParameter("dynamisch")!=null)
         {
-            request.getRequestDispatcher("jsp/dynamisch_mitarbeiter.jsp").forward(request, response);
+            request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
         }else if(request.getParameter("vordefiniert")!=null)
         {
             request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
@@ -196,24 +197,26 @@ public class MainServlet extends HttpServlet
         {
             String strContextPath = this.getServletContext().getRealPath("/");
             strPath = strContextPath
-                    + File.separator + "res"
-                    + File.separator + "Rohberichte.csv";
-            leseDatei(strPath);
+                    + File.separator + "res";
+            
+            leseRohberichte(strPath + File.separator + "Rohberichte.csv");
+            leseTypenDynamisch(strPath + File.separator + "TypenDynamisch.csv");
         } catch (IOException ex)
         {
-            try
-            {
-                strPath = System.getProperty("user.dir")
-                        + File.separator + "web"
-                        + File.separator + "res"
-                        + File.separator + "Rohberichte.csv";
-
-                leseDatei(strPath);
-            } catch (IOException ex1)
-            {
-                Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex1);
-            }
+//            try
+//            {
+//                strPath = System.getProperty("user.dir")
+//                        + File.separator + "web"
+//                        + File.separator + "res"
+//                        + File.separator + "Rohberichte.csv";
+//
+//                leseRohberichte(strPath);
+//            } catch (IOException ex1)
+//            {
+//                Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex1);
+//            }
         }
+        
 
     }
 
@@ -223,11 +226,11 @@ public class MainServlet extends HttpServlet
      * @throws UnsupportedEncodingException
      * @throws IOException
      */
-    public void leseDatei(String strPath) throws UnsupportedEncodingException, IOException
+    public void leseRohberichte(String strPfad) throws UnsupportedEncodingException, IOException
     {
         ServletContext servletContext = this.getServletContext();
 
-        File file = new File(strPath);
+        File file = new File(strPfad);
         LinkedList<Rohbericht> liRohberichte = new LinkedList<>();
 
         FileInputStream fis = new FileInputStream(file);
@@ -250,6 +253,27 @@ public class MainServlet extends HttpServlet
         br.close();
 
         servletContext.setAttribute("rohberichte", liRohberichte);
+    }
+    
+    
+    public void leseTypenDynamisch(String strPfad) throws FileNotFoundException, UnsupportedEncodingException, IOException
+    {
+        File file = new File(strPfad);
+        LinkedList<String> liTypen = new LinkedList<>();
+
+        FileInputStream fis = new FileInputStream(file);
+        InputStreamReader isr = new InputStreamReader(fis, "ISO-8859-1");
+        BufferedReader br = new BufferedReader(isr);
+        String strReihe;
+
+        while ((strReihe = br.readLine()) != null)
+        {
+            liTypen.add(strReihe);
+        }
+        br.close();
+
+        this.getServletContext().setAttribute("Typen", liTypen);
+        System.out.println("Gelesen");
     }
 
 }

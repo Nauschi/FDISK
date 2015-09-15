@@ -4,6 +4,7 @@
     Author     : user
 --%>
 
+<%@page import="java.util.LinkedList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,7 +13,7 @@
         <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
         <link rel="stylesheet" type="text/css" href="css/standardDesign.css">
         <link rel="stylesheet" type="text/css" href="css/dynamisch.css">
-        <title>Dynamisch - Mitarbeiter</title>
+        <title>Dynamisch - Mitglieder</title>
     </head>
     <body>
         <div class="ui segment" id="div_oben">
@@ -42,7 +43,7 @@
             </div>
         </div>
 
-        <h1>Dynamisch - Mitarbeiter</h1>
+        <h1>Dynamisch - Mitglieder</h1>
         <div class="ui grid" id="div_mitte">
 
             <br/>
@@ -56,7 +57,7 @@
                         <td style="width: 5%">
                             <button class="ui button" style="background-color: #C00518; color: white;">-</button>
                         </td>
-                        <td style="width: 10%">
+                        <td style="width: 5%">
                             <select name="select_klammer_auf" class="ui fluid dropdown" id="select_klammer">
                                 <option value=""></option>
                                 <option value="klammer1">(</option>
@@ -64,11 +65,29 @@
                                 <option value="klammer3">{</option>
                             </select>
                         </td>
-                        <td style="width: 15%">
+                        <td style="width: 25%">
                             <select name="select_typ" class="ui fluid dropdown" id="select_typ">
                                 <option value="">Typ</option>
-                                <option value="kurs">Kurs</option>
-                                <option value="la">LA</option>
+                                <%
+                            LinkedList<String> liTypen = (LinkedList<String>) application.getAttribute("Typen");
+                            for(String strTyp : liTypen)
+                            {
+                                %>
+                                <option value="<%=strTyp%>"><%=strTyp%></option>
+                                <%
+                            }
+                                %>
+                            </select>
+                        </td>
+                        <td style="width: 5%">
+                            <select name="select_operator" class="ui fluid dropdown" id="select_operator">
+                                <option value="">Operator</option>
+                                <option value="=">=</option>
+                                <option value=">=">>=</option>
+                                <option value="<="><=</option>
+                                <option value=">">></option>
+                                <option value="<"><</option>
+                                <option value="<>"><></option>
                             </select>
                         </td>
                         <td style="width: 25%">
@@ -78,7 +97,7 @@
                                 <option value="Technischer Lehrgang 2">Technischer Lehrgang 2</option>
                             </select>
                         </td>
-                        <td style="width: 10%">
+                        <td style="width: 5%">
                             <select name="select_klammer_zu" class="ui fluid dropdown" id="select_klammer">
                                 <option value=""></option>
                                 <option value="klammer1">)</option>
@@ -99,8 +118,7 @@
                             <button class="ui button" style="background-color: #007336; color: white;">+</button>
                         </td>
                     </tr>
-                    <%
-                        }
+                    <%                        }
                     %>
 
                 </tbody>
@@ -108,7 +126,7 @@
             <br/>
         </div>
         <br/>
-        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
         <script src="semantic/dist/semantic.min.js"></script>
         <script>$('.ui.dropdown').dropdown();</script>
     </body>
