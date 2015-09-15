@@ -12,8 +12,8 @@
         <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
         <link rel="stylesheet" type="text/css" href="css/standardDesign.css">
         <link rel="stylesheet" type="text/css" href="css/login.css">
-        <link rel="stylesheet" href="js/jquery-ui_1.css">
-        <link href="js/jquery-ui_2.css" rel="Stylesheet"type="text/css"/>
+        <link rel="stylesheet" href="css/jquery-ui_1.css">
+        <link href="css/jquery-ui_2.css" rel="Stylesheet"type="text/css"/>
         <title>Login</title>
     </head>
     <body>
