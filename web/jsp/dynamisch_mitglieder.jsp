@@ -44,29 +44,7 @@
             };
         %>
 
-        <%!
-            public String generiereSelect(String strSelectName, String[] strFeld, HttpServletRequest request)
-            {
 
-                String strAusgabe = "";
-                String strLetzteAuswahl = "";
-                if (request.getParameter(strSelectName) != null)
-                {
-                    strLetzteAuswahl = request.getParameter(strSelectName);
-                }
-                for (String strElement : strFeld)
-                {
-                    if (strLetzteAuswahl.equals(strElement))
-                    {
-                        strAusgabe += "<option value='" + strElement + "' selected>" + strElement + "</option>";
-                    } else
-                    {
-                        strAusgabe += "<option value='" + strElement + "'>" + strElement + "</option>";
-                    }
-                }
-                return strAusgabe;
-            }
-        %>
         <div class="ui segment" id="div_oben">
             <div id="div_image">
                 <img class="ui small image" src="res/logo_oben.png">
@@ -217,3 +195,29 @@
         <script>$('.ui.dropdown').dropdown();</script>
     </body>
 </html>
+
+
+
+<%!
+    public String generiereSelect(String strSelectName, String[] strFeld, HttpServletRequest request)
+    {
+
+        String strAusgabe = "";
+        String strLetzteAuswahl = "";
+        if (request.getParameter(strSelectName) != null)
+        {
+            strLetzteAuswahl = request.getParameter(strSelectName);
+        }
+        for (String strElement : strFeld)
+        {
+            if (strLetzteAuswahl.equals(strElement))
+            {
+                strAusgabe += "<option value='" + strElement + "' selected>" + strElement + "</option>";
+            } else
+            {
+                strAusgabe += "<option value='" + strElement + "'>" + strElement + "</option>";
+            }
+        }
+        return strAusgabe;
+    }
+%>
