@@ -131,7 +131,7 @@
                                 %>
                             </td>
                             <td style="width: 5%">
-                                <select name="select_klammer_auf_<%=i%>" class="ui fluid dropdown" id="select_klammer">
+                                <select name="select_klammer_auf_<%=i%>"  class="ui fluid dropdown" id="select_klammer">
                                     <option value=""></option>
                                     <%=generiereSelect("select_klammer_auf_" + i, strFeldKlammerAuf, request)%>
                                 </select>
