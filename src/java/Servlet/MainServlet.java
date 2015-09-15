@@ -166,7 +166,10 @@ public class MainServlet extends HttpServlet
 //                //save
 //                System.out.println("Test");
 //            }
-        }
+        }else if(request.getParameter("hidden_zaehler")!=null)
+        {
+            request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
+        }  
         processRequest(request, response);
     }
 
