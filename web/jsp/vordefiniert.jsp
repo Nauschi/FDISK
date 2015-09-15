@@ -16,8 +16,8 @@ aaaaasdfsdf
         <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
         <link rel="stylesheet" type="text/css" href="css/standardDesign.css">
         <link rel="stylesheet" type="text/css" href="css/vordefiniert.css">
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-        <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet"type="text/css"/>
+        <link rel="stylesheet" href="css/jquery-ui_1.css">
+        <link href="css/jquery-ui_2.css" rel="Stylesheet"type="text/css"/>
         <title>Vordefiniert</title>
     </head>
     <body>
@@ -155,9 +155,9 @@ aaaaasdfsdf
         </div>
         <br/>
 
-        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
         <script src="semantic/dist/semantic.min.js"></script>
-        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script src="js/jquery-ui.js"></script>
 
         <script src="js/vordefiniert.js"></script>
         <script src="js/tablesort.js"></script>
