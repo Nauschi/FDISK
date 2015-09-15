@@ -48,7 +48,7 @@
                     }
                 %>
                 <div class="sixteen wide column">
-                    <button type="submit" name="button_login" class="ui button" style="background-color: #007336; width: 100%; color: white;">Bestätigen</button>
+                    <button type="submit" name="button_login" class="ui button styleGruen" style="background-color: #007336; width: 100%; color: white;">Bestätigen</button>
                 </div>
             </div>
         </form>

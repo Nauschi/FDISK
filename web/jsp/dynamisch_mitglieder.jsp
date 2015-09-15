@@ -55,7 +55,7 @@
                     %>
                     <tr>
                         <td style="width: 5%">
-                            <button class="ui button" style="background-color: #C00518; color: white;">-</button>
+                            <button class="ui button styleRot" style="background-color: #C00518; color: white;">-</button>
                         </td>
                         <td style="width: 5%">
                             <select name="select_klammer_auf" class="ui fluid dropdown" id="select_klammer">
@@ -115,7 +115,7 @@
                             </select>
                         </td>
                         <td style="width: 5%">
-                            <button class="ui button" style="background-color: #007336; color: white;">+</button>
+                            <button class="ui button styleGruen" style="background-color: #007336; color: white;">+</button>
                         </td>
                     </tr>
                     <%                        }

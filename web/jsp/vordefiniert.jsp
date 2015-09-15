@@ -131,7 +131,7 @@ aaaaasdfsdf
                                 </div>
                             </div>
                             <div class="column">
-                                <button type="submit" name="button_vorschau" class="ui button" onclick="document.getElementById('div_loader').className = 'ui active inverted dimmer';" style="background-color: #707173; width: 100%; color: white;">Vorschau</button>
+                                <button type="submit" name="button_vorschau" class="ui button styleGrau" onclick="document.getElementById('div_loader').className = 'ui active inverted dimmer';" style="background-color: #707173; width: 100%; color: white;">Vorschau</button>
                             </div>
                         </div>
                     </form>
@@ -142,10 +142,10 @@ aaaaasdfsdf
                         <div id="div_abbrechen_bestaetigen" style="display:none" class="ui segment">
                             <div class="ui equal width grid">
                                 <div class="column">
-                                    <button class="ui button" style="background-color: #C00518; width: 100%; color: white;">Zurücksetzen</button>
+                                    <button class="ui button styleRot" style="background-color: #C00518; width: 100%; color: white;">Zurücksetzen</button>
                                 </div>
                                 <div class="column">
-                                    <button type="submit" name="button_bestaetigen" class="ui button"  style="background-color: #007336; width: 100%; color: white;">Bestätigen</button>
+                                    <button type="submit" name="button_bestaetigen" class="ui button styleGruen"  style="background-color: #007336; width: 100%; color: white;">Bestätigen</button>
                                 </div>
                             </div>
                         </div>

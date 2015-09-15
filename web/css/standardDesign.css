@@ -11,13 +11,13 @@ and open the template in the editor.
 
 *,h2, h1
 {
-   font-family: Cambria;
+    font-family: Cambria;
 }
 
 
 body
 {
-    
+
     background-image: url("../res/bg.png");
     background-size: 100%;
 }
@@ -26,7 +26,7 @@ body
 {
     background-color: white;
     width: 100%;
-    
+
 }
 
 #div_image
@@ -49,4 +49,16 @@ h1
 button
 {
     color: white;
+}
+
+.styleGruen:hover {
+    background: #338F5E !important;
+}
+
+.styleGrau:hover {
+    background: #8D8D8F !important;
+}
+
+.styleRot:hover {
+    background: #CD3746 !important;
 }
