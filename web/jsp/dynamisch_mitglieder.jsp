@@ -47,26 +47,25 @@
         <%!
             public String generiereSelect(String strSelectName, String[] strFeld, HttpServletRequest request)
             {
+
                 String strAusgabe = "";
-                String strAktAuswahl = "";
-                if (request.getParameter("select_klammer_auf_") != null)
+                String strLetzteAuswahl = "";
+                if (request.getParameter(strSelectName) != null)
                 {
-                    strAktAuswahl = request.getParameter("select_klammer_auf_");
+                    strLetzteAuswahl = request.getParameter(strSelectName);
                 }
-                for (String strKlammerAuf : strFeld)
+                for (String strElement : strFeld)
                 {
-                    if (strAktAuswahl.equals(strKlammerAuf))
+                    if (strLetzteAuswahl.equals(strElement))
                     {
-                        
+                        strAusgabe += "<option value='" + strElement + "' selected>" + strElement + "</option>";
                     } else
                     {
+                        strAusgabe += "<option value='" + strElement + "'>" + strElement + "</option>";
                     }
                 }
-        %>
-
-
-        return strAusgabe;
-        }
+                return strAusgabe;
+            }
         %>
         <div class="ui segment" id="div_oben">
             <div id="div_image">
@@ -134,27 +133,7 @@
                             <td style="width: 5%">
                                 <select name="select_klammer_auf_<%=i%>" class="ui fluid dropdown" id="select_klammer">
                                     <option value=""></option>
-                                    <%
-                                        String strAktKlammerAuf = "";
-                                        if (request.getParameter("select_klammer_auf_" + i) != null)
-                                        {
-                                            strAktKlammerAuf = request.getParameter("select_klammer_auf_" + i);
-                                        }
-                                        for (String strKlammerAuf : strFeldKlammerAuf)
-                                        {
-                                            if (strAktKlammerAuf.equals(strKlammerAuf))
-                                            {
-                                    %>
-                                    <option value="<%=strKlammerAuf%>" selected><%=strKlammerAuf%></option>
-                                    <%
-                                    } else
-                                    {
-                                    %>
-                                    <option value="<%=strKlammerAuf%>"><%=strKlammerAuf%></option>
-                                    <%
-                                            }
-                                        }
-                                    %>
+                                    <%=generiereSelect("select_klammer_auf_" + i, strFeldKlammerAuf, request)%>
                                 </select>
                             </td>
                             <td style="width: 25%">
@@ -190,105 +169,25 @@
                             <td style="width: 5%">
                                 <select name="select_operator_<%=i%>" class="ui fluid dropdown" id="select_operator">
                                     <option value="">Operator</option>
-                                    <%
-                                        String strAktOperator = "";
-                                        if (request.getParameter("select_operator_" + i) != null)
-                                        {
-                                            strAktOperator = request.getParameter("select_operator_" + i);
-                                        }
-                                        for (String strOperator : strFeldOperator)
-                                        {
-                                            if (strAktOperator.equals(strOperator))
-                                            {
-                                    %>
-                                    <option value="<%=strOperator%>" selected><%=strOperator%></option>
-                                    <%
-                                    } else
-                                    {
-                                    %>
-                                    <option value="<%=strOperator%>"><%=strOperator%></option>
-                                    <%
-                                            }
-                                        }
-                                    %>
+                                    <%=generiereSelect("select_operator_" + i, strFeldOperator, request)%>
                                 </select>
                             </td>
                             <td style="width: 25%">
                                 <select name="select_filter_<%=i%>" class="ui fluid dropdown" id="select_filter">
                                     <option value="">Filter</option>
-                                    <%
-                                        String strAktFilter = "";
-                                        if (request.getParameter("select_filter_" + i) != null)
-                                        {
-                                            strAktFilter = request.getParameter("select_filter_" + i);
-                                        }
-                                        for (String strFilter : strFeldFilter)
-                                        {
-                                            if (strAktFilter.equals(strFilter))
-                                            {
-                                    %>
-                                    <option value="<%=strFilter%>" selected><%=strFilter%></option>
-                                    <%
-                                    } else
-                                    {
-                                    %>
-                                    <option value="<%=strFilter%>"><%=strFilter%></option>
-                                    <%
-                                            }
-                                        }
-                                    %>
+                                    <%=generiereSelect("select_filter_" + i, strFeldFilter, request)%>
                                 </select>
                             </td>
                             <td style="width: 5%">
                                 <select name="select_klammer_zu_<%=i%>" class="ui fluid dropdown" id="select_klammer">
                                     <option value=""></option>
-                                    <%
-                                        String strAktKlammerZu = "";
-                                        if (request.getParameter("select_klammer_zu_" + i) != null)
-                                        {
-                                            strAktKlammerZu = request.getParameter("select_klammer_zu_" + i);
-                                        }
-                                        for (String strKlammerZu : strFeldKlammerZu)
-                                        {
-                                            if (strAktKlammerZu.equals(strKlammerZu))
-                                            {
-                                    %>
-                                    <option value="<%=strKlammerZu%>" selected><%=strKlammerZu%></option>
-                                    <%
-                                    } else
-                                    {
-                                    %>
-                                    <option value="<%=strKlammerZu%>"><%=strKlammerZu%></option>
-                                    <%
-                                            }
-                                        }
-                                    %>
+                                    <%=generiereSelect("select_klammer_zu_" + i, strFeldKlammerZu, request)%>
                                 </select>
                             </td>
                             <td>
                                 <select name="select_verknuepfung_<%=i%>" class="ui fluid dropdown" id="select_verknüpfung">
                                     <option value="">Verknüpfung</option>
-                                    <%
-                                        String strAktVerknuepfung = "";
-                                        if (request.getParameter("select_verknuepfung_" + i) != null)
-                                        {
-                                            strAktVerknuepfung = request.getParameter("select_verknuepfung_" + i);
-                                        }
-                                        for (String strVerknuepfung : strFeldVerknuepfung)
-                                        {
-                                            if (strAktVerknuepfung.equals(strVerknuepfung))
-                                            {
-                                    %>
-                                    <option value="<%=strVerknuepfung%>" selected><%=strVerknuepfung%></option>
-                                    <%
-                                    } else
-                                    {
-                                    %>
-                                    <option value="<%=strVerknuepfung%>"><%=strVerknuepfung%></option>
-                                    <%
-                                            }
-                                        }
-                                    %>
+                                    <%=generiereSelect("select_verknuepfung_" + i, strFeldVerknuepfung, request)%>
                                 </select>
                             </td>
                             <td style="width: 5%">
@@ -302,7 +201,8 @@
                                 %>
                             </td>
                         </tr>
-                        <%                        }
+                        <%
+                            }
                         %>
 
                     </tbody>
