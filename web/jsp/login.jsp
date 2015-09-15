@@ -12,8 +12,8 @@
         <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
         <link rel="stylesheet" type="text/css" href="css/standardDesign.css">
         <link rel="stylesheet" type="text/css" href="css/login.css">
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-        <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet"type="text/css"/>
+        <link rel="stylesheet" href="js/jquery-ui_1.css">
+        <link href="js/jquery-ui_2.css" rel="Stylesheet"type="text/css"/>
         <title>Login</title>
     </head>
     <body>
