@@ -199,6 +199,10 @@
 
 
 <%!
+
+    /**
+     * Generiert den Inhalt eines Dropdowns und setzt, falls vorhanden, zuletzt gewähltes Item auf "selected" 
+     */
     public String generiereSelect(String strSelectName, String[] strFeld, HttpServletRequest request)
     {
 

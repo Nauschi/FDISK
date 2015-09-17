@@ -276,7 +276,6 @@ public class MainServlet extends HttpServlet
         br.close();
 
         this.getServletContext().setAttribute("Typen", liTypen);
-        System.out.println("Gelesen");
     }
 
 }
