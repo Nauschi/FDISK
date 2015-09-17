@@ -61,15 +61,14 @@ public class DB_Access
         String sqlString = "SELECT IDUser \"IDUser\", username \"username\", passwort \"passwort\" "
                 + " FROM FDISK.dbo.tbl_login_benutzer "
                 + " WHERE username = '" + strUsername
-                + "' AND passwort = '" + strPasswort+"'";
+                + "' AND passwort = '" + strPasswort + "'";
         ResultSet rs = stat.executeQuery(sqlString);
 
         if (!rs.next())
         {
             connPool.releaseConnection(conn);
-                return -1;
+            return -1;
         }
-
 
         int intIDUser = rs.getInt("IDUser");
         connPool.releaseConnection(conn);
@@ -77,17 +76,17 @@ public class DB_Access
         return intIDUser;
 
     }
-    
+
     public LinkedList<LoginMitglied> getLoginBerechtigung(int intUserID) throws SQLException, Exception
     {
         LinkedList<LoginMitglied> liMitglieder = new LinkedList<>();
-        
+
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
-        String sqlString = "SELECT fubwehr \"Fubwehr\", gruppe.IDGruppe \"IDGruppe\", Bezeichnung \"Bezeichnung\" " +
-                           "FROM FDISK.dbo.tbl_login_benutzerdetail benutzerdetail INNER JOIN FDISK.dbo.tbl_login_gruppenbenutzer gruppenbenutzer ON(benutzerdetail.IDUser = gruppenbenutzer.IDUser) " +
-                           "INNER JOIN FDISK.dbo.tbl_login_gruppe gruppe ON(gruppe.IDGruppe = gruppenbenutzer.IDGruppe) " +
-                           "WHERE benutzerdetail.IDUser = "+intUserID;
+        String sqlString = "SELECT fubwehr \"Fubwehr\", gruppe.IDGruppe \"IDGruppe\", Bezeichnung \"Bezeichnung\" "
+                + "FROM FDISK.dbo.tbl_login_benutzerdetail benutzerdetail INNER JOIN FDISK.dbo.tbl_login_gruppenbenutzer gruppenbenutzer ON(benutzerdetail.IDUser = gruppenbenutzer.IDUser) "
+                + "INNER JOIN FDISK.dbo.tbl_login_gruppe gruppe ON(gruppe.IDGruppe = gruppenbenutzer.IDGruppe) "
+                + "WHERE benutzerdetail.IDUser = " + intUserID;
         ResultSet rs = stat.executeQuery(sqlString);
 
         while (rs.next())
@@ -95,15 +94,61 @@ public class DB_Access
             int intFubwehr = rs.getInt("Fubwehr");
             int intIDGruppe = rs.getInt("IDGruppe");
             String strBezeichnung = rs.getString("Bezeichnung");
-            
-            LoginMitglied lm = new LoginMitglied(intUserID, intFubwehr, intIDGruppe, strBezeichnung);
-            
-            liMitglieder.add(lm);
-            
+
+            if (intIDGruppe == 1 || intIDGruppe == 5 || intIDGruppe == 9 || intIDGruppe == 15)
+            {
+                LoginMitglied lm = new LoginMitglied(intUserID, intFubwehr, intIDGruppe, strBezeichnung);
+                liMitglieder.add(lm);
+            }
+
         }
 
         connPool.releaseConnection(conn);
         return liMitglieder;
+
+    }
+
+    public int getFubwehrForUserID(int intUserID) throws SQLException, Exception
+    {
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+        String sqlString = "SELECT fubwehr \"Fubwehr\""
+                + "FROM FDISK.dbo.tbl_login_benutzerdetail\n"
+                + "WHERE IDUser = " + intUserID;
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        int intFubwehr = 0;
+
+        while (rs.next())
+        {
+            intFubwehr = rs.getInt("Fubwehr");
+        }
+
+        connPool.releaseConnection(conn);
+        return intFubwehr;
+
+    }
+
+    public String getNameFuerFubwehr(int intFubwehr) throws SQLException, Exception
+    {
+        LinkedList<LoginMitglied> liMitglieder = new LinkedList<>();
+
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+        String sqlString = "SELECT TOP 1000 CONCAT(instanzart, ' ' , instanzname) \"Name\", id_instanzen "
+                + "FROM FDISK.dbo.qry_alle_feuerwehren "
+                + "WHERE id_instanzen = " + intFubwehr;
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        String strName = "";
+
+        while (rs.next())
+        {
+            strName = rs.getString("Name");
+        }
+
+        connPool.releaseConnection(conn);
+        return strName;
 
     }
 
@@ -929,7 +974,6 @@ public class DB_Access
             {
                 liFilter.add(strFilter);
             }
-
         }
 
         Collections.sort(liFilter, new Comparator<String>()
@@ -1157,15 +1201,19 @@ public class DB_Access
         HashMap<String, LinkedList<String>> hm = new HashMap<>();
         try
         {
-            int user = theInstance.getUserID("ljgglpjhlpkh", "brdfFred");
+            int user = theInstance.getUserID("Administrator", "53411");
+
+            LinkedList<LoginMitglied> lm = theInstance.getLoginBerechtigung(3554);
+            int fubwehr = theInstance.getFubwehrForUserID(user);
+            System.out.println("user: " + user + " \n fubwehr: " + fubwehr);
             
-            LinkedList<LoginMitglied> lm = theInstance.getLoginBerechtigung(user);
-            
+            String name = theInstance.getNameFuerFubwehr(30561);
+            System.out.println("fubwehr: "+fubwehr + " name: "+name);
+
             for (LoginMitglied lm1 : lm)
             {
-                System.out.println(lm1.getIntId_User() + "-" + lm1.getIntFubwehr()+"-"+lm1.getIntIDGruppe());
+                System.out.println(lm1.getIntId_User() + "-" + lm1.getIntFubwehr() + "-" + lm1.getIntIDGruppe());
             }
-            
 
         } catch (Exception ex)
         {
