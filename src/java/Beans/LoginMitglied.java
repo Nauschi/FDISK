@@ -13,15 +13,16 @@ import java.util.Objects;
  */
 public class LoginMitglied
 {
-    int intId_User; 
-    int intFubwehr;
+
+    int intId_User;
+    String strFubwehr;
     int intIDGruppe;
     String strGruppe;
 
-    public LoginMitglied(int intId_User, int intFubwehr, int intIDGruppe, String strGruppe)
+    public LoginMitglied(int intId_User, String intFubwehr, int intIDGruppe, String strGruppe)
     {
         this.intId_User = intId_User;
-        this.intFubwehr = intFubwehr;
+        this.strFubwehr = intFubwehr;
         this.intIDGruppe = intIDGruppe;
         this.strGruppe = strGruppe;
     }
@@ -36,14 +37,14 @@ public class LoginMitglied
         this.intId_User = intId_User;
     }
 
-    public int getIntFubwehr()
+    public String getStrFubwehr()
     {
-        return intFubwehr;
+        return strFubwehr;
     }
 
-    public void setIntFubwehr(int intFubwehr)
+    public void setStrFubwehr(String strFubwehr)
     {
-        this.intFubwehr = intFubwehr;
+        this.strFubwehr = strFubwehr;
     }
 
     public int getIntIDGruppe()
@@ -89,7 +90,7 @@ public class LoginMitglied
         {
             return false;
         }
-        if (this.intFubwehr != other.intFubwehr)
+        if (!Objects.equals(this.strFubwehr, other.strFubwehr))
         {
             return false;
         }
@@ -107,10 +108,7 @@ public class LoginMitglied
     @Override
     public String toString()
     {
-        return "LoginMitglied{" + "intId_User=" + intId_User + ", intFubwehr=" + intFubwehr + ", intIDGruppe=" + intIDGruppe + ", strGruppe=" + strGruppe + '}';
+        return "LoginMitglied{" + "intId_User=" + intId_User + ", strFubwehr=" + strFubwehr + ", intIDGruppe=" + intIDGruppe + ", strGruppe=" + strGruppe + '}';
     }
-    
-    
-    
-    
+
 }

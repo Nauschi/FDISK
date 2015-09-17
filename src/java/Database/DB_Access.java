@@ -91,13 +91,13 @@ public class DB_Access
 
         while (rs.next())
         {
-            int intFubwehr = rs.getInt("Fubwehr");
+            String strFubwehr = rs.getString("Fubwehr");
             int intIDGruppe = rs.getInt("IDGruppe");
             String strBezeichnung = rs.getString("Bezeichnung");
 
             if (intIDGruppe == 1 || intIDGruppe == 5 || intIDGruppe == 9 || intIDGruppe == 15)
             {
-                LoginMitglied lm = new LoginMitglied(intUserID, intFubwehr, intIDGruppe, strBezeichnung);
+                LoginMitglied lm = new LoginMitglied(intUserID, strFubwehr, intIDGruppe, strBezeichnung);
                 liMitglieder.add(lm);
             }
 
@@ -108,36 +108,97 @@ public class DB_Access
 
     }
 
-    public int getFubwehrForUserID(int intUserID) throws SQLException, Exception
+    public String getFubwehrForUserID(int intUserID) throws SQLException, Exception
     {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
-        String sqlString = "SELECT fubwehr \"Fubwehr\""
-                + "FROM FDISK.dbo.tbl_login_benutzerdetail\n"
+        String sqlString = "SELECT fubwehr \"Fubwehr\" "
+                + "FROM FDISK.dbo.tbl_login_benutzerdetail "
                 + "WHERE IDUser = " + intUserID;
         ResultSet rs = stat.executeQuery(sqlString);
 
-        int intFubwehr = 0;
+        String strFubwehr = "";
 
         while (rs.next())
         {
-            intFubwehr = rs.getInt("Fubwehr");
+            strFubwehr = rs.getString("Fubwehr");
         }
 
         connPool.releaseConnection(conn);
-        return intFubwehr;
+        return strFubwehr;
 
     }
 
-    public String getNameFuerFubwehr(int intFubwehr) throws SQLException, Exception
+    public int getAbschnittsnummerForFubwehr(String strFubwehr) throws SQLException, Exception
     {
-        LinkedList<LoginMitglied> liMitglieder = new LinkedList<>();
-
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
-        String sqlString = "SELECT TOP 1000 CONCAT(instanzart, ' ' , instanzname) \"Name\", id_instanzen "
+        String sqlString = "  SELECT DISTINCT f.Abschnitt_Instanznummer \"Nummer\" "
+                + "  FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer) "
+                + "  WHERE s.instanznummer = '" + strFubwehr + "'";
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        int intAbschnittsnummer = 0;
+
+        while (rs.next())
+        {
+            intAbschnittsnummer = rs.getInt("Nummer");
+        }
+
+        connPool.releaseConnection(conn);
+        return intAbschnittsnummer;
+
+    }
+
+    public String getNameFuerFubwehr(String strFubwehr) throws SQLException, Exception
+    {
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+        String sqlString = "SELECT TOP 1000 CONCAT(instanzart, ' ' , instanzname) \"Name\", instanznummer "
                 + "FROM FDISK.dbo.qry_alle_feuerwehren "
-                + "WHERE id_instanzen = " + intFubwehr;
+                + "WHERE id_instanzen = '" + strFubwehr + "'";
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        String strName = "";
+
+        while (rs.next())
+        {
+            strName = rs.getString("Name");
+        }
+
+        connPool.releaseConnection(conn);
+        return strName;
+
+    }
+
+    public String getAbschnittsnameFuerFubwehr(String strFubwehr) throws SQLException, Exception
+    {
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+        String sqlString = "SELECT Abschnitt_Instanznummer \"Instanznummer\", Abschnittsname \"Name\" "
+                + "FROM FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich "
+                + "WHERE instanznummer = '" + strFubwehr + "'";
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        String strName = "";
+
+        while (rs.next())
+        {
+            strName = rs.getString("Name");
+        }
+
+        connPool.releaseConnection(conn);
+        return strName;
+
+    }
+
+    public String getBereichsnameFuerFubwehr(String strFubwehr) throws SQLException, Exception
+    {
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+        String sqlString = "SELECT uebergeordneteInstanz \"Name\", Bereich_Nr \"Nr\" "
+                + "  FROM FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich "
+                + "  WHERE instanznummer = '" + strFubwehr + "'";
         ResultSet rs = stat.executeQuery(sqlString);
 
         String strName = "";
@@ -161,13 +222,45 @@ public class DB_Access
      * @see Mitglied
      * @see LinkedList
      */
-    public LinkedList<Mitglied> getEinfacheMitgliederliste() throws Exception
+    public LinkedList<Mitglied> getEinfacheMitgliederliste(int intUserID, int intGruppe) throws Exception
     {
         LinkedList<Mitglied> liMitglieder = new LinkedList<>();
+        String strFubwehr = getFubwehrForUserID(intUserID) + "";
+        String strBereich = strFubwehr.substring(0, 2);
+        int intAbschnittsnummer = getAbschnittsnummerForFubwehr(strFubwehr);
+
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
-        String sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
-                + "FROM FDISK.dbo.stmkmitglieder";
+
+        String sqlString = "";
+
+        switch (intGruppe)
+        {
+            case 1:
+                sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
+                        + "FROM FDISK.dbo.stmkmitglieder";
+                break;
+            case 5:
+                sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
+                        + "FROM FDISK.dbo.stmkmitglieder "
+                        + "WHERE SUBSTRING(instanznummer, 0, 3) = '" + strBereich + "'";
+                break;
+            case 9:
+                sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
+                        + "FROM FDISK.dbo.stmkmitglieder "
+                        + "WHERE instanznummer = '" + strFubwehr + "'";
+                break;
+            case 15:
+                sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
+                        + " FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer) "
+                        + " WHERE f.abschnitt_instanznummer = " + intAbschnittsnummer;
+                System.out.println(intAbschnittsnummer);
+                break;
+            default:
+                return null;
+
+        }
+
         ResultSet rs = stat.executeQuery(sqlString);
 
         String strSTB;
@@ -1201,18 +1294,10 @@ public class DB_Access
         HashMap<String, LinkedList<String>> hm = new HashMap<>();
         try
         {
-            int user = theInstance.getUserID("Administrator", "53411");
-
-            LinkedList<LoginMitglied> lm = theInstance.getLoginBerechtigung(3554);
-            int fubwehr = theInstance.getFubwehrForUserID(user);
-            System.out.println("user: " + user + " \n fubwehr: " + fubwehr);
-            
-            String name = theInstance.getNameFuerFubwehr(30561);
-            System.out.println("fubwehr: "+fubwehr + " name: "+name);
-
-            for (LoginMitglied lm1 : lm)
+            LinkedList<Mitglied> li = theInstance.getEinfacheMitgliederliste(3566, 15);
+            for (Mitglied li1 : li)
             {
-                System.out.println(lm1.getIntId_User() + "-" + lm1.getIntFubwehr() + "-" + lm1.getIntIDGruppe());
+                System.out.println(li1.getStrVorname() + "-" + li1.getStrZuname());
             }
 
         } catch (Exception ex)

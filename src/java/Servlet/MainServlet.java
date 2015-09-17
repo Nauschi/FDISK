@@ -130,8 +130,8 @@ public class MainServlet extends HttpServlet
                 if (strBericht.equals(liRohberichte.get(0).getStrBerichtname()))
                 {
 
-                    LinkedList<Mitglied> liMitglieder = access.getEinfacheMitgliederliste();
-                    request.setAttribute("liste", liMitglieder);
+                    //LinkedList<Mitglied> liMitglieder = access.getEinfacheMitgliederliste();
+                    //request.setAttribute("liste", liMitglieder);
 
                 } else if (strBericht.equals(liRohberichte.get(1).getStrBerichtname()))
                 {
