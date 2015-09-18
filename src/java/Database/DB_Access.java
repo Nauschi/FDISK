@@ -54,6 +54,14 @@ public class DB_Access
         connPool = DB_ConnectionPool.getInstance();
     }
 
+    /**
+     * Gibt die UserID für den jeweiligen Username zurück
+     * @param strUsername
+     * @param strPasswort
+     * @return
+     * @throws SQLException
+     * @throws Exception 
+     */
     public int getUserID(String strUsername, String strPasswort) throws SQLException, Exception
     {
         Connection conn = connPool.getConnection();
@@ -77,6 +85,15 @@ public class DB_Access
 
     }
 
+    
+    /**
+     * Gibt eine LinkedList mit allen Berechtigungen eines Mitglieds zurück.
+     * Enthalten sind die UserID, die Fubwehr, die GruppenID und die Gruppenbezeichnung
+     * @param intUserID
+     * @return
+     * @throws SQLException
+     * @throws Exception 
+     */
     public LinkedList<LoginMitglied> getLoginBerechtigung(int intUserID) throws SQLException, Exception
     {
         LinkedList<LoginMitglied> liMitglieder = new LinkedList<>();
@@ -108,6 +125,13 @@ public class DB_Access
 
     }
 
+    /**
+     * Gibt die zugehörige Fubwehr einer UserID zurück.
+     * @param intUserID
+     * @return
+     * @throws SQLException
+     * @throws Exception 
+     */
     public String getFubwehrForUserID(int intUserID) throws SQLException, Exception
     {
         Connection conn = connPool.getConnection();
@@ -129,6 +153,13 @@ public class DB_Access
 
     }
 
+    /**
+     * Gibt die zugehörige Abschnittsnummer einer Fubwehr zurück.
+     * @param strFubwehr
+     * @return
+     * @throws SQLException
+     * @throws Exception 
+     */
     public int getAbschnittsnummerForFubwehr(String strFubwehr) throws SQLException, Exception
     {
         Connection conn = connPool.getConnection();
@@ -150,6 +181,13 @@ public class DB_Access
 
     }
 
+    /**
+     * Gibt den Namen einer Fubwehr zurück. (z.B. FF Wagrain)
+     * @param strFubwehr
+     * @return
+     * @throws SQLException
+     * @throws Exception 
+     */
     public String getNameFuerFubwehr(String strFubwehr) throws SQLException, Exception
     {
         Connection conn = connPool.getConnection();
@@ -171,6 +209,13 @@ public class DB_Access
 
     }
 
+    /**
+     * Gibt den zugehörigen Abschnittsnamen für die Fubwehr zurück
+     * @param strFubwehr
+     * @return
+     * @throws SQLException
+     * @throws Exception 
+     */
     public String getAbschnittsnameFuerFubwehr(String strFubwehr) throws SQLException, Exception
     {
         Connection conn = connPool.getConnection();
@@ -189,9 +234,15 @@ public class DB_Access
 
         connPool.releaseConnection(conn);
         return strName;
-
     }
 
+    /**
+     * Gibt den zugehörigen Bereichsnamen einer Fubwehr zurück
+     * @param strFubwehr
+     * @return
+     * @throws SQLException
+     * @throws Exception 
+     */
     public String getBereichsnameFuerFubwehr(String strFubwehr) throws SQLException, Exception
     {
         Connection conn = connPool.getConnection();
@@ -210,13 +261,11 @@ public class DB_Access
 
         connPool.releaseConnection(conn);
         return strName;
-
     }
 
     /**
-     * Gibt eine LinkedList mit allen Mitarbeitern, aller Feuerwehren in ganz
-     * Steiermark, zurück.
-     *
+     * Gibt eine LinkedList mit allen Mitarbeitern (je nach Berechtigung eines Users)
+     * zurück
      * @return LinkedList
      * @throws IOException
      * @see Mitglied
@@ -299,7 +348,6 @@ public class DB_Access
      */
     public LinkedList<MitgliedsGeburtstag> getGeburtstagsliste(int jahr) throws Exception
     {
-
         LinkedList<MitgliedsGeburtstag> liMitgliedsGeburtstage = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
