@@ -23,3 +23,8 @@ and open the template in the editor.
     top: 0;
     left: 0;
 }
+
+#div_table
+{
+    margin-top: 20px;
+}

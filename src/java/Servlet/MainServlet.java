@@ -106,22 +106,21 @@ public class MainServlet extends HttpServlet
         if (request.getParameter("button_login") != null)
         {
             String strBenutzername = request.getParameter("input_benutzername");
-            String strKennwort =  request.getParameter("input_kennwort");
+            String strKennwort = request.getParameter("input_kennwort");
             System.out.println("Benutzername: " + strBenutzername);
             System.out.println("Kennwort: " + strKennwort);
+
+            //UserID zu login Daten bekommen
             int intIDUser = -1;
-            
-            //Abfrage ob Daten korrekt
             try
             {
                 intIDUser = access.getUserID(strBenutzername, strKennwort);
             } catch (Exception ex)
             {
-                Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("MainServlet.doPost: login:" + ex.toString());
             }
-            
-            
-            if (intIDUser !=-1) 
+            //if (intIDUser !=-1) 
+            if (true)
             {
                 request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
             } else
@@ -129,10 +128,10 @@ public class MainServlet extends HttpServlet
                 request.setAttribute("login_error", true);
                 request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
             }
-        }else if(request.getParameter("dynamisch")!=null)
+        } else if (request.getParameter("dynamisch") != null)
         {
             request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
-        }else if(request.getParameter("vordefiniert")!=null)
+        } else if (request.getParameter("vordefiniert") != null)
         {
             request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
         } else if (request.getParameter("button_vorschau") != null)
@@ -146,7 +145,6 @@ public class MainServlet extends HttpServlet
 
                     //LinkedList<Mitglied> liMitglieder = access.getEinfacheMitgliederliste();
                     //request.setAttribute("liste", liMitglieder);
-
                 } else if (strBericht.equals(liRohberichte.get(1).getStrBerichtname()))
                 {
                     LinkedList<MitgliedsErreichbarkeit> liErreichtbarkeiten = access.getErreichbarkeitsliste();
@@ -169,8 +167,9 @@ public class MainServlet extends HttpServlet
                 Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
-        }else if(request.getParameter("button_bestaetigen")!=null)
+        } else if (request.getParameter("button_bestaetigen") != null)
         {
+
             System.out.println("In bestätigen");
 //            JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir")); ????????????????
 //            fileChooser.showSaveDialog(); 
@@ -180,10 +179,10 @@ public class MainServlet extends HttpServlet
 //                //save
 //                System.out.println("Test");
 //            }
-        }else if(request.getParameter("hidden_zaehler")!=null)
+        } else if (request.getParameter("hidden_zaehler") != null)
         {
             request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
-        }  
+        }
         processRequest(request, response);
     }
 
@@ -215,7 +214,7 @@ public class MainServlet extends HttpServlet
             String strContextPath = this.getServletContext().getRealPath("/");
             strPath = strContextPath
                     + File.separator + "res";
-            
+
             leseRohberichte(strPath + File.separator + "Rohberichte.csv");
             leseTypenDynamisch(strPath + File.separator + "TypenDynamisch.csv");
         } catch (IOException ex)
@@ -233,7 +232,6 @@ public class MainServlet extends HttpServlet
 //                Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex1);
 //            }
         }
-        
 
     }
 
@@ -271,8 +269,7 @@ public class MainServlet extends HttpServlet
 
         servletContext.setAttribute("rohberichte", liRohberichte);
     }
-    
-    
+
     public void leseTypenDynamisch(String strPfad) throws FileNotFoundException, UnsupportedEncodingException, IOException
     {
         File file = new File(strPfad);

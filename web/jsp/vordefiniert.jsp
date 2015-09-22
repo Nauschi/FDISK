@@ -78,7 +78,7 @@ aaaaasdfsdf
                         <input type="hidden" name="input_aktbericht" id="input_hidden"/>
 
                         <div class="ui equal width grid">
-                            <div class="column">
+                           <!-- <div class="column">
                                 <select name="select_kA" class="ui fluid dropdown" id="select_kA">
                                     <option value="">Abschnitt</option>
                                     <option value="Test1">Test1</option>
@@ -103,7 +103,7 @@ aaaaasdfsdf
                                     <option value="Bezirk7">Bezirk7</option>
                                     <option value="Bezirk8">Bezirk8</option>
                                 </select>
-                            </div>
+                            </div>-->
                             <div class="column">
 
                                 <select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr">
@@ -136,7 +136,7 @@ aaaaasdfsdf
                         </div>
                     </form>
                     <form action="MainServlet" method="POST">
-                        <div id="div_table" style="margin-top: 20px">
+                        <div id="div_table">
 
                         </div>
                         <div id="div_abbrechen_bestaetigen" style="display:none" class="ui segment">
@@ -216,7 +216,7 @@ aaaaasdfsdf
                 {
                     LinkedList<Object> liBerichtDaten = (LinkedList<Object>) request.getAttribute("liste");
                     String strHTML = "";
-                    for (int i = 0; i < liBerichtDaten.size() - 1; i++)
+                    for (int i = 0; i < liBerichtDaten.size()-1; i++)
                     {
                         Object zeile = liBerichtDaten.get(i);
                         strHTML += zeile.toString();
