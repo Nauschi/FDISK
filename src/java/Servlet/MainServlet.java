@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,6 +32,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.swing.JFileChooser;
 
 /**
@@ -44,6 +47,7 @@ public class MainServlet extends HttpServlet
 {
 
     private DB_Access access;
+    private SimpleDateFormat sdf;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -119,9 +123,18 @@ public class MainServlet extends HttpServlet
             {
                 System.out.println("MainServlet.doPost: login:" + ex.toString());
             }
-            //if (intIDUser !=-1) 
-            if (true)
+            if (intIDUser !=-1) 
+            //if (true)
             {
+                HttpSession session = request.getSession(true);
+                try
+                {
+                    session.setAttribute("berechtigungen", access.getBerechtigungen(intIDUser));
+                } catch (Exception ex)
+                {
+                    Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
                 request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
             } else
             {
@@ -140,6 +153,13 @@ public class MainServlet extends HttpServlet
             {
                 LinkedList<Rohbericht> liRohberichte = (LinkedList<Rohbericht>) this.getServletContext().getAttribute("rohberichte");
                 String strBericht = request.getParameter("input_aktbericht");
+                int intIDGruppe = Integer.parseInt(request.getParameter("select_berechtigung"));
+                Date dateVon = sdf.parse(request.getParameter("input_von_datum"));
+                Date dateBis = sdf.parse(request.getParameter("input_bis_datum"));
+                
+                System.out.println("GruppeID: "+intIDGruppe);
+                System.out.println("Date von: "+sdf.format(dateVon));
+                System.out.println("Date bis: "+sdf.format(dateBis));
                 if (strBericht.equals(liRohberichte.get(0).getStrBerichtname()))
                 {
 
@@ -201,6 +221,7 @@ public class MainServlet extends HttpServlet
     public void init(ServletConfig config) throws ServletException
     {
         super.init(config); //To change body of generated methods, choose Tools | Templates.
+        sdf = new SimpleDateFormat("dd.MM.yyyy");
         try
         {
             access = DB_Access.getInstance();

@@ -5,6 +5,7 @@
 aaaaasdfsdf
 --%>
 
+<%@page import="Beans.Berechtigung"%>
 <%@page import="java.lang.Object"%>
 <%@page import="Beans.Rohbericht"%>
 <%@page import="java.util.LinkedList"%>
@@ -72,7 +73,7 @@ aaaaasdfsdf
             </div>
 
             <div class="twelve wide stretched column">
-                <div class="ui grid" id="div_daten">
+                <div class="ui segment" id="div_daten">
                     <form action="MainServlet" method="POST">
                         <h2></h2>
                         <input type="hidden" name="input_aktbericht" id="input_hidden"/>
@@ -106,28 +107,27 @@ aaaaasdfsdf
                              </div>-->
                             <div class="column">
 
-                                <select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr">
-                                    <option value="">Feuerwehr</option>
-                                    <option value="Feuerwehr1">Feuerwehr1</option>
-                                    <option value="Feuerwehr2">Feuerwehr2</option>
-                                    <option value="Feuerwehr3">Feuerwehr3</option>
-                                    <option value="Feuerwehr4">Feuerwehr4</option>
-                                    <option value="Feuerwehr5">Feuerwehr5</option>
-                                    <option value="Feuerwehr6">Feuerwehr6</option>
-                                    <option value="Feuerwehr7">Feuerwehr7</option>
-                                    <option value="Feuerwehr8">Feuerwehr8</option>
+                                <select name="select_berechtigung" class="ui fluid dropdown" id="select_feuerwehr">
+                                    <%
+                                        LinkedList<Berechtigung> liBerechtigung = (LinkedList<Berechtigung>) session.getAttribute("berechtigungen");
+                                        for (Berechtigung be : liBerechtigung)
+                                        {
+                                            out.println("<option value=" + be.getIntIDGruppe() + ">" + be.getStrBerechtigung() + "</option>");
+                                        }
+                                    %>
+
                                 </select>
                             </div>
                         </div>
                         <div class="ui equal width grid">
                             <div class="column">
                                 <div class="ui input" style="width: 100%">
-                                    <input id="input_von_datum" placeholder="von..." type="text">
+                                    <input name="input_von_datum" id="input_von_datum" placeholder="von..." autocomplete="off" type="text">
                                 </div>
                             </div>
                             <div class="column" >
                                 <div class="ui input" style="width: 100%">
-                                    <input id="input_bis_datum" placeholder="bis..." type="text">
+                                    <input name="input_bis_datum" id="input_bis_datum" placeholder="bis..." autocomplete="off" type="text">
                                 </div>
                             </div>
                             <div class="column">
@@ -137,7 +137,6 @@ aaaaasdfsdf
                     </form>
                     <form action="MainServlet" method="POST">
                         <div id="div_table">
-
                         </div>
                         <div id="div_abbrechen_bestaetigen" style="display:none" class="ui segment">
                             <div class="ui equal width grid">
@@ -162,9 +161,9 @@ aaaaasdfsdf
         <script src="js/vordefiniert.js"></script>
 
         <script>
+
                                     $(document).ready(function () {
-            <%
-                if (request.getParameter("input_aktbericht") == null)
+            <%                if (request.getParameter("input_aktbericht") == null)
                 {
             %>
                                         var item = document.getElementById("div_liste").getElementsByTagName("a")[0];
