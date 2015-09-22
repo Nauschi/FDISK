@@ -21,7 +21,7 @@ aaaaasdfsdf
         <title>Vordefiniert</title>
     </head>
     <body>
-        
+
         <div class="ui segment" id="div_oben">
             <div id="div_image">
                 <img class="ui small image" src="res/logo_oben.png">
@@ -72,38 +72,38 @@ aaaaasdfsdf
             </div>
 
             <div class="twelve wide stretched column">
-                <div class="ui segment" id="div_daten">
+                <div class="ui grid" id="div_daten">
                     <form action="MainServlet" method="POST">
                         <h2></h2>
                         <input type="hidden" name="input_aktbericht" id="input_hidden"/>
 
                         <div class="ui equal width grid">
-                           <!-- <div class="column">
-                                <select name="select_kA" class="ui fluid dropdown" id="select_kA">
-                                    <option value="">Abschnitt</option>
-                                    <option value="Test1">Test1</option>
-                                    <option value="Test2">Test2</option>
-                                    <option value="Test3">Test3</option>
-                                    <option value="Test4">Test4</option>
-                                    <option value="Test5">Test5</option>
-                                    <option value="Test6">Test6</option>
-                                    <option value="Test7">Test7</option>
-                                    <option value="Test8">Test8</option>
-                                </select>
-                            </div>
-                            <div class="column">
-                                <select name="select_bezirk" class="ui fluid dropdown" id="select_bezirk">
-                                    <option value="">Bezirk</option>
-                                    <option value="Bezirk1">Bezirk1</option>
-                                    <option value="Bezirk2">Bezirk2</option>
-                                    <option value="Bezirk3">Bezirk3</option>
-                                    <option value="Bezirk4">Bezirk4</option>
-                                    <option value="Bezirk5">Bezirk5</option>
-                                    <option value="Bezirk6">Bezirk6</option>
-                                    <option value="Bezirk7">Bezirk7</option>
-                                    <option value="Bezirk8">Bezirk8</option>
-                                </select>
-                            </div>-->
+                            <!-- <div class="column">
+                                 <select name="select_kA" class="ui fluid dropdown" id="select_kA">
+                                     <option value="">Abschnitt</option>
+                                     <option value="Test1">Test1</option>
+                                     <option value="Test2">Test2</option>
+                                     <option value="Test3">Test3</option>
+                                     <option value="Test4">Test4</option>
+                                     <option value="Test5">Test5</option>
+                                     <option value="Test6">Test6</option>
+                                     <option value="Test7">Test7</option>
+                                     <option value="Test8">Test8</option>
+                                 </select>
+                             </div>
+                             <div class="column">
+                                 <select name="select_bezirk" class="ui fluid dropdown" id="select_bezirk">
+                                     <option value="">Bezirk</option>
+                                     <option value="Bezirk1">Bezirk1</option>
+                                     <option value="Bezirk2">Bezirk2</option>
+                                     <option value="Bezirk3">Bezirk3</option>
+                                     <option value="Bezirk4">Bezirk4</option>
+                                     <option value="Bezirk5">Bezirk5</option>
+                                     <option value="Bezirk6">Bezirk6</option>
+                                     <option value="Bezirk7">Bezirk7</option>
+                                     <option value="Bezirk8">Bezirk8</option>
+                                 </select>
+                             </div>-->
                             <div class="column">
 
                                 <select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr">
@@ -157,84 +157,55 @@ aaaaasdfsdf
 
         <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
         <script src="semantic/dist/semantic.min.js"></script>
-        <script src="js/jquery-ui.js"></script>
-
-        <script src="js/vordefiniert.js"></script>
+        <script src="js/jquery-ui.js"></script> 
         <script src="js/tablesort.js"></script>
-        <script>$('.ui.dropdown').dropdown();</script>
+        <script src="js/vordefiniert.js"></script>
 
         <script>
-            $(function () {
-                $("#input_von_datum").datepicker({
-                    onSelect: function (selected)
-                    {
-                        var dt = new Date(selected);
-                        dt.setDate(dt.getDate() + 1);
-                        $("#input_bis_datum").datepicker("option", "minDate", dt);
-                        $("#input_von_datum").datepicker("option", "showAnim", "slideDown");
-                        $("#input_von_datum").datepicker("option", "dateFormat", "dd.mm.yy");
-                        $("#input_von_datum").datepicker("option", $.datepicker.regional['de']);
-                    }
-                });
-                $("#input_bis_datum").datepicker({
-                    onSelect: function (selected) {
-                        var dt = new Date(selected);
-                        dt.setDate(dt.getDate() - 1);
-                        $("#input_von_datum").datepicker("option", "maxDate", dt);
-                        $("#input_bis_datum").datepicker("option", "showAnim", "slideDown");
-                        $("#input_bis_datum").datepicker("option", "dateFormat", "dd.mm.yy");
-                        $("#input_bis_datum").datepicker("option", $.datepicker.regional['de']);
-                    }
-                });
-            });
-        </script>
-        <script>
-
-            $(document).ready(function () {
+                                    $(document).ready(function () {
             <%
                 if (request.getParameter("input_aktbericht") == null)
                 {
             %>
-                var item = document.getElementById("div_liste").getElementsByTagName("a")[0];
+                                        var item = document.getElementById("div_liste").getElementsByTagName("a")[0];
             <%
             } else
             {
             %>
-                var item = document.getElementById("<%=request.getParameter("input_aktbericht")%>");
+                                        var item = document.getElementById("<%=request.getParameter("input_aktbericht")%>");
             <%
                 }
             %>
 
-                item.className = "item active";
-                var strBerichtname = item.getElementsByTagName("span")[0].innerHTML;
-                document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = strBerichtname;
-                document.getElementById("input_hidden").value = strBerichtname;
-                var strTable = item.getElementsByTagName("div")[0].innerHTML;
-                document.getElementById("div_table").innerHTML = strTable;
+                                        item.className = "item active";
+                                        var strBerichtname = item.getElementsByTagName("span")[0].innerHTML;
+                                        document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = strBerichtname;
+                                        document.getElementById("input_hidden").value = strBerichtname;
+                                        var strTable = item.getElementsByTagName("div")[0].innerHTML;
+                                        document.getElementById("div_table").innerHTML = strTable;
             <%
                 if (request.getAttribute("liste") != null)
                 {
                     LinkedList<Object> liBerichtDaten = (LinkedList<Object>) request.getAttribute("liste");
                     String strHTML = "";
-                    for (int i = 0; i < liBerichtDaten.size()-1; i++)
+                    for (int i = 0; i < liBerichtDaten.size() - 1; i++)
                     {
                         Object zeile = liBerichtDaten.get(i);
                         strHTML += zeile.toString();
                     }
             %>
-                document.getElementById("div_abbrechen_bestaetigen").style.display = "block";
-                document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
-                $('.sortable.table').tablesort();
+                                        document.getElementById("div_abbrechen_bestaetigen").style.display = "block";
+                                        document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
+                                        $('.sortable.table').tablesort();
             <%
                 }
             %>
-                document.getElementById("div_loader").className = "ui disabled loader";
-            });
+                                        document.getElementById("div_loader").className = "ui disabled loader";
+                                    });
 
 
 
         </script>
-
 
     </body>
 </html>
