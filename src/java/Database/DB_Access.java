@@ -1342,11 +1342,17 @@ public class DB_Access
         HashMap<String, LinkedList<String>> hm = new HashMap<>();
         try
         {
-            LinkedList<Mitglied> li = theInstance.getEinfacheMitgliederliste(3566, 15);
-            for (Mitglied li1 : li)
+            LinkedList<LoginMitglied> lili = new LinkedList<>();
+            lili = theInstance.getLoginBerechtigung(3494);
+            for (LoginMitglied lili1 : lili)
             {
-                System.out.println(li1.getStrVorname() + "-" + li1.getStrZuname());
+                System.out.println(lili1.getIntIDGruppe());   
             }
+//            LinkedList<Mitglied> li = theInstance.getEinfacheMitgliederliste(3566, 15);
+//            for (Mitglied li1 : li)
+//            {
+//                System.out.println(li1.getStrVorname() + "-" + li1.getStrZuname());
+//            }
 
         } catch (Exception ex)
         {

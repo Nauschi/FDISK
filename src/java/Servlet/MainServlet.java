@@ -105,9 +105,23 @@ public class MainServlet extends HttpServlet
     {
         if (request.getParameter("button_login") != null)
         {
-            System.out.println("Benutzername: " + request.getParameter("input_benutzername"));
-            System.out.println("Kennwort: " + request.getParameter("input_kennwort"));
-            if (true) //Abfrage ob Daten korrekt
+            String strBenutzername = request.getParameter("input_benutzername");
+            String strKennwort =  request.getParameter("input_kennwort");
+            System.out.println("Benutzername: " + strBenutzername);
+            System.out.println("Kennwort: " + strKennwort);
+            int intIDUser = -1;
+            
+            //Abfrage ob Daten korrekt
+            try
+            {
+                intIDUser = access.getUserID(strBenutzername, strKennwort);
+            } catch (Exception ex)
+            {
+                Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+            if (intIDUser !=-1) 
             {
                 request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
             } else
