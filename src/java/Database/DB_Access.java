@@ -1267,7 +1267,7 @@ public class DB_Access {
         HashMap<String, LinkedList<String>> hm = new HashMap<>();
         try {
             LinkedList<Berechtigung> lili = new LinkedList<>();
-            lili = theInstance.getBerechtigungen(3494);
+            lili = theInstance.getBerechtigungen(4278);
             for (Berechtigung berech : lili) {
                 System.out.println(berech.getStrBerechtigung());
             }
