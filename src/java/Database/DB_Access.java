@@ -5,6 +5,7 @@
  */
 package Database;
 
+import Beans.Berechtigung;
 import Beans.Erreichbarkeit;
 import Beans.Fahrzeug;
 import Beans.Kurs;
@@ -54,6 +55,23 @@ public class DB_Access
         connPool = DB_ConnectionPool.getInstance();
     }
 
+    public LinkedList<Berechtigung> getBerechtigungen(int intUserID) throws Exception{
+        LinkedList<Berechtigung> liBerechtigungen = new LinkedList<>();
+        LinkedList<LoginMitglied> liLoginBerechtigung = new LinkedList<>();
+        liLoginBerechtigung = getLoginBerechtigung(intUserID);
+        String fubwehr = getFubwehrForUserID(intUserID);
+        String feuerwehrname = getNameFuerFubwehr(fubwehr);
+        
+        for (LoginMitglied loginMitglied : liLoginBerechtigung) {
+            String bezeichnung = loginMitglied.getStrGruppe();
+            
+            String strBerechtigung = bezeichnung + " - " + feuerwehrname;
+            Berechtigung berechtigung = new Berechtigung(strBerechtigung, loginMitglied.getIntIDGruppe());
+            liBerechtigungen.add(berechtigung);
+        }
+        return liBerechtigungen;
+    }
+    
     /**
      * Gibt die UserID für den jeweiligen Username zurück
      * @param strUsername
@@ -194,7 +212,7 @@ public class DB_Access
         Statement stat = conn.createStatement();
         String sqlString = "SELECT TOP 1000 CONCAT(instanzart, ' ' , instanzname) \"Name\", instanznummer "
                 + "FROM FDISK.dbo.qry_alle_feuerwehren "
-                + "WHERE id_instanzen = '" + strFubwehr + "'";
+                + "WHERE instanznummer = '" + strFubwehr + "'";
         ResultSet rs = stat.executeQuery(sqlString);
 
         String strName = "";
@@ -1342,11 +1360,11 @@ public class DB_Access
         HashMap<String, LinkedList<String>> hm = new HashMap<>();
         try
         {
-            LinkedList<LoginMitglied> lili = new LinkedList<>();
-            lili = theInstance.getLoginBerechtigung(3494);
-            for (LoginMitglied lili1 : lili)
+            LinkedList<Berechtigung> lili = new LinkedList<>();
+            lili = theInstance.getBerechtigungen(3494);
+            for (Berechtigung berech : lili)
             {
-                System.out.println(lili1.getIntIDGruppe());   
+                System.out.println(berech.getStrBerechtigung());
             }
 //            LinkedList<Mitglied> li = theInstance.getEinfacheMitgliederliste(3566, 15);
 //            for (Mitglied li1 : li)
