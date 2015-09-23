@@ -86,108 +86,120 @@
             }
         %>
         <h1>Dynamisch - Mitglieder</h1>
-        <div class="ui grid" id="div_mitte">
+        <!--<div class="ui grid" id="div_mitte">-->
 
-            <br/>
-            <form action="MainServlet" method="POST">
-                <input type="hidden" name="hidden_zaehler" value="<%=intZaehler%>">
-                <table class="ui celled table" >
-                    <tbody>
+        <br/>
+        <form action="MainServlet" method="POST">
+            <input type="hidden" name="hidden_zaehler" value="<%=intZaehler%>">
+
+            <%
+                for (int i = 1; i <= intZaehler; i++)
+                {
+            %>
+
+            <div class="ui grid" id="div_mitte">
+
+                <div class="one wide column" id="div_klammerAuf">
+                    <select name="select_klammer_auf_<%=i%>"  class="ui fluid dropdown" id="select_klammer">
+                        <option value=""></option>
+                        <%=generiereSelect("select_klammer_auf_" + i, strFeldKlammerAuf, request)%>
+                    </select>
+                </div>
+
+                <div class="four wide column" id="div_typ">
+                    <select name="select_typ_<%=i%>" class="ui fluid dropdown" id="select_typ">
                         <%
-                            for (int i = 1; i <= intZaehler; i++)
+                            String strAktTyp = "";
+                            if (request.getParameter("select_typ_" + i) != null)
                             {
-                        %>
-                        <tr>
-                            <td style="width: 5%">
-                                <%
-                                    if (i == intZaehler)
-                                    {
-                                %>
-                                <button name="button_minus" type="submit" class="ui button styleRot" style="background-color: #C00518; color: white;">-</button>
-                                <%
-                                    }
-                                %>
-                            </td>
-                            <td style="width: 5%">
-                                <select name="select_klammer_auf_<%=i%>"  class="ui fluid dropdown" id="select_klammer">
-                                    <option value=""></option>
-                                    <%=generiereSelect("select_klammer_auf_" + i, strFeldKlammerAuf, request)%>
-                                </select>
-                            </td>
-                            <td style="width: 25%">
-                                <select name="select_typ_<%=i%>" class="ui fluid dropdown" id="select_typ">
-                                    <%
-                                        String strAktTyp = "";
-                                        if (request.getParameter("select_typ_" + i) != null)
-                                        {
-                                            strAktTyp = request.getParameter("select_typ_" + i);
-                                        }
-                                    %>
-
-                                    <option value="">Typ</option>
-                                    <%
-                                        LinkedList<String> liTypen = (LinkedList<String>) application.getAttribute("Typen");
-                                        for (String strTyp : liTypen)
-                                        {
-                                            if (strAktTyp.equals(strTyp))
-                                            {
-                                    %>
-                                    <option value="<%=strTyp%>" selected><%=strTyp%></option>
-                                    <%
-                                    } else
-                                    {
-                                    %>
-                                    <option value="<%=strTyp%>"><%=strTyp%></option>
-                                    <%
-                                            }
-                                        }
-                                    %>
-                                </select>
-                            </td>
-                            <td style="width: 5%">
-                                <select name="select_operator_<%=i%>" class="ui fluid dropdown" id="select_operator">
-                                    <option value="">Operator</option>
-                                    <%=generiereSelect("select_operator_" + i, strFeldOperator, request)%>
-                                </select>
-                            </td>
-                            <td style="width: 25%">
-                                <select name="select_filter_<%=i%>" class="ui fluid dropdown" id="select_filter">
-                                    <option value="">Filter</option>
-                                    <%=generiereSelect("select_filter_" + i, strFeldFilter, request)%>
-                                </select>
-                            </td>
-                            <td style="width: 5%">
-                                <select name="select_klammer_zu_<%=i%>" class="ui fluid dropdown" id="select_klammer">
-                                    <option value=""></option>
-                                    <%=generiereSelect("select_klammer_zu_" + i, strFeldKlammerZu, request)%>
-                                </select>
-                            </td>
-                            <td>
-                                <select name="select_verknuepfung_<%=i%>" class="ui fluid dropdown" id="select_verknüpfung">
-                                    <option value="">Verknüpfung</option>
-                                    <%=generiereSelect("select_verknuepfung_" + i, strFeldVerknuepfung, request)%>
-                                </select>
-                            </td>
-                            <td style="width: 5%">
-                                <%
-                                    if (i == intZaehler)
-                                    {
-                                %>
-                                <button name="button_plus" type="submit" class="ui button styleGruen" style="background-color: #007336; color: white;">+</button>
-                                <%
-                                    }
-                                %>
-                            </td>
-                        </tr>
-                        <%
+                                strAktTyp = request.getParameter("select_typ_" + i);
                             }
                         %>
 
-                    </tbody>
-                </table>
-            </form>
-            <br/>
-        </div>
+                        <option value="">Typ</option>
+                        <%
+                            LinkedList<String> liTypen = (LinkedList<String>) application.getAttribute("Typen");
+                            for (String strTyp : liTypen)
+                            {
+                                if (strAktTyp.equals(strTyp))
+                                {
+                        %>
+                        <option value="<%=strTyp%>" selected><%=strTyp%></option>
+                        <%
+                        } else
+                        {
+                        %>
+                        <option value="<%=strTyp%>"><%=strTyp%></option>
+                        <%
+                                }
+                            }
+                        %>
+                    </select>
+
+                </div>
+                <div class="two wide column" id="div_operator">
+                    <select name="select_operator_<%=i%>" class="ui fluid dropdown" id="select_operator">
+                        <option value="">Operator</option>
+                        <%=generiereSelect("select_operator_" + i, strFeldOperator, request)%>
+                    </select>
+                </div>
+                <div class="four wide column" id="div_filter">
+                    <select name="select_filter_<%=i%>" class="ui fluid dropdown" id="select_filter">
+                        <option value="">Filter</option>
+                        <%=generiereSelect("select_filter_" + i, strFeldFilter, request)%>
+                    </select>
+                </div>
+                <div class="one wide column" id="div_klammerZu">
+                    <select name="select_klammer_zu_<%=i%>" class="ui fluid dropdown" id="select_klammer">
+                        <option value=""></option>
+                        <%=generiereSelect("select_klammer_zu_" + i, strFeldKlammerZu, request)%>
+                    </select>
+                </div>
+                <div class="four wide column" id="div_verknuepfung">
+                    <select name="select_verknuepfung_<%=i%>" class="ui fluid dropdown" id="select_verknüpfung">
+                        <option value="">Verknüpfung</option>
+                        <%=generiereSelect("select_verknuepfung_" + i, strFeldVerknuepfung, request)%>
+                    </select>
+                </div>
+            </div>
+
+
+            <%
+                if (i == intZaehler)
+                {
+            %>
+            </br>
+            <div id="div_plusminus" class="ui segment" style="width: 10%; margin: auto;">
+                <div class="ui equal width grid" >
+                    <div class="column">
+                        <button name="button_plus" type="submit" class="ui button styleGruen" style="background-color: #007336; float: right; color: white;">+</button>
+                    </div>
+                    <div class="column">
+                        <button name="button_minus" type="submit" class="ui button styleRot" style="background-color: #C00518; color: white;">-</button>
+                    </div>
+                </div>
+                <!--<button name="button_plus" type="submit" class="ui button styleGruen" style="background-color: #007336; color: white;">+</button>
+                <button name="button_minus" type="submit" class="ui button styleRot" style="background-color: #C00518; color: white;">-</button>-->
+            </div>
+
+            <div id="div_abbrechen_bestaetigen" style="display:none" class="ui segment">
+                <div class="ui equal width grid">
+                    <div class="column">
+                        <button class="ui button styleRot" style="background-color: #C00518; width: 100%; color: white;">Zurücksetzen</button>
+                    </div>
+                    <div class="column">
+                        <button onclick="onBestaetigen();" name="button_bestaetigen" class="ui button styleGruen"  style="background-color: #007336; width: 100%; color: white;">Bestätigen</button>
+                    </div>
+                </div>
+            </div>
+            <%
+                    }
+                }
+            %>
+
+        </form>
+        <br/>
+        <!--</div>-->
         <br/>
         <script type="text/javascript" src="js/dynamisch_mitglieder.js"></script>
         <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
@@ -199,9 +211,9 @@
 
 
 <%!
-
     /**
-     * Generiert den Inhalt eines Dropdowns und setzt, falls vorhanden, zuletzt gewähltes Item auf "selected" 
+     * Generiert den Inhalt eines Dropdowns und setzt, falls vorhanden, zuletzt
+     * gewähltes Item auf "selected"
      */
     public String generiereSelect(String strSelectName, String[] strFeld, HttpServletRequest request)
     {
