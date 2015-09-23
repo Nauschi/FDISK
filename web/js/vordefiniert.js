@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+
 $('.ui.dropdown').dropdown();
 
 $(function () {
@@ -46,4 +47,21 @@ function onListItemClicked(item)
     document.getElementById("input_hidden").value = strBerichtname;
     document.getElementById("div_table").innerHTML = strTable;
 
+}
+
+request = new XMLHttpRequest();
+
+function onBestaetigen()
+{
+    HTML = document.getElementById("div_table");
+    
+    request.open("POST", "../MainServlet", true);
+    request.onreadystatechange = performRequest;
+    request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    request.send(HTML);
+}
+
+function performRequest()
+{
+    alert("PerformRequest: "+request.readyState);
 }

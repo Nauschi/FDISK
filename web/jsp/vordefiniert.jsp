@@ -135,20 +135,19 @@ aaaaasdfsdf
                             </div>
                         </div>
                     </form>
-                    <form action="MainServlet" method="POST">
-                        <div id="div_table">
-                        </div>
-                        <div id="div_abbrechen_bestaetigen" style="display:none" class="ui segment">
-                            <div class="ui equal width grid">
-                                <div class="column">
-                                    <button class="ui button styleRot" style="background-color: #C00518; width: 100%; color: white;">Zurücksetzen</button>
-                                </div>
-                                <div class="column">
-                                    <button type="submit" name="button_bestaetigen" class="ui button styleGruen"  style="background-color: #007336; width: 100%; color: white;">Bestätigen</button>
-                                </div>
+                    <div id="div_table">
+                    </div>
+                    <div id="div_abbrechen_bestaetigen" style="display:none" class="ui segment">
+                        <div class="ui equal width grid">
+                            <div class="column">
+                                <button class="ui button styleRot" style="background-color: #C00518; width: 100%; color: white;">Zurücksetzen</button>
+                            </div>
+                            <div class="column">
+                                <button onclick="onBestaetigen();" name="button_bestaetigen" class="ui button styleGruen"  style="background-color: #007336; width: 100%; color: white;">Bestätigen</button>
                             </div>
                         </div>
-                    </form>
+                    </div>
+
                 </div>
             </div>
         </div>

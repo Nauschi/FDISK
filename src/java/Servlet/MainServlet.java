@@ -34,6 +34,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.swing.JFileChooser;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -107,6 +113,7 @@ public class MainServlet extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
+
         if (request.getParameter("button_login") != null)
         {
             String strBenutzername = request.getParameter("input_benutzername");
@@ -123,7 +130,7 @@ public class MainServlet extends HttpServlet
             {
                 System.out.println("MainServlet.doPost: login:" + ex.toString());
             }
-            if (intIDUser !=-1) 
+            if (intIDUser != -1)
             //if (true)
             {
                 HttpSession session = request.getSession(true);
@@ -134,7 +141,7 @@ public class MainServlet extends HttpServlet
                 {
                     Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
                 request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
             } else
             {
@@ -156,13 +163,13 @@ public class MainServlet extends HttpServlet
                 int intIDGruppe = Integer.parseInt(request.getParameter("select_berechtigung"));
                 try
                 {
-                Date dateVon = sdf.parse(request.getParameter("input_von_datum"));
-                Date dateBis = sdf.parse(request.getParameter("input_bis_datum"));
-                
-                System.out.println("GruppeID: "+intIDGruppe);
-                System.out.println("Date von: "+sdf.format(dateVon));
-                System.out.println("Date bis: "+sdf.format(dateBis));
-                }catch(Exception ex)
+                    Date dateVon = sdf.parse(request.getParameter("input_von_datum"));
+                    Date dateBis = sdf.parse(request.getParameter("input_bis_datum"));
+
+                    System.out.println("GruppeID: " + intIDGruppe);
+                    System.out.println("Date von: " + sdf.format(dateVon));
+                    System.out.println("Date bis: " + sdf.format(dateBis));
+                } catch (Exception ex)
                 {
                     System.out.println(ex.toString());
                 }
@@ -195,7 +202,6 @@ public class MainServlet extends HttpServlet
             request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
         } else if (request.getParameter("button_bestaetigen") != null)
         {
-
             System.out.println("In bestätigen");
 //            JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir")); ????????????????
 //            fileChooser.showSaveDialog(); 
@@ -209,7 +215,28 @@ public class MainServlet extends HttpServlet
         {
             request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
         }
+
+        readXML(request);
+
         processRequest(request, response);
+    }
+    
+    
+    public void readXML(HttpServletRequest request)
+    {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder;
+        try
+        {
+            System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+            builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(request.getInputStream());
+            System.out.println(((Element)doc.getDocumentElement()).getNodeName());
+
+        } catch (Exception ex)
+        {
+            System.out.println("bestätigen: "+ex.toString());
+        }
     }
 
     /**
