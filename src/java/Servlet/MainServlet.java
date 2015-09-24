@@ -116,6 +116,7 @@ public class MainServlet extends HttpServlet
 
         if (request.getParameter("button_login") != null)
         {
+            System.out.println("doPost: button_Login");
             String strBenutzername = request.getParameter("input_benutzername");
             String strKennwort = request.getParameter("input_kennwort");
             System.out.println("Benutzername: " + strBenutzername);
@@ -150,12 +151,15 @@ public class MainServlet extends HttpServlet
             }
         } else if (request.getParameter("dynamisch") != null)
         {
+            System.out.println("doPost: dynamisch");
             request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
         } else if (request.getParameter("vordefiniert") != null)
         {
+            System.out.println("doPost: vordefiniert");
             request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
         } else if (request.getParameter("button_vorschau") != null)
         {
+            System.out.println("doPost: button_vorschau");
             try
             {
                 LinkedList<Rohbericht> liRohberichte = (LinkedList<Rohbericht>) this.getServletContext().getAttribute("rohberichte");
@@ -213,31 +217,21 @@ public class MainServlet extends HttpServlet
 //            }
         } else if (request.getParameter("hidden_zaehler") != null)
         {
+            System.out.println("doPost: hidden_zaeler");
             request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
+        }else if(request.getParameter("strTable")!=null)
+        {
+            
+            System.out.println("doPost: strTable:"+request.getParameter("strTable"));
         }
-
-        readXML(request);
+        
+        
+        //readXML(request);
 
         processRequest(request, response);
     }
     
     
-    public void readXML(HttpServletRequest request)
-    {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder;
-        try
-        {
-            System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiiiiii");
-            builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(request.getInputStream());
-            System.out.println(((Element)doc.getDocumentElement()).getNodeName());
-
-        } catch (Exception ex)
-        {
-            System.out.println("bestätigen: "+ex.toString());
-        }
-    }
 
     /**
      * Returns a short description of the servlet.
