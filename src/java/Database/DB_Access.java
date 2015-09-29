@@ -716,6 +716,8 @@ public class DB_Access {
             }
 
         }
+        
+        connPool.releaseConnection(conn);
         return liMitgliedsErreichbarkeiten;
     }
 

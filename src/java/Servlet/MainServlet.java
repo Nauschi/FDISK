@@ -164,13 +164,13 @@ public class MainServlet extends HttpServlet
             {
                 LinkedList<Rohbericht> liRohberichte = (LinkedList<Rohbericht>) this.getServletContext().getAttribute("rohberichte");
                 String strBericht = request.getParameter("input_aktbericht");
-                int intIDGruppe = Integer.parseInt(request.getParameter("select_berechtigung"));
+                //int intIDGruppe = Integer.parseInt(request.getParameter("select_berechtigung"));
                 try
                 {
                     Date dateVon = sdf.parse(request.getParameter("input_von_datum"));
                     Date dateBis = sdf.parse(request.getParameter("input_bis_datum"));
 
-                    System.out.println("GruppeID: " + intIDGruppe);
+                    //System.out.println("GruppeID: " + intIDGruppe);
                     System.out.println("Date von: " + sdf.format(dateVon));
                     System.out.println("Date bis: " + sdf.format(dateBis));
                 } catch (Exception ex)
