@@ -33,12 +33,13 @@ import java.util.logging.Logger;
  */
 public class PDFCreator
 {
-    
-    
-    private String strPath = System.getProperty("user.dir")
-                        + File.separator + "web"
-                        + File.separator + "css"
-                        + File.separator + "pdf.css";
+
+//    private String strPath = System.getProperty("user.dir")
+//                        + File.separator + "web"
+//                        + File.separator + "css"
+//                        + File.separator + "pdf.css";
+    private String strPath = File.separator + "res"
+            + File.separator + "pdf.css";
 
     /**
      * Creates a PDF with a specified name and with the content of an HTML
@@ -52,10 +53,14 @@ public class PDFCreator
      * @throws DocumentException
      * @throws CssResolverException
      */
-    public void createPdf(String strDateiNamePDF, String strHTMLInhalt, String strFormat) throws IOException, DocumentException, CssResolverException
+    public void createPdf(String strDateiNamePDF, String strHTMLInhalt, String strFormat, String strRealPath) throws IOException, DocumentException, CssResolverException
     {
+        System.out.println("PDFCreator.createPdf: Start");
+        System.out.println(strRealPath.toString());
         Document docPDF;
         strDateiNamePDF += ".pdf";
+        strDateiNamePDF = System.getProperty("user.home") + "/Desktop/" + strDateiNamePDF;
+        strPath = System.getProperty("user.home") + "/Desktop/pdf.css";
         if (strFormat.equals("quer"))
         {
             docPDF = new Document(PageSize.A4.rotate());
@@ -72,9 +77,9 @@ public class PDFCreator
         HtmlPipelineContext htmlContext = new HtmlPipelineContext(null);
         htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
         CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(false);
-
+        System.out.println("RealPath: "+strRealPath);
         //hier das (falls benötigt) CSS File einbinden für die .pdf Datei
-        cssResolver.addCssFile(strPath, true);
+        cssResolver.addCssFile(strRealPath, true);
         Pipeline<?> pipeline = new CssResolverPipeline(cssResolver, new HtmlPipeline(htmlContext, new PdfWriterPipeline(docPDF, writer)));
 
         XMLWorker worker = new XMLWorker(pipeline, true);
@@ -85,14 +90,20 @@ public class PDFCreator
         {
             docPDF.close();
         }
+        System.out.println("PDFCreator.createPdf: Done");
+    }
 
+    private String addHTML(String strHTMLInhalt)
+    {
+        strHTMLInhalt = "<html><body>" + strHTMLInhalt + "</body></html>";
+        return strHTMLInhalt;
     }
 
     //nur zum Testen!
     public static void main(String[] args) throws IOException, DocumentException
     {
         PDFCreator pdfCreator = new PDFCreator();
-        
+
         String strHtml = "<html>"
                 + "<body>"
                 + "<h1>Liste</h1>"
@@ -121,12 +132,12 @@ public class PDFCreator
                 + "</html>";
 
         String pdf = System.getProperty("user.home") + "/Desktop/test";
-        try
-        {
-            pdfCreator.createPdf(pdf, strHtml, "hoch");
-        } catch (CssResolverException ex)
-        {
-            Logger.getLogger(PDFCreator.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try
+//        {
+//            pdfCreator.createPdf(pdf, strHtml, "hoch");
+//        } catch (CssResolverException ex)
+//        {
+//            Logger.getLogger(PDFCreator.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 }

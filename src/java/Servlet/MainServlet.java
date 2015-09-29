@@ -12,6 +12,9 @@ import Beans.MitgliedsErreichbarkeit;
 import Beans.MitgliedsGeburtstag;
 import Beans.Rohbericht;
 import Database.DB_Access;
+import PDF.PDFCreator;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.tool.xml.exceptions.CssResolverException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -54,6 +57,7 @@ public class MainServlet extends HttpServlet
 
     private DB_Access access;
     private SimpleDateFormat sdf;
+    private PDFCreator pdf;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -207,6 +211,7 @@ public class MainServlet extends HttpServlet
         } else if (request.getParameter("button_bestaetigen") != null)
         {
             System.out.println("In bestätigen");
+            
 //            JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir")); ????????????????
 //            fileChooser.showSaveDialog(); 
 //            File file = fileChooser.getSelectedFile();
@@ -221,8 +226,18 @@ public class MainServlet extends HttpServlet
             request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
         }else if(request.getParameter("strTable")!=null)
         {
-            
-            System.out.println("doPost: strTable:"+request.getParameter("strTable"));
+            String strTable = request.getParameter("strTable");
+            try
+            {
+                pdf.createPdf("Test111", strTable, "quer",this.getServletContext().getRealPath("/res/pdf.css"));
+            } catch (DocumentException ex)
+            {
+                Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (CssResolverException ex)
+            {
+                Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println("doPost: strTable");
         }
         
         
@@ -249,6 +264,7 @@ public class MainServlet extends HttpServlet
     {
         super.init(config); //To change body of generated methods, choose Tools | Templates.
         sdf = new SimpleDateFormat("dd.MM.yyyy");
+        pdf = new PDFCreator();
         try
         {
             access = DB_Access.getInstance();
