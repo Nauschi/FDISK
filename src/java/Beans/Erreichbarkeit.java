@@ -12,26 +12,17 @@ import java.util.Objects;
  * @author kinco_000
  */
 public class Erreichbarkeit {
-    private int intId_Erreichbarkeiten;
+
     private String strErreichbarkeitsArt;
-    private String strSichtbarkeit;
+
     private String strCode;
     private int intPersID;
 
-    public Erreichbarkeit(int intId_Erreichbarkeiten, String strErreichbarkeitsArt, String strSichtbarkeit, String strCode, int intPersID) {
-        this.intId_Erreichbarkeiten = intId_Erreichbarkeiten;
+    public Erreichbarkeit(String strErreichbarkeitsArt, String strCode, int intPersID) {
+        
         this.strErreichbarkeitsArt = strErreichbarkeitsArt;
-        this.strSichtbarkeit = strSichtbarkeit;
         this.strCode = strCode;
         this.intPersID = intPersID;
-    }
-
-    public int getIntId_Erreichbarkeiten() {
-        return intId_Erreichbarkeiten;
-    }
-
-    public void setIntId_Erreichbarkeiten(int intId_Erreichbarkeiten) {
-        this.intId_Erreichbarkeiten = intId_Erreichbarkeiten;
     }
 
     public String getStrErreichbarkeitsArt() {
@@ -40,14 +31,6 @@ public class Erreichbarkeit {
 
     public void setStrErreichbarkeitsArt(String strErreichbarkeitsArt) {
         this.strErreichbarkeitsArt = strErreichbarkeitsArt;
-    }
-
-    public String getStrSichtbarkeit() {
-        return strSichtbarkeit;
-    }
-
-    public void setStrSichtbarkeit(String strSichtbarkeit) {
-        this.strSichtbarkeit = strSichtbarkeit;
     }
 
     public String getStrCode() {
@@ -66,9 +49,6 @@ public class Erreichbarkeit {
         this.intPersID = intPersID;
     }
 
-    
-    
-    
     @Override
     public int hashCode() {
         int hash = 7;
@@ -84,13 +64,13 @@ public class Erreichbarkeit {
             return false;
         }
         final Erreichbarkeit other = (Erreichbarkeit) obj;
-        if (this.intId_Erreichbarkeiten != other.intId_Erreichbarkeiten) {
-            return false;
-        }
         if (!Objects.equals(this.strErreichbarkeitsArt, other.strErreichbarkeitsArt)) {
             return false;
         }
-        if (!Objects.equals(this.strSichtbarkeit, other.strSichtbarkeit)) {
+        if (!Objects.equals(this.strCode, other.strCode)) {
+            return false;
+        }
+        if (this.intPersID != other.intPersID) {
             return false;
         }
         return true;
@@ -98,10 +78,11 @@ public class Erreichbarkeit {
 
     @Override
     public String toString() {
-        return "Erreichbarkeit{" + "intId_Erreichbarkeiten=" + intId_Erreichbarkeiten + ", strErreichbarkeitsArt=" + strErreichbarkeitsArt + ", strSichtbarkeit=" + strSichtbarkeit + ", strCode=" + strCode + '}';
+        return "Erreichbarkeit{" + "strErreichbarkeitsArt=" + strErreichbarkeitsArt + ", strCode=" + strCode + ", intPersID=" + intPersID + '}';
     }
 
+   
+
     
-    
-    
+
 }

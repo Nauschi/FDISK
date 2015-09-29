@@ -667,15 +667,11 @@ public class DB_Access {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 
-        String sqlString = "SELECT TOP 1000 sm.id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\","
-                + " vorname \"Vorname\", zuname \"Zuname\", se.erreichbarkeitsart \"Erreichbarkeitsart\", se.code \"Code\","
-                + " se.sichtbarkeit \"Sichtbarkeit\", se.id_erreichbarkeiten \"ID_erreichbarkeit\""
+        String sqlString = "SELECT DISTINCT TOP 1000 sm.id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", se.erreichbarkeitsart \"Erreichbarkeitsart\", se.code \"Code\""
                 + " FROM FDISK.dbo.stmkmitglieder sm INNER JOIN FDISK.dbo.stmkerreichbarkeiten se ON(sm.id_personen = se.id_personen)"
-                + " ORDER BY se.id_personen;";
+                + " ORDER BY sm.id_personen;";
         ResultSet rs = stat.executeQuery(sqlString);
-        int intId_erreichbarkeit;
         String strErreichbarkeitsart;
-        String strSichtbarkeit;
         String strCode;
 
         String strSTB;
@@ -690,9 +686,8 @@ public class DB_Access {
         while (rs.next()) {
 
             intPersID = rs.getInt("PersID");
-            intId_erreichbarkeit = rs.getInt("ID_erreichbarkeit");
             strErreichbarkeitsart = rs.getString("Erreichbarkeitsart");
-            strSichtbarkeit = rs.getString("Sichtbarkeit");
+
             strCode = rs.getString("Code");
 
             strSTB = rs.getString("STB");
@@ -702,8 +697,8 @@ public class DB_Access {
             strZuname = rs.getString("Zuname");
 
             if (intPersID == intLetztePersID) {
-                if (!liErreichbarkeiten.contains(new Erreichbarkeit(intId_erreichbarkeit, strErreichbarkeitsart, strSichtbarkeit, strCode, intPersID))) {
-                    liErreichbarkeiten.add(new Erreichbarkeit(intId_erreichbarkeit, strErreichbarkeitsart, strSichtbarkeit, strCode, intPersID));
+                if (!liErreichbarkeiten.contains(new Erreichbarkeit(strErreichbarkeitsart, strCode, intPersID))) {
+                    liErreichbarkeiten.add(new Erreichbarkeit(strErreichbarkeitsart, strCode, intPersID));
                 }
             } else {
                 if (liMitgliedsErreichbarkeiten.size() > 0) {
@@ -712,11 +707,11 @@ public class DB_Access {
                 }
                 intLetztePersID = intPersID;
                 liMitgliedsErreichbarkeiten.add(new MitgliedsErreichbarkeit(false, intPersID, strSTB, strTitel, strTitel, strVorname, strZuname));
-                liErreichbarkeiten.add(new Erreichbarkeit(intId_erreichbarkeit, strErreichbarkeitsart, strSichtbarkeit, strCode, intPersID));
+                liErreichbarkeiten.add(new Erreichbarkeit(strErreichbarkeitsart, strCode, intPersID));
             }
 
         }
-        
+
         connPool.releaseConnection(conn);
         return liMitgliedsErreichbarkeiten;
     }
