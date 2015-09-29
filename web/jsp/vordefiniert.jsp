@@ -80,51 +80,51 @@ aaaaasdfsdf
 
                         <div class="ui equal width grid">
                             <div class="column">
-                                 <select name="select_kA" class="ui fluid dropdown" id="select_kA">
-                                     <option value="">Abschnitt</option>
-                                     <option value="Test1">Test1</option>
-                                     <option value="Test2">Test2</option>
-                                     <option value="Test3">Test3</option>
-                                     <option value="Test4">Test4</option>
-                                     <option value="Test5">Test5</option>
-                                     <option value="Test6">Test6</option>
-                                     <option value="Test7">Test7</option>
-                                     <option value="Test8">Test8</option>
-                                 </select>
-                             </div>
-                             <div class="column">
-                                 <select name="select_bezirk" class="ui fluid dropdown" id="select_bezirk">
-                                     <option value="">Bezirk</option>
-                                     <option value="Bezirk1">Bezirk1</option>
-                                     <option value="Bezirk2">Bezirk2</option>
-                                     <option value="Bezirk3">Bezirk3</option>
-                                     <option value="Bezirk4">Bezirk4</option>
-                                     <option value="Bezirk5">Bezirk5</option>
-                                     <option value="Bezirk6">Bezirk6</option>
-                                     <option value="Bezirk7">Bezirk7</option>
-                                     <option value="Bezirk8">Bezirk8</option>
-                                 </select>
-                             </div>
+                                <select name="select_kA" class="ui fluid dropdown" id="select_kA">
+                                    <option value="">Abschnitt</option>
+                                    <option value="Test1">Test1</option>
+                                    <option value="Test2">Test2</option>
+                                    <option value="Test3">Test3</option>
+                                    <option value="Test4">Test4</option>
+                                    <option value="Test5">Test5</option>
+                                    <option value="Test6">Test6</option>
+                                    <option value="Test7">Test7</option>
+                                    <option value="Test8">Test8</option>
+                                </select>
+                            </div>
                             <div class="column">
-                                 <select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr">
-                                     <option value="">Feuerwehr</option>
-                                     <option value="Feuerwehr1">Feuerwehr1</option>
-                                     <option value="Feuerwehr2">Feuerwehr2</option>
-                                     <option value="Feuerwehr3">Feuerwehr3</option>
-                                 </select>
-                             </div>
+                                <select name="select_bezirk" class="ui fluid dropdown" id="select_bezirk">
+                                    <option value="">Bezirk</option>
+                                    <option value="Bezirk1">Bezirk1</option>
+                                    <option value="Bezirk2">Bezirk2</option>
+                                    <option value="Bezirk3">Bezirk3</option>
+                                    <option value="Bezirk4">Bezirk4</option>
+                                    <option value="Bezirk5">Bezirk5</option>
+                                    <option value="Bezirk6">Bezirk6</option>
+                                    <option value="Bezirk7">Bezirk7</option>
+                                    <option value="Bezirk8">Bezirk8</option>
+                                </select>
+                            </div>
+                            <div class="column">
+                                <select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr">
+                                    <option value="">Feuerwehr</option>
+                                    <option value="Feuerwehr1">Feuerwehr1</option>
+                                    <option value="Feuerwehr2">Feuerwehr2</option>
+                                    <option value="Feuerwehr3">Feuerwehr3</option>
+                                </select>
+                            </div>
                             <!--<div class="column">
 
                                 <select name="select_berechtigung" class="ui fluid dropdown" id="select_feuerwehr">
-                                    <%
-                                        //LinkedList<Berechtigung> liBerechtigung = (LinkedList<Berechtigung>) session.getAttribute("berechtigungen");
-                                        //for (Berechtigung be : liBerechtigung)
-                                        //{
-                                         //   out.println("<option value=" + be.getIntIDGruppe() + ">" + be.getStrBerechtigung() + "</option>");
-                                       //}
-                                    %>
-                                </select>
-                            </div>-->
+                            <%
+                                //LinkedList<Berechtigung> liBerechtigung = (LinkedList<Berechtigung>) session.getAttribute("berechtigungen");
+                                //for (Berechtigung be : liBerechtigung)
+                                //{
+                                //   out.println("<option value=" + be.getIntIDGruppe() + ">" + be.getStrBerechtigung() + "</option>");
+                                //}
+                            %>
+                        </select>
+                    </div>-->
                         </div>
                         <div class="ui equal width grid">
                             <div class="column">
@@ -142,6 +142,7 @@ aaaaasdfsdf
                             </div>
                         </div>
                     </form>
+                    <a href="res/Rohberichte.csv">Download</a>
                     <div id="div_table">
                     </div>
                     <div id="div_abbrechen_bestaetigen" style="display:none" class="ui segment">
