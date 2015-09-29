@@ -79,7 +79,7 @@ aaaaasdfsdf
                         <input type="hidden" name="input_aktbericht" id="input_hidden"/>
 
                         <div class="ui equal width grid">
-                            <!-- <div class="column">
+                            <div class="column">
                                  <select name="select_kA" class="ui fluid dropdown" id="select_kA">
                                      <option value="">Abschnitt</option>
                                      <option value="Test1">Test1</option>
@@ -104,20 +104,27 @@ aaaaasdfsdf
                                      <option value="Bezirk7">Bezirk7</option>
                                      <option value="Bezirk8">Bezirk8</option>
                                  </select>
-                             </div>-->
+                             </div>
                             <div class="column">
+                                 <select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr">
+                                     <option value="">Feuerwehr</option>
+                                     <option value="Feuerwehr1">Feuerwehr1</option>
+                                     <option value="Feuerwehr2">Feuerwehr2</option>
+                                     <option value="Feuerwehr3">Feuerwehr3</option>
+                                 </select>
+                             </div>
+                            <!--<div class="column">
 
                                 <select name="select_berechtigung" class="ui fluid dropdown" id="select_feuerwehr">
                                     <%
-                                        LinkedList<Berechtigung> liBerechtigung = (LinkedList<Berechtigung>) session.getAttribute("berechtigungen");
-                                        for (Berechtigung be : liBerechtigung)
-                                        {
-                                            out.println("<option value=" + be.getIntIDGruppe() + ">" + be.getStrBerechtigung() + "</option>");
-                                        }
+                                        //LinkedList<Berechtigung> liBerechtigung = (LinkedList<Berechtigung>) session.getAttribute("berechtigungen");
+                                        //for (Berechtigung be : liBerechtigung)
+                                        //{
+                                         //   out.println("<option value=" + be.getIntIDGruppe() + ">" + be.getStrBerechtigung() + "</option>");
+                                       //}
                                     %>
-
                                 </select>
-                            </div>
+                            </div>-->
                         </div>
                         <div class="ui equal width grid">
                             <div class="column">
