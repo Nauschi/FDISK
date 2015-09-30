@@ -34,13 +34,6 @@ import java.util.logging.Logger;
 public class PDFCreator
 {
 
-//    private String strPath = System.getProperty("user.dir")
-//                        + File.separator + "web"
-//                        + File.separator + "css"
-//                        + File.separator + "pdf.css";
-    private String strPath = File.separator + "res"
-            + File.separator + "pdf.css";
-
     /**
      * Creates a PDF with a specified name and with the content of an HTML
      * String. The format can be specified with either "hoch" or "quer". A .css
@@ -56,11 +49,11 @@ public class PDFCreator
     public void createPdf(String strDateiNamePDF, String strHTMLInhalt, String strFormat, String strRealPath) throws IOException, DocumentException, CssResolverException
     {
         System.out.println("PDFCreator.createPdf: Start");
-        System.out.println(strRealPath.toString());
+        String strFullPath = strRealPath.replace("build\\web", "web\\css\\pdf.css");
         Document docPDF;
         strDateiNamePDF += ".pdf";
         strDateiNamePDF = System.getProperty("user.home") + "/Desktop/" + strDateiNamePDF;
-        strPath = System.getProperty("user.home") + "/Desktop/pdf.css";
+        
         if (strFormat.equals("quer"))
         {
             docPDF = new Document(PageSize.A4.rotate());
@@ -79,7 +72,7 @@ public class PDFCreator
         CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(false);
         System.out.println("RealPath: "+strRealPath);
         //hier das (falls benötigt) CSS File einbinden für die .pdf Datei
-        cssResolver.addCssFile(strRealPath, true);
+        cssResolver.addCssFile(strFullPath, true);
         Pipeline<?> pipeline = new CssResolverPipeline(cssResolver, new HtmlPipeline(htmlContext, new PdfWriterPipeline(docPDF, writer)));
 
         XMLWorker worker = new XMLWorker(pipeline, true);

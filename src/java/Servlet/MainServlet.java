@@ -229,7 +229,7 @@ public class MainServlet extends HttpServlet
             String strTable = request.getParameter("strTable");
             try
             {
-                pdf.createPdf("Test111", strTable, "quer",this.getServletContext().getRealPath("/res/pdf.css"));
+                pdf.createPdf("Test111", strTable, "quer",this.getServletContext().getRealPath("/"));
             } catch (DocumentException ex)
             {
                 Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
