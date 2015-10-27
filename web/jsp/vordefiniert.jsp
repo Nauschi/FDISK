@@ -75,7 +75,7 @@ aaaaasdfsdf
             <div class="twelve wide stretched column">
                 <div class="ui segment" id="div_daten">
                     <form action="MainServlet" method="POST">
-                        <h2></h2>
+                        <h2 id="h2_bericht"></h2>
                         <input type="hidden" name="input_aktbericht" id="input_hidden"/>
 
                         <div class="ui equal width grid">

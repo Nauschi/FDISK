@@ -706,7 +706,7 @@ public class DB_Access {
                     liErreichbarkeiten = new LinkedList<Erreichbarkeit>();
                 }
                 intLetztePersID = intPersID;
-                liMitgliedsErreichbarkeiten.add(new MitgliedsErreichbarkeit(false, intPersID, strSTB, strTitel, strTitel, strVorname, strZuname));
+                liMitgliedsErreichbarkeiten.add(new MitgliedsErreichbarkeit(false, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname));
                 liErreichbarkeiten.add(new Erreichbarkeit(strErreichbarkeitsart, strCode, intPersID));
             }
 

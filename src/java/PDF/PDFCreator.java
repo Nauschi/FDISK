@@ -70,7 +70,7 @@ public class PDFCreator
         HtmlPipelineContext htmlContext = new HtmlPipelineContext(null);
         htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
         CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(false);
-        System.out.println("RealPath: "+strRealPath);
+        
         //hier das (falls benötigt) CSS File einbinden für die .pdf Datei
         cssResolver.addCssFile(strFullPath, true);
         Pipeline<?> pipeline = new CssResolverPipeline(cssResolver, new HtmlPipeline(htmlContext, new PdfWriterPipeline(docPDF, writer)));

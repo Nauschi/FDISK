@@ -15,6 +15,7 @@ import Database.DB_Access;
 import PDF.PDFCreator;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.tool.xml.exceptions.CssResolverException;
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -226,10 +227,12 @@ public class MainServlet extends HttpServlet
             request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
         }else if(request.getParameter("strTable")!=null)
         {
+            System.out.println("MainServlet.doPost: onCreatePDF1");
             String strTable = request.getParameter("strTable");
+            String strBericht = request.getParameter("strBericht");
             try
             {
-                pdf.createPdf("Test111", strTable, "quer",this.getServletContext().getRealPath("/"));
+                pdf.createPdf(strBericht, strTable, "quer",this.getServletContext().getRealPath("/"));
             } catch (DocumentException ex)
             {
                 Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -237,11 +240,10 @@ public class MainServlet extends HttpServlet
             {
                 Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            System.out.println("doPost: strTable");
+            System.out.println("MainServlet.doPost: onCreatePDF2");
         }
         
         
-        //readXML(request);
 
         processRequest(request, response);
     }

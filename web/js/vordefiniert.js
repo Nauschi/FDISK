@@ -54,11 +54,12 @@ request = new XMLHttpRequest();
 function onBestaetigen()
 {
     strTable = document.getElementById("div_table").innerHTML;
-    
+    strBericht = document.getElementById("h2_bericht").innerHTML;
+    alert(""+strBericht);
     request.open("POST", "MainServlet", true);
     request.onreadystatechange = performRequest;
     request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    request.send("strTable="+strTable);
+    request.send("strTable="+strTable+"&strBericht="+strBericht);
 }
 
 function performRequest()
