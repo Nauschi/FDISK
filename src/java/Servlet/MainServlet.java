@@ -101,8 +101,15 @@ public class MainServlet extends HttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-
-        request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("lastPage") == null)
+        {
+            System.out.println("MainServlet.doPost: session = null");
+            request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
+            return;
+        }
+        String strLastPage = (String) session.getAttribute("lastPage");
+        request.getRequestDispatcher("jsp/"+strLastPage+".jsp").forward(request, response);
         processRequest(request, response);
     }
 
@@ -118,137 +125,151 @@ public class MainServlet extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-
         if (request.getParameter("button_login") != null)
         {
-            System.out.println("doPost: button_Login");
-            String strBenutzername = request.getParameter("input_benutzername");
-            String strKennwort = request.getParameter("input_kennwort");
-            System.out.println("Benutzername: " + strBenutzername);
-            System.out.println("Kennwort: " + strKennwort);
+            loginUser(request, response);
+        }
 
-            //UserID zu login Daten bekommen
-            int intIDUser = -1;
-            try
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("loggedIn") == null)
+        {
+            System.out.println("MainServlet.doPost: session = null");
+            request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
+
+        } else
+        {
+            if (request.getParameter("dynamisch") != null)
             {
-                intIDUser = access.getUserID(strBenutzername, strKennwort);
-            } catch (Exception ex)
+                System.out.println("MainServlet.doPost: dynamisch");
+                request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
+            } else if (request.getParameter("vordefiniert") != null)
             {
-                System.out.println("MainServlet.doPost: login:" + ex.toString());
-            }
-            if (intIDUser != -1)
-            //if (true)
+                System.out.println("MainServlet.doPost: vordefiniert");
+                request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
+            } else if (request.getParameter("button_vorschau") != null)
             {
-                HttpSession session = request.getSession(true);
+                generiereVorschau(request, response);
+            } else if (request.getParameter("hidden_zaehler") != null)
+            {
+                System.out.println("MainServlet.doPost: hidden_zaeler");
+                request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
+            } else if (request.getParameter("strTable") != null)
+            {
+                System.out.println("MainServlet.doPost: onCreatePDF1");
+                String strTable = request.getParameter("strTable");
+                String strBericht = request.getParameter("strBericht");
                 try
                 {
-                    session.setAttribute("berechtigungen", access.getBerechtigungen(intIDUser));
-                } catch (Exception ex)
+                    pdf.createPdf(strBericht, strTable, "quer", this.getServletContext().getRealPath("/"));
+                } catch (DocumentException ex)
+                {
+                    Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (CssResolverException ex)
                 {
                     Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
-                request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
-            } else
+                System.out.println("MainServlet.doPost: onCreatePDF2");
+            } else if (request.getParameter("logout") != null)
             {
-                request.setAttribute("login_error", true);
+                System.out.println("MainServlet.doPost: logout");
+                request.getSession(false).invalidate();
+                if (request.getSession(false) == null)
+                {
+                    System.out.println("session deleted");
+                }
                 request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
             }
-        } else if (request.getParameter("dynamisch") != null)
+        }
+
+        processRequest(request, response);
+    }
+
+    private void loginUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        System.out.println("MainServlet.loginUser: button_Login");
+        String strBenutzername = request.getParameter("input_benutzername");
+        String strKennwort = request.getParameter("input_kennwort");
+        System.out.println("Benutzername: " + strBenutzername);
+        System.out.println("Kennwort: " + strKennwort);
+
+        //UserID zu login Daten bekommen
+        int intIDUser = -1;
+        try
         {
-            System.out.println("doPost: dynamisch");
-            request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
-        } else if (request.getParameter("vordefiniert") != null)
+            intIDUser = access.getUserID(strBenutzername, strKennwort);
+        } catch (Exception ex)
         {
-            System.out.println("doPost: vordefiniert");
-            request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
-        } else if (request.getParameter("button_vorschau") != null)
+            System.out.println("MainServlet.doPost: login:" + ex.toString());
+        }
+        if (intIDUser != -1)
+        //if (true)
         {
-            System.out.println("doPost: button_vorschau");
+            HttpSession session = request.getSession(true);
             try
             {
-                LinkedList<Rohbericht> liRohberichte = (LinkedList<Rohbericht>) this.getServletContext().getAttribute("rohberichte");
-                String strBericht = request.getParameter("input_aktbericht");
-                //int intIDGruppe = Integer.parseInt(request.getParameter("select_berechtigung"));
-                try
-                {
-                    Date dateVon = sdf.parse(request.getParameter("input_von_datum"));
-                    Date dateBis = sdf.parse(request.getParameter("input_bis_datum"));
-
-                    //System.out.println("GruppeID: " + intIDGruppe);
-                    System.out.println("Date von: " + sdf.format(dateVon));
-                    System.out.println("Date bis: " + sdf.format(dateBis));
-                } catch (Exception ex)
-                {
-                    System.out.println(ex.toString());
-                }
-                if (strBericht.equals(liRohberichte.get(0).getStrBerichtname()))
-                {
-
-                    //LinkedList<Mitglied> liMitglieder = access.getEinfacheMitgliederliste();
-                    //request.setAttribute("liste", liMitglieder);
-                } else if (strBericht.equals(liRohberichte.get(1).getStrBerichtname()))
-                {
-                    LinkedList<MitgliedsErreichbarkeit> liErreichtbarkeiten = access.getErreichbarkeitsliste();
-                    request.setAttribute("liste", liErreichtbarkeiten);
-                } else if (strBericht.equals(liRohberichte.get(2).getStrBerichtname()))
-                {
-                    LinkedList<MitgliedsAdresse> liAdressen = access.getAdressListe();
-                    request.setAttribute("liste", liAdressen);
-                } else if (strBericht.equals(liRohberichte.get(3).getStrBerichtname()))
-                {
-                    LinkedList<MitgliedsGeburtstag> liGeburtstage = access.getGeburtstagsliste(2014);//welche Zahl??
-                    request.setAttribute("liste", liGeburtstage);
-                } else if (strBericht.equals(liRohberichte.get(4).getStrBerichtname()))
-                {
-                    LinkedList<MitgliedsDienstzeit> liDienstzeiten = access.getDienstzeitListe();
-                    request.setAttribute("liste", liDienstzeiten);
-                }
+                session.setAttribute("loggedIn", true);
+                session.setAttribute("berechtigungen", access.getBerechtigungen(intIDUser));
             } catch (Exception ex)
             {
                 Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
+
             request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
-        } else if (request.getParameter("button_bestaetigen") != null)
+        } else
         {
-            System.out.println("In bestätigen");
-            
-//            JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir")); ????????????????
-//            fileChooser.showSaveDialog(); 
-//            File file = fileChooser.getSelectedFile();
-//            if(file!=null)
-//            {
-//                //save
-//                System.out.println("Test");
-//            }
-        } else if (request.getParameter("hidden_zaehler") != null)
+            request.setAttribute("login_error", true);
+            request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
+        }
+    }
+
+    private void generiereVorschau(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        System.out.println("MainServlet.generiereVorschau: button_vorschau");
+        try
         {
-            System.out.println("doPost: hidden_zaeler");
-            request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
-        }else if(request.getParameter("strTable")!=null)
-        {
-            System.out.println("MainServlet.doPost: onCreatePDF1");
-            String strTable = request.getParameter("strTable");
-            String strBericht = request.getParameter("strBericht");
+            LinkedList<Rohbericht> liRohberichte = (LinkedList<Rohbericht>) this.getServletContext().getAttribute("rohberichte");
+            String strBericht = request.getParameter("input_aktbericht");
+            //int intIDGruppe = Integer.parseInt(request.getParameter("select_berechtigung"));
             try
             {
-                pdf.createPdf(strBericht, strTable, "quer",this.getServletContext().getRealPath("/"));
-            } catch (DocumentException ex)
-            {
-                Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (CssResolverException ex)
-            {
-                Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            System.out.println("MainServlet.doPost: onCreatePDF2");
-        }
-        
-        
+                Date dateVon = sdf.parse(request.getParameter("input_von_datum"));
+                Date dateBis = sdf.parse(request.getParameter("input_bis_datum"));
 
-        processRequest(request, response);
+                //System.out.println("GruppeID: " + intIDGruppe);
+                System.out.println("Date von: " + sdf.format(dateVon));
+                System.out.println("Date bis: " + sdf.format(dateBis));
+            } catch (Exception ex)
+            {
+                System.out.println(ex.toString());
+            }
+            if (strBericht.equals(liRohberichte.get(0).getStrBerichtname()))
+            {
+
+                //LinkedList<Mitglied> liMitglieder = access.getEinfacheMitgliederliste();
+                //request.setAttribute("liste", liMitglieder);
+            } else if (strBericht.equals(liRohberichte.get(1).getStrBerichtname()))
+            {
+                LinkedList<MitgliedsErreichbarkeit> liErreichtbarkeiten = access.getErreichbarkeitsliste();
+                request.setAttribute("liste", liErreichtbarkeiten);
+            } else if (strBericht.equals(liRohberichte.get(2).getStrBerichtname()))
+            {
+                LinkedList<MitgliedsAdresse> liAdressen = access.getAdressListe();
+                request.setAttribute("liste", liAdressen);
+            } else if (strBericht.equals(liRohberichte.get(3).getStrBerichtname()))
+            {
+                LinkedList<MitgliedsGeburtstag> liGeburtstage = access.getGeburtstagsliste(2014);//welche Zahl??
+                request.setAttribute("liste", liGeburtstage);
+            } else if (strBericht.equals(liRohberichte.get(4).getStrBerichtname()))
+            {
+                LinkedList<MitgliedsDienstzeit> liDienstzeiten = access.getDienstzeitListe();
+                request.setAttribute("liste", liDienstzeiten);
+            }
+        } catch (Exception ex)
+        {
+            Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
     }
-    
-    
 
     /**
      * Returns a short description of the servlet.

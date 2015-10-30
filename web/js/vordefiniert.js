@@ -53,9 +53,9 @@ request = new XMLHttpRequest();
 
 function onBestaetigen()
 {
+    document.getElementById("div_loader").className = "ui active inverted dimmer";
     strTable = document.getElementById("div_table").innerHTML;
     strBericht = document.getElementById("h2_bericht").innerHTML;
-    alert(""+strBericht);
     request.open("POST", "MainServlet", true);
     request.onreadystatechange = performRequest;
     request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
@@ -64,5 +64,10 @@ function onBestaetigen()
 
 function performRequest()
 {
-    alert("PerformRequest: "+request.readyState);
+    //alert(""+request.readyState);
+    if(request.readyState = 4)
+    {
+        document.getElementById("div_loader").className = "ui disabled loader";
+    }
+    
 }

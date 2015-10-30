@@ -17,6 +17,9 @@
         <title>Login</title>
     </head>
     <body>
+        <%
+            session.setAttribute("lastPage", "login");
+        %>
         <div class="ui segment" id="div_oben">
             <div id="div_image">
                 <img class="ui small image" src="res/logo_oben.png">

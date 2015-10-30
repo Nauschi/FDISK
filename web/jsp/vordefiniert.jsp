@@ -22,6 +22,9 @@ aaaaasdfsdf
         <title>Vordefiniert</title>
     </head>
     <body>
+        <%
+            session.setAttribute("lastPage", "vordefiniert");
+        %>
 
         <div class="ui segment" id="div_oben">
             <div id="div_image">
@@ -40,6 +43,14 @@ aaaaasdfsdf
                         Dynamisch
                     </a>
                 </form>
+                <div class="right menu">
+                    <form action="MainServlet" method="POST" name="form_logout">
+                        <input type="hidden" name="logout">
+                        <a href="#" onclick="document.form_logout.submit();" class="ui item">
+                            Logout
+                        </a>
+                    </form>
+                </div>
                 <!--<div class="ui simple dropdown item">
                     Dynamisch
                     <i class="dropdown icon"></i>

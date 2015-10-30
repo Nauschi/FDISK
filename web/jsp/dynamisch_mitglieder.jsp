@@ -18,6 +18,8 @@
     </head>
     <body>
         <%
+            session.setAttribute("lastPage", "dynamisch_mitglieder");
+            
             String[] strFeldKlammerAuf =
             {
                 "(", "[", "{"
@@ -60,7 +62,14 @@
                 <a class="item active">
                     Dynamisch
                 </a>
-
+                <div class="right menu">
+                    <form action="MainServlet" method="POST" name="form_logout">
+                        <input type="hidden" name="logout">
+                        <a href="#" onclick="document.form_logout.submit();" class="ui item">
+                            Logout
+                        </a>
+                    </form>
+                </div>
                 <!--<div class="ui simple dropdown item">
                     Dynamisch
                     <i class="dropdown icon"></i>
