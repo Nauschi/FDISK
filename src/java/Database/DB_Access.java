@@ -16,6 +16,8 @@ import Beans.MitgliedsAdresse;
 import Beans.MitgliedsDienstzeit;
 import Beans.MitgliedsErreichbarkeit;
 import Beans.MitgliedsGeburtstag;
+import Beans.Taetigkeitsberichtmitglied;
+import Beans.Uebungsberichtmitglied;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -1463,6 +1465,51 @@ public class DB_Access
         return hmFilter;
     }
 
+    public LinkedList<Uebungsberichtmitglied> getUebungsberichtmitglied() throws Exception
+    {
+        LinkedList<Uebungsberichtmitglied> liTMitglied = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT DISTINCT TOP 1000 id_stmkuebungsberichtemitglieder \"UebungsMitgliedID\""
+                + " ,id_berichte \"BerichtId\""
+                + " ,instanznummer \"Instanznummer\""
+                + " ,name \"Name\""
+                + " ,standesbuchnummer \"SBN\""
+                + " ,id_mitgliedschaften \"IDMitgliedschaft\""
+                + " ,vorname \"Vorname\""
+                + " ,zuname \"Nachname\""
+                + " FROM FDISK.dbo.stmkuebungsberichtemitglieder";
+
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        int intIdUebungsMitglied;
+        int intIdBericht;
+        int intInstanznummer; 
+        String strName;
+        int intSBN;
+        int intIdMitgliedschaften;
+        String strVorname;
+        String strNachname;
+
+        while (rs.next())
+        {
+            intIdUebungsMitglied = rs.getInt("UebungsMitgliedID");
+            intIdBericht = rs.getInt("BerichtId");
+            intInstanznummer = rs.getInt("Instanznummer");
+            strName = rs.getString("Name");
+            intSBN = rs.getInt("SBN");
+            intIdMitgliedschaften = rs.getInt("IDMitgliedschaft");
+            strVorname = rs.getString("Vorname");
+            strNachname = rs.getString("Nachname");
+
+            Uebungsberichtmitglied uebungsMitglied = new Uebungsberichtmitglied(intIdUebungsMitglied, intIdBericht, intInstanznummer, strName, intSBN, intIdMitgliedschaften, strVorname, strNachname); 
+            liTMitglied.add(uebungsMitglied);
+        }
+        connPool.releaseConnection(conn);
+        return liTMitglied;
+    }
+
     /**
      *
      * @param args
@@ -1481,11 +1528,11 @@ public class DB_Access
         HashMap<String, LinkedList<String>> hm = new HashMap<>();
         try
         {
-            LinkedList<Kurs> lili = new LinkedList<>();
-            lili = theInstance.getKursstatistik();
-            for (Kurs k : lili)
+            LinkedList<Uebungsberichtmitglied> lili = new LinkedList<>();
+            lili = theInstance.getUebungsberichtmitglied();
+            for (Uebungsberichtmitglied k : lili)
             {
-                System.out.println(k.getIntIdBerichte() + "+" + k.getIntKm() + "+"+ k.getIntTeilnehmer()); 
+                System.out.println(k.getStrNachname()+ "+" + k.getStrVorname()+ "+" + k.getIntSBN());
             }
 //            LinkedList<Mitglied> li = theInstance.getEinfacheMitgliederliste(3566, 15);
 //            for (Mitglied li1 : li)
