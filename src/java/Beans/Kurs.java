@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Beans;
 
 import java.util.Date;
@@ -10,151 +5,228 @@ import java.util.Objects;
 
 /**
  *
- * @author kinco_000
+ * @author Yvonne
  */
-public class Kurs {
-    private int intId_Kurse;
-    private int intId_Kursarten;
-    private int intLehrgangsnummer;
-    private String strKursbezeichnung;
-    private Date dateDatum;
-    private int intId_instanzen_veranstalter;
-    private int intId_instanzen_durchfuehrend;
-    private String strKursstatus;
-    private int intAnzahlBesucher;
+public class Kurs
+{
 
-    public Kurs(int intId_kurse, int intId_Kursarten, int intLehrgangsnummer, String strKursbezeichnung, Date dateDatum, int intId_instanzen_veranstalter, int intId_instanzen_durchfuehrend, String strKursstatus, int intAnzahlBesucher) {
-        this.intId_Kurse = intId_kurse;
-        this.intId_Kursarten = intId_Kursarten;
-        this.intLehrgangsnummer = intLehrgangsnummer;
-        this.strKursbezeichnung = strKursbezeichnung;
-        this.dateDatum = dateDatum;
-        this.intId_instanzen_veranstalter = intId_instanzen_veranstalter;
-        this.intId_instanzen_durchfuehrend = intId_instanzen_durchfuehrend;
-        this.strKursstatus = strKursstatus;
-        this.intAnzahlBesucher = intAnzahlBesucher;
+    private int intIdBerichte;
+    private int intTeilnehmer;
+    private String strBezeichnung;
+    private int intKm;
+    private int intInstanznummer;
+    private String strInstanzname;
+    private String strTaetigkeitsart;
+    private String strTaetigkeitsunterart;
+    private String strNummer;
+    private Date dateBeginn;
+    private Date dateEnde;
+
+    public Kurs(int intIdBerichte, int intTeilnehmer, String strBezeichnung, int intKm, int intInstanznummer, String strInstanzname, String strTaetigkeitsart, String strTaetigkeitsunterart, String strNummer, Date dateBeginn, Date dateEnde)
+    {
+        this.intIdBerichte = intIdBerichte;
+        this.intTeilnehmer = intTeilnehmer;
+        this.strBezeichnung = strBezeichnung;
+        this.intKm = intKm;
+        this.intInstanznummer = intInstanznummer;
+        this.strInstanzname = strInstanzname;
+        this.strTaetigkeitsart = strTaetigkeitsart;
+        this.strTaetigkeitsunterart = strTaetigkeitsunterart;
+        this.strNummer = strNummer;
+        this.dateBeginn = dateBeginn;
+        this.dateEnde = dateEnde;
     }
 
-    public int getIntId_Kurse() {
-        return intId_Kurse;
+    public int getIntIdBerichte()
+    {
+        return intIdBerichte;
     }
 
-    public void setIntId_Kurse(int intId_Kurse) {
-        this.intId_Kurse = intId_Kurse;
+    public void setIntIdBerichte(int intIdBerichte)
+    {
+        this.intIdBerichte = intIdBerichte;
     }
 
-    public int getIntId_Kursarten() {
-        return intId_Kursarten;
+    public int getIntTeilnehmer()
+    {
+        return intTeilnehmer;
     }
 
-    public void setIntId_Kursarten(int intId_Kursarten) {
-        this.intId_Kursarten = intId_Kursarten;
+    public void setIntTeilnehmer(int intTeilnehmer)
+    {
+        this.intTeilnehmer = intTeilnehmer;
     }
 
-    public int getIntLehrgangsnummer() {
-        return intLehrgangsnummer;
+    public String getStrBezeichnung()
+    {
+        return strBezeichnung;
     }
 
-    public void setIntLehrgangsnummer(int intLehrgangsnummer) {
-        this.intLehrgangsnummer = intLehrgangsnummer;
+    public void setStrBezeichnung(String strBezeichnung)
+    {
+        this.strBezeichnung = strBezeichnung;
     }
 
-    public String getStrKursbezeichnung() {
-        return strKursbezeichnung;
+    public int getIntKm()
+    {
+        return intKm;
     }
 
-    public void setStrKursbezeichnung(String strKursbezeichnung) {
-        this.strKursbezeichnung = strKursbezeichnung;
+    public void setIntKm(int intKm)
+    {
+        this.intKm = intKm;
     }
 
-    public Date getDateDatum() {
-        return dateDatum;
+    public int getIntInstanznummer()
+    {
+        return intInstanznummer;
     }
 
-    public void setDateDatum(Date dateDatum) {
-        this.dateDatum = dateDatum;
+    public void setIntInstanznummer(int intInstanznummer)
+    {
+        this.intInstanznummer = intInstanznummer;
     }
 
-    public int getIntId_instanzen_veranstalter() {
-        return intId_instanzen_veranstalter;
+    public String getStrInstanzname()
+    {
+        return strInstanzname;
     }
 
-    public void setIntId_instanzen_veranstalter(int intId_instanzen_veranstalter) {
-        this.intId_instanzen_veranstalter = intId_instanzen_veranstalter;
+    public void setStrInstanzname(String strInstanzname)
+    {
+        this.strInstanzname = strInstanzname;
     }
 
-    public int getIntId_instanzen_durchfuehrend() {
-        return intId_instanzen_durchfuehrend;
+    public String getStrTaetigkeitsart()
+    {
+        return strTaetigkeitsart;
     }
 
-    public void setIntId_instanzen_durchfuehrend(int intId_instanzen_durchfuehrend) {
-        this.intId_instanzen_durchfuehrend = intId_instanzen_durchfuehrend;
+    public void setStrTaetigkeitsart(String strTaetigkeitsart)
+    {
+        this.strTaetigkeitsart = strTaetigkeitsart;
     }
 
-    public String getStrKursstatus() {
-        return strKursstatus;
+    public String getStrTaetigkeitsunterart()
+    {
+        return strTaetigkeitsunterart;
     }
 
-    public void setStrKursstatus(String strKursstatus) {
-        this.strKursstatus = strKursstatus;
+    public void setStrTaetigkeitsunterart(String strTaetigkeitsunterart)
+    {
+        this.strTaetigkeitsunterart = strTaetigkeitsunterart;
     }
 
-    public int getIntAnzahlBesucher() {
-        return intAnzahlBesucher;
+    public String getStrNummer()
+    {
+        return strNummer;
     }
 
-    public void setIntAnzahlBesucher(int intAnzahlBesucher) {
-        this.intAnzahlBesucher = intAnzahlBesucher;
+    public void setStrNummer(String intNummer)
+    {
+        this.strNummer = intNummer;
+    }
+
+    public Date getDateBeginn()
+    {
+        return dateBeginn;
+    }
+
+    public void setDateBeginn(Date dateBeginn)
+    {
+        this.dateBeginn = dateBeginn;
+    }
+
+    public Date getDateEnde()
+    {
+        return dateEnde;
+    }
+
+    public void setDateEnde(Date dateEnde)
+    {
+        this.dateEnde = dateEnde;
     }
 
     @Override
-    public int hashCode() {
-        int hash = 3;
+    public int hashCode()
+    {
+        int hash = 7;
         return hash;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
+    public boolean equals(Object obj)
+    {
+        if (obj == null)
+        {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (getClass() != obj.getClass())
+        {
             return false;
         }
         final Kurs other = (Kurs) obj;
-        if (this.intId_Kurse != other.intId_Kurse) {
+        if (this.intIdBerichte != other.intIdBerichte)
+        {
             return false;
         }
-        if (this.intId_Kursarten != other.intId_Kursarten) {
+        if (this.intTeilnehmer != other.intTeilnehmer)
+        {
             return false;
         }
-        if (this.intLehrgangsnummer != other.intLehrgangsnummer) {
+        if (!Objects.equals(this.strBezeichnung, other.strBezeichnung))
+        {
             return false;
         }
-        if (!Objects.equals(this.strKursbezeichnung, other.strKursbezeichnung)) {
+        if (this.intKm != other.intKm)
+        {
             return false;
         }
-        if (!Objects.equals(this.dateDatum, other.dateDatum)) {
+        if (this.intInstanznummer != other.intInstanznummer)
+        {
             return false;
         }
-        if (this.intId_instanzen_veranstalter != other.intId_instanzen_veranstalter) {
+        if (!Objects.equals(this.strInstanzname, other.strInstanzname))
+        {
             return false;
         }
-        if (this.intId_instanzen_durchfuehrend != other.intId_instanzen_durchfuehrend) {
+        if (!Objects.equals(this.strTaetigkeitsart, other.strTaetigkeitsart))
+        {
             return false;
         }
-        if (!Objects.equals(this.strKursstatus, other.strKursstatus)) {
+        if (!Objects.equals(this.strTaetigkeitsunterart, other.strTaetigkeitsunterart))
+        {
             return false;
         }
-        if (this.intAnzahlBesucher != other.intAnzahlBesucher) {
+        if (this.strNummer != other.strNummer)
+        {
+            return false;
+        }
+        if (!Objects.equals(this.dateBeginn, other.dateBeginn))
+        {
+            return false;
+        }
+        if (!Objects.equals(this.dateEnde, other.dateEnde))
+        {
             return false;
         }
         return true;
     }
 
     @Override
-    public String toString() {
-        return "Kurs{" + "intId_kurse=" + intId_Kurse + ", intId_Kursarten=" + intId_Kursarten + ", intLehrgangsnummer=" + intLehrgangsnummer + ", strKursbezeichnung=" + strKursbezeichnung + ", dateDatum=" + dateDatum + ", intId_instanzen_veranstalter=" + intId_instanzen_veranstalter + ", intId_instanzen_durchfuehrend=" + intId_instanzen_durchfuehrend + ", strKursstatus=" + strKursstatus + ", intAnzahlBesucher=" + intAnzahlBesucher + '}';
+    public String toString()
+    {
+        String strHtml = "<tr><td>"
+                + intTeilnehmer + "</td><td>"
+                + strBezeichnung + "</td><td>"
+                + intKm + "</td><td>"
+                + strTaetigkeitsart + "</td><td>"
+                + strTaetigkeitsunterart + "</td><td>"
+                + dateBeginn + "</td><td>"
+                + dateEnde + "</td>"
+                + "<td></td></tr>";
+
+        return strHtml;
     }
 
 }

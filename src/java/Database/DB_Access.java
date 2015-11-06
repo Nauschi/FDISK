@@ -9,6 +9,7 @@ import Beans.Berechtigung;
 import Beans.Erreichbarkeit;
 import Beans.Fahrzeug;
 import Beans.Kurs;
+import Beans.KursAlt;
 import Beans.LoginMitglied;
 import Beans.Mitglied;
 import Beans.MitgliedsAdresse;
@@ -130,21 +131,22 @@ public class DB_Access
     }
 
     /**
-     * Verbindung der Methode getUserID und getLoginBerechtigung damit Marcel 
+     * Verbindung der Methode getUserID und getLoginBerechtigung damit Marcel
      * nur eine Methode aufrufen muss
-     *  
+     *
      * @param strUsername
      * @param strPasswort
      * @return
      * @throws SQLException
-     * @throws Exception 
+     * @throws Exception
      */
-     public LinkedList<LoginMitglied> getLoginMitglied(String strUsername, String strPasswort) throws SQLException, Exception
+    public LinkedList<LoginMitglied> getLoginMitglied(String strUsername, String strPasswort) throws SQLException, Exception
     {
-        int intIDUser = getUserID(strUsername, strPasswort); 
-        LinkedList<LoginMitglied> liLoginMitglied = getLoginBerechtigung(intIDUser); 
+        int intIDUser = getUserID(strUsername, strPasswort);
+        LinkedList<LoginMitglied> liLoginMitglied = getLoginBerechtigung(intIDUser);
         return liLoginMitglied;
     }
+
     /**
      * Gibt eine LinkedList mit allen Berechtigungen eines Mitglieds zurück.
      * Enthalten sind die UserID, die Fubwehr, die GruppenID und die
@@ -184,8 +186,6 @@ public class DB_Access
         connPool.releaseConnection(conn);
         return liMitglieder;
     }
-
-
 
     /**
      * Gibt die zugehörige Fubwehr einer UserID zurück.
@@ -584,18 +584,18 @@ public class DB_Access
     }
 
     /**
-     * Gibt spezielle Informationen zu der Tätigkeit "Kursbesuch an der FWZS"
-     * als LinkedList zurück. Diese Informationen sind zum Beispiel Anzahl der
-     * Mitarbeiter in einem Kurs.
+     * !!!Alte Version!!! Gibt spezielle Informationen zu der Tätigkeit
+     * "Kursbesuch an der FWZS" als LinkedList zurück. Diese Informationen sind
+     * zum Beispiel Anzahl der Mitarbeiter in einem KursAlt.
      *
      * @return LinkedList
      * @throws IOException
-     * @see Kurs
+     * @see KursAlt
      * @see LinkedList
      */
-    public LinkedList<Kurs> getKursstatistik() throws Exception
+    public LinkedList<KursAlt> getKursstatistikAlt() throws Exception
     {
-        LinkedList<Kurs> liKurse = new LinkedList<>();
+        LinkedList<KursAlt> liKurse = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 
@@ -644,7 +644,81 @@ public class DB_Access
             strKursstatus = rs.getString("Kursstatus");
             intAnzahlBesucher = rs.getInt("Teilnehmer");
 
-            Kurs kurs = new Kurs(intId_kurse, intId_Kursarten, intLehrgangsnummer, strKursbezeichnung, dateDatum, intId_instanzen_veranstalter, intId_instanzen_durchfuehrend, strKursstatus, intAnzahlBesucher);
+            KursAlt kurs = new KursAlt(intId_kurse, intId_Kursarten, intLehrgangsnummer, strKursbezeichnung, dateDatum, intId_instanzen_veranstalter, intId_instanzen_durchfuehrend, strKursstatus, intAnzahlBesucher);
+            liKurse.add(kurs);
+
+        }
+        connPool.releaseConnection(conn);
+        return liKurse;
+    }
+
+    /**
+     * Gibt spezielle Informationen zu der Tätigkeit "Kursbesuch an der FWZS"
+     * als LinkedList zurück. Diese Informationen sind zum Beispiel Anzahl der
+     * Mitarbeiter in einem KursAlt.
+     */
+    public LinkedList<Kurs> getKursstatistik() throws Exception
+    {
+        LinkedList<Kurs> liKurse = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT t.id_stmktaetigkeitsberichte \"IdBerichte\","
+                + "COUNT(m.zuname) \"Teilnehmer\","
+                + "f.bezeichnung \"Bezeichnung\","
+                + "f.km \"KM\""
+                + ",t.instanznummer \"Instanznr\""
+                + ",t.instanzname \"Instanzname\""
+                + ",t.taetigkeitsart \"TArt\""
+                + ",t.taetigkeitsunterart \"TUnterArt\""
+                + ",t.nummer \"Nummer\""
+                + ",t.beginn \"Beginn\""
+                + ",t.ende \"Ende\""
+                + " FROM FDISK.dbo.stmktaetigkeitsberichte t INNER JOIN FDISK.dbo.stmktaetigkeitsberichtemitglieder m"
+                + " ON(t.id_stmktaetigkeitsberichte = m.id_berichte) INNER JOIN FDISK.dbo.stmktaetigkeitsberichtefahrzeuge f"
+                + " ON(t.id_stmktaetigkeitsberichte = f.id_berichte)"
+                + " WHERE taetigkeitsart = 'Kursbesuch an der FWZS'"
+                + " GROUP BY t.id_stmktaetigkeitsberichte,"
+                + " f.bezeichnung,"
+                + "f.km"
+                + ",t.instanznummer"
+                + ",t.instanzname"
+                + ",t.taetigkeitsart"
+                + ",t.taetigkeitsunterart"
+                + ",t.nummer"
+                + ",t.beginn"
+                + ",t.ende";
+
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        int intIdBerichte;
+        int intTeilnehmer;
+        String strBezeichnung;
+        int intKm;
+        int intInstanznummer;
+        String strInstanzname;
+        String strTaetigkeitsart;
+        String strTaetigkeitsunterart;
+        String strNummer;
+        Date dateBeginn;
+        Date dateEnde;
+
+        while (rs.next())
+        {
+
+            intIdBerichte = rs.getInt("IdBerichte");
+            intTeilnehmer = rs.getInt("Teilnehmer");
+            strBezeichnung = rs.getString("Bezeichnung");
+            intKm = rs.getInt("KM");
+            intInstanznummer = rs.getInt("Instanznr");
+            strInstanzname = rs.getString("Instanzname");
+            strTaetigkeitsart = rs.getString("TArt");
+            strTaetigkeitsunterart = rs.getString("TUnterArt");
+            strNummer = rs.getString("Nummer");
+            dateBeginn = rs.getDate("Beginn");
+            dateEnde = rs.getDate("Ende");
+
+            Kurs kurs = new Kurs(intIdBerichte, intTeilnehmer, strBezeichnung, intKm, intInstanznummer, strInstanzname, strTaetigkeitsart, strTaetigkeitsunterart, strNummer, dateBeginn, dateEnde);
             liKurse.add(kurs);
 
         }
@@ -1407,11 +1481,11 @@ public class DB_Access
         HashMap<String, LinkedList<String>> hm = new HashMap<>();
         try
         {
-            LinkedList<LoginMitglied> lili = new LinkedList<>();
-            lili = theInstance.getLoginMitglied("47030006", "ga8859");
-            for (LoginMitglied mi : lili)
+            LinkedList<Kurs> lili = new LinkedList<>();
+            lili = theInstance.getKursstatistik();
+            for (Kurs k : lili)
             {
-                System.out.println(mi.getIntId_User() + "+"+ mi.getStrFubwehr()+ "+"+mi.getStrGruppe()+ "+"+mi.getIntIDGruppe());
+                System.out.println(k.getIntIdBerichte() + "+" + k.getIntKm() + "+"+ k.getIntTeilnehmer()); 
             }
 //            LinkedList<Mitglied> li = theInstance.getEinfacheMitgliederliste(3566, 15);
 //            for (Mitglied li1 : li)
