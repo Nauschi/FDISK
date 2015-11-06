@@ -6,6 +6,7 @@
 package Database;
 
 import Beans.Berechtigung;
+import Beans.Einsatzberichtmitglied;
 import Beans.Erreichbarkeit;
 import Beans.Fahrzeug;
 import Beans.Kurs;
@@ -1465,9 +1466,14 @@ public class DB_Access
         return hmFilter;
     }
 
+    /**
+     * Gibt alle Mitglieder für Übungsberichte als LinkedList zurück
+     * @return
+     * @throws Exception 
+     */
     public LinkedList<Uebungsberichtmitglied> getUebungsberichtmitglied() throws Exception
     {
-        LinkedList<Uebungsberichtmitglied> liTMitglied = new LinkedList<>();
+        LinkedList<Uebungsberichtmitglied> liUMitglied = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 
@@ -1504,12 +1510,112 @@ public class DB_Access
             strNachname = rs.getString("Nachname");
 
             Uebungsberichtmitglied uebungsMitglied = new Uebungsberichtmitglied(intIdUebungsMitglied, intIdBericht, intInstanznummer, strName, intSBN, intIdMitgliedschaften, strVorname, strNachname); 
-            liTMitglied.add(uebungsMitglied);
+            liUMitglied.add(uebungsMitglied);
+        }
+        connPool.releaseConnection(conn);
+        return liUMitglied;
+    }
+
+    /**
+     * Gibt alle Mitglieder für Tätigkeitsberichte als LinkedList zurück
+     * @return
+     * @throws Exception 
+     */
+    public LinkedList<Taetigkeitsberichtmitglied> getTaetigkeitsberichtmitglied() throws Exception
+    {
+        LinkedList<Taetigkeitsberichtmitglied> liTMitglied = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT DISTINCT TOP 1000 id_stmktaetigkeitsberichtemitglieder \"TaetigkeitsMitgliedID\""
+                + " ,id_berichte \"BerichtId\""
+                + " ,instanznummer \"Instanznummer\""
+                + " ,name \"Name\""
+                + " ,standesbuchnummer \"SBN\""
+                + " ,id_mitgliedschaften \"IDMitgliedschaft\""
+                + " ,vorname \"Vorname\""
+                + " ,zuname \"Nachname\""
+                + " FROM FDISK.dbo.stmktaetigkeitsberichtemitglieder";
+
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        int intIdTaetigkeitsMitglied;
+        int intIdBericht;
+        int intInstanznummer; 
+        String strName;
+        int intSBN;
+        int intIdMitgliedschaften;
+        String strVorname;
+        String strNachname;
+
+        while (rs.next())
+        {
+            intIdTaetigkeitsMitglied = rs.getInt("TaetigkeitsMitgliedID");
+            intIdBericht = rs.getInt("BerichtId");
+            intInstanznummer = rs.getInt("Instanznummer");
+            strName = rs.getString("Name");
+            intSBN = rs.getInt("SBN");
+            intIdMitgliedschaften = rs.getInt("IDMitgliedschaft");
+            strVorname = rs.getString("Vorname");
+            strNachname = rs.getString("Nachname");
+
+            Taetigkeitsberichtmitglied taetigkeitsMitglied = new Taetigkeitsberichtmitglied(intIdTaetigkeitsMitglied, intIdBericht, intInstanznummer, strName, intSBN, intIdMitgliedschaften, strVorname, strNachname); 
+            liTMitglied.add(taetigkeitsMitglied);
         }
         connPool.releaseConnection(conn);
         return liTMitglied;
     }
+    
+    /**
+     * Gibt alle Mitglieder für Einsatzberichte als LinkedList zurück
+     * @return
+     * @throws Exception 
+     */
+    public LinkedList<Einsatzberichtmitglied> getEinsatzberichtmitglied() throws Exception
+    {
+        LinkedList<Einsatzberichtmitglied> liEMitglied = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
 
+        String sqlString = "SELECT DISTINCT TOP 1000 id_stmkeinsatzberichtemitglieder \"EinsatzMitgliedID\""
+                + " ,id_berichte \"BerichtId\""
+                + " ,instanznummer \"Instanznummer\""
+                + " ,name \"Name\""
+                + " ,standesbuchnummer \"SBN\""
+                + " ,id_mitgliedschaften \"IDMitgliedschaft\""
+                + " ,vorname \"Vorname\""
+                + " ,zuname \"Nachname\""
+                + " FROM FDISK.dbo.stmkeinsatzberichtemitglieder";
+
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        int intIdEinsatzMitglied;
+        int intIdBericht;
+        int intInstanznummer; 
+        String strName;
+        int intSBN;
+        int intIdMitgliedschaften;
+        String strVorname;
+        String strNachname;
+
+        while (rs.next())
+        {
+            intIdEinsatzMitglied = rs.getInt("EinsatzMitgliedID");
+            intIdBericht = rs.getInt("BerichtId");
+            intInstanznummer = rs.getInt("Instanznummer");
+            strName = rs.getString("Name");
+            intSBN = rs.getInt("SBN");
+            intIdMitgliedschaften = rs.getInt("IDMitgliedschaft");
+            strVorname = rs.getString("Vorname");
+            strNachname = rs.getString("Nachname");
+
+            Einsatzberichtmitglied einsatzMitglied = new Einsatzberichtmitglied(intIdEinsatzMitglied, intIdBericht, intInstanznummer, strName, intSBN, intIdMitgliedschaften, strVorname, strNachname); 
+            liEMitglied.add(einsatzMitglied);
+        }
+        connPool.releaseConnection(conn);
+        return liEMitglied;
+    }
+    
     /**
      *
      * @param args
@@ -1528,9 +1634,9 @@ public class DB_Access
         HashMap<String, LinkedList<String>> hm = new HashMap<>();
         try
         {
-            LinkedList<Uebungsberichtmitglied> lili = new LinkedList<>();
-            lili = theInstance.getUebungsberichtmitglied();
-            for (Uebungsberichtmitglied k : lili)
+            LinkedList<Einsatzberichtmitglied> lili = new LinkedList<>();
+            lili = theInstance.getEinsatzberichtmitglied();
+            for (Einsatzberichtmitglied k : lili)
             {
                 System.out.println(k.getStrNachname()+ "+" + k.getStrVorname()+ "+" + k.getIntSBN());
             }
