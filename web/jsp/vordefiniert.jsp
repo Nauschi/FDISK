@@ -153,7 +153,12 @@ aaaaasdfsdf
                             </div>
                         </div>
                     </form>
+
                     <a href="res/Rohberichte.csv">Download</a>
+                    <form id="formPDF" name="formPDF" action="PDFServlet" method="POST">
+                        <input type="hidden" name="input_table" id="input_table"/>
+                        
+                    </form>
                     <div id="div_table">
                     </div>
                     <div id="div_abbrechen_bestaetigen" style="display:none" class="ui segment">
@@ -162,10 +167,12 @@ aaaaasdfsdf
                                 <button class="ui button styleRot" style="background-color: #C00518; width: 100%; color: white;">Zurücksetzen</button>
                             </div>
                             <div class="column">
-                                <button onclick="onBestaetigen();" name="button_bestaetigen" class="ui button styleGruen"  style="background-color: #007336; width: 100%; color: white;">Bestätigen</button>
+
+                                <button type="button" onClick="test3()" name="button_bestaetigen" class="ui button styleGruen"  style="background-color: #007336; width: 100%; color: white;">Bestätigen</button>
                             </div>
                         </div>
                     </div>
+
 
                 </div>
             </div>
@@ -223,6 +230,6 @@ aaaaasdfsdf
 
 
         </script>        
-        
+
     </body>
 </html>
