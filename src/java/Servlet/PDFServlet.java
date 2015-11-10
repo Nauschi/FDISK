@@ -8,11 +8,11 @@ package Servlet;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.tool.xml.html.Tags;
-import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -101,12 +101,14 @@ public class PDFServlet extends HttpServlet
             PdfWriter.getInstance(document, response.getOutputStream());
 
             document.open();
+            
+            HTMLWorker worker = new HTMLWorker(document);
+            
+            worker.parse(new StringReader(table));
+            
 
-            HtmlPipelineContext htmlContext = new HtmlPipelineContext(null);
-            htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
-
-            document.add(new Paragraph(table));
-            document.add(new Paragraph(new Date().toString()));
+//            document.add(new Paragraph(table));
+//            document.add(new Paragraph(new Date().toString()));
 
             document.close();
         } catch (DocumentException de)

@@ -95,7 +95,6 @@ function test2()
 
 function test3()
 {
-    alert("assad");
     var strTable = document.getElementById("div_table").innerHTML;
     document.getElementById("input_table").value = strTable;
     document.formPDF.submit();
