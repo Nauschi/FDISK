@@ -5,6 +5,7 @@
  */
 package Servlet;
 
+import Beans.Kurs;
 import Beans.Mitglied;
 import Beans.MitgliedsAdresse;
 import Beans.MitgliedsDienstzeit;
@@ -263,6 +264,10 @@ public class MainServlet extends HttpServlet
             {
                 LinkedList<MitgliedsDienstzeit> liDienstzeiten = access.getDienstzeitListe();
                 request.setAttribute("liste", liDienstzeiten);
+            }else if(strBericht.equals(liRohberichte.get(13).getStrBerichtname()))
+            {
+                LinkedList<Kurs> liKurse = access.getKursstatistik();
+                request.setAttribute("liste", liKurse);
             }
         } catch (Exception ex)
         {

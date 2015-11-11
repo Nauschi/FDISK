@@ -34,19 +34,19 @@ aaaaasdfsdf
 
             <div class="ui menu" style="background-color: #C00518; width: 100%">
 
-                <a class="item active">
+                <a class="item active linkMenu">
                     Vordefiniert
                 </a>
                 <form action="MainServlet" method="POST" name="form_dynamisch">
                     <input type="hidden" name="dynamisch">
-                    <a href="#" onclick="document.form_dynamisch.submit();" class="item">
+                    <a href="#" onclick="document.form_dynamisch.submit();" class="item linkMenu">
                         Dynamisch
                     </a>
                 </form>
                 <div class="right menu">
                     <form action="MainServlet" method="POST" name="form_logout">
                         <input type="hidden" name="logout">
-                        <a href="#" onclick="document.form_logout.submit();" class="ui item">
+                        <a href="#" onclick="document.form_logout.submit();" class="ui item linkMenu">
                             Logout
                         </a>
                     </form>
@@ -153,8 +153,6 @@ aaaaasdfsdf
                             </div>
                         </div>
                     </form>
-
-                    <a href="res/Rohberichte.csv">Download</a>
                     <form id="formPDF" name="formPDF" action="PDFServlet" method="POST">
                         <input type="hidden" name="input_table" id="input_table"/>
                         
@@ -212,7 +210,7 @@ aaaaasdfsdf
                 {
                     LinkedList<Object> liBerichtDaten = (LinkedList<Object>) request.getAttribute("liste");
                     String strHTML = "";
-                    for (int i = 0; i < liBerichtDaten.size() - 1; i++)
+                    for (int i = 0; i < liBerichtDaten.size()-1; i++)
                     {
                         Object zeile = liBerichtDaten.get(i);
                         strHTML += zeile.toString();

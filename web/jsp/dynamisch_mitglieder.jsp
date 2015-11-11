@@ -54,17 +54,17 @@
             <div class="ui menu" style="background-color: #C00518; width: 100%">
                 <form action="MainServlet" method="POST" name="form_vordefiniert">
                     <input type="hidden" name="vordefiniert">
-                    <a href="#" onclick="document.form_vordefiniert.submit();" class="item">
+                    <a href="#" onclick="document.form_vordefiniert.submit();" class="item linkMenu">
                         Vordefiniert
                     </a>
                 </form>
-                <a class="item active">
+                <a class="item active linkMenu">
                     Dynamisch
                 </a>
                 <div class="right menu">
                     <form action="MainServlet" method="POST" name="form_logout">
                         <input type="hidden" name="logout">
-                        <a href="#" onclick="document.form_logout.submit();" class="ui item">
+                        <a href="#" onclick="document.form_logout.submit();" class="ui item linkMenu">
                             Logout
                         </a>
                     </form>

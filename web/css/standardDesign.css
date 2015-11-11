@@ -12,12 +12,13 @@ and open the template in the editor.
 *,h2, h1
 {
     font-family: Cambria;
+    
 }
 
 
 body
 {
-
+    
     background-image: url("../res/bg.png");
     background-size: 100%;
 }
@@ -61,4 +62,9 @@ button
 
 .styleRot:hover {
     background: #CD3746 !important;
+}
+
+.linkMenu
+{
+    font-weight: 900 !important;
 }
