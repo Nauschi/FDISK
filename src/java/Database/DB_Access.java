@@ -659,6 +659,9 @@ public class DB_Access
      * Gibt spezielle Informationen zu der Tätigkeit "Kursbesuch an der FWZS"
      * als LinkedList zurück. Diese Informationen sind zum Beispiel Anzahl der
      * Mitarbeiter in einem KursAlt.
+     * 
+     * Achtung: Im Moment werden Daten aller Kurse zurückgegeben (nicht nur 
+     * Kursbesuch an der FWZS)
      */
     public LinkedList<Kurs> getKursstatistik() throws Exception
     {
@@ -680,7 +683,7 @@ public class DB_Access
                 + " FROM FDISK.dbo.stmktaetigkeitsberichte t INNER JOIN FDISK.dbo.stmktaetigkeitsberichtemitglieder m"
                 + " ON(t.id_stmktaetigkeitsberichte = m.id_berichte) INNER JOIN FDISK.dbo.stmktaetigkeitsberichtefahrzeuge f"
                 + " ON(t.id_stmktaetigkeitsberichte = f.id_berichte)"
-                + " WHERE taetigkeitsart = 'Kursbesuch an der FWZS'"
+               // + " WHERE taetigkeitsart = 'Kursbesuch an der FWZS'"
                 + " GROUP BY t.id_stmktaetigkeitsberichte,"
                 + " f.bezeichnung,"
                 + "f.km"
@@ -1634,11 +1637,11 @@ public class DB_Access
         HashMap<String, LinkedList<String>> hm = new HashMap<>();
         try
         {
-            LinkedList<Einsatzberichtmitglied> lili = new LinkedList<>();
-            lili = theInstance.getEinsatzberichtmitglied();
-            for (Einsatzberichtmitglied k : lili)
+            LinkedList<Kurs> lili = new LinkedList<>();
+            lili = theInstance.getKursstatistik();
+            for (Kurs k : lili)
             {
-                System.out.println(k.getStrNachname()+ "+" + k.getStrVorname()+ "+" + k.getIntSBN());
+                System.out.println(k.getStrTaetigkeitsart()+ "+" + k.getIntTeilnehmer()+ "+" + k.getIntKm());
             }
 //            LinkedList<Mitglied> li = theInstance.getEinfacheMitgliederliste(3566, 15);
 //            for (Mitglied li1 : li)

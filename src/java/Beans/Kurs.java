@@ -19,7 +19,7 @@ public class Kurs
     private String strTaetigkeitsart;
     private String strTaetigkeitsunterart;
     private String strNummer;
-    private Date dateBeginn;
+    private Date dateBegin;
     private Date dateEnde;
 
     public Kurs(int intIdBerichte, int intTeilnehmer, String strBezeichnung, int intKm, int intInstanznummer, String strInstanzname, String strTaetigkeitsart, String strTaetigkeitsunterart, String strNummer, Date dateBeginn, Date dateEnde)
@@ -33,7 +33,7 @@ public class Kurs
         this.strTaetigkeitsart = strTaetigkeitsart;
         this.strTaetigkeitsunterart = strTaetigkeitsunterart;
         this.strNummer = strNummer;
-        this.dateBeginn = dateBeginn;
+        this.dateBegin = dateBeginn;
         this.dateEnde = dateEnde;
     }
 
@@ -127,14 +127,14 @@ public class Kurs
         this.strNummer = intNummer;
     }
 
-    public Date getDateBeginn()
+    public Date getDateBegin()
     {
-        return dateBeginn;
+        return dateBegin;
     }
 
-    public void setDateBeginn(Date dateBeginn)
+    public void setDateBegin(Date dateBegin)
     {
-        this.dateBeginn = dateBeginn;
+        this.dateBegin = dateBegin;
     }
 
     public Date getDateEnde()
@@ -202,7 +202,7 @@ public class Kurs
         {
             return false;
         }
-        if (!Objects.equals(this.dateBeginn, other.dateBeginn))
+        if (!Objects.equals(this.dateBegin, other.dateBegin))
         {
             return false;
         }
@@ -222,7 +222,7 @@ public class Kurs
                 + intKm + "</td><td>"
                 + strTaetigkeitsart + "</td><td>"
                 + strTaetigkeitsunterart + "</td><td>"
-                + dateBeginn + "</td><td>"
+                + dateBegin + "</td><td>"
                 + dateEnde + "</td>"
                 + "<td></td></tr>";
 
