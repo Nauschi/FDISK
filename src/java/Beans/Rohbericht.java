@@ -54,7 +54,7 @@ public class Rohbericht
         for (int i = 0; i < liBerichtSpalten.size(); i++)
         {
             String strSpalte = liBerichtSpalten.get(i);
-            strHTML += "<th>" + strSpalte + "</th>";
+            strHTML += "<th data-content='nach "+strSpalte+" sortieren'>" + strSpalte + "</th>";
         }
         strHTML += "</tr></thead><tbody>";
 
