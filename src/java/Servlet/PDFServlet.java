@@ -37,7 +37,10 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringBufferInputStream;
 import java.io.StringReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -114,36 +117,61 @@ public class PDFServlet extends HttpServlet
         String table = request.getParameter("input_table");
         String strContextPath = this.getServletContext().getRealPath("/");
         String strCSSPath = strContextPath.replace("build\\web", "web\\css\\pdf.css");
-        String test = "<html><head><style>body{background: red;}</style></head><body><h1>Test<h1></body></html>";
+        String test = "<html><head><style>body{background: red;}</style></head><body><h1>Test</h1></body></html>";
 
         System.out.println("PDFServlet.doPost: CSSPath:" + strCSSPath);
-
-        response.setContentType("application/pdf");
-
 
         try
         {
 
-            Document document = new Document();
-            document.addAuthor("HTL Kaindorf - Yvonne Hartner, Corinna Kindlhofer, Philipp Nauschnegg, Marcel Schmidt, Christoph Schöllauf");
-            document.addCreationDate();
-
-            PdfWriter.getInstance(document, response.getOutputStream());
+            Document document = new Document(PageSize.A4);
+            
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            PdfWriter pdfw = PdfWriter.getInstance(document, baos);
 
             document.open();
+//
+//            HTMLWorker worker = new HTMLWorker(document);
+//
+//            worker.parse(new StringReader(test));
+            HtmlPipelineContext htmlContext = new HtmlPipelineContext(null);
+            htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
+            CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(false);
 
-            HTMLWorker worker = new HTMLWorker(document);
+            //hier das (falls benötigt) CSS File einbinden für die .pdf Datei
+            cssResolver.addCssFile(strCSSPath, true);
+            Pipeline<?> pipeline = new CssResolverPipeline(cssResolver, new HtmlPipeline(htmlContext, new PdfWriterPipeline(document, pdfw)));
 
-            worker.parse(new StringReader(test));
+            XMLWorker worker = new XMLWorker(pipeline, true);
+            XMLParser p = new XMLParser(worker);
+            p.parse(new StringReader(table));
 
 //            document.add(new Paragraph(table));
 //            document.add(new Paragraph(new Date().toString()));
             document.close();
+            pdfw.close();
+
+//            response.setHeader("Expires", "0");
+//            response.setHeader("Cache-Control",
+//                    "must-revalidate, post-check=0, pre-check=0");
+//            response.setHeader("Pragma", "public");
+            
+            response.setContentType("application/pdf");
+            response.setHeader("Content-Disposition", "filename=sample.pdf");
+            response.setContentLength(baos.size());
+
+            ServletOutputStream os = response.getOutputStream();
+            baos.writeTo(os);
+            os.flush();
+            os.close();
         } catch (DocumentException de)
         {
             throw new IOException(de.getMessage());
+        } catch (CssResolverException ex)
+        {
+            Logger.getLogger(PDFServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 
     /**
