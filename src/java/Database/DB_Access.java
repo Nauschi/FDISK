@@ -783,7 +783,7 @@ public class DB_Access
             intId_fahrzeuge = rs.getInt("Id_Fahrzeuge");
             strBezeichnung = rs.getString("Bezeichnung");
             strFahrzeugmarke = rs.getString("Fahrzeugmarke");
-            intInstanznummer = rs.getInt("Instanzmummer");
+            intInstanznummer = rs.getInt("Instanzummer");
 
             Fahrzeug fahrzeug = new Fahrzeug(strFahrzeugTyp, strKennzeichen, intBaujahr, strAufbaufirma, strTaktischeBezeichnung, intId_fahrzeuge, strBezeichnung, strFahrzeugmarke, intInstanznummer);
             liFahrzeuge.add(fahrzeug);
