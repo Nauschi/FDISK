@@ -5,6 +5,7 @@
  */
 package Servlet;
 
+import Beans.Fahrzeug;
 import Beans.Kurs;
 import Beans.Mitglied;
 import Beans.MitgliedsAdresse;
@@ -243,31 +244,28 @@ public class MainServlet extends HttpServlet
             {
                 System.out.println(ex.toString());
             }
+            
             if (strBericht.equals(liRohberichte.get(0).getStrBerichtname()))
             {
-
-                //LinkedList<Mitglied> liMitglieder = access.getEinfacheMitgliederliste();
-                //request.setAttribute("liste", liMitglieder);
+//                request.setAttribute("liste", access.getEinfacheMitgliederliste());
             } else if (strBericht.equals(liRohberichte.get(1).getStrBerichtname()))
             {
-                LinkedList<MitgliedsErreichbarkeit> liErreichtbarkeiten = access.getErreichbarkeitsliste();
-                request.setAttribute("liste", liErreichtbarkeiten);
+                request.setAttribute("liste", access.getErreichbarkeitsliste());
             } else if (strBericht.equals(liRohberichte.get(2).getStrBerichtname()))
             {
-                LinkedList<MitgliedsAdresse> liAdressen = access.getAdressListe();
-                request.setAttribute("liste", liAdressen);
+                request.setAttribute("liste", access.getAdressListe());
             } else if (strBericht.equals(liRohberichte.get(3).getStrBerichtname()))
             {
-                LinkedList<MitgliedsGeburtstag> liGeburtstage = access.getGeburtstagsliste(2014);//welche Zahl??
-                request.setAttribute("liste", liGeburtstage);
+                request.setAttribute("liste", access.getGeburtstagsliste(2014)); //welche Zahl??
             } else if (strBericht.equals(liRohberichte.get(4).getStrBerichtname()))
             {
-                LinkedList<MitgliedsDienstzeit> liDienstzeiten = access.getDienstzeitListe();
-                request.setAttribute("liste", liDienstzeiten);
+                request.setAttribute("liste", access.getDienstzeitListe());
             }else if(strBericht.equals(liRohberichte.get(13).getStrBerichtname()))
             {
-                LinkedList<Kurs> liKurse = access.getKursstatistik();
-                request.setAttribute("liste", liKurse);
+                request.setAttribute("liste", access.getKursstatistik());
+            }else if(strBericht.equals(liRohberichte.get(14).getStrBerichtname()))
+            {
+                request.setAttribute("liste", access.getFahrtenbuch());
             }
         } catch (Exception ex)
         {

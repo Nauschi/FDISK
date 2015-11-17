@@ -49,53 +49,14 @@ function onListItemClicked(item)
 
 }
 
-request = new XMLHttpRequest();
 
-function onBestaetigen()
-{
-    document.getElementById("div_loader").className = "ui active inverted dimmer";
-    strTable = document.getElementById("div_table").innerHTML;
-    strBericht = document.getElementById("h2_bericht").innerHTML;
-    request.open("POST", "PDFServlet", true);
-    request.onreadystatechange = performRequest;
-    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    request.send("strTable=" + strTable + "&strBericht=" + strBericht);
-}
 
-function performRequest()
-{
-    //alert(""+request.readyState);
-    if (request.readyState = 4)
-    {
-        document.getElementById("div_loader").className = "ui disabled loader";
-    }
 
-}
 
-function submitFormPDF()
-{
-    var form = document.getElementById("formPDF");
-    var strTable = document.getElementById("div_table").innerHTML;
-    form.action = "PDFServlet?strTable="+strTable;
-    form.submit();
-}
-
-function test2()
-{
-    var data=document.getElementById("div_table").innerHTML;
-     $.ajax({ 
-    url: "PDFServlet", 
-    type: "POST", 
-    data: { "data": data}, 
-    success: function(data) { 
-    console.log(data); 
-    } 
-    });
-}
-
-function test3()
+function saveDataForPDF()
 {
     var strTable = document.getElementById("div_table").innerHTML;
-    document.getElementById("input_table").value = strTable;
+    var strName = document.getElementById("h2_bericht").innerHTML;
+    document.getElementById("hidden_pdfData").value = strName+"###"+strTable;
     document.formPDF.submit();
 }

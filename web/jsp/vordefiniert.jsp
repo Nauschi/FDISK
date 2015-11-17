@@ -154,7 +154,7 @@ aaaaasdfsdf
                         </div>
                     </form>
                     <form id="formPDF" name="formPDF" action="PDFServlet" method="POST">
-                        <input type="hidden" name="input_table" id="input_table"/>
+                        <input type="hidden" name="hidden_pdfData" id="hidden_pdfData"/>
                         
                     </form>
                     <div id="div_table">
@@ -165,8 +165,7 @@ aaaaasdfsdf
                                 <button class="ui button styleRot" style="background-color: #C00518; width: 100%; color: white;">Zurücksetzen</button>
                             </div>
                             <div class="column">
-
-                                <button type="button" onClick="test3()" name="button_bestaetigen" class="ui button styleGruen"  style="background-color: #007336; width: 100%; color: white;">Bestätigen</button>
+                                <button type="button" onClick="saveDataForPDF()" name="button_bestaetigen" class="ui button styleGruen"  style="background-color: #007336; width: 100%; color: white;">Bestätigen</button>
                             </div>
                         </div>
                     </div>

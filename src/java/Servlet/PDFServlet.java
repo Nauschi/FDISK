@@ -5,6 +5,7 @@
  */
 package Servlet;
 
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
@@ -114,10 +115,16 @@ public class PDFServlet extends HttpServlet
             throws ServletException, IOException
     {
 
-        String table = request.getParameter("input_table");
+        String strData = request.getParameter("hidden_pdfData");
+        String []strSplitData = strData.split("###");
+        String strBerichtname = strSplitData[0];
+        String strTable = strSplitData[1];
+        strTable = strTable.replaceAll("<br>", " ");
+        
+        String strAusgabe = "<h1>"+strBerichtname+"</h1>"+strTable;
+        
         String strContextPath = this.getServletContext().getRealPath("/");
         String strCSSPath = strContextPath.replace("build\\web", "web\\css\\pdf.css");
-        String test = "<html><head><style>body{background: red;}</style></head><body><h1>Test</h1></body></html>";
 
         System.out.println("PDFServlet.doPost: CSSPath:" + strCSSPath);
 
@@ -144,7 +151,7 @@ public class PDFServlet extends HttpServlet
 
             XMLWorker worker = new XMLWorker(pipeline, true);
             XMLParser p = new XMLParser(worker);
-            p.parse(new StringReader(table));
+            p.parse(new StringReader(strAusgabe));
 
 //            document.add(new Paragraph(table));
 //            document.add(new Paragraph(new Date().toString()));
@@ -157,7 +164,7 @@ public class PDFServlet extends HttpServlet
 //            response.setHeader("Pragma", "public");
             
             response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "filename=sample.pdf");
+            response.setHeader("Content-Disposition", "filename="+strBerichtname+".pdf");
             response.setContentLength(baos.size());
 
             ServletOutputStream os = response.getOutputStream();

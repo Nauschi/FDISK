@@ -100,7 +100,17 @@ public class MitgliedsErreichbarkeit extends Mitglied
 
         for (Erreichbarkeit erreichbarkeit : liErreichbarkeiten)
         {
-            strHtml+= erreichbarkeit.getStrErreichbarkeitsArt()+": "+erreichbarkeit.getStrCode()+"<br/>";
+            if(liErreichbarkeiten.getLast().equals(erreichbarkeit))
+            {
+                strHtml+= erreichbarkeit.getStrErreichbarkeitsArt()+": "+erreichbarkeit.getStrCode();
+                System.out.println("MitgliedsErreichbarkeit: no br");
+            }else
+            {
+                
+                strHtml+= erreichbarkeit.getStrErreichbarkeitsArt()+": "+erreichbarkeit.getStrCode()+"<br>";
+                System.out.println("MitgliedsErreichbarkeit: br");
+            }
+            
         }
         strHtml += "</td><td></td></tr>";
 
