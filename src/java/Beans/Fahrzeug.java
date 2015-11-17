@@ -20,8 +20,9 @@ public class Fahrzeug {
     private int intId_fahrzeuge;
     private String strBezeichnung;
     private String strFahrzeugmarke;
+    private int intInstanznummer;
 
-    public Fahrzeug(String strFahrzeugTyp, String strKennzeichen, int intBaujahr, String strAufbaufirma, String strTaktischeBezeichnung, int intId_fahrzeuge, String strBezeichnung, String strFahrzeugmarke) {
+    public Fahrzeug(String strFahrzeugTyp, String strKennzeichen, int intBaujahr, String strAufbaufirma, String strTaktischeBezeichnung, int intId_fahrzeuge, String strBezeichnung, String strFahrzeugmarke, int intInstanznummer) {
         this.strFahrzeugTyp = strFahrzeugTyp;
         this.strKennzeichen = strKennzeichen;
         this.intBaujahr = intBaujahr;
@@ -30,6 +31,7 @@ public class Fahrzeug {
         this.intId_fahrzeuge = intId_fahrzeuge;
         this.strBezeichnung = strBezeichnung;
         this.strFahrzeugmarke = strFahrzeugmarke;
+        this.intInstanznummer = intInstanznummer;
     }
 
     public String getStrFahrzeugTyp() {

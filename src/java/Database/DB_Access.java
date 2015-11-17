@@ -756,7 +756,8 @@ public class DB_Access
                 + ",status \"Status\" "
                 + ",baujahr \"Baujahr\" "
                 + ",fahrzeugmarke \"Fahrzeugmarke\" "
-                + ",aufbaufirma \"Aufbaufirma\" "
+                + ",aufbaufirma \"Aufbaufirma\""
+                + ",istanznummer \"Instanzummer\" "
                 + "FROM FDISK.dbo.stmkfahrzeuge "
                 + "WHERE status = 'aktiv'";
 
@@ -770,6 +771,7 @@ public class DB_Access
         int intId_fahrzeuge;
         String strBezeichnung;
         String strFahrzeugmarke;
+        int intInstanznummer;
 
         while (rs.next())
         {
@@ -781,8 +783,9 @@ public class DB_Access
             intId_fahrzeuge = rs.getInt("Id_Fahrzeuge");
             strBezeichnung = rs.getString("Bezeichnung");
             strFahrzeugmarke = rs.getString("Fahrzeugmarke");
+            intInstanznummer = rs.getInt("Instanzmummer");
 
-            Fahrzeug fahrzeug = new Fahrzeug(strFahrzeugTyp, strKennzeichen, intBaujahr, strAufbaufirma, strTaktischeBezeichnung, intId_fahrzeuge, strBezeichnung, strFahrzeugmarke);
+            Fahrzeug fahrzeug = new Fahrzeug(strFahrzeugTyp, strKennzeichen, intBaujahr, strAufbaufirma, strTaktischeBezeichnung, intId_fahrzeuge, strBezeichnung, strFahrzeugmarke, intInstanznummer);
             liFahrzeuge.add(fahrzeug);
         }
         connPool.releaseConnection(conn);
@@ -1617,7 +1620,8 @@ public class DB_Access
         }
         connPool.releaseConnection(conn);
         return liEMitglied;
-    }
+    }    
+    
     
     /**
      *
