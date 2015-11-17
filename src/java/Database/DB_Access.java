@@ -757,7 +757,7 @@ public class DB_Access
                 + ",baujahr \"Baujahr\" "
                 + ",fahrzeugmarke \"Fahrzeugmarke\" "
                 + ",aufbaufirma \"Aufbaufirma\""
-                + ",istanznummer \"Instanzummer\" "
+                + ",instanznummer \"Instanzummer\" "
                 + "FROM FDISK.dbo.stmkfahrzeuge "
                 + "WHERE status = 'aktiv'";
 
