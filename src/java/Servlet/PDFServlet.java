@@ -5,11 +5,13 @@
  */
 package Servlet;
 
+import PDF.PDF_KopfFußzeile;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.pdf.PdfAction;
 import com.itextpdf.text.pdf.PdfReader;
@@ -116,13 +118,13 @@ public class PDFServlet extends HttpServlet
     {
 
         String strData = request.getParameter("hidden_pdfData");
-        String []strSplitData = strData.split("###");
+        String[] strSplitData = strData.split("###");
         String strBerichtname = strSplitData[0];
         String strTable = strSplitData[1];
 //        strTable = strTable.replaceAll("<br>", " ");
-        
-        String strAusgabe = "<h1>"+strBerichtname+"</h1>"+strTable;
-        
+
+        String strAusgabe = "<h1>" + strBerichtname + "</h1>" + strTable;
+
         String strContextPath = this.getServletContext().getRealPath("/");
         String strCSSPath = strContextPath.replace("build\\web", "web\\css\\pdf.css");
 
@@ -131,11 +133,16 @@ public class PDFServlet extends HttpServlet
         try
         {
 
-            Document document = new Document(PageSize.A4);
-            
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            PdfWriter pdfw = PdfWriter.getInstance(document, baos);
+            Document document = new Document(PageSize.A4 ,36, 36, 54, 54);
 
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            PdfWriter writer = PdfWriter.getInstance(document, baos);
+
+            PDF_KopfFußzeile event = new PDF_KopfFußzeile();
+            writer.setBoxSize("art", new Rectangle(36, 54, 559, 788));
+            writer.setPageEvent(event);
+            
+            
             document.open();
             HtmlPipelineContext htmlContext = new HtmlPipelineContext(null);
             htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
@@ -143,7 +150,7 @@ public class PDFServlet extends HttpServlet
 
             //hier das (falls benötigt) CSS File einbinden für die .pdf Datei
             cssResolver.addCssFile(strCSSPath, true);
-            Pipeline<?> pipeline = new CssResolverPipeline(cssResolver, new HtmlPipeline(htmlContext, new PdfWriterPipeline(document, pdfw)));
+            Pipeline<?> pipeline = new CssResolverPipeline(cssResolver, new HtmlPipeline(htmlContext, new PdfWriterPipeline(document, writer)));
 
             XMLWorker worker = new XMLWorker(pipeline, true);
             XMLParser p = new XMLParser(worker);
@@ -152,15 +159,14 @@ public class PDFServlet extends HttpServlet
 //            document.add(new Paragraph(table));
 //            document.add(new Paragraph(new Date().toString()));
             document.close();
-            pdfw.close();
+            writer.close();
 
 //            response.setHeader("Expires", "0");
 //            response.setHeader("Cache-Control",
 //                    "must-revalidate, post-check=0, pre-check=0");
 //            response.setHeader("Pragma", "public");
-            
             response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "filename="+strBerichtname+".pdf");
+            response.setHeader("Content-Disposition", "filename=" + strBerichtname + ".pdf");
             response.setContentLength(baos.size());
 
             ServletOutputStream os = response.getOutputStream();
