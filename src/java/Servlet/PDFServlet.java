@@ -119,7 +119,7 @@ public class PDFServlet extends HttpServlet
         String []strSplitData = strData.split("###");
         String strBerichtname = strSplitData[0];
         String strTable = strSplitData[1];
-        strTable = strTable.replaceAll("<br>", " ");
+//        strTable = strTable.replaceAll("<br>", " ");
         
         String strAusgabe = "<h1>"+strBerichtname+"</h1>"+strTable;
         
@@ -137,10 +137,6 @@ public class PDFServlet extends HttpServlet
             PdfWriter pdfw = PdfWriter.getInstance(document, baos);
 
             document.open();
-//
-//            HTMLWorker worker = new HTMLWorker(document);
-//
-//            worker.parse(new StringReader(test));
             HtmlPipelineContext htmlContext = new HtmlPipelineContext(null);
             htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
             CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(false);
