@@ -123,8 +123,38 @@ public class PDFServlet extends HttpServlet
         String strTable = strSplitData[1];
 //        strTable = strTable.replaceAll("<br>", " ");
 
-        String strAusgabe = "<h1>" + strBerichtname + "</h1>" + strTable;
-
+        //String strAusgabe = "<h1>" + strBerichtname + "</h1>" + strTable;
+        String strUebungsbericht = "<h1>Übungsbericht</h1>"
+                + "<b><p><u>Allgemein</u></p></b>"
+                + "<p>Verfasser:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</p>"
+                + "<p>Übungs-Art:&nbsp;_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</p>"
+                + "<p>Unterart:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</p>"
+                + "<p>Eigener Einsatzbereich: &Omicron;&nbsp;JA&nbsp;&nbsp;&nbsp;&Omicron;&nbsp;NEIN</p>"
+                + "<p>Datum / Uhrzeit Beginn: __ __ . __ __ . __ __ __ __ - __ __ : __ __ Uhr</p>"
+                + "<p>Datum / Uhrzeit Ende: __ __ . __ __ . __ __ __ __ - __ __ : __ __ Uhr</p>"
+                + "<p>Übungsziel: _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ "
+                + "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ "
+                + "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ "
+                + "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </p>"
+                + "<b><p><u>Eingesetzte Fahrzeuge</u></p></b>"
+                + "<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&Omicron;&nbsp;Mannschaftstransportfahrzeug &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&Omicron;&nbsp;Tanklöschfahrzeug TLF-A 500 TS</p>"
+                + "<b><p><u>Eingesetzte Mitglieder</u></p></b>";
+        
+        String strTaetigkeitsbericht = "<h1>Tätigkeitsbericht</h1>"
+                + "<b><p><u>Allgemein</u></p></b>"
+                + "<p>Verfasser:&nbsp;&nbsp;&nbsp;_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</p>"
+                + "<p>Tätigkeits-Art:&nbsp;&nbsp;_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</p>"
+                + "<p>Unterart:&nbsp;&nbsp;&nbsp;&nbsp;_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</p>"
+                + "<p>Eigener Einsatzbereich: &Omicron;&nbsp;JA&nbsp;&nbsp;&nbsp;&Omicron;&nbsp;NEIN</p>"
+                + "<p>Datum / Uhrzeit Beginn: __ __ . __ __ . __ __ __ __ - __ __ : __ __ Uhr</p>"
+                + "<p>Datum / Uhrzeit Ende: __ __ . __ __ . __ __ __ __ - __ __ : __ __ Uhr</p>"
+                + "<p>Bemerkungen: _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ "
+                + "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ "
+                + "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ "
+                + "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </p>"
+                + "<b><p><u>Eingesetzte Fahrzeuge</u></p></b>"
+                + "<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&Omicron;&nbsp;Mannschaftstransportfahrzeug &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&Omicron;&nbsp;Tanklöschfahrzeug TLF-A 500 TS</p>"
+                + "<b><p><u>Eingesetzte Mitglieder</u></p></b>";
         String strContextPath = this.getServletContext().getRealPath("/");
         String strCSSPath = strContextPath.replace("build\\web", "web\\css\\pdf.css");
 
