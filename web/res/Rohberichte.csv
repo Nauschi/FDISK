@@ -4,7 +4,7 @@ Adressliste;STB;DGR;Titel;Vorname;Zuname;Adresse;Bemerkung;
 Geburtstagsliste;STB;DGR;Titel;Vorname;Zuname;Geburtsdatum;Alter;
 Dienstzeitliste;STB;DGR;Titel;Vorname;Zuname;Geburtsdatum;Dienstalter;
 Stundenauswertung je Mitglied je Instanz;.....;....;.....;
-Tätigkeitsberichte leer;....;....;.....;
+Tätigkeitsbericht leer;....;
 Einsatzbericht leer;....;....;.....;
 Übungsbericht leer;....;....;.....;
 Liste aller Einsatzberichte;....;....;.....;

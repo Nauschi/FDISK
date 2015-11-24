@@ -153,9 +153,9 @@ aaaaasdfsdf
                             </div>
                         </div>
                     </form>
-                    <form id="formPDF" name="formPDF" action="PDFServlet" method="POST">
+                    <form id="formPDF" name="formPDF" action="PDFServlet" method="POST" target="_blank">
                         <input type="hidden" name="hidden_pdfData" id="hidden_pdfData"/>
-                        
+
                     </form>
                     <div id="div_table">
                     </div>
@@ -182,6 +182,7 @@ aaaaasdfsdf
         <script src="js/tablesort.js"></script>
         <script src="js/vordefiniert.js"></script>
 
+        <% System.out.println(request.getParameter("input_aktbericht") + "");%>
         <script>
 
                                     $(document).ready(function () {
@@ -209,21 +210,34 @@ aaaaasdfsdf
                 {
                     LinkedList<Object> liBerichtDaten = (LinkedList<Object>) request.getAttribute("liste");
                     String strHTML = "";
-                    for (int i = 0; i < liBerichtDaten.size()-1; i++)
+                    for (int i = 0; i < liBerichtDaten.size() - 1; i++)
                     {
                         Object zeile = liBerichtDaten.get(i);
                         strHTML += zeile.toString();
                     }
             %>
-                                        document.getElementById("div_abbrechen_bestaetigen").style.display = "block";
-                                        document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
-                                        $('.sortable.table').tablesort();
-                                        $('th').popup();
+
+
             <%
+                if (request.getParameter("input_aktbericht") != null && request.getParameter("input_aktbericht").contains(" leer"))
+                {
+            %>
+
+                                        document.getElementById("hidden_pdfData").value = "<%=request.getParameter("input_aktbericht")%>###<%=strHTML%>";
+                                                document.formPDF.submit();
+            <%
+            } else
+            {%>
+                                                document.getElementById("div_abbrechen_bestaetigen").style.display = "block";
+                                                document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
+                                                $('.sortable.table').tablesort();
+                                                $('th').popup();
+            <%
+                    }
                 }
             %>
-                                        document.getElementById("div_loader").className = "ui disabled loader";                                        
-                                    });
+                                                document.getElementById("div_loader").className = "ui disabled loader";
+                                            });
 
 
 

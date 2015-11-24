@@ -127,6 +127,7 @@ public class MainServlet extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
+        request.setCharacterEncoding("UTF-8");
         if (request.getParameter("button_login") != null)
         {
             loginUser(request, response);
@@ -259,7 +260,11 @@ public class MainServlet extends HttpServlet
                 request.setAttribute("liste", access.getGeburtstagsliste(2014)); //welche Zahl??
             } else if (strBericht.equals(liRohberichte.get(4).getStrBerichtname()))
             {
+                System.out.println("MainServlet.generiereVorschau: In Tätigkeitsbericht");
                 request.setAttribute("liste", access.getDienstzeitListe());
+            }else if (strBericht.equals(liRohberichte.get(6).getStrBerichtname()))
+            {
+                request.setAttribute("liste", access.getTaetigkeitsberichtmitglied());
             }else if(strBericht.equals(liRohberichte.get(13).getStrBerichtname()))
             {
                 request.setAttribute("liste", access.getKursstatistik());

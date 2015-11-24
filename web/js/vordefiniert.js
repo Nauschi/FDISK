@@ -60,3 +60,5 @@ function saveDataForPDF()
     document.getElementById("hidden_pdfData").value = strName+"###"+strTable;
     document.formPDF.submit();
 }
+
+
