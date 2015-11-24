@@ -213,6 +213,7 @@ public class PDFServlet extends HttpServlet
 //            response.setHeader("Cache-Control",
 //                    "must-revalidate, post-check=0, pre-check=0");
 //            response.setHeader("Pragma", "public");
+            
             response.setContentType("application/pdf");
             response.setHeader("Content-Disposition", "filename=" + strBerichtname + ".pdf");
             response.setContentLength(baos.size());

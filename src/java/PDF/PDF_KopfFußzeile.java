@@ -28,6 +28,7 @@ public class PDF_KopfFußzeile extends PdfPageEventHelper
         pagenumber++;
     }
     
+    
 
     @Override
     public void onEndPage(PdfWriter writer, Document document)
