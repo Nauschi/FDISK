@@ -96,6 +96,8 @@ public class PDFServlet extends HttpServlet
             + "<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&Omicron;&nbsp;Mannschaftstransportfahrzeug &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&Omicron;&nbsp;Tanklöschfahrzeug TLF-A 500 TS</p>"
             + "<b><p><u>Eingesetzte Mitglieder</u></p></b>";
 
+    private String strEinsatzbericht = "";
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
@@ -149,11 +151,14 @@ public class PDFServlet extends HttpServlet
         String strBerichtname = strSplitData[0];
         String strTable = strSplitData[1];
 
-        String strAusgabe = "";
+        String strAusgabe = "Es ist ein unerwartetes Problem aufgetreten";
         boolean boolLeerbericht = true;
 
         switch (strBerichtname)
         {
+            case "Einsatzbericht leer":
+                
+                break;
             case "Übungsbericht leer":
                 strAusgabe = generiereAusgabeUebungsberichtLeer(strTable);
                 break;
@@ -238,6 +243,14 @@ public class PDFServlet extends HttpServlet
     public String generiereAusgabeUebungsberichtLeer(String strTable)
     {
         String strHTMLOutput = strUebungsbericht;
+        strHTMLOutput += "<table border='0'><tbody>" + strTable + "</tbody></table>";
+
+        return strHTMLOutput;
+    }
+    
+    public String generiereAusgabeEinsatzbericht(String strTable)
+    {
+        String strHTMLOutput = strEinsatzbericht;
         strHTMLOutput += "<table border='0'><tbody>" + strTable + "</tbody></table>";
 
         return strHTMLOutput;
