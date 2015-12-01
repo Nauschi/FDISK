@@ -209,12 +209,28 @@ aaaaasdfsdf
                 if (request.getAttribute("liste") != null)
                 {
                     LinkedList<Object> liBerichtDaten = (LinkedList<Object>) request.getAttribute("liste");
+                    System.out.println("Vordefiniert: Liste.size: " + liBerichtDaten.size());
                     String strHTML = "";
-                    for (int i = 0; i < liBerichtDaten.size() - 1; i++)
+                    int i = 0;
+                    while (i < liBerichtDaten.size() - 1)
                     {
+                        if (request.getParameter("input_aktbericht").contains(" leer") && i % 3 == 0)
+                        {
+                            strHTML += "<tr>";
+                        }
                         Object zeile = liBerichtDaten.get(i);
                         strHTML += zeile.toString();
+                        i++;
+                        if (request.getParameter("input_aktbericht").contains(" leer") && i % 3 == 0)
+                        {
+                            strHTML += "</tr>";
+                        }
                     }
+                    if (request.getParameter("input_aktbericht").contains(" leer") && i % 3 != 0)
+                    {
+                        strHTML += "</tr>";
+                    }
+                    System.out.println("Vordefiniert: strHTML: " + strHTML);
             %>
 
 

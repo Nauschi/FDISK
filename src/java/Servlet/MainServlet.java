@@ -265,7 +265,11 @@ public class MainServlet extends HttpServlet
             }else if (strBericht.equals(liRohberichte.get(6).getStrBerichtname()))
             {
                 request.setAttribute("liste", access.getTaetigkeitsberichtmitglied());
-            }else if(strBericht.equals(liRohberichte.get(13).getStrBerichtname()))
+            }else if (strBericht.equals(liRohberichte.get(8).getStrBerichtname()))
+            {
+                request.setAttribute("liste", access.getUebungsberichtmitglied());
+            }
+            else if(strBericht.equals(liRohberichte.get(13).getStrBerichtname()))
             {
                 request.setAttribute("liste", access.getKursstatistik());
             }else if(strBericht.equals(liRohberichte.get(14).getStrBerichtname()))

@@ -172,7 +172,7 @@ public class Taetigkeitsberichtmitglied
     @Override
     public String toString()
     {
-        String strHtml = "<tr id='tr'><td id='td'>&Omicron;&nbsp;" + strNachname.toUpperCase()+ " " + strVorname+", " + intSBN + "</td></tr>";
+        String strHtml = "<td>&Omicron;&nbsp;" + strNachname.toUpperCase()+ " " + strVorname+", " + intSBN + "</td>";
 
         return strHtml;
     }

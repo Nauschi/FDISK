@@ -12,10 +12,6 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.html.simpleparser.HTMLWorker;
-import com.itextpdf.text.pdf.PdfAction;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.Pipeline;
 import com.itextpdf.tool.xml.XMLWorker;
@@ -38,7 +34,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.io.StringBufferInputStream;
 import java.io.StringReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -160,7 +155,7 @@ public class PDFServlet extends HttpServlet
         switch (strBerichtname)
         {
             case "Übungsbericht leer":
-                strAusgabe = strUebungsbericht;
+                strAusgabe = generiereAusgabeUebungsberichtLeer(strTable);
                 break;
             case "Tätigkeitsbericht leer":
                 strAusgabe = generiereAusgabeTaetigkeitsberichtLeer(strTable);
@@ -235,6 +230,14 @@ public class PDFServlet extends HttpServlet
     public String generiereAusgabeTaetigkeitsberichtLeer(String strTable)
     {
         String strHTMLOutput = strTaetigkeitsbericht;
+        strHTMLOutput += "<table border='0'><tbody>" + strTable + "</tbody></table>";
+
+        return strHTMLOutput;
+    }
+    
+    public String generiereAusgabeUebungsberichtLeer(String strTable)
+    {
+        String strHTMLOutput = strUebungsbericht;
         strHTMLOutput += "<table border='0'><tbody>" + strTable + "</tbody></table>";
 
         return strHTMLOutput;

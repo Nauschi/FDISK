@@ -167,11 +167,7 @@ public class Uebungsberichtmitglied
     @Override
     public String toString()
     {
-        String strHtml = "<tr><td>"
-                + strNachname.toUpperCase() + "</td><td>"
-                + strVorname + "</td><td>"
-                + intSBN + "</td></tr>";
-
+        String strHtml = "<td>&Omicron;&nbsp;" + strNachname.toUpperCase()+ " " + strVorname+", " + intSBN + "</td>";
         return strHtml;
     }
 
