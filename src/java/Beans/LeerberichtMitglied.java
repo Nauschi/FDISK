@@ -154,7 +154,7 @@ public class LeerberichtMitglied
     {
         if(strTitel != null && !strTitel.isEmpty())
         {
-            return "<td>&Omicron;&nbsp;" + strTitel +", "+ strZuname.toUpperCase()+ " " + strVorname+", " + strStammblattnummer + "</td>";
+            return "<td>&Omicron;&nbsp;" + strTitel +" "+ strZuname.toUpperCase()+ " " + strVorname+", " + strStammblattnummer + "</td>";
         }
         String strHtml = "<td>&Omicron;&nbsp;" + strZuname.toUpperCase()+ " " + strVorname+", " + strStammblattnummer + "</td>";
         return strHtml;

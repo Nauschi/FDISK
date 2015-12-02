@@ -10,6 +10,7 @@ import Beans.Erreichbarkeit;
 import Beans.Fahrzeug;
 import Beans.Kurs;
 import Beans.KursAlt;
+import Beans.LeerberichtFahrzeug;
 import Beans.LoginMitglied;
 import Beans.Mitglied;
 import Beans.MitgliedsAdresse;
@@ -1476,8 +1477,6 @@ public class DB_Access
      * @return
      * @throws Exception
      */
-
-    
     /**
      * Gibt alle Mitglieder für Tätigkeitsberichte als LinkedList zurück
      *
@@ -1522,28 +1521,56 @@ public class DB_Access
         return liLeerberichtMitglieder;
     }
 
-    /**
-     * Gibt alle Mitglieder für Einsatzberichte als LinkedList zurück
-     *
-     * @return
-     * @throws Exception
-    /**
-     * Gibt alle Mitglieder für Einsatzberichte als LinkedList zurück
-     *
-     * @return
-     * @throws Exception
-    /**
-     * Gibt alle Mitglieder für Einsatzberichte als LinkedList zurück
-     *
-     * @return
-     * @throws Exception
-    /**
-     * Gibt alle Mitglieder für Einsatzberichte als LinkedList zurück
-     *
-     * @return
-     * @throws Exception
-     */
-   
+    public LinkedList<LeerberichtFahrzeug> getLeerberichtFahrzeug() throws Exception
+    {
+        LinkedList<LeerberichtFahrzeug> liFahrzeuge = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT TOP 1000 "
+                + "kennzeichen \"Kennzeichen\" "
+                + ",id_fahrzeuge \"Id_Fahrzeuge\" "
+                + ",fahrzeugtyp \"Fahrzeugtyp\" "
+                + ",taktischebezeichnung \"Taktische Bezeichnung\" "
+                + ",bezeichnung \"Bezeichnung\" "
+                + ",status \"Status\" "
+                + ",baujahr \"Baujahr\" "
+                + ",fahrzeugmarke \"Fahrzeugmarke\" "
+                + ",aufbaufirma \"Aufbaufirma\""
+                + ",instanznummer \"Instanzummer\" "
+                + "FROM FDISK.dbo.stmkfahrzeuge "
+                + "WHERE status = 'aktiv'";
+
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        String strFahrzeugTyp;
+        String strKennzeichen;
+        int intBaujahr;
+        String strAufbaufirma;
+        String strTaktischeBezeichnung;
+        int intId_fahrzeuge;
+        String strBezeichnung;
+        String strFahrzeugmarke;
+        int intInstanznummer;
+
+        while (rs.next())
+        {
+            strFahrzeugTyp = rs.getString("Fahrzeugtyp");
+            strKennzeichen = rs.getString("Kennzeichen");
+            intBaujahr = rs.getInt("Baujahr");
+            strAufbaufirma = rs.getString("Aufbaufirma");
+            strTaktischeBezeichnung = rs.getString("Taktische Bezeichnung");
+            intId_fahrzeuge = rs.getInt("Id_Fahrzeuge");
+            strBezeichnung = rs.getString("Bezeichnung");
+            strFahrzeugmarke = rs.getString("Fahrzeugmarke");
+            intInstanznummer = rs.getInt("Instanzummer");
+
+            LeerberichtFahrzeug fahrzeug = new LeerberichtFahrzeug(strFahrzeugTyp, strKennzeichen, intBaujahr, strAufbaufirma, strTaktischeBezeichnung, intId_fahrzeuge, strBezeichnung, strFahrzeugmarke, intInstanznummer);
+            liFahrzeuge.add(fahrzeug);
+        }
+        connPool.releaseConnection(conn);
+        return liFahrzeuge;
+    }
 
     /**
      *
@@ -1563,9 +1590,9 @@ public class DB_Access
         HashMap<String, LinkedList<String>> hm = new HashMap<>();
         try
         {
-            LinkedList<LeerberichtMitglied> lili = new LinkedList<>();
-            lili = theInstance.getLeerberichtMitglied();
-            for (LeerberichtMitglied k : lili)
+            LinkedList<LeerberichtFahrzeug> lili = new LinkedList<>();
+            lili = theInstance.getLeerberichtFahrzeug();
+            for (LeerberichtFahrzeug k : lili)
             {
                 System.out.println(k.toString());
             }
