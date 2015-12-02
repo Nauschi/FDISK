@@ -264,10 +264,10 @@ public class MainServlet extends HttpServlet
                 request.setAttribute("liste", access.getDienstzeitListe());
             }else if (strBericht.equals(liRohberichte.get(6).getStrBerichtname()))
             {
-                request.setAttribute("liste", access.getTaetigkeitsberichtmitglied());
+                request.setAttribute("liste", access.getLeerberichtMitglied());
             }else if (strBericht.equals(liRohberichte.get(8).getStrBerichtname()))
             {
-                request.setAttribute("liste", access.getUebungsberichtmitglied());
+                request.setAttribute("liste", access.getLeerberichtMitglied());
             }
             else if(strBericht.equals(liRohberichte.get(13).getStrBerichtname()))
             {
