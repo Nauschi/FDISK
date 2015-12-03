@@ -1396,6 +1396,27 @@ public class DB_Access {
         return liLeerberichtMitglieder;
     }
 
+    public Date getEinsatzberichtEinsatzzeit() throws SQLException, Exception {
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT TOP 1000 convert(char, einsatzzeit_bis - einsatzzeit_von, 114) \"Einsatzzeit\""
+                + " FROM [FDISK].[dbo].[stmkeinsatzberichtemitglieder] WHERE id_mitgliedschaften = 219782"; //WHERE id_mitgliedschaften = "+mitglied.getIntIdMitgliedschaften();
+
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        
+        Date einsatzzeit = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS");
+
+        while (rs.next()) {
+            einsatzzeit = sdf.parse(rs.getString("Einsatzzeit"));
+        }
+        
+        connPool.releaseConnection(conn);
+        return einsatzzeit;
+    }
+    
     public LinkedList<LeerberichtFahrzeug> getLeerberichtFahrzeug() throws Exception {
         LinkedList<LeerberichtFahrzeug> liFahrzeuge = new LinkedList<>();
         Connection conn = connPool.getConnection();
