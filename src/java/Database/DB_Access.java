@@ -58,6 +58,12 @@ public class DB_Access
     {
         connPool = DB_ConnectionPool.getInstance();
     }
+    
+    /**********************************************************************************/
+    /*                                                                                *
+    /*                       STATISCHER BERICHTGENERATOR                              *
+    /*                                                                                *
+    /**********************************************************************************/
 
     public LinkedList<Berechtigung> getBerechtigungen(int intUserID) throws Exception
     {
@@ -872,6 +878,139 @@ public class DB_Access
         return liMitgliedsErreichbarkeiten;
     }
 
+
+
+    /**
+     * Gibt alle Mitglieder für Übungsberichte als LinkedList zurück
+     *
+     * @return
+     * @throws Exception
+     */
+    /**
+     * Gibt alle Mitglieder für Tätigkeitsberichte als LinkedList zurück
+     *
+     * @return
+     * @throws Exception
+     */
+    public LinkedList<LeerberichtMitglied> getLeerberichtMitglied() throws Exception
+    {
+        LinkedList<LeerberichtMitglied> liLeerberichtMitglieder = new LinkedList<>();
+
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "";
+
+        sqlString = "SELECT DISTINCT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
+                + "FROM FDISK.dbo.stmkmitglieder";
+
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        String strSTB;
+        String strDGR;
+        String strTitel;
+        String strVorname;
+        String strZuname;
+        int intPersID;
+
+        while (rs.next())
+        {
+            intPersID = rs.getInt("PersID");
+            strSTB = rs.getString("STB");
+            strDGR = rs.getString("DGR");
+            strTitel = rs.getString("Titel");
+            strVorname = rs.getString("Vorname");
+            strZuname = rs.getString("Zuname");
+
+            LeerberichtMitglied mitglied = new LeerberichtMitglied(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname);
+            liLeerberichtMitglieder.add(mitglied);
+        }
+
+        connPool.releaseConnection(conn);
+        return liLeerberichtMitglieder;
+    }
+
+    public Date getEinsatzberichtEinsatzzeit() throws SQLException, Exception
+    {
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT TOP 1000 convert(char, einsatzzeit_bis - einsatzzeit_von, 114) \"Einsatzzeit\""
+                + " FROM [FDISK].[dbo].[stmkeinsatzberichtemitglieder] WHERE id_mitgliedschaften = 219782"; //WHERE id_mitgliedschaften = "+mitglied.getIntIdMitgliedschaften();
+
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        Date einsatzzeit = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS");
+
+        while (rs.next())
+        {
+            einsatzzeit = sdf.parse(rs.getString("Einsatzzeit"));
+        }
+
+        connPool.releaseConnection(conn);
+        return einsatzzeit;
+    }
+
+    public LinkedList<LeerberichtFahrzeug> getLeerberichtFahrzeug() throws Exception
+    {
+        LinkedList<LeerberichtFahrzeug> liFahrzeuge = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT TOP 1000 "
+                + "kennzeichen \"Kennzeichen\" "
+                + ",id_fahrzeuge \"Id_Fahrzeuge\" "
+                + ",fahrzeugtyp \"Fahrzeugtyp\" "
+                + ",taktischebezeichnung \"Taktische Bezeichnung\" "
+                + ",bezeichnung \"Bezeichnung\" "
+                + ",status \"Status\" "
+                + ",baujahr \"Baujahr\" "
+                + ",fahrzeugmarke \"Fahrzeugmarke\" "
+                + ",aufbaufirma \"Aufbaufirma\""
+                + ",instanznummer \"Instanzummer\" "
+                + "FROM FDISK.dbo.stmkfahrzeuge "
+                + "WHERE status = 'aktiv'";
+
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        String strFahrzeugTyp;
+        String strKennzeichen;
+        int intBaujahr;
+        String strAufbaufirma;
+        String strTaktischeBezeichnung;
+        int intId_fahrzeuge;
+        String strBezeichnung;
+        String strFahrzeugmarke;
+        int intInstanznummer;
+
+        while (rs.next())
+        {
+            strFahrzeugTyp = rs.getString("Fahrzeugtyp");
+            strKennzeichen = rs.getString("Kennzeichen");
+            intBaujahr = rs.getInt("Baujahr");
+            strAufbaufirma = rs.getString("Aufbaufirma");
+            strTaktischeBezeichnung = rs.getString("Taktische Bezeichnung");
+            intId_fahrzeuge = rs.getInt("Id_Fahrzeuge");
+            strBezeichnung = rs.getString("Bezeichnung");
+            strFahrzeugmarke = rs.getString("Fahrzeugmarke");
+            intInstanznummer = rs.getInt("Instanzummer");
+
+            LeerberichtFahrzeug fahrzeug = new LeerberichtFahrzeug(strFahrzeugTyp, strKennzeichen, intBaujahr, strAufbaufirma, strTaktischeBezeichnung, intId_fahrzeuge, strBezeichnung, strFahrzeugmarke, intInstanznummer);
+            liFahrzeuge.add(fahrzeug);
+        }
+        connPool.releaseConnection(conn);
+        return liFahrzeuge;
+    }
+    
+    /**********************************************************************************/
+    /*                                                                                *
+    /*                       DYNAMISCHER BERICHTGENERATOR                             *
+    /*                                                                                *
+    /**********************************************************************************/
+
+    
+    
     /**
      * Ruft die richtige Methode für einen Typ auf
      *
@@ -1480,130 +1619,66 @@ public class DB_Access
 
         return hmFilter;
     }
-
-    /**
-     * Gibt alle Mitglieder für Übungsberichte als LinkedList zurück
-     *
-     * @return
-     * @throws Exception
-     */
-    /**
-     * Gibt alle Mitglieder für Tätigkeitsberichte als LinkedList zurück
-     *
-     * @return
-     * @throws Exception
-     */
-    public LinkedList<LeerberichtMitglied> getLeerberichtMitglied() throws Exception
+    
+    
+    public String getDynamischenBerichtMitUnd(String strEingabe[]) throws Exception
     {
-        LinkedList<LeerberichtMitglied> liLeerberichtMitglieder = new LinkedList<>();
-
+        String strHtml = "";
+        LinkedList<String> liSpaltenUeberschriften = new LinkedList<>();
+        String strSpaltenUeberschrift;
+                
+        for(int i = 0; i<strEingabe.length; i+=6)
+        {
+            strSpaltenUeberschrift = strEingabe[1+i];
+            if(strSpaltenUeberschrift.toUpperCase().equals("ANREDE"))
+            {
+                strSpaltenUeberschrift = "geschlecht";
+            }
+            else if(strSpaltenUeberschrift.toUpperCase().equals("ALTER"))
+            {
+                strSpaltenUeberschrift = "geburtsdatum";
+            }
+            else if(strSpaltenUeberschrift.toUpperCase().equals("STAATSBÜRGERSCHAFT"))
+            {
+                strSpaltenUeberschrift = "staatsbuergerschaft";
+            }
+            else if(strSpaltenUeberschrift.toUpperCase().equals("ISCO-BERUF"))
+            {
+                strSpaltenUeberschrift = "beruf";
+            }
+            else if(strSpaltenUeberschrift.toUpperCase().equals("STATUS"))
+            {
+                strSpaltenUeberschrift = strEingabe[3+i];
+            }
+            else if(strSpaltenUeberschrift.toUpperCase().equals("VORDIENSTZEIT IN JAHREN"))
+            {
+                strSpaltenUeberschrift = "vordienstzeit";
+            }
+            
+            liSpaltenUeberschriften.add(strSpaltenUeberschrift);
+            System.out.println(strSpaltenUeberschrift);
+        }
+        
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 
-        String sqlString = "";
-
-        sqlString = "SELECT DISTINCT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
-                + "FROM FDISK.dbo.stmkmitglieder";
-
+        String sqlString = "SELECT * "
+                + " FROM FDISK.dbo.stmkkurse";
         ResultSet rs = stat.executeQuery(sqlString);
-
-        String strSTB;
-        String strDGR;
-        String strTitel;
-        String strVorname;
-        String strZuname;
-        int intPersID;
 
         while (rs.next())
         {
-            intPersID = rs.getInt("PersID");
-            strSTB = rs.getString("STB");
-            strDGR = rs.getString("DGR");
-            strTitel = rs.getString("Titel");
-            strVorname = rs.getString("Vorname");
-            strZuname = rs.getString("Zuname");
-
-            LeerberichtMitglied mitglied = new LeerberichtMitglied(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname);
-            liLeerberichtMitglieder.add(mitglied);
+            
         }
 
+       
         connPool.releaseConnection(conn);
-        return liLeerberichtMitglieder;
+
+        return strHtml;
     }
-
-    public Date getEinsatzberichtEinsatzzeit() throws SQLException, Exception
-    {
-        Connection conn = connPool.getConnection();
-        Statement stat = conn.createStatement();
-
-        String sqlString = "SELECT TOP 1000 convert(char, einsatzzeit_bis - einsatzzeit_von, 114) \"Einsatzzeit\""
-                + " FROM [FDISK].[dbo].[stmkeinsatzberichtemitglieder] WHERE id_mitgliedschaften = 219782"; //WHERE id_mitgliedschaften = "+mitglied.getIntIdMitgliedschaften();
-
-        ResultSet rs = stat.executeQuery(sqlString);
-
-        Date einsatzzeit = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS");
-
-        while (rs.next())
-        {
-            einsatzzeit = sdf.parse(rs.getString("Einsatzzeit"));
-        }
-
-        connPool.releaseConnection(conn);
-        return einsatzzeit;
-    }
-
-    public LinkedList<LeerberichtFahrzeug> getLeerberichtFahrzeug() throws Exception
-    {
-        LinkedList<LeerberichtFahrzeug> liFahrzeuge = new LinkedList<>();
-        Connection conn = connPool.getConnection();
-        Statement stat = conn.createStatement();
-
-        String sqlString = "SELECT TOP 1000 "
-                + "kennzeichen \"Kennzeichen\" "
-                + ",id_fahrzeuge \"Id_Fahrzeuge\" "
-                + ",fahrzeugtyp \"Fahrzeugtyp\" "
-                + ",taktischebezeichnung \"Taktische Bezeichnung\" "
-                + ",bezeichnung \"Bezeichnung\" "
-                + ",status \"Status\" "
-                + ",baujahr \"Baujahr\" "
-                + ",fahrzeugmarke \"Fahrzeugmarke\" "
-                + ",aufbaufirma \"Aufbaufirma\""
-                + ",instanznummer \"Instanzummer\" "
-                + "FROM FDISK.dbo.stmkfahrzeuge "
-                + "WHERE status = 'aktiv'";
-
-        ResultSet rs = stat.executeQuery(sqlString);
-
-        String strFahrzeugTyp;
-        String strKennzeichen;
-        int intBaujahr;
-        String strAufbaufirma;
-        String strTaktischeBezeichnung;
-        int intId_fahrzeuge;
-        String strBezeichnung;
-        String strFahrzeugmarke;
-        int intInstanznummer;
-
-        while (rs.next())
-        {
-            strFahrzeugTyp = rs.getString("Fahrzeugtyp");
-            strKennzeichen = rs.getString("Kennzeichen");
-            intBaujahr = rs.getInt("Baujahr");
-            strAufbaufirma = rs.getString("Aufbaufirma");
-            strTaktischeBezeichnung = rs.getString("Taktische Bezeichnung");
-            intId_fahrzeuge = rs.getInt("Id_Fahrzeuge");
-            strBezeichnung = rs.getString("Bezeichnung");
-            strFahrzeugmarke = rs.getString("Fahrzeugmarke");
-            intInstanznummer = rs.getInt("Instanzummer");
-
-            LeerberichtFahrzeug fahrzeug = new LeerberichtFahrzeug(strFahrzeugTyp, strKennzeichen, intBaujahr, strAufbaufirma, strTaktischeBezeichnung, intId_fahrzeuge, strBezeichnung, strFahrzeugmarke, intInstanznummer);
-            liFahrzeuge.add(fahrzeug);
-        }
-        connPool.releaseConnection(conn);
-        return liFahrzeuge;
-    }
-
+    
+    
+    
     /**
      *
      * @param args
@@ -1637,6 +1712,10 @@ public class DB_Access
 //            {
 //                System.out.println(li1.getStrVorname() + "-" + li1.getStrZuname());
 //            }
+            
+            
+            String[] dynamisch = {"(","Alter","=","15","","","(","Vordienstzeit in Jahren","","","","","(","Status","","Jugend", "", ""};
+            String html = theInstance.getDynamischenBerichtMitUnd(dynamisch);
 
         } catch (Exception ex)
         {
