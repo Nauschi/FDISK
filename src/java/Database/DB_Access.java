@@ -62,17 +62,28 @@ public class DB_Access {
      /*                       STATISCHER BERICHTGENERATOR                              *
      /*                                                                                *
      /**********************************************************************************/
+    public LinkedList<String> getFubwehrnummernFuerAbschnitt(int intAbschnittsnummer) {
+        LinkedList<String> liFilterdFubwehr = new LinkedList<>();
+
+        return liFilterdFubwehr;
+    }
+
     public LinkedList<Berechtigung> getBerechtigungen(int intUserID) throws Exception {
+        System.out.println(intUserID);
         LinkedList<Berechtigung> liBerechtigungen = new LinkedList<>();
         LinkedList<LoginMitglied> liLoginBerechtigung = new LinkedList<>();
         liLoginBerechtigung = getLoginBerechtigung(intUserID);
         String fubwehr = getFubwehrForUserID(intUserID);
+        System.out.println("DIE RICHTIGE FUBWERH: " + fubwehr);
         String feuerwehrname = getNameFuerFubwehr(fubwehr);
+        System.out.println("Fubwehrname: " + feuerwehrname);
         String abschnitt = getAbschnittsnameFuerFubwehr(fubwehr);
+        System.out.println("Abschnittsname: " + abschnitt);
         String bereich = getBereichsnameFuerFubwehr(fubwehr);
+        System.out.println("Bereichsname: " + bereich);
         String strBerechtigung = "";
 
-        if (liBerechtigungen.isEmpty()) {
+        if (liLoginBerechtigung.isEmpty()) {
             strBerechtigung = "Mitglied" + " - " + feuerwehrname;
             Berechtigung berechtigung = new Berechtigung(strBerechtigung, 0);
             liBerechtigungen.add(berechtigung);
@@ -178,7 +189,9 @@ public class DB_Access {
             String strFubwehr = rs.getString("Fubwehr");
             int intIDGruppe = rs.getInt("IDGruppe");
             String strBezeichnung = rs.getString("Bezeichnung");
-
+            System.out.println("IDGruppe: " + intIDGruppe);
+            System.out.println("Bezeichnung: " + strBezeichnung);
+            System.out.println("Fubwehr: " + strFubwehr);
             if (intIDGruppe == 1 || intIDGruppe == 5 || intIDGruppe == 9 || intIDGruppe == 15) {
                 LoginMitglied lm = new LoginMitglied(intUserID, strFubwehr, intIDGruppe, strBezeichnung);
                 liMitglieder.add(lm);
@@ -228,9 +241,13 @@ public class DB_Access {
     public int getAbschnittsnummerForFubwehr(String strFubwehr) throws SQLException, Exception {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
-        String sqlString = "  SELECT DISTINCT f.Abschnitt_Instanznummer \"Nummer\" "
-                + "  FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer) "
-                + "  WHERE s.instanznummer = '" + strFubwehr + "'";
+//        String sqlString = "SELECT DISTINCT f.Abschnitt_Instanznummer \"Nummer\" "
+//                + "  FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer) "
+//                + "  WHERE s.instanznummer = '" + strFubwehr + "'";
+//        
+        String sqlString = "SELECT Abschnitt_Instanznummer \"nummer\""
+                + " FROM [FDISK].[dbo].[qry_alle_feuerwehren_mit_Abschnitt_und_Bereich]"
+                + " WHERE instanznummer = " + strFubwehr;
         ResultSet rs = stat.executeQuery(sqlString);
 
         int intAbschnittsnummer = 0;
@@ -282,6 +299,7 @@ public class DB_Access {
     public String getAbschnittsnameFuerFubwehr(String strFubwehr) throws SQLException, Exception {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
+        System.out.println("strFubwerh: " + strFubwehr);
         String sqlString = "SELECT Abschnitt_Instanznummer \"Instanznummer\", Abschnittsname \"Name\" "
                 + "FROM FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich "
                 + "WHERE instanznummer = '" + strFubwehr + "'";
@@ -335,8 +353,9 @@ public class DB_Access {
     public LinkedList<Mitglied> getEinfacheMitgliederliste(int intUserID, int intGruppe) throws Exception {
         LinkedList<Mitglied> liMitglieder = new LinkedList<>();
         String strFubwehr = getFubwehrForUserID(intUserID) + "";
-        String strBereich = strFubwehr.substring(0, 2);
         int intAbschnittsnummer = getAbschnittsnummerForFubwehr(strFubwehr);
+        String strBereich = ("" + intAbschnittsnummer).substring(0, 2);
+        System.out.println("Bereich wenn Mitgliederliste aufgerufen wird: " + strBereich);
 
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
@@ -350,24 +369,28 @@ public class DB_Access {
                         + "WHERE instanznummer = '" + strFubwehr + "'";
                 break;
             case 1:
-                sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
+                sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
                         + "FROM FDISK.dbo.stmkmitglieder";
                 break;
             case 5:
-                sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
+                sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
                         + "FROM FDISK.dbo.stmkmitglieder "
                         + "WHERE SUBSTRING(instanznummer, 0, 3) = '" + strBereich + "'";
+//              ODER!!!!!  
+//              String sqlString2 = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", f.instanzname, f.instanznummer, f.Abschnitt_Instanznummer, SUBSTRING(f.instanznummer, 0, 3) \"Bereich\""
+//                        + " FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer)"
+//                        + " WHERE f.Bereich_Nr = '" + strBereich + "'";
                 break;
             case 9:
-                sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
+                sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
                         + "FROM FDISK.dbo.stmkmitglieder "
                         + "WHERE instanznummer = '" + strFubwehr + "'";
                 break;
             case 15:
-                sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
+                sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
                         + " FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer) "
                         + " WHERE f.abschnitt_instanznummer = " + intAbschnittsnummer;
-                System.out.println(intAbschnittsnummer);
+                System.out.println("Abschnitt wenn Mitgliederliste aufgerufen wird: " + intAbschnittsnummer);
                 break;
             default:
                 return null;
@@ -1555,14 +1578,25 @@ public class DB_Access {
 
         HashMap<String, LinkedList<String>> hm = new HashMap<>();
         try {
-            LinkedList<Berechtigung> lili = theInstance.getBerechtigungen(3437);
-            LinkedList<Mitglied> liliMitglieder = theInstance.getEinfacheMitgliederliste(3437, lili.get(0).getIntIDGruppe());
+            LinkedList<Berechtigung> lili = theInstance.getBerechtigungen(3566);
+            System.out.println("zweite Berechtigung: " + lili.get(1).getIntIDGruppe());
+            System.out.println("erste Berechtigung: " + lili.get(0).getIntIDGruppe());
             for (int i = 0; i < lili.size(); i++) {
                 System.out.println("Berechtigung: " + lili.get(i).getStrBerechtigung());
             }
-            for (int i = 0; i < liliMitglieder.size(); i++) {
-                System.out.println(liliMitglieder.get(i).toString());
+            System.out.println("Abschnittsnummer: " + theInstance.getAbschnittsnummerForFubwehr("50012"));
+            System.out.println("\n\n\n\n");
+            System.out.println("****************LISTE****************");
+            LinkedList<Mitglied> liliMitglieder = theInstance.getEinfacheMitgliederliste(3566, lili.get(1).getIntIDGruppe());
+            int counter = 0;
+            for (Mitglied mitglied : liliMitglieder) {
+                System.out.println(mitglied.toString());
+                counter++;
             }
+            System.out.println("Counter: " + counter);
+//            for (int i = 0; i < liliMitglieder.size(); i++) {
+//                System.out.println(liliMitglieder.get(i).toString());
+//            }
 //            lili = theInstance.getLeerberichtFahrzeug();
 //            for (LeerberichtFahrzeug k : lili)
 //            {
