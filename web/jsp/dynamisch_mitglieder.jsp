@@ -21,12 +21,11 @@
             
             String[] strFeldKlammerAuf =
             {
-                "(", "[", "{"
+                " ","(", "[", "{"
             };
-
             String[] strFeldKlammerZu =
             {
-                ")", "]", "}"
+                " ",")", "]", "}"
             };
 
             String[] strFeldOperator =
@@ -41,7 +40,7 @@
 
             String[] strFeldVerknuepfung =
             {
-                "UND", "UND NICHT", "ODER", "ODER NICHT"
+                " ","UND", "UND NICHT", "ODER", "ODER NICHT"
             };
         %>
 
@@ -107,14 +106,14 @@
 
             <div class="ui grid" id="div_mitte">
 
-                <div class="one wide column" id="div_klammerAuf">
-                    <select name="select_klammer_auf_<%=i%>"  class="ui fluid dropdown" id="select_klammer">
+                <div class="one wide column" id="div_klammerAuf" style="width: 100%;">
+                    <select name="select_klammer_auf_<%=i%>" class="ui fluid dropdown" id="select_klammer">
                         <option value=""></option>
                         <%=generiereSelect("select_klammer_auf_" + i, strFeldKlammerAuf, request)%>
                     </select>
                 </div>
 
-                <div class="four wide column" id="div_typ">
+                    <div class="four wide column" id="div_typ" style="width: 100%;">
                     <select name="select_typ_<%=i%>" class="ui fluid dropdown" id="select_typ">
                         <%
                             String strAktTyp = "";
@@ -145,25 +144,25 @@
                     </select>
 
                 </div>
-                <div class="two wide column" id="div_operator">
+                <div class="two wide column" id="div_operator" style="width: 100%;">
                     <select name="select_operator_<%=i%>" class="ui fluid dropdown" id="select_operator">
                         <option value="">Operator</option>
                         <%=generiereSelect("select_operator_" + i, strFeldOperator, request)%>
                     </select>
                 </div>
-                <div class="four wide column" id="div_filter">
+                <div class="four wide column" id="div_filter" style="width: 100%;">
                     <select name="select_filter_<%=i%>" class="ui fluid dropdown" id="select_filter">
                         <option value="">Filter</option>
                         <%=generiereSelect("select_filter_" + i, strFeldFilter, request)%>
                     </select>
                 </div>
-                <div class="one wide column" id="div_klammerZu">
+                <div class="one wide column" id="div_klammerZu" style="width: 100%;">
                     <select name="select_klammer_zu_<%=i%>" class="ui fluid dropdown" id="select_klammer">
                         <option value=""></option>
                         <%=generiereSelect("select_klammer_zu_" + i, strFeldKlammerZu, request)%>
                     </select>
                 </div>
-                <div class="four wide column" id="div_verknuepfung">
+                <div class="four wide column" id="div_verknuepfung" style="width: 100%;">
                     <select name="select_verknuepfung_<%=i%>" class="ui fluid dropdown" id="select_verknüpfung">
                         <option value="">Verknüpfung</option>
                         <%=generiereSelect("select_verknuepfung_" + i, strFeldVerknuepfung, request)%>
@@ -180,16 +179,23 @@
             <div id="div_plusminus" class="ui segment" style="width: 10%; margin: auto;">
                 <div class="ui equal width grid" >
                     <div class="column">
-                        <button name="button_plus" type="submit" class="ui button styleGruen" style="background-color: #007336; float: right; color: white;">+</button>
+                        <button name="button_plus" type="submit" class="ui button styleGruen" style="text-align: center; padding: 10%; background-color: #007336; float: right; width: 100%; color: white; ">+</button>
                     </div>
                     <div class="column">
-                        <button name="button_minus" type="submit" class="ui button styleRot" style="background-color: #C00518; color: white;">-</button>
+                        <button name="button_minus" type="submit" class="ui button styleRot" style="text-align: center; padding: 10%; background-color: #C00518; float: left; width: 100%; color: white;">-</button>
                     </div>
-                </div>
+                    
+                </div></div>
+                
                 <!--<button name="button_plus" type="submit" class="ui button styleGruen" style="background-color: #007336; color: white;">+</button>
                 <button name="button_minus" type="submit" class="ui button styleRot" style="background-color: #C00518; color: white;">-</button>-->
-            </div>
-
+                </br>
+             <div id="div_erstellen" class="ui segment" style="width: 8%; margin: auto;">
+                 <div class="column" >
+                        <button name="button_erstellen" type="submit" class="ui button styleGrau" style="text-align: center; padding: 10%; background-color: #707173; width: 100%; color: white;">Erstellen</button>
+                    </div>
+             </div> 
+                
             <div id="div_abbrechen_bestaetigen" style="display:none" class="ui segment">
                 <div class="ui equal width grid">
                     <div class="column">
