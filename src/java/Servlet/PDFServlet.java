@@ -35,8 +35,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -97,6 +99,8 @@ public class PDFServlet extends HttpServlet
             + "<b><p><u>Eingesetzte Mitglieder</u></p></b>";
 
     private String strEinsatzbericht = "";
+    
+    private LinkedList<String> liBerHochformat;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
@@ -177,14 +181,21 @@ public class PDFServlet extends HttpServlet
 
         try
         {
-
-            Document document = new Document(PageSize.A4, 36, 36, 54, 54);
+            Document document;
+//            document = new Document(PageSize.A4, 36, 36, 54, 54);
+            if(liBerHochformat.contains(strBerichtname))
+            {
+                 document = new Document(PageSize.A4, 36, 36, 54, 54);
+            }else
+            {
+                document = new Document(PageSize.A4.rotate(), 36, 36, 54, 54);
+            }
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PdfWriter writer = PdfWriter.getInstance(document, baos);
-
+            
             PDF_KopfFußzeile event = new PDF_KopfFußzeile();
-            writer.setBoxSize("art", new Rectangle(36, 54, 559, 788));
+            writer.setBoxSize("footer", new Rectangle(36, 54, 559, 788));
             writer.setPageEvent(event);
 
             document.open();
@@ -256,6 +267,15 @@ public class PDFServlet extends HttpServlet
         return strHTMLOutput;
     }
 
+
+    @Override
+    public void init(ServletConfig config) throws ServletException
+    {
+        super.init(config); //To change body of generated methods, choose Tools | Templates.
+        liBerHochformat = new LinkedList<>();
+        liBerHochformat.add("Tätigkeitsbericht leer");
+        liBerHochformat.add("Übungsbericht leer");
+    }
     /**
      * Returns a short description of the servlet.
      *

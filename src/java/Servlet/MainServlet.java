@@ -156,22 +156,6 @@ public class MainServlet extends HttpServlet
             {
                 System.out.println("MainServlet.doPost: hidden_zaeler");
                 request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
-            } else if (request.getParameter("strTable") != null)
-            {
-                System.out.println("MainServlet.doPost: onCreatePDF1");
-                String strTable = request.getParameter("strTable");
-                String strBericht = request.getParameter("strBericht");
-                try
-                {
-                    pdf.createPdf(strBericht, strTable, "quer", this.getServletContext().getRealPath("/"));
-                } catch (DocumentException ex)
-                {
-                    Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (CssResolverException ex)
-                {
-                    Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                System.out.println("MainServlet.doPost: onCreatePDF2");
             } else if (request.getParameter("logout") != null)
             {
                 System.out.println("MainServlet.doPost: logout");
@@ -230,21 +214,24 @@ public class MainServlet extends HttpServlet
         System.out.println("MainServlet.generiereVorschau: button_vorschau");
         try
         {
+            
             LinkedList<Rohbericht> liRohberichte = (LinkedList<Rohbericht>) this.getServletContext().getAttribute("rohberichte");
             String strBericht = request.getParameter("input_aktbericht");
+//            HttpSession session = request.getSession(false);
+            
             //int intIDGruppe = Integer.parseInt(request.getParameter("select_berechtigung"));
-            try
-            {
-                Date dateVon = sdf.parse(request.getParameter("input_von_datum"));
-                Date dateBis = sdf.parse(request.getParameter("input_bis_datum"));
-
-                //System.out.println("GruppeID: " + intIDGruppe);
-                System.out.println("Date von: " + sdf.format(dateVon));
-                System.out.println("Date bis: " + sdf.format(dateBis));
-            } catch (Exception ex)
-            {
-                System.out.println(ex.toString());
-            }
+//            try
+//            {
+//                Date dateVon = sdf.parse(request.getParameter("input_von_datum"));
+//                Date dateBis = sdf.parse(request.getParameter("input_bis_datum"));
+//
+//                //System.out.println("GruppeID: " + intIDGruppe);
+//                System.out.println("Date von: " + sdf.format(dateVon));
+//                System.out.println("Date bis: " + sdf.format(dateBis));
+//            } catch (Exception ex)
+//            {
+//                System.out.println(ex.toString());
+//            }
             
             if (strBericht.equals(liRohberichte.get(0).getStrBerichtname()))
             {

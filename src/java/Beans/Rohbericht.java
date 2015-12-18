@@ -54,19 +54,16 @@ public class Rohbericht
         for (int i = 0; i < liBerichtSpalten.size(); i++)
         {
             String strSpalte = liBerichtSpalten.get(i);
-            strHTML += "<th data-content='nach "+strSpalte+" sortieren'>" + strSpalte + "</th>";
+            if(strSpalte.equals("Bemerkung")||strSpalte.equals("-"))
+            {
+                strHTML += "<th class='disabled'>" + strSpalte + "</th>";
+            }else
+            {
+                strHTML += "<th data-content='nach "+strSpalte+" sortieren'>" + strSpalte + "</th>";
+            }
+            
         }
         strHTML += "</tr></thead><tbody>";
-
-//        for (int i = 0; i < 3; i++)
-//        {
-//            strHTML += "<tr>";
-//            for (int t = 0; t < liBerichtSpalten.size(); t++)
-//            {
-//                strHTML += "<td>...</td>";
-//            }
-//            strHTML += "</tr>";
-//        }
 
         strHTML += "</tbody></table></div></a>";
         return strHTML;

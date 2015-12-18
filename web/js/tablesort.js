@@ -21,7 +21,7 @@
   };
 
   $.tablesort.prototype = {
-
+     
     sort: function(th, direction) {
       var start = new Date(),
         self        = this,
@@ -115,6 +115,7 @@
       self.$table.find('thead th').removeClass(self.settings.asc + ' ' + self.settings.desc);
 
       this.$th = th;
+      
       if(this.index != index) {
         this.direction[index] = 'desc';
       }
