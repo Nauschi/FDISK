@@ -4,6 +4,8 @@
     Author     : user
 --%>
 
+<%@page import="java.util.LinkedList"%>
+<%@page import="Beans.Berechtigung"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -17,8 +19,13 @@
         <title>Login</title>
     </head>
     <body>
+        <%!
+            LinkedList<Berechtigung> liBerechtigungen;
+            
+        %>
         <%
             session.setAttribute("lastPage", "login");
+            liBerechtigungen = (LinkedList<Berechtigung>) request.getAttribute("berechtigungen");
         %>
         <div class="ui segment" id="div_oben">
             <div id="div_image">
@@ -28,6 +35,37 @@
             <div class="ui menu" style="background-color: #C00518; width: 100%"></div>
         </div>
         <h1>Login</h1>
+
+
+
+
+
+        <%
+            if (liBerechtigungen != null)
+            {
+        %>
+        <div class="ui modal">
+            <div class="header">
+                Wählen Sie bitte eine Instanz aus
+            </div>
+            <div class="content">
+                <select name="select_berechtigung" class="ui fluid dropdown" id="select_verknüpfung">
+                    <%=generiereBerechtigungen()%>
+                </select>
+            </div>
+            <div class="actions">
+                <button type="button" class="ui button styleRot" style="background-color: #C00518; width: 20%; color: white;">Abbrechen </button>
+                <button type="button" class="ui button styleGruen"  style="background-color: #007336; width: 20%; color: white;">Bestätigen</button>
+            </div>
+        </div>
+        <%
+            }
+        %>
+
+
+
+
+
         <form action="MainServlet" method="POST">
             <div class="ui grid" id="div_mitte">
                 <div class="sixteen wide column">
@@ -56,4 +94,43 @@
             </div>
         </form>
     </body>
+
+
+
+    <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+    <script src="semantic/dist/semantic.min.js"></script>
+    <script src="js/jquery-ui.js"></script> 
+    <script>
+        $(document).ready(function () {
+        <%
+            if (liBerechtigungen != null)
+
+            {
+        %>
+
+            $('.ui.modal').modal('setting', 'closable', false).modal('show');
+            $('.ui.dropdown').dropdown();
+        <%
+            }
+        %>
+        });
+    </script>
 </html>
+
+
+<%!
+    public String generiereBerechtigungen()
+    {
+        String strAusgabe = "";
+        if (liBerechtigungen != null)
+        {
+
+            for (Berechtigung ber : liBerechtigungen)
+            {
+                strAusgabe += "<option value=" + ber.getIntIDGruppe() + ">" + ber.getStrBerechtigung() + "</option>";
+            }
+
+        }
+        return strAusgabe;
+    }
+%>

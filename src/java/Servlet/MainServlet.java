@@ -195,13 +195,14 @@ public class MainServlet extends HttpServlet
             try
             {
                 session.setAttribute("loggedIn", true);
-                session.setAttribute("berechtigungen", access.getBerechtigungen(intIDUser));
+                request.setAttribute("berechtigungen", access.getBerechtigungen(intIDUser));
+                System.out.println("Berechtigungen gesetzt");
             } catch (Exception ex)
             {
                 Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
+            request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
         } else
         {
             request.setAttribute("login_error", true);
