@@ -868,6 +868,7 @@ public class DB_Access
         String sqlString = "SELECT DISTINCT TOP 1000 sm.id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", se.erreichbarkeitsart \"Erreichbarkeitsart\", se.code \"Code\""
                 + " FROM FDISK.dbo.stmkmitglieder sm INNER JOIN FDISK.dbo.stmkerreichbarkeiten se ON(sm.id_personen = se.id_personen)"
                 + " ORDER BY sm.id_personen;";
+
         ResultSet rs = stat.executeQuery(sqlString);
         String strErreichbarkeitsart;
         String strCode;
@@ -1759,6 +1760,8 @@ public class DB_Access
             String strString;
             Date dateDate;
             Long loLong;
+            Byte byByte;
+            int intInt; 
 
             sbHtml.append("<tr>");
 
@@ -1768,7 +1771,7 @@ public class DB_Access
                 while (iter.hasNext())
                 {
                     Map.Entry pair = (Map.Entry) iter.next();
-                    
+
                     if (pair.getKey().toString().toUpperCase().equals(str.toUpperCase()))
                     {
                         String strValue = pair.getValue().toString();
@@ -1798,9 +1801,20 @@ public class DB_Access
                             sbHtml.append("<td>");
                             sbHtml.append(loLong);
                             sbHtml.append("</td>");
+                        } else if (strValue.equals("tinyint"))
+                        {
+                            byByte = rs.getByte(str);
+                            sbHtml.append("<td>");
+                            sbHtml.append(byByte);
+                            sbHtml.append("</td>");
+                        } else if (strValue.equals("int"))
+                        {
+                            intInt = rs.getInt(str);
+                            sbHtml.append("<td>");
+                            sbHtml.append(intInt);
+                            sbHtml.append("</td>");
                         }
                     }
-
                 }
             }
 
