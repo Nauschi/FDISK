@@ -178,14 +178,16 @@
             </br>
             <div id="div_plusminus" class="ui segment" style="width: 10%; margin: auto;">
                 <div class="ui equal width grid" >
-                    <div class="column">
-                        <button name="button_plus" type="submit" class="ui button styleGruen" style="text-align: center; padding: 10%; background-color: #007336; float: right; width: 100%; color: white; ">+</button>
-                    </div>
-                    <div class="column">
+                    
+                     <div class="column">
                         <button name="button_minus" type="submit" class="ui button styleRot" style="text-align: center; padding: 10%; background-color: #C00518; float: left; width: 100%; color: white;">-</button>
                     </div>
                     
-                </div></div>
+                    <div class="column">
+                        <button name="button_plus" type="submit" class="ui button styleGruen" style="text-align: center; padding: 10%; background-color: #007336; float: right; width: 100%; color: white; ">+</button>
+                    </div> 
+                </div>
+            </div>
                 
                 <!--<button name="button_plus" type="submit" class="ui button styleGruen" style="background-color: #007336; color: white;">+</button>
                 <button name="button_minus" type="submit" class="ui button styleRot" style="background-color: #C00518; color: white;">-</button>-->
