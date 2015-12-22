@@ -111,7 +111,7 @@ public class MainServlet extends HttpServlet
             return;
         }
         String strLastPage = (String) session.getAttribute("lastPage");
-        request.getRequestDispatcher("jsp/"+strLastPage+".jsp").forward(request, response);
+        request.getRequestDispatcher("jsp/" + strLastPage + ".jsp").forward(request, response);
         processRequest(request, response);
     }
 
@@ -141,7 +141,15 @@ public class MainServlet extends HttpServlet
 
         } else
         {
-            if (request.getParameter("dynamisch") != null)
+            if (request.getParameter("button_bestaetigen") != null)
+            {
+                System.out.println("MainServlet.doPost: bestaetigen");
+                request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
+            } else if (request.getParameter("button_abbrechen") != null)
+            {
+                System.out.println("MainServlet.doPost: abbrechen");
+                request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
+            } else if (request.getParameter("dynamisch") != null)
             {
                 System.out.println("MainServlet.doPost: dynamisch");
                 request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
@@ -215,11 +223,11 @@ public class MainServlet extends HttpServlet
         System.out.println("MainServlet.generiereVorschau: button_vorschau");
         try
         {
-            
+
             LinkedList<Rohbericht> liRohberichte = (LinkedList<Rohbericht>) this.getServletContext().getAttribute("rohberichte");
             String strBericht = request.getParameter("input_aktbericht");
 //            HttpSession session = request.getSession(false);
-            
+
             //int intIDGruppe = Integer.parseInt(request.getParameter("select_berechtigung"));
 //            try
 //            {
@@ -233,7 +241,6 @@ public class MainServlet extends HttpServlet
 //            {
 //                System.out.println(ex.toString());
 //            }
-            
             if (strBericht.equals(liRohberichte.get(0).getStrBerichtname()))
             {
 //                request.setAttribute("liste", access.getEinfacheMitgliederliste());
@@ -250,17 +257,16 @@ public class MainServlet extends HttpServlet
             {
                 System.out.println("MainServlet.generiereVorschau: In Tätigkeitsbericht");
                 request.setAttribute("liste", access.getDienstzeitListe());
-            }else if (strBericht.equals(liRohberichte.get(6).getStrBerichtname()))
+            } else if (strBericht.equals(liRohberichte.get(6).getStrBerichtname()))
             {
                 request.setAttribute("liste", access.getLeerberichtMitglied());
-            }else if (strBericht.equals(liRohberichte.get(8).getStrBerichtname()))
+            } else if (strBericht.equals(liRohberichte.get(8).getStrBerichtname()))
             {
                 request.setAttribute("liste", access.getLeerberichtMitglied());
-            }
-            else if(strBericht.equals(liRohberichte.get(13).getStrBerichtname()))
+            } else if (strBericht.equals(liRohberichte.get(13).getStrBerichtname()))
             {
                 request.setAttribute("liste", access.getKursstatistik());
-            }else if(strBericht.equals(liRohberichte.get(14).getStrBerichtname()))
+            } else if (strBericht.equals(liRohberichte.get(14).getStrBerichtname()))
             {
                 request.setAttribute("liste", access.getFahrtenbuch());
             }
