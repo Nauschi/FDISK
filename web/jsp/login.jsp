@@ -21,7 +21,7 @@
     <body>
         <%!
             LinkedList<Berechtigung> liBerechtigungen;
-            
+
         %>
         <%
             session.setAttribute("lastPage", "login");
@@ -44,22 +44,29 @@
             if (liBerechtigungen != null)
             {
         %>
-        <div class="ui modal">
-            <div class="header">
-                Wählen Sie bitte eine Instanz aus
+        
+            <div class="ui modal">
+
+                <div class="header">
+                    Wählen Sie bitte eine Instanz aus
+                </div>
+                <div class="content">
+                    <form action="MainServlet" method="POST" name="form_submit">
+                    <select name="select_berechtigung" class="ui fluid dropdown" id="select_verknüpfung">
+                        <%=generiereBerechtigungen()%>
+                    </select>
+                    </form>
+                </div>
+
+                <div class="actions">
+
+                    <!--<button type="button" name="button_abbrechen" class="ui button styleRot" style="background-color: #C00518; width: 20%; color: white;">Abbrechen </button>-->
+                    <button type="button" onClick="document.form_submit.submit();" name="button_bestaetigen" class="ui button styleGruen"  style="background-color: #007336; width: 20%; color: white;">Bestätigen</button>
+
+                </div>
+
             </div>
-            <form action="MainServlet" method="POST">
-            <div class="content">
-                <select name="select_berechtigung" class="ui fluid dropdown" id="select_verknüpfung">
-                    <%=generiereBerechtigungen()%>
-                </select>
-            </div>
-            <div class="actions">
-                <button type="submit" name="button_abbrechen" class="ui button styleRot" style="background-color: #C00518; width: 20%; color: white;">Abbrechen </button>
-                <button type="submit" name="button_bestaetigen" class="ui button styleGruen"  style="background-color: #007336; width: 20%; color: white;">Bestätigen</button>
-            </div>
-            </form>
-        </div>
+        
         <%
             }
         %>
@@ -110,7 +117,7 @@
             {
         %>
 
-            $('.ui.modal').modal('setting', 'closable', false).modal('show');
+            $('.ui.modal').modal('show');
             $('.ui.dropdown').dropdown();
         <%
             }
@@ -120,8 +127,7 @@
 </html>
 
 
-<%!
-    public String generiereBerechtigungen()
+<%!    public String generiereBerechtigungen()
     {
         String strAusgabe = "";
         if (liBerechtigungen != null)

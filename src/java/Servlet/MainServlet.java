@@ -15,9 +15,6 @@ import Beans.MitgliedsGeburtstag;
 import Beans.Rohbericht;
 import Database.DB_Access;
 import PDF.PDFCreator;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.tool.xml.exceptions.CssResolverException;
-import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -138,17 +135,13 @@ public class MainServlet extends HttpServlet
         {
             System.out.println("MainServlet.doPost: session = null");
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
-
         } else
         {
-            if (request.getParameter("button_bestaetigen") != null)
+            if (request.getParameter("select_berechtigung") != null)
             {
+                int intIDGruppe =  Integer.parseInt(request.getParameter("select_berechtigung"));
                 System.out.println("MainServlet.doPost: bestaetigen");
                 request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
-            } else if (request.getParameter("button_abbrechen") != null)
-            {
-                System.out.println("MainServlet.doPost: abbrechen");
-                request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
             } else if (request.getParameter("dynamisch") != null)
             {
                 System.out.println("MainServlet.doPost: dynamisch");
