@@ -52,6 +52,7 @@ button
     color: white;
 }
 
+
 .styleGruen:hover {
     background: #338F5E !important;
 }
@@ -67,4 +68,5 @@ button
 .linkMenu
 {
     font-weight: 900 !important;
+    color: white !important;
 }
