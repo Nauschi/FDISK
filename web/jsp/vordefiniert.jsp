@@ -51,15 +51,6 @@ aaaaasdfsdf
                         </a>
                     </form>
                 </div>
-                <!--<div class="ui simple dropdown item">
-                    Dynamisch
-                    <i class="dropdown icon"></i>
-                    <div class="menu">
-                        <div class="item" onclick="location.href = 'jsp/dynamisch_mitarbeiter.jsp'">Mitglieder</div>
-                        <div class="item" onclick="location.href = 'jsp/dynamisch_fahrzeuge_geraete.jsp'">Fahrzeuge und Geräte</div>
-                    </div>
-                </div>-->
-
 
             </div>
         </div>        
@@ -162,10 +153,10 @@ aaaaasdfsdf
                     <div id="div_abbrechen_bestaetigen" style="display:none" class="ui segment">
                         <div class="ui equal width grid">
                             <div class="column">
-                                <button class="ui button styleRot" style="background-color: #C00518; width: 100%; color: white;">Zurücksetzen</button>
+                                <button type="button" class="ui button styleRot" onClick="saveDataForPDF()" style="background-color: #C00518; width: 100%; color: white;">PDF</button>
                             </div>
                             <div class="column">
-                                <button type="button" onClick="saveDataForPDF()" name="button_bestaetigen" class="ui button styleGruen"  style="background-color: #007336; width: 100%; color: white;">Bestätigen</button>
+                                <button type="button" class="ui button styleGruen"  style="background-color: #007336; width: 100%; color: white;">CSV</button>
                             </div>
                         </div>
                     </div>
