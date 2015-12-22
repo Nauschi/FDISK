@@ -1875,6 +1875,5 @@ public class DB_Access
         {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 }

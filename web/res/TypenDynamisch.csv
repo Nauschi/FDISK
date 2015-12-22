@@ -10,37 +10,37 @@ Alter;txt
 Geburtsort;txt
 SVNR;txt
 Staatsbürgerschaft;txt
-ISCO-Beruf
-Familienstand
-Blutgruppe
-Standesbuchnummer
-Eintrittsdatum
-Dienstalter
-Angelobungsdatum
-Status
-Dienstgrad
-Vordienstzeit in Jahren
-Zug
-Gruppe
-Straße
-Hausnummer
-Stiege/Stock/Tür
-Ort
-Erreichbarkeitsart
-Erreichbarkeit
-Auszeichnungsart
-Auszeichnungsstufe
-Auszeichnungsdatum
-Führerscheinklasse
-Gültig bis
-Funktionsinstanz
-Funktionsbezeichnung
-Funktion von
-Funktion bis
-Kursbezeichnung
-Kursdatum
-Leistungsabzeichenbezeichnung
-Leistungsabzeichen Stufe
-Leistungsabzeichendatum
-Untersuchungsart
-Untersuchungsdatum
+ISCO-Beruf;cb
+Familienstand;cb
+Blutgruppe;cb
+Standesbuchnummer;txt
+Eintrittsdatum;datepicker
+Dienstalter;datepicker
+Angelobungsdatum;datepicker
+Status;cb
+Dienstgrad;cb
+Vordienstzeit in Jahren;datepicker
+Zug;txt
+Gruppe;cb
+Straße;txt
+Hausnummer;txt
+Stiege/Stock/Tür;txt
+Ort;txt
+Erreichbarkeitsart;cb
+Erreichbarkeit;cb
+Auszeichnungsart;cb
+Auszeichnungsstufe;cb
+Auszeichnungsdatum;datepicker
+Führerscheinklasse;cb
+Gültig bis;datepicker
+Funktionsinstanz;cb
+Funktionsbezeichnung;cb
+Funktion von;datepicker
+Funktion bis;datepicker
+Kursbezeichnung;cb
+Kursdatum;datepicker
+Leistungsabzeichenbezeichnung;cb
+Leistungsabzeichen Stufe;cb
+Leistungsabzeichendatum;datepicker
+Untersuchungsart;cb
+Untersuchungsdatum;datepicker
