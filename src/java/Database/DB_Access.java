@@ -1690,6 +1690,7 @@ public class DB_Access
             liSpaltenUeberschriften.add(strSpaltenUeberschrift);
         }
 
+        //test
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
         String sqlString = "SELECT ";
