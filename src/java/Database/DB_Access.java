@@ -1658,9 +1658,9 @@ public class DB_Access
         return hmFilter;
     }
 
-    public String getDynamischenBerichtMitUnd(String strEingabe[]) throws Exception
+    public StringBuilder getDynamischenBerichtMitUnd(String strEingabe[]) throws Exception
     {
-        String strHtml = "";
+        StringBuilder sbHtml = new StringBuilder("");
         LinkedList<String> liSpaltenUeberschriften = new LinkedList<>();
         String strSpaltenUeberschrift;
 
@@ -1694,7 +1694,6 @@ public class DB_Access
         Statement stat = conn.createStatement();
         String sqlString = "SELECT ";
 
-        //vorläufig, noch nicht final
         if (liSpaltenUeberschriften.contains("Untersuchungen"))
         {
 
@@ -1726,14 +1725,11 @@ public class DB_Access
                 sqlString += titel.toUpperCase() + ",";
             }
 
-            //damit der letzte Beistrich gelöscht wird (sonst Exception im SQL)
             sqlString = sqlString.substring(0, sqlString.lastIndexOf(",")) + " ";
             sqlString += "FROM FDISK.dbo.stmkmitglieder";
             System.out.println(sqlString);
         }
 
-        //Um die ColumnNames und ColumnTypes aus dem spezifischen Statement auszulesen
-        //dynamisch, damit man nicht 27000 ifs hat
         ResultSet rs = stat.executeQuery(sqlString);
         HashMap<String, String> haNamesTypes = new HashMap<>();
         ResultSetMetaData rsmd = rs.getMetaData();
@@ -1743,80 +1739,79 @@ public class DB_Access
         {
             String strColName = rsmd.getColumnName(i);
             String strColType = rsmd.getColumnTypeName(i);
-            
+
             haNamesTypes.put(strColName, strColType);
         }
 
-        //Ausgabe zusammenbasteln
-        strHtml += "<html><table><tr>";
+        sbHtml.append("<html><table><tr>");
         for (String str : liSpaltenUeberschriften)
         {
-            strHtml += "<td>" + str + "</td>";
+            sbHtml.append("<td>");
+            sbHtml.append(str);
+            sbHtml.append("</td>");
         }
-       
-       
-        
-
-        //Ende Ausgabe zusammenbasteln
-        
-        /*
-         In der HashMap steht jetzt folgendes: (zum Beispiel)
-         GEBURTSDATUM = datetime
-         JUGEND = bit
-         VORDIENSTZEIT = bit
-         */
-        
-        //Irgendwas passt bei der Reihenfolge net bei der Ausgabe (Ausgabe geht grundsätzlich)
-        Iterator it = haNamesTypes.entrySet().iterator();
+        sbHtml.append("</tr>");
 
         while (rs.next())
         {
-            String strName;
-            String strType;
             boolean boBoolean;
             String strString;
             Date dateDate;
             Long loLong;
 
-            while (it.hasNext())
+            sbHtml.append("<tr>");
+
+            for (String str : liSpaltenUeberschriften)
             {
-                strHtml += "<tr>";
-                Map.Entry pair = (Map.Entry) it.next();
-                strName = pair.getKey().toString();
-                System.out.println("strName: "+strName);
-                strType = pair.getValue().toString();
-                System.out.println("strType: "+strType);
+                Iterator iter = haNamesTypes.entrySet().iterator();
+                while (iter.hasNext())
+                {
+                    Map.Entry pair = (Map.Entry) iter.next();
+                    
+                    if (pair.getKey().toString().toUpperCase().equals(str.toUpperCase()))
+                    {
+                        String strValue = pair.getValue().toString();
 
-                if (strType.equals("bit"))
-                {
-                    boBoolean = rs.getBoolean(strName);
-                    strHtml += "<td>" + boBoolean + "</td>";
-                } else if (strType.equals("datetime"))
-                {
-                    dateDate = rs.getDate(strName);
-                    strHtml += "<td>" + dateDate + "</td>";
+                        if (strValue.equals("bit"))
+                        {
+                            boBoolean = rs.getBoolean(str);
+                            sbHtml.append("<td>");
+                            sbHtml.append(boBoolean);
+                            sbHtml.append("</td>");
+                        } else if (strValue.equals("datetime"))
+                        {
+                            dateDate = rs.getDate(str);
+                            sbHtml.append("<td>");
+                            sbHtml.append(dateDate);
+                            sbHtml.append("</td>");
 
-                } else if (strType.equals("varchar"))
-                {
-                    strString = rs.getString(strName);
-                    strHtml += "<td>" + strString + "</td>";
+                        } else if (strValue.equals("varchar"))
+                        {
+                            strString = rs.getString(str);
+                            sbHtml.append("<td>");
+                            sbHtml.append(strString);
+                            sbHtml.append("</td>");
+                        } else if (strValue.equals("bigint"))
+                        {
+                            loLong = rs.getLong(str);
+                            sbHtml.append("<td>");
+                            sbHtml.append(loLong);
+                            sbHtml.append("</td>");
+                        }
+                    }
+
                 }
-                else if (strType.equals("bigint"))
-                {
-                    loLong = rs.getLong(strName);
-                    strHtml += "<td>" + loLong + "</td>";
-                }
-                strHtml += "</tr>";
             }
-            
+
+            sbHtml.append("</tr>");
         }
 
         connPool.releaseConnection(conn);
 
-        strHtml += "</table></html>";
-        System.out.println("htmlString: " + strHtml);
+        sbHtml.append("</table></html>");
+        System.out.println("htmlString: " + sbHtml);
 
-        return strHtml;
+        return sbHtml;
     }
 
     /**
@@ -1871,9 +1866,9 @@ public class DB_Access
 
             String[] dynamisch =
             {
-                "(", "id_personen", "=", "15", "", "", "(", "Vordienstzeit in Jahren", "", "", "", "", "(", "Status", "", "Jugend", "", ""
+                "(", "vorname", "=", "15", "", "", "(", "Vordienstzeit in Jahren", "", "", "", "", "(", "Status", "", "Jugend", "", ""
             };
-            String html = theInstance.getDynamischenBerichtMitUnd(dynamisch);
+            StringBuilder html = theInstance.getDynamischenBerichtMitUnd(dynamisch);
 
         } catch (Exception ex)
         {
