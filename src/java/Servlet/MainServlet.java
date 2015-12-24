@@ -5,13 +5,6 @@
  */
 package Servlet;
 
-import Beans.Fahrzeug;
-import Beans.Kurs;
-import Beans.Mitglied;
-import Beans.MitgliedsAdresse;
-import Beans.MitgliedsDienstzeit;
-import Beans.MitgliedsErreichbarkeit;
-import Beans.MitgliedsGeburtstag;
 import Beans.Rohbericht;
 import Database.DB_Access;
 import PDF.PDFCreator;
@@ -24,7 +17,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,13 +28,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.JFileChooser;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
  *
