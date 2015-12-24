@@ -118,8 +118,8 @@
                     </select>
                 </div>
 
-                <div class="four wide column" id="div_typ" style="width: 100%;">
-                    <select name="select_typ_<%=i%>" class="ui fluid dropdown" onchange="onTypChanged(this)" id="select_typ">
+                <div class="four wide column" id="div_typ_<%=i%>" style="width: 100%;">
+                    <select name="select_typ_<%=i%>" class="ui fluid dropdown" onchange="onTypChanged(this)" id="select_typ_<%=i%>">
                         <%
                             String strAktTypMitBoxArt = "";
                             if (request.getParameter("select_typ_" + i) != null)
@@ -180,7 +180,7 @@
                 </div>
                 <div class="four wide column" id="div_filter_datepicker_<%=i%>" style="width: 100%; display: none;">
                     <div class="ui input" style="width: 100%">
-                        <input name="input_filter" id="input_filter_date" placeholder="Filter" autocomplete="off" type="text">
+                        <input name="input_filter_date" id="input_filter_date_<%=i%>" placeholder="Filter" autocomplete="off" type="text">
                     </div>
                 </div>
 
@@ -250,6 +250,31 @@
         <script src="semantic/dist/semantic.min.js"></script>
         <script src="js/jquery-ui.js"></script> 
         <script src="js/dynamisch_mitglieder.js"></script>
+
+        <script>
+                            $(function () {
+            <%
+                for (int i = 1; i <= intZaehler; i++)
+                {
+            %>
+                                $("#input_filter_date_<%=i%>").datepicker({
+                                    onSelect: function (selected)
+                                    {
+                                        var dt = new Date(selected);
+                                        dt.setDate(dt.getDate() + 1);
+                                        $("#input_bis_datum").datepicker("option", "minDate", dt);
+                                        $("#input_von_datum").datepicker("option", "showAnim", "slideDown");
+                                        $("#input_von_datum").datepicker("option", "dateFormat", "dd.mm.yy");
+                                        $("#input_von_datum").datepicker("option", $.datepicker.regional['de']);
+                                    }
+                                });
+
+            <%
+                }
+            %>
+                            });
+        </script>
+
     </body>
 </html>
 
