@@ -140,12 +140,12 @@
                                 {
                                     strAktBoxArt = strBoxArt;
                         %>
-                        <option value="<%=strTypMitBoxArt%>" selected><%=strTypMitBoxArt%></option>
+                        <option value="<%=strTypMitBoxArt%>" selected><%=strTyp%></option>
                         <%
                         } else
                         {
                         %>
-                        <option value="<%=strTypMitBoxArt%>"><%=strTypMitBoxArt%></option>
+                        <option value="<%=strTypMitBoxArt%>"><%=strTyp%></option>
                         <%
                                 }
                             }
