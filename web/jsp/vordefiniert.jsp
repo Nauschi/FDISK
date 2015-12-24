@@ -18,7 +18,7 @@ aaaaasdfsdf
         <link rel="stylesheet" type="text/css" href="css/standardDesign.css">
         <link rel="stylesheet" type="text/css" href="css/vordefiniert.css">
         <link rel="stylesheet" href="css/jquery-ui_1.css">
-        <link href="css/jquery-ui_2.css" rel="Stylesheet"type="text/css"/>
+        <link href="css/jquery-ui_2.css" rel="Stylesheet" type="text/css"/>
         <title>Vordefiniert</title>
     </head>
     <body>
