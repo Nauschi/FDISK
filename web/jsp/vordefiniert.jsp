@@ -144,9 +144,12 @@ aaaaasdfsdf
                             </div>
                         </div>
                     </form>
+
                     <form id="formPDF" name="formPDF" action="PDFServlet" method="POST" target="_blank">
                         <input type="hidden" name="hidden_pdfData" id="hidden_pdfData"/>
-
+                    </form>
+                    <form id="formCSV" name="formCSV" action="CSVServlet" method="POST">
+                        <input type="hidden" name="hidden_CSVData" id="hidden_CSVData"/>
                     </form>
                     <div id="div_table">
                     </div>
@@ -156,7 +159,7 @@ aaaaasdfsdf
                                 <button type="button" class="ui button styleRot" onClick="saveDataForPDF()" style="background-color: #C00518; width: 100%; color: white;">PDF</button>
                             </div>
                             <div class="column">
-                                <button type="button" class="ui button styleGruen"  style="background-color: #007336; width: 100%; color: white;">CSV</button>
+                                <button type="button" class="ui button styleGruen" onClick="saveDataForCSV()"  style="background-color: #007336; width: 100%; color: white;">CSV</button>
                             </div>
                         </div>
                     </div>
@@ -172,8 +175,6 @@ aaaaasdfsdf
         <script src="js/jquery-ui.js"></script> 
         <script src="js/tablesort.js"></script>
         <script src="js/vordefiniert.js"></script>
-
-        <% System.out.println(request.getParameter("input_aktbericht") + "");%>
         <script>
 
                                     $(document).ready(function () {

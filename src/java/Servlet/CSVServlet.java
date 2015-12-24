@@ -86,31 +86,42 @@ public class CSVServlet extends HttpServlet
             throws ServletException, IOException
     {
         request.setCharacterEncoding("UTF-8");
-        String strData = request.getParameter("hidden_pdfData");
+        String strData = request.getParameter("hidden_CSVData");
         String[] strSplitData = strData.split("###");
         String strBerichtname = strSplitData[0];
         String strTable = strSplitData[1];
+
         response.setContentType("text/csv");
-        response.setHeader("Content-Disposition", "attachment; filename="+strBerichtname+".csv");
-//        response.setContentLength(csv.length);
-//        writeCsv(csv, ';', response.getOutputStream());
+        response.setHeader("Content-Disposition", "attachment; filename=" + strBerichtname + ".csv");
+        String [] strRows = erstelleCSVString(strTable);
+        writeCsv(strRows, response.getOutputStream());
     }
-    
-    public static <T> void writeCsv (List<List<String>> csv, char separator, OutputStream output) throws IOException {
+
+    public String [] erstelleCSVString(String strTable)
+    {
+        String strCSV = strTable.replace("<table id=\"table\" class=\"ui sortable celled table\"> <thead>     ", "");
+        strCSV = strCSV.replace("</tbody></table>", "");
+        strCSV = strCSV.replace("</thead><tbody>", "");
+        strCSV = strCSV.replaceAll("\\<th[^>]*>", "");
+        strCSV = strCSV.replaceAll("</th>", ";");
+        strCSV = strCSV.replaceAll("<td>", "");
+        strCSV = strCSV.replaceAll("</td>", ";");
+        strCSV = strCSV.replaceAll("<tr>", "");
+        String[] strRows = strCSV.split("</tr>");
+        
+        return strRows;
+    }
+
+    public void writeCsv(String[] strRows, OutputStream output) throws IOException
+    {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, "UTF-8"));
-    for (List<String> row : csv) {
-        for (Iterator<String> iter = row.iterator(); iter.hasNext();) {
-            String field = "";
-            
-            writer.append(field);
-            if (iter.hasNext()) {
-                writer.append(separator);
-            }
+        for (String strRow : strRows)
+        {
+            writer.append(strRow);
+            writer.newLine();
         }
-        writer.newLine();
+        writer.flush();
     }
-    writer.flush();
-}
 
     /**
      * Returns a short description of the servlet.

@@ -61,4 +61,12 @@ function saveDataForPDF()
     document.formPDF.submit();
 }
 
+function saveDataForCSV()
+{
+    var strTable = document.getElementById("div_table").innerHTML;
+    var strName = document.getElementById("h2_bericht").innerHTML;
+    document.getElementById("hidden_CSVData").value = strName+"###"+strTable;
+    document.formCSV.submit();
+}
+
 
