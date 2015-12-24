@@ -24,7 +24,9 @@ $(function () {
 function onTypChanged(select_typ)
 {
     var strTyp = select_typ.value;
+    //Liefert noch nicht die richtige id?!?!?!
     var strID = select_typ.getAttribute('id');
+    //------------------------------------------
     alert(strID);
     var strBoxArt = strTyp.split(";")[1];
     if(strBoxArt == "cb")
