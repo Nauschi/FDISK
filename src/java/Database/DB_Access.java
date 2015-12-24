@@ -814,6 +814,11 @@ public class DB_Access
                 + ",fahrzeugmarke \"Fahrzeugmarke\" "
                 + ",aufbaufirma \"Aufbaufirma\""
                 + ",instanznummer \"Instanzummer\" "
+                + ",fahrzeugart \"Fahrzeugart\" "
+                + ",leistung \"Leistung\" "
+                + ",eigengewicht \"Eigengewicht\" "
+                + ",gesamtgewicht \"Gesamtgewicht\" "
+                + ",treibstoff \"Treibstoff\" "
                 + "FROM FDISK.dbo.stmkfahrzeuge "
                 + "WHERE status = 'aktiv'";
 
@@ -828,6 +833,11 @@ public class DB_Access
         String strBezeichnung;
         String strFahrzeugmarke;
         int intInstanznummer;
+        String strFahrzeugart;
+        int intLeistung;
+        int intEigengewicht;
+        int intGesamtgewicht;
+        String strTreibstoff;
 
         while (rs.next())
         {
@@ -840,8 +850,17 @@ public class DB_Access
             strBezeichnung = rs.getString("Bezeichnung");
             strFahrzeugmarke = rs.getString("Fahrzeugmarke");
             intInstanznummer = rs.getInt("Instanzummer");
+            strFahrzeugart = rs.getString("Fahrzeugart");
+            intLeistung = rs.getInt("Leistung");
+            intEigengewicht = rs.getInt("Eigengewicht");
+            intGesamtgewicht = rs.getInt("Gesamtgewicht");
+            strTreibstoff = rs.getString("Treibstoff");
 
-            Fahrzeug fahrzeug = new Fahrzeug(strFahrzeugTyp, strKennzeichen, intBaujahr, strAufbaufirma, strTaktischeBezeichnung, intId_fahrzeuge, strBezeichnung, strFahrzeugmarke, intInstanznummer);
+            Fahrzeug fahrzeug = new Fahrzeug(strFahrzeugTyp, strKennzeichen,
+                    intBaujahr, strAufbaufirma, strTaktischeBezeichnung,
+                    intId_fahrzeuge, strBezeichnung, strFahrzeugmarke,
+                    intInstanznummer, strFahrzeugart, intLeistung,
+                    intEigengewicht, intGesamtgewicht, strTreibstoff);
             liFahrzeuge.add(fahrzeug);
         }
         connPool.releaseConnection(conn);
@@ -1761,7 +1780,7 @@ public class DB_Access
             Date dateDate;
             Long loLong;
             Byte byByte;
-            int intInt; 
+            int intInt;
 
             sbHtml.append("<tr>");
 
