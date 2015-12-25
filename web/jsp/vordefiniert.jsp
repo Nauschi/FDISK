@@ -129,16 +129,29 @@ aaaaasdfsdf
                     </div>-->
                         </div>
                         <div class="ui equal width grid">
-                            <div class="column">
+                            <div class="column" id="div_input_von_datum" style="display: none">
                                 <div class="ui input" style="width: 100%">
                                     <input name="input_von_datum" id="input_von_datum" placeholder="von..." autocomplete="off" type="text">
                                 </div>
                             </div>
-                            <div class="column" >
+                            <div class="column" id="div_input_bis_datum" style="display: none">
                                 <div class="ui input" style="width: 100%">
                                     <input name="input_bis_datum" id="input_bis_datum" placeholder="bis..." autocomplete="off" type="text">
                                 </div>
+                            </div >
+                            <div class="column" id="div_kein_datum_1" style="display: none">
                             </div>
+                            <div class="column" id="div_kein_datum_2" style="display: none">
+                            </div>
+                            <div class="column" id="div_select_jahr" style="display: none">
+                                <select name="select_jahr" class="ui fluid dropdown" id="select_jahr" style="display: none">
+                                    <option value="">Jahr</option>
+                                    <option value="Feuerwehr1">2015</option>
+                                    <option value="Feuerwehr2">2014</option>
+                                    <option value="Feuerwehr3">2013</option>
+                                </select>
+                            </div>
+                            
                             <div class="column">
                                 <button type="submit" name="button_vorschau" class="ui button styleGrau" onclick="document.getElementById('div_loader').className = 'ui active inverted dimmer';" style="background-color: #707173; width: 100%; color: white;">Vorschau</button>
                             </div>
@@ -197,6 +210,9 @@ aaaaasdfsdf
                                         document.getElementById("input_hidden").value = strBerichtname;
                                         var strTable = item.getElementsByTagName("div")[0].innerHTML;
                                         document.getElementById("div_table").innerHTML = strTable;
+                                        var intTypeOfDateUI = item.getElementsByTagName("div")[1].innerHTML;
+                                        onChangeTypeOfDateUI(intTypeOfDateUI);
+                                        
             <%
                 if (request.getAttribute("liste") != null)
                 {

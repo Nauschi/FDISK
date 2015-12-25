@@ -328,13 +328,16 @@ public class MainServlet extends HttpServlet
         {
             String strBerichtname;
             LinkedList<String> liBerichtSpalten = new LinkedList<>();
+            int intTypeOfDateUI;
             String[] strElemente = strReihe.split(";");
             strBerichtname = strElemente[0];
-            for (int i = 1; i < strElemente.length; i++)
+            intTypeOfDateUI = Integer.parseInt(strElemente[strElemente.length-1]);
+            for (int i = 1; i < strElemente.length-1; i++)
             {
                 liBerichtSpalten.add(strElemente[i]);
             }
-            liRohberichte.add(new Rohbericht(strBerichtname, liBerichtSpalten));
+            
+            liRohberichte.add(new Rohbericht(strBerichtname, liBerichtSpalten,intTypeOfDateUI));
         }
         br.close();
 

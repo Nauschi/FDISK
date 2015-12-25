@@ -16,14 +16,18 @@ public class Rohbericht
 
     private String strBerichtname;
     private LinkedList<String> liBerichtSpalten;
-    //0 kein Date, 1 nur Jahr, 2 von-bis
+    //Was wird im Vordefiniert bei dem User Interface benötigt
+    //0 kein Datum, 1 nur Jahr, 2 von-bis
     private int intTypeOfDateUI;
 
-    public Rohbericht(String berichtname, LinkedList<String> berichtSpalten)
+    public Rohbericht(String strBerichtname, LinkedList<String> liBerichtSpalten, int intTypeOfDateUI)
     {
-        this.strBerichtname = berichtname;
-        this.liBerichtSpalten = berichtSpalten;
+        this.strBerichtname = strBerichtname;
+        this.liBerichtSpalten = liBerichtSpalten;
+        this.intTypeOfDateUI = intTypeOfDateUI;
     }
+
+    
 
     public String getStrBerichtname()
     {
@@ -44,6 +48,18 @@ public class Rohbericht
     {
         this.liBerichtSpalten = liBerichtSpalten;
     }
+
+    public int getIntTypeOfDateUI()
+    {
+        return intTypeOfDateUI;
+    }
+
+    public void setIntTypeOfDateUI(int intTypeOfDateUI)
+    {
+        this.intTypeOfDateUI = intTypeOfDateUI;
+    }
+    
+    
 
     public String toHTMLString()
     {
@@ -67,7 +83,7 @@ public class Rohbericht
         }
         strHTML += "</tr></thead><tbody>";
 
-        strHTML += "</tbody></table></div></a>";
+        strHTML += "</tbody></table></div><div style='display:none'>"+intTypeOfDateUI+"</div></a>";
         return strHTML;
     }
 

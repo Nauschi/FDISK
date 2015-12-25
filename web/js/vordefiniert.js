@@ -32,6 +32,34 @@ $(function () {
 });
 
 
+function onChangeTypeOfDateUI(intTypeOfDateUI)
+{
+    if(intTypeOfDateUI==0)
+    {
+        document.getElementById("div_input_von_datum").style.display = "none";
+        document.getElementById("div_input_bis_datum").style.display = "none";
+        document.getElementById("div_kein_datum_1").style.display = "block";
+        document.getElementById("div_kein_datum_2").style.display = "block";
+        document.getElementById("div_select_jahr").style.display = "none";
+    }else if(intTypeOfDateUI==1)
+    {
+        document.getElementById("div_input_von_datum").style.display = "none";
+        document.getElementById("div_input_bis_datum").style.display = "none";
+        document.getElementById("div_kein_datum_1").style.display = "block";
+        document.getElementById("div_kein_datum_2").style.display = "none";
+        document.getElementById("div_select_jahr").style.display = "block";
+    }else if(intTypeOfDateUI==2)
+    {
+        document.getElementById("div_input_von_datum").style.display = "block";
+        document.getElementById("div_input_bis_datum").style.display = "block";
+        document.getElementById("div_kein_datum_1").style.display = "none";
+        document.getElementById("div_kein_datum_2").style.display = "none";
+        document.getElementById("div_select_jahr").style.display = "none";
+    }
+}
+
+
+
 function onListItemClicked(item)
 {
     var liItems = document.getElementById("div_liste").getElementsByTagName("a");
@@ -43,10 +71,11 @@ function onListItemClicked(item)
     document.getElementById("div_abbrechen_bestaetigen").style.display = "none";
     var strTable = item.getElementsByTagName("div")[0].innerHTML;
     var strBerichtname = item.getElementsByTagName("span")[0].innerHTML;
+    var intTypeOfDateUI = item.getElementsByTagName("div")[1].innerHTML;
+    onChangeTypeOfDateUI(intTypeOfDateUI);
     document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = strBerichtname;
     document.getElementById("input_hidden").value = strBerichtname;
     document.getElementById("div_table").innerHTML = strTable;
-
 }
 
 
@@ -68,5 +97,7 @@ function saveDataForCSV()
     document.getElementById("hidden_CSVData").value = strName+"###"+strTable;
     document.formCSV.submit();
 }
+
+
 
 
