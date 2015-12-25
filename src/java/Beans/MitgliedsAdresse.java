@@ -16,7 +16,7 @@ public class MitgliedsAdresse extends Mitglied
 
     private int intId_Adressen;
     private String strStrasse;
-    private String intNummer;
+    private String strNummer;
     private String strStiege;
     private int intPLZ;
     private String strOrt;
@@ -27,7 +27,7 @@ public class MitgliedsAdresse extends Mitglied
         super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
         this.intId_Adressen = intId_Adressen;
         this.strStrasse = strStrasse;
-        this.intNummer = intNummer;
+        this.strNummer = intNummer;
         this.strStiege = strStiege;
         this.intPLZ = intPLZ;
         this.strOrt = strOrt;
@@ -54,14 +54,14 @@ public class MitgliedsAdresse extends Mitglied
         this.strStrasse = strStrasse;
     }
 
-    public String getIntNummer()
+    public String getStrNummer()
     {
-        return intNummer;
+        return strNummer;
     }
 
-    public void setIntNummer(String intNummer)
+    public void setStrNummer(String strNummer)
     {
-        this.intNummer = intNummer;
+        this.strNummer = strNummer;
     }
 
     public String getStrStiege()
@@ -131,7 +131,7 @@ public class MitgliedsAdresse extends Mitglied
         {
             return false;
         }
-        if (!Objects.equals(this.intNummer, other.intNummer))
+        if (!Objects.equals(this.strNummer, other.strNummer))
         {
             return false;
         }
@@ -157,14 +157,46 @@ public class MitgliedsAdresse extends Mitglied
     @Override
     public String toString()
     {
-        //return "MitgliedsAdresse{" + "intId_Adressen=" + intId_Adressen + ", strStrasse=" + strStrasse + ", intNummer=" + intNummer + ", strStiege=" + strStiege + ", intPLZ=" + intPLZ + ", strOrt=" + strOrt + ", boBemerkung=" + boBemerkung + '}';
+        if (strStammblattnummer == null)
+        {
+            strStammblattnummer = "";
+        }
+        if (strDienstgrad == null)
+        {
+            strDienstgrad = "";
+        }
+        if (strTitel == null)
+        {
+            strTitel = "";
+        }
+        if (strVorname == null)
+        {
+            strVorname = "";
+        }
+        if (strZuname == null)
+        {
+            strZuname = "";
+        }
+        if (strStrasse == null)
+        {
+            strStrasse = "";
+        }
+        if (strNummer == null)
+        {
+            strNummer = "";
+        }
+        if (strOrt == null)
+        {
+            strOrt = "";
+        }
+
         String strHtml = "<tr><td>"
                 + strStammblattnummer + "</td><td>"
                 + strDienstgrad + "</td><td>"
                 + strTitel + "</td><td>"
                 + strVorname + "</td><td>"
                 + strZuname + "</td><td>"
-                + strStrasse + " " + intNummer + ", " + intPLZ + " " + strOrt + "</td>"
+                + strStrasse + " " + strNummer + ", " + intPLZ + " " + strOrt + "</td>"
                 + "<td></td></tr>";
 
         return strHtml;

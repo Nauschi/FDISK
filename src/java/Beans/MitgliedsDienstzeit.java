@@ -67,7 +67,32 @@ public class MitgliedsDienstzeit extends Mitglied
 
     @Override
     public String toString() {
-        //return "MitgliedsDienstzeit{" + "dateGeburtsdatum=" + dateGeburtsdatum + ", intDienstalter=" + intDienstalter + '}';
+
+        if (strStammblattnummer == null)
+        {
+            strStammblattnummer = "";
+        }
+        if (strDienstgrad == null)
+        {
+            strDienstgrad = "";
+        }
+        if (strTitel == null)
+        {
+            strTitel = "";
+        }
+        if (strVorname == null)
+        {
+            strVorname = "";
+        }
+        if (strZuname == null)
+        {
+            strZuname = "";
+        }
+        if (dateGeburtsdatum == null)
+        {
+            
+        }
+               
         String strHtml = "<tr><td>" 
                 + strStammblattnummer + "</td><td>"
                 + strDienstgrad + "</td><td>"

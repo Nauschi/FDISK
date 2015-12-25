@@ -115,6 +115,10 @@ public class LeerberichtFahrzeug
     @Override
     public String toString()
     {
+        if(strBezeichnung == null)
+        {
+            return ""; 
+        }
         String strHtml = "<td>&Omicron;&nbsp;" + strBezeichnung + "</td>";
         return strHtml;
     }

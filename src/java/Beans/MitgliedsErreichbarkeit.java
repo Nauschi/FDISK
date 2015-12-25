@@ -90,7 +90,28 @@ public class MitgliedsErreichbarkeit extends Mitglied
     @Override
     public String toString()
     {
-        // return String.format("%s %s %s %s", strVorname, strZuname, strStammblattnummer, strTitel);
+
+        if (strStammblattnummer == null)
+        {
+            strStammblattnummer = "";
+        }
+        if (strDienstgrad == null)
+        {
+            strDienstgrad = "";
+        }
+        if (strTitel == null)
+        {
+            strTitel = "";
+        }
+        if (strVorname == null)
+        {
+            strVorname = "";
+        }
+        if (strZuname == null)
+        {
+            strZuname = "";
+        }
+
         String strHtml = "<tr><td>"
                 + strStammblattnummer + "</td><td>"
                 + strDienstgrad + "</td><td>"

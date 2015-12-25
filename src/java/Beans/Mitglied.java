@@ -137,15 +137,32 @@ public class Mitglied
         return true;
     }
 
-
-
-   
-
     @Override
     public String toString()
     {
-        //return String.format("%15s %8s %10s %20s %25s", strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
-        String strHtml = "<tr><td>" 
+
+        if (strStammblattnummer == null)
+        {
+            strStammblattnummer = "";
+        }
+        if (strDienstgrad == null)
+        {
+            strDienstgrad = "";
+        }
+        if (strTitel == null)
+        {
+            strTitel = "";
+        }
+        if (strVorname == null)
+        {
+            strVorname = "";
+        }
+        if (strZuname == null)
+        {
+            strZuname = "";
+        }
+
+        String strHtml = "<tr><td>"
                 + strStammblattnummer + "</td><td>"
                 + strDienstgrad + "</td><td>"
                 + strTitel + "</td><td>"

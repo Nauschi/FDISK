@@ -280,10 +280,6 @@ public class Fahrzeug
         {
             strAufbaufirma = "";
         }
-        if (intBaujahr + "" == null)
-        {
-            intBaujahr = 0;
-        }
         if (strTreibstoff == null)
         {
             strTreibstoff = "";

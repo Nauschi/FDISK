@@ -9,7 +9,6 @@ import Beans.Berechtigung;
 import Beans.Erreichbarkeit;
 import Beans.Fahrzeug;
 import Beans.Kurs;
-import Beans.KursAlt;
 import Beans.LeerberichtFahrzeug;
 import Beans.LoginMitglied;
 import Beans.Mitglied;
@@ -528,7 +527,7 @@ public class DB_Access
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
         String sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
-                + "FROM FDISK.dbo.stmkmitglieder";
+                + "FROM FDISK.dbo.stmkmitglieder ";
         ResultSet rs = stat.executeQuery(sqlString);
 
         String strSTB;
@@ -640,75 +639,6 @@ public class DB_Access
         }
         connPool.releaseConnection(conn);
         return liMitgliedsAdressen;
-    }
-
-    /**
-     * !!!Alte Version!!! Gibt spezielle Informationen zu der Tätigkeit
-     * "Kursbesuch an der FWZS" als LinkedList zurück. Diese Informationen sind
-     * zum Beispiel Anzahl der Mitarbeiter in einem KursAlt.
-     *
-     * @return LinkedList
-     * @throws IOException
-     * @see KursAlt
-     * @see LinkedList
-     */
-    public LinkedList<KursAlt> getKursstatistikAlt() throws Exception
-    {
-        LinkedList<KursAlt> liKurse = new LinkedList<>();
-        Connection conn = connPool.getConnection();
-        Statement stat = conn.createStatement();
-
-        String sqlString = "SELECT TOP 1000 stmkkurse.id_kurse \"KursID\""
-                + ",stmkkurse.id_kursarten \"Kursarten\""
-                + ",stmkkurse.lehrgangsnummer \"LGN\""
-                + ",stmkkurse.kursbezeichnung \"Kursbezeichnung\""
-                + ",stmkkurse.datum \"Datum\""
-                + ",stmkkurse.id_instanzen_veranstalter \"InstanzVeranstalter\""
-                + ",stmkkurse.id_instanzen_durchfuehrend \"InstanzDurchfuehrend\""
-                + ",stmkkurse.kursstatus \"Kursstatus\""
-                + ", COUNT(stmkkursmitglieder.id_kurse) \"Teilnehmer\""
-                + "FROM FDISK.dbo.stmkkurse stmkkurse INNER JOIN FDISK.dbo.stmkkursemitglieder stmkkursmitglieder "
-                + "ON (stmkkursmitglieder.id_kurse = stmkkurse.id_kurse) "
-                + "WHERE stmkkurse.id_instanzen_veranstalter = 29885 "
-                + "GROUP BY stmkkurse.id_kurse, stmkkurse.id_kursarten "
-                + ",stmkkurse.lehrgangsnummer "
-                + ",stmkkurse.kursbezeichnung "
-                + ",stmkkurse.datum "
-                + ",stmkkurse.id_instanzen_veranstalter "
-                + ",stmkkurse.id_instanzen_durchfuehrend "
-                + ",stmkkurse.kursstatus ";
-
-        ResultSet rs = stat.executeQuery(sqlString);
-
-        int intId_kurse;
-        int intId_Kursarten;
-        int intLehrgangsnummer;
-        String strKursbezeichnung;
-        Date dateDatum;
-        int intId_instanzen_veranstalter;
-        int intId_instanzen_durchfuehrend;
-        String strKursstatus;
-        int intAnzahlBesucher;
-
-        while (rs.next())
-        {
-
-            intId_kurse = rs.getInt("KursID");
-            intId_Kursarten = rs.getInt("Kursarten");
-            intLehrgangsnummer = rs.getInt("LGN");
-            strKursbezeichnung = rs.getString("Kursbezeichnung");
-            dateDatum = new Date(rs.getDate("Datum").getTime());
-            intId_instanzen_veranstalter = rs.getInt("InstanzVeranstalter");
-            intId_instanzen_durchfuehrend = rs.getInt("InstanzDurchfuehrend");
-            strKursstatus = rs.getString("Kursstatus");
-            intAnzahlBesucher = rs.getInt("Teilnehmer");
-
-            KursAlt kurs = new KursAlt(intId_kurse, intId_Kursarten, intLehrgangsnummer, strKursbezeichnung, dateDatum, intId_instanzen_veranstalter, intId_instanzen_durchfuehrend, strKursstatus, intAnzahlBesucher);
-            liKurse.add(kurs);
-
-        }
-        connPool.releaseConnection(conn);
-        return liKurse;
     }
 
     /**

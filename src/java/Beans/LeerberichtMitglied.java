@@ -152,6 +152,19 @@ public class LeerberichtMitglied
     @Override
     public String toString()
     {
+        if (strStammblattnummer == null)
+        {
+            strStammblattnummer = "";
+        }
+        if (strVorname == null)
+        {
+            strVorname = "";
+        }
+        if (strZuname == null)
+        {
+            strZuname = "";
+        }
+
         if(strTitel != null && !strTitel.isEmpty())
         {
             return "<td>&Omicron;&nbsp;" + strTitel +" "+ strZuname.toUpperCase()+ " " + strVorname+", " + strStammblattnummer + "</td>";

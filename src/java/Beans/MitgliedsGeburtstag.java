@@ -80,8 +80,30 @@ public class MitgliedsGeburtstag extends Mitglied
     @Override
     public String toString()
     {
-        //return "MitgliedsGeburtstag{" + "dateGeburtsdatum=" + dateGeburtsdatum + ", intAlter=" + intZielalter + '}';
-        
+        if (strStammblattnummer == null)
+        {
+            strStammblattnummer = "";
+        }
+        if (strDienstgrad == null)
+        {
+            strDienstgrad = "";
+        }
+        if (strTitel == null)
+        {
+            strTitel = "";
+        }
+        if (strVorname == null)
+        {
+            strVorname = "";
+        }
+        if (strZuname == null)
+        {
+            strZuname = "";
+        }
+        if (dateGeburtsdatum == null)
+        {
+        }
+
         String strHtml = "<tr><td>"
                 + strStammblattnummer + "</td><td>"
                 + strDienstgrad + "</td><td>"
@@ -89,7 +111,7 @@ public class MitgliedsGeburtstag extends Mitglied
                 + strVorname + "</td><td>"
                 + strZuname + "</td><td>"
                 + sdf.format(dateGeburtsdatum) + "</td><td>"
-                + (intZielalter%10==0?"<b>"+intZielalter+"</b>":intZielalter) + "</td></tr>";
+                + (intZielalter % 10 == 0 ? "<b>" + intZielalter + "</b>" : intZielalter) + "</td></tr>";
 
         return strHtml;
     }

@@ -216,6 +216,19 @@ public class Kurs
     @Override
     public String toString()
     {
+        if (strBezeichnung == null)
+        {
+            strBezeichnung = "";
+        }
+        if (strTaetigkeitsart == null)
+        {
+            strTaetigkeitsart = "";
+        }
+        if (strTaetigkeitsunterart == null)
+        {
+            strTaetigkeitsunterart = "";
+        }
+
         String strHtml = "<tr><td>"
                 + intTeilnehmer + "</td><td>"
                 + strBezeichnung + "</td><td>"
