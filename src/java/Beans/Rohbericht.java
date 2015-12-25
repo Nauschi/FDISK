@@ -16,6 +16,8 @@ public class Rohbericht
 
     private String strBerichtname;
     private LinkedList<String> liBerichtSpalten;
+    //0 kein Date, 1 nur Jahr, 2 von-bis
+    private int intTypeOfDateUI;
 
     public Rohbericht(String berichtname, LinkedList<String> berichtSpalten)
     {
