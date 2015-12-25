@@ -30,9 +30,7 @@ public class Uebungsbericht
     private String strOrt;
     private String strMeldung;
     private String strFehlalarm;
-    private String strMsrepl_tran_version;
-
-    public Uebungsbericht(int intId_StmkUebungsberichte, int intIdBerichte, int intInstanznummer, String strName, String strUebungsart, String strUebungsunterart, String strNummer, Date dateBeginn, Date dateEnde, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, String strMeldung, String strFehlalarm, String strMsrepl_tran_version)
+    public Uebungsbericht(int intId_StmkUebungsberichte, int intIdBerichte, int intInstanznummer, String strName, String strUebungsart, String strUebungsunterart, String strNummer, Date dateBeginn, Date dateEnde, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, String strMeldung, String strFehlalarm)
     {
         this.intId_StmkUebungsberichte = intId_StmkUebungsberichte;
         this.intIdBerichte = intIdBerichte;
@@ -50,7 +48,6 @@ public class Uebungsbericht
         this.strOrt = strOrt;
         this.strMeldung = strMeldung;
         this.strFehlalarm = strFehlalarm;
-        this.strMsrepl_tran_version = strMsrepl_tran_version;
     }
 
     public int getIntId_StmkUebungsberichte()
@@ -213,20 +210,10 @@ public class Uebungsbericht
         this.strFehlalarm = strFehlalarm;
     }
 
-    public String getStrMsrepl_tran_version()
-    {
-        return strMsrepl_tran_version;
-    }
-
-    public void setStrMsrepl_tran_version(String strMsrepl_tran_version)
-    {
-        this.strMsrepl_tran_version = strMsrepl_tran_version;
-    }
-
     @Override
     public int hashCode()
     {
-        int hash = 3;
+        int hash = 5;
         return hash;
     }
 
@@ -306,17 +293,16 @@ public class Uebungsbericht
         {
             return false;
         }
-        if (!Objects.equals(this.strMsrepl_tran_version, other.strMsrepl_tran_version))
-        {
-            return false;
-        }
         return true;
     }
+
+ 
+    
 
     @Override
     public String toString()
     {
-        return "UebungsberichtUeberschrift{" + "intId_StmkUebungsberichte=" + intId_StmkUebungsberichte + ", intIdBerichte=" + intIdBerichte + ", intInstanznummer=" + intInstanznummer + ", strName=" + strName + ", strUebungsart=" + strUebungsart + ", strUebungsunterart=" + strUebungsunterart + ", strNummer=" + strNummer + ", dateBeginn=" + dateBeginn + ", dateEnde=" + dateEnde + ", strStrasse=" + strStrasse + ", strNummerAdr=" + strNummerAdr + ", strStiege=" + strStiege + ", strPlz=" + strPlz + ", strOrt=" + strOrt + ", strMeldung=" + strMeldung + ", strFehlalarm=" + strFehlalarm + ", strMsrepl_tran_version=" + strMsrepl_tran_version + '}';
+        return "UebungsberichtUeberschrift{" + "intId_StmkUebungsberichte=" + intId_StmkUebungsberichte + ", intIdBerichte=" + intIdBerichte + ", intInstanznummer=" + intInstanznummer + ", strName=" + strName + ", strUebungsart=" + strUebungsart + ", strUebungsunterart=" + strUebungsunterart + ", strNummer=" + strNummer + ", dateBeginn=" + dateBeginn + ", dateEnde=" + dateEnde + ", strStrasse=" + strStrasse + ", strNummerAdr=" + strNummerAdr + ", strStiege=" + strStiege + ", strPlz=" + strPlz + ", strOrt=" + strOrt + ", strMeldung=" + strMeldung + ", strFehlalarm=" + strFehlalarm +'}';
     }
     
     

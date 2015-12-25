@@ -15,7 +15,6 @@ import java.util.Objects;
 public class Einsatzbericht
 {
     private int intId_StmkEinsatzberichte;
-    private int intIdBerichte;
     private int intInstanznummer;
     private String strName;
     private String strEinsatzart;
@@ -32,12 +31,11 @@ public class Einsatzbericht
     private String strZuname;
     private String strMeldung;
     private String strFehlalarm;
-    private String strMsrepl_tran_version;
+    
 
-    public Einsatzbericht(int intId_StmkEinsatzberichte, int intIdBerichte, int intInstanznummer, String strName, String strEinsatzart, String strNummer, Date dateUhrzeit_Alarmierung, Date dateUhrzeit_Rueckkehr, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, int intStandesbuchnummer, String strVorname, String strZuname, String strMeldung, String strFehlalarm, String strMsrepl_tran_version)
+    public Einsatzbericht(int intId_StmkEinsatzberichte, int intInstanznummer, String strName, String strEinsatzart, String strNummer, Date dateUhrzeit_Alarmierung, Date dateUhrzeit_Rueckkehr, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, int intStandesbuchnummer, String strVorname, String strZuname, String strMeldung, String strFehlalarm)
     {
         this.intId_StmkEinsatzberichte = intId_StmkEinsatzberichte;
-        this.intIdBerichte = intIdBerichte;
         this.intInstanznummer = intInstanznummer;
         this.strName = strName;
         this.strEinsatzart = strEinsatzart;
@@ -54,7 +52,6 @@ public class Einsatzbericht
         this.strZuname = strZuname;
         this.strMeldung = strMeldung;
         this.strFehlalarm = strFehlalarm;
-        this.strMsrepl_tran_version = strMsrepl_tran_version;
     }
 
     public int getIntId_StmkEinsatzberichte()
@@ -67,16 +64,7 @@ public class Einsatzbericht
         this.intId_StmkEinsatzberichte = intId_StmkEinsatzberichte;
     }
 
-    public int getIntIdBerichte()
-    {
-        return intIdBerichte;
-    }
-
-    public void setIntIdBerichte(int intIdBerichte)
-    {
-        this.intIdBerichte = intIdBerichte;
-    }
-
+  
     public int getIntInstanznummer()
     {
         return intInstanznummer;
@@ -237,20 +225,10 @@ public class Einsatzbericht
         this.strFehlalarm = strFehlalarm;
     }
 
-    public String getStrMsrepl_tran_version()
-    {
-        return strMsrepl_tran_version;
-    }
-
-    public void setStrMsrepl_tran_version(String strMsrepl_tran_version)
-    {
-        this.strMsrepl_tran_version = strMsrepl_tran_version;
-    }
-
     @Override
     public int hashCode()
     {
-        int hash = 5;
+        int hash = 7;
         return hash;
     }
 
@@ -267,10 +245,6 @@ public class Einsatzbericht
         }
         final Einsatzbericht other = (Einsatzbericht) obj;
         if (this.intId_StmkEinsatzberichte != other.intId_StmkEinsatzberichte)
-        {
-            return false;
-        }
-        if (this.intIdBerichte != other.intIdBerichte)
         {
             return false;
         }
@@ -338,17 +312,17 @@ public class Einsatzbericht
         {
             return false;
         }
-        if (!Objects.equals(this.strMsrepl_tran_version, other.strMsrepl_tran_version))
-        {
-            return false;
-        }
         return true;
     }
+
+   
+
+   
 
     @Override
     public String toString()
     {
-        return "EinsatzberichtUeberschrift{" + "intId_StmkEinsatzberichte=" + intId_StmkEinsatzberichte + ", intIdBerichte=" + intIdBerichte + ", intInstanznummer=" + intInstanznummer + ", strName=" + strName + ", strEinsatzart=" + strEinsatzart + ", strNummer=" + strNummer + ", dateUhrzeit_Alarmierung=" + dateUhrzeit_Alarmierung + ", dateUhrzeit_Rueckkehr=" + dateUhrzeit_Rueckkehr + ", strStrasse=" + strStrasse + ", strNummerAdr=" + strNummerAdr + ", strStiege=" + strStiege + ", strPlz=" + strPlz + ", strOrt=" + strOrt + ", intStandesbuchnummer=" + intStandesbuchnummer + ", strVorname=" + strVorname + ", strZuname=" + strZuname + ", strMeldung=" + strMeldung + ", strFehlalarm=" + strFehlalarm + ", strMsrepl_tran_version=" + strMsrepl_tran_version + '}';
+        return "EinsatzberichtUeberschrift{" + "intId_StmkEinsatzberichte=" + intId_StmkEinsatzberichte + ", intInstanznummer=" + intInstanznummer + ", strName=" + strName + ", strEinsatzart=" + strEinsatzart + ", strNummer=" + strNummer + ", dateUhrzeit_Alarmierung=" + dateUhrzeit_Alarmierung + ", dateUhrzeit_Rueckkehr=" + dateUhrzeit_Rueckkehr + ", strStrasse=" + strStrasse + ", strNummerAdr=" + strNummerAdr + ", strStiege=" + strStiege + ", strPlz=" + strPlz + ", strOrt=" + strOrt + ", intStandesbuchnummer=" + intStandesbuchnummer + ", strVorname=" + strVorname + ", strZuname=" + strZuname + ", strMeldung=" + strMeldung + ", strFehlalarm=" + strFehlalarm + '}';
     }
     
     

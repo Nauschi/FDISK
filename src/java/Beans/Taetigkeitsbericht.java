@@ -14,7 +14,7 @@ import java.util.Objects;
  */
 public class Taetigkeitsbericht
 {
-    private int intIdBericht;
+    private int intId_StmkZaetigkeitsberichte; 
     private int intInstanznummer;
     private String strInstanzname;
     private String strTaetigkeitsart;
@@ -32,7 +32,7 @@ public class Taetigkeitsbericht
 
     public Taetigkeitsbericht(int intIdBericht, int intInstanznummer, String strInstanzname, String strTaetigkeitsart, String strTaetigkeitsunterart, String strNummer, Date dateBeginn, Date dateEnde, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, String strMeldung, String strFehlalarm)
     {
-        this.intIdBericht = intIdBericht;
+        this.intId_StmkZaetigkeitsberichte = intIdBericht;
         this.intInstanznummer = intInstanznummer;
         this.strInstanzname = strInstanzname;
         this.strTaetigkeitsart = strTaetigkeitsart;
@@ -51,12 +51,12 @@ public class Taetigkeitsbericht
 
     public int getIntIdBericht()
     {
-        return intIdBericht;
+        return intId_StmkZaetigkeitsberichte;
     }
 
     public void setIntIdBericht(int intIdBericht)
     {
-        this.intIdBericht = intIdBericht;
+        this.intId_StmkZaetigkeitsberichte = intIdBericht;
     }
 
     public int getIntInstanznummer()
@@ -218,7 +218,7 @@ public class Taetigkeitsbericht
             return false;
         }
         final Taetigkeitsbericht other = (Taetigkeitsbericht) obj;
-        if (this.intIdBericht != other.intIdBericht)
+        if (this.intId_StmkZaetigkeitsberichte != other.intId_StmkZaetigkeitsberichte)
         {
             return false;
         }
@@ -287,7 +287,7 @@ public class Taetigkeitsbericht
     @Override
     public String toString()
     {
-        return "TaetigkeitsberichtUeberschrift{" + "intIdBericht=" + intIdBericht + ", intInstanznummer=" + intInstanznummer + ", strInstanzname=" + strInstanzname + ", strTaetigkeitsart=" + strTaetigkeitsart + ", strTaetigkeitsunterart=" + strTaetigkeitsunterart + ", strNummer=" + strNummer + ", dateBeginn=" + dateBeginn + ", dateEnde=" + dateEnde + ", strStrasse=" + strStrasse + ", strNummerAdr=" + strNummerAdr + ", strStiege=" + strStiege + ", strPlz=" + strPlz + ", strOrt=" + strOrt + ", strMeldung=" + strMeldung + ", strFehlalarm=" + strFehlalarm +'}';
+        return "TaetigkeitsberichtUeberschrift{" + "intIdBericht=" + intId_StmkZaetigkeitsberichte + ", intInstanznummer=" + intInstanznummer + ", strInstanzname=" + strInstanzname + ", strTaetigkeitsart=" + strTaetigkeitsart + ", strTaetigkeitsunterart=" + strTaetigkeitsunterart + ", strNummer=" + strNummer + ", dateBeginn=" + dateBeginn + ", dateEnde=" + dateEnde + ", strStrasse=" + strStrasse + ", strNummerAdr=" + strNummerAdr + ", strStiege=" + strStiege + ", strPlz=" + strPlz + ", strOrt=" + strOrt + ", strMeldung=" + strMeldung + ", strFehlalarm=" + strFehlalarm +'}';
     }
     
     
