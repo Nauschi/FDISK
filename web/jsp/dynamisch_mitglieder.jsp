@@ -189,24 +189,26 @@
 
 
                 <div class="one wide column" id="div_klammerZu" style="width: 100%;">
-                    <select name="select_klammer_zu_<%=i%>" class="ui fluid dropdown" id="select_klammer">
+                    <select name="select_klammer_zu_<%=i%>" class="ui fluid dropdown" id="select_klammer_zu_<%=i%>">
                         <!--<option value=""></option>-->
                         <%=generiereSelect("select_klammer_zu_" + i, strFeldKlammerZu, request)%>
                     </select>
                 </div>
-                <div class="four wide column" id="div_verknuepfung" style="width: 100%;">
-                    <select name="select_verknuepfung_<%=i%>" class="ui fluid dropdown" id="select_verknüpfung">
+                <div class="four wide column" id="div_verknuepfung_<%=i%>" style="width: 100%;">
+                    <select name="select_verknuepfung_<%=i%>" class="ui fluid dropdown" onchange="onChangeVerknuepfung(<%=i%>)" id="select_verknuepfung_<%=i%>">
                         <!--<option value="">Verknüpfung</option>-->
                         <%=generiereSelect("select_verknuepfung_" + i, strFeldVerknuepfung, request)%>
                     </select>
                 </div>
             </div>
-
-
+            
             <%
-                if (i == intZaehler)
-                {
+                    
+                }
             %>
+
+            
+            
             </br>
             <div id="div_plusminus" class="ui segment" style="width: 10%; margin: auto;">
                 <div class="ui equal width grid" >
@@ -223,25 +225,9 @@
             </br>
             <div id="div_erstellen" class="ui segment" style="width: 8%; margin: auto;">
                 <div class="column" >
-                    <button name="button_erstellen" type="submit" class="ui button styleGrau" style="text-align: center; padding: 10%; background-color: #707173; width: 100%; color: white;">Erstellen</button>
+                    <button name="button_erstellen" type="button" onclick="onErstellen(<%=intZaehler%>)" class="ui button styleGrau" style="text-align: center; padding: 10%; background-color: #707173; width: 100%; color: white;">Erstellen</button>
                 </div>
             </div> 
-
-            <div id="div_abbrechen_bestaetigen" style="display:none" class="ui segment">
-                <div class="ui equal width grid">
-                    <div class="column">
-                        <button class="ui button styleRot" style="background-color: #C00518; width: 100%; color: white;">Zurücksetzen</button>
-                    </div>
-                    <div class="column">
-                        <button onclick="onBestaetigen();" name="button_bestaetigen" class="ui button styleGruen"  style="background-color: #007336; width: 100%; color: white;">Bestätigen</button>
-                    </div>
-                </div>
-            </div>
-            <%
-                    }
-                }
-            %>
-
         </form>
         <br/>
         <!--</div>-->
