@@ -14,7 +14,7 @@ Package.onUse(function(api) {
   api.versionsFrom('1.0');
   api.use('less', 'client');
 
-  api.addFiles(api, 'client');
+  api.addFiles(files, 'client');
 });
 
 //Package.onUse(function(api) {
