@@ -1767,15 +1767,17 @@ public class DB_Access
         LinkedList<String> liSpaltenUeberschriften = new LinkedList<>();
         String strSpaltenUeberschrift;
         int intRows = strEingabe.length % 6;
-        
+
+        initializeDBValuesWithDBTypes();
+
         for (int i = 0; i < intRows; i++)
         {
             for (int j = 0; j < 6; j++)
             {
                 /*
-                !!!!!!!!!!!!!!!!!hier bitte die array-namen mit den namen wie sie in der DB stehen ersetzen!!!!!!!!!!!!!
-                */
-                if(strEingabe[i][j].equals("nachname"))
+                 !!!!!!!!!!!!!!!!!hier bitte die array-namen mit den namen wie sie in der DB stehen ersetzen!!!!!!!!!!!!!
+                 */
+                if (strEingabe[i][j].equals("nachname"))
                 {
                     strEingabe[i][j] = "zuname";
                 }
@@ -1847,7 +1849,7 @@ public class DB_Access
             {
                 sqlString += titel.toUpperCase() + ",";
             }
-            
+
             sqlString = sqlString.substring(0, sqlString.lastIndexOf(",")) + " ";
             sqlString += "FROM FDISK.dbo.stmkmitglieder WHERE ";
 
@@ -1855,38 +1857,42 @@ public class DB_Access
             {
                 String strColWhere = strEingabe[i][1];
                 
+                System.out.println(strColWhere);
                 String strColSymbol = strEingabe[i][2];
+                String strColValue = strEingabe[i][3];
+                String strColWhereType = getDBTypeForValue(strColWhere);
+
                 if (strColSymbol.equals("<>"))
                 {
                     strColSymbol = "!=";
                 }
-                String strColValue = strEingabe[i][3];
 
+                
+                
+                //d.h. User gibt eine WHERE clause ein
                 if (!(strColSymbol.equals("")))
                 {
-                    sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' AND " ;
+                    sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' AND ";
                 }
+
             }
-            int intIndex = sqlString.lastIndexOf("AND"); 
-            sqlString = sqlString.substring(0, intIndex) + " ";
+            int intIndex = sqlString.lastIndexOf("AND");
+
+            if (intIndex != -1)
+            {
+                sqlString = sqlString.substring(0, intIndex) + " ";
+            }
+
+            if (sqlString.endsWith("WHERE "))
+            {
+                sqlString = sqlString.replace("WHERE ", " ");
+            }
+
         }
 
         System.out.println("SQL: " + sqlString);
 
         ResultSet rs = stat.executeQuery(sqlString);
-        HashMap<String, String> haNamesTypes = new HashMap<>();
-        ResultSetMetaData rsmd = rs.getMetaData();
-        int cols = rsmd.getColumnCount();
-
-        for (int i = 1; i <= cols; i++)
-        {
-            String strColName = rsmd.getColumnName(i);
-            String strColType = rsmd.getColumnTypeName(i);
-            haNamesTypes.put(strColName, strColType);
-            
-            System.out.println(strColName);
-            System.out.println(strColType);
-        }
 
         sbHtml.append("<html><table><tr>");
         for (String str : liSpaltenUeberschriften)
@@ -1974,9 +1980,28 @@ public class DB_Access
     {
         //Tabelle stmkmitglieder
         haNamesTypes.put("vorname", "varchar");
-        haNamesTypes.put("nachname", "varchar");
+        haNamesTypes.put("zuname", "varchar");
+        haNamesTypes.put("id_personen", "bigint");
     }
-    
+
+    public String getDBTypeForValue(String strValue)
+    {
+        String strType = "";
+        Iterator iter = haNamesTypes.entrySet().iterator();
+        while (iter.hasNext())
+        {
+            Map.Entry pair = (Map.Entry) iter.next();    
+            if(pair.getKey().toString().toUpperCase().equals(strValue.toUpperCase()))
+            {
+                strType = pair.getValue().toString();
+            }
+
+            return strType;
+        }
+
+        return strType;
+    }
+
     /**
      *
      * @param args
