@@ -47,6 +47,7 @@ public class DB_Access
     private static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
     private DB_ConnectionPool connPool;
     private static DB_Access theInstance = null;
+    private HashMap<String, String> haNamesTypes = new HashMap<>();
 
     public static DB_Access getInstance() throws ClassNotFoundException
     {
@@ -1760,15 +1761,32 @@ public class DB_Access
         return hmFilter;
     }
 
-    public StringBuilder getDynamischenBerichtMitUnd(String strEingabe[]) throws Exception
+    public StringBuilder getDynamischenBerichtMitUnd(String strEingabe[][]) throws Exception
     {
         StringBuilder sbHtml = new StringBuilder("");
         LinkedList<String> liSpaltenUeberschriften = new LinkedList<>();
         String strSpaltenUeberschrift;
-
-        for (int i = 0; i < strEingabe.length; i += 6)
+        int intRows = strEingabe.length % 6;
+        
+        for (int i = 0; i < intRows; i++)
         {
-            strSpaltenUeberschrift = strEingabe[1 + i];
+            for (int j = 0; j < 6; j++)
+            {
+                /*
+                !!!!!!!!!!!!!!!!!hier bitte die array-namen mit den namen wie sie in der DB stehen ersetzen!!!!!!!!!!!!!
+                */
+                if(strEingabe[i][j].equals("nachname"))
+                {
+                    strEingabe[i][j] = "zuname";
+                }
+            }
+        }
+
+        //Zeilen durchgehen
+        for (int i = 0; i < intRows; i++)
+        {
+            strSpaltenUeberschrift = strEingabe[i][1];
+
             if (strSpaltenUeberschrift.toUpperCase().equals("ANREDE"))
             {
                 strSpaltenUeberschrift = "geschlecht";
@@ -1783,16 +1801,18 @@ public class DB_Access
                 strSpaltenUeberschrift = "beruf";
             } else if (strSpaltenUeberschrift.toUpperCase().equals("STATUS"))
             {
-                strSpaltenUeberschrift = strEingabe[3 + i];
+                strSpaltenUeberschrift = strEingabe[i][3];
             } else if (strSpaltenUeberschrift.toUpperCase().equals("VORDIENSTZEIT IN JAHREN"))
             {
                 strSpaltenUeberschrift = "vordienstzeit";
             }
 
-            liSpaltenUeberschriften.add(strSpaltenUeberschrift);
+            if (!liSpaltenUeberschriften.contains(strSpaltenUeberschrift))
+            {
+                liSpaltenUeberschriften.add(strSpaltenUeberschrift);
+            }
         }
 
-        //test
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
         String sqlString = "SELECT ";
@@ -1827,11 +1847,31 @@ public class DB_Access
             {
                 sqlString += titel.toUpperCase() + ",";
             }
-
+            
             sqlString = sqlString.substring(0, sqlString.lastIndexOf(",")) + " ";
-            sqlString += "FROM FDISK.dbo.stmkmitglieder";
-            System.out.println(sqlString);
+            sqlString += "FROM FDISK.dbo.stmkmitglieder WHERE ";
+
+            for (int i = 0; i < intRows; i++)
+            {
+                String strColWhere = strEingabe[i][1];
+                
+                String strColSymbol = strEingabe[i][2];
+                if (strColSymbol.equals("<>"))
+                {
+                    strColSymbol = "!=";
+                }
+                String strColValue = strEingabe[i][3];
+
+                if (!(strColSymbol.equals("")))
+                {
+                    sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' AND " ;
+                }
+            }
+            int intIndex = sqlString.lastIndexOf("AND"); 
+            sqlString = sqlString.substring(0, intIndex) + " ";
         }
+
+        System.out.println("SQL: " + sqlString);
 
         ResultSet rs = stat.executeQuery(sqlString);
         HashMap<String, String> haNamesTypes = new HashMap<>();
@@ -1842,8 +1882,10 @@ public class DB_Access
         {
             String strColName = rsmd.getColumnName(i);
             String strColType = rsmd.getColumnTypeName(i);
-
             haNamesTypes.put(strColName, strColType);
+            
+            System.out.println(strColName);
+            System.out.println(strColType);
         }
 
         sbHtml.append("<html><table><tr>");
@@ -1925,11 +1967,16 @@ public class DB_Access
         connPool.releaseConnection(conn);
 
         sbHtml.append("</table></html>");
-        System.out.println("htmlString: " + sbHtml);
-
         return sbHtml;
     }
 
+    public void initializeDBValuesWithDBTypes()
+    {
+        //Tabelle stmkmitglieder
+        haNamesTypes.put("vorname", "varchar");
+        haNamesTypes.put("nachname", "varchar");
+    }
+    
     /**
      *
      * @param args
@@ -1980,11 +2027,17 @@ public class DB_Access
 //                System.out.println(li1.getStrVorname() + "-" + li1.getStrZuname());
 //            }
 
-            String[] dynamisch =
+            String[][] dynamisch =
             {
-                "(", "vorname", "=", "15", "", "", "(", "Vordienstzeit in Jahren", "", "", "", "", "(", "Status", "", "Jugend", "", ""
+                {
+                    "(", "vorname", "=", "Matthias", ")", "UND"
+                },
+                {
+                    "(", "nachname", "=", "Eder", ")", "UND"
+                }
             };
             StringBuilder html = theInstance.getDynamischenBerichtMitUnd(dynamisch);
+            System.out.println(html);
 
 //            LinkedList<Taetigkeitsbericht> li = theInstance.getTaetigkeitsbericht();
 //            for (Taetigkeitsbericht li1 : li)
