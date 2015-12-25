@@ -17,6 +17,7 @@ import Beans.MitgliedsDienstzeit;
 import Beans.MitgliedsErreichbarkeit;
 import Beans.MitgliedsGeburtstag;
 import Beans.LeerberichtMitglied;
+import Beans.Taetigkeitsbericht;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -992,6 +993,76 @@ public class DB_Access
         return liFahrzeuge;
     }
 
+    public LinkedList<Taetigkeitsbericht> getTaetigkeitsbericht() throws Exception
+    {
+        LinkedList<Taetigkeitsbericht> liTaetigkeitsbericht = new LinkedList<>();
+
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "";
+
+        sqlString = "SELECT id_berichte \"ID\""
+                + " ,instanznummer \"Instanznummer\""
+                + " ,instanzname \"Instanzname\""
+                + " ,taetigkeitsart \"Taetigkeitsart\""
+                + " ,taetigkeitsunterart \"Taetigkeitsunterart\""
+                + " ,nummer \"Nummer\""
+                + " ,beginn \"Beginn\""
+                + " ,ende \"Ende\""
+                + " ,strasse \"Strasse\""
+                + " ,nummeradr \"NummerAdr\""
+                + " ,stiege \"Stiege\""
+                + " ,plz \"PLZ\""
+                + " ,ort \"Ort\""
+                + " ,meldung \"Meldung\""
+                + " ,Fehlalarm \"Fehlalarm\""
+                + "  FROM FDISK.dbo.stmktaetigkeitsberichte";
+
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        int intIdBericht;
+        int intInstanznummer;
+        String strInstanzname;
+        String strTaetigkeitsart;
+        String strTaetigkeitsunterart;
+        String strNummer;
+        Date dateBeginn;
+        Date dateEnde;
+        String strStrasse;
+        String strNummerAdr;
+        String strStiege;
+        String strPlz;
+        String strOrt;
+        String strMeldung;
+        String strFehlalarm;
+
+        while (rs.next())
+        {
+            intIdBericht = rs.getInt("ID");
+            intInstanznummer = rs.getInt("Instanznummer");
+            strInstanzname = rs.getString("Instanzname");
+            strTaetigkeitsart = rs.getString("Taetigkeitsart");
+            strTaetigkeitsunterart = rs.getString("Taetigkeitsunterart");
+            strNummer = rs.getString("Nummer");
+            dateBeginn = rs.getDate("Beginn");
+            dateEnde = rs.getDate("Ende");
+            strStrasse = rs.getString("Strasse");
+            strNummerAdr = rs.getString("NummerAdr");
+            strStiege = rs.getString("Stiege");
+            strPlz = rs.getString("PLZ");
+            strOrt = rs.getString("Ort");
+            strMeldung = rs.getString("Meldung");
+            strFehlalarm = rs.getString("Fehlalarm");
+
+            Taetigkeitsbericht taetigkeitsbericht = new Taetigkeitsbericht(intIdBericht, intInstanznummer, strInstanzname, strTaetigkeitsart, strTaetigkeitsunterart, strNummer, dateBeginn, dateEnde, strStrasse, strNummerAdr, strStiege, strPlz, strOrt, strMeldung, strFehlalarm);
+            liTaetigkeitsbericht.add(taetigkeitsbericht);
+        }
+
+        connPool.releaseConnection(conn);
+        return liTaetigkeitsbericht;
+    }
+
     /**
      * *******************************************************************************
      */
@@ -1833,6 +1904,14 @@ public class DB_Access
                 "(", "vorname", "=", "15", "", "", "(", "Vordienstzeit in Jahren", "", "", "", "", "(", "Status", "", "Jugend", "", ""
             };
             StringBuilder html = theInstance.getDynamischenBerichtMitUnd(dynamisch);
+
+            
+            
+//            LinkedList<Taetigkeitsbericht> li = theInstance.getTaetigkeitsbericht();
+//            for (Taetigkeitsbericht li1 : li)
+//            {
+//                System.out.println(li1.getDateBeginn() + "-" + li1.getStrTaetigkeitsart());
+//            }
 
         } catch (Exception ex)
         {

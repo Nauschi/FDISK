@@ -12,14 +12,13 @@ import java.util.Objects;
  *
  * @author Corinna
  */
-public class UebungsberichtUeberschrift
+public class Taetigkeitsbericht
 {
-    private int intId_StmkUebungsberichte;
-    private int intIdBerichte;
+    private int intIdBericht;
     private int intInstanznummer;
-    private String strName;
-    private String strUebungsart;
-    private String strUebungsunterart;
+    private String strInstanzname;
+    private String strTaetigkeitsart;
+    private String strTaetigkeitsunterart;
     private String strNummer;
     private Date dateBeginn;
     private Date dateEnde;
@@ -30,16 +29,14 @@ public class UebungsberichtUeberschrift
     private String strOrt;
     private String strMeldung;
     private String strFehlalarm;
-    private String strMsrepl_tran_version;
 
-    public UebungsberichtUeberschrift(int intId_StmkUebungsberichte, int intIdBerichte, int intInstanznummer, String strName, String strUebungsart, String strUebungsunterart, String strNummer, Date dateBeginn, Date dateEnde, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, String strMeldung, String strFehlalarm, String strMsrepl_tran_version)
+    public Taetigkeitsbericht(int intIdBericht, int intInstanznummer, String strInstanzname, String strTaetigkeitsart, String strTaetigkeitsunterart, String strNummer, Date dateBeginn, Date dateEnde, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, String strMeldung, String strFehlalarm)
     {
-        this.intId_StmkUebungsberichte = intId_StmkUebungsberichte;
-        this.intIdBerichte = intIdBerichte;
+        this.intIdBericht = intIdBericht;
         this.intInstanznummer = intInstanznummer;
-        this.strName = strName;
-        this.strUebungsart = strUebungsart;
-        this.strUebungsunterart = strUebungsunterart;
+        this.strInstanzname = strInstanzname;
+        this.strTaetigkeitsart = strTaetigkeitsart;
+        this.strTaetigkeitsunterart = strTaetigkeitsunterart;
         this.strNummer = strNummer;
         this.dateBeginn = dateBeginn;
         this.dateEnde = dateEnde;
@@ -50,27 +47,16 @@ public class UebungsberichtUeberschrift
         this.strOrt = strOrt;
         this.strMeldung = strMeldung;
         this.strFehlalarm = strFehlalarm;
-        this.strMsrepl_tran_version = strMsrepl_tran_version;
     }
 
-    public int getIntId_StmkUebungsberichte()
+    public int getIntIdBericht()
     {
-        return intId_StmkUebungsberichte;
+        return intIdBericht;
     }
 
-    public void setIntId_StmkUebungsberichte(int intId_StmkUebungsberichte)
+    public void setIntIdBericht(int intIdBericht)
     {
-        this.intId_StmkUebungsberichte = intId_StmkUebungsberichte;
-    }
-
-    public int getIntIdBerichte()
-    {
-        return intIdBerichte;
-    }
-
-    public void setIntIdBerichte(int intIdBerichte)
-    {
-        this.intIdBerichte = intIdBerichte;
+        this.intIdBericht = intIdBericht;
     }
 
     public int getIntInstanznummer()
@@ -83,34 +69,34 @@ public class UebungsberichtUeberschrift
         this.intInstanznummer = intInstanznummer;
     }
 
-    public String getStrName()
+    public String getStrInstanzname()
     {
-        return strName;
+        return strInstanzname;
     }
 
-    public void setStrName(String strName)
+    public void setStrInstanzname(String strInstanzname)
     {
-        this.strName = strName;
+        this.strInstanzname = strInstanzname;
     }
 
-    public String getStrUebungsart()
+    public String getStrTaetigkeitsart()
     {
-        return strUebungsart;
+        return strTaetigkeitsart;
     }
 
-    public void setStrUebungsart(String strUebungsart)
+    public void setStrTaetigkeitsart(String strTaetigkeitsart)
     {
-        this.strUebungsart = strUebungsart;
+        this.strTaetigkeitsart = strTaetigkeitsart;
     }
 
-    public String getStrUebungsunterart()
+    public String getStrTaetigkeitsunterart()
     {
-        return strUebungsunterart;
+        return strTaetigkeitsunterart;
     }
 
-    public void setStrUebungsunterart(String strUebungsunterart)
+    public void setStrTaetigkeitsunterart(String strTaetigkeitsunterart)
     {
-        this.strUebungsunterart = strUebungsunterart;
+        this.strTaetigkeitsunterart = strTaetigkeitsunterart;
     }
 
     public String getStrNummer()
@@ -213,16 +199,6 @@ public class UebungsberichtUeberschrift
         this.strFehlalarm = strFehlalarm;
     }
 
-    public String getStrMsrepl_tran_version()
-    {
-        return strMsrepl_tran_version;
-    }
-
-    public void setStrMsrepl_tran_version(String strMsrepl_tran_version)
-    {
-        this.strMsrepl_tran_version = strMsrepl_tran_version;
-    }
-
     @Override
     public int hashCode()
     {
@@ -241,12 +217,8 @@ public class UebungsberichtUeberschrift
         {
             return false;
         }
-        final UebungsberichtUeberschrift other = (UebungsberichtUeberschrift) obj;
-        if (this.intId_StmkUebungsberichte != other.intId_StmkUebungsberichte)
-        {
-            return false;
-        }
-        if (this.intIdBerichte != other.intIdBerichte)
+        final Taetigkeitsbericht other = (Taetigkeitsbericht) obj;
+        if (this.intIdBericht != other.intIdBericht)
         {
             return false;
         }
@@ -254,15 +226,15 @@ public class UebungsberichtUeberschrift
         {
             return false;
         }
-        if (!Objects.equals(this.strName, other.strName))
+        if (!Objects.equals(this.strInstanzname, other.strInstanzname))
         {
             return false;
         }
-        if (!Objects.equals(this.strUebungsart, other.strUebungsart))
+        if (!Objects.equals(this.strTaetigkeitsart, other.strTaetigkeitsart))
         {
             return false;
         }
-        if (!Objects.equals(this.strUebungsunterart, other.strUebungsunterart))
+        if (!Objects.equals(this.strTaetigkeitsunterart, other.strTaetigkeitsunterart))
         {
             return false;
         }
@@ -306,18 +278,18 @@ public class UebungsberichtUeberschrift
         {
             return false;
         }
-        if (!Objects.equals(this.strMsrepl_tran_version, other.strMsrepl_tran_version))
-        {
-            return false;
-        }
         return true;
     }
 
+
+    
+    
     @Override
     public String toString()
     {
-        return "UebungsberichtUeberschrift{" + "intId_StmkUebungsberichte=" + intId_StmkUebungsberichte + ", intIdBerichte=" + intIdBerichte + ", intInstanznummer=" + intInstanznummer + ", strName=" + strName + ", strUebungsart=" + strUebungsart + ", strUebungsunterart=" + strUebungsunterart + ", strNummer=" + strNummer + ", dateBeginn=" + dateBeginn + ", dateEnde=" + dateEnde + ", strStrasse=" + strStrasse + ", strNummerAdr=" + strNummerAdr + ", strStiege=" + strStiege + ", strPlz=" + strPlz + ", strOrt=" + strOrt + ", strMeldung=" + strMeldung + ", strFehlalarm=" + strFehlalarm + ", strMsrepl_tran_version=" + strMsrepl_tran_version + '}';
+        return "TaetigkeitsberichtUeberschrift{" + "intIdBericht=" + intIdBericht + ", intInstanznummer=" + intInstanznummer + ", strInstanzname=" + strInstanzname + ", strTaetigkeitsart=" + strTaetigkeitsart + ", strTaetigkeitsunterart=" + strTaetigkeitsunterart + ", strNummer=" + strNummer + ", dateBeginn=" + dateBeginn + ", dateEnde=" + dateEnde + ", strStrasse=" + strStrasse + ", strNummerAdr=" + strNummerAdr + ", strStiege=" + strStiege + ", strPlz=" + strPlz + ", strOrt=" + strOrt + ", strMeldung=" + strMeldung + ", strFehlalarm=" + strFehlalarm +'}';
     }
+    
     
     
     

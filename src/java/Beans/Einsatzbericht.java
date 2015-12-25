@@ -12,7 +12,7 @@ import java.util.Objects;
  *
  * @author Corinna
  */
-public class EinsatzberichtUeberschrift
+public class Einsatzbericht
 {
     private int intId_StmkEinsatzberichte;
     private int intIdBerichte;
@@ -34,7 +34,7 @@ public class EinsatzberichtUeberschrift
     private String strFehlalarm;
     private String strMsrepl_tran_version;
 
-    public EinsatzberichtUeberschrift(int intId_StmkEinsatzberichte, int intIdBerichte, int intInstanznummer, String strName, String strEinsatzart, String strNummer, Date dateUhrzeit_Alarmierung, Date dateUhrzeit_Rueckkehr, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, int intStandesbuchnummer, String strVorname, String strZuname, String strMeldung, String strFehlalarm, String strMsrepl_tran_version)
+    public Einsatzbericht(int intId_StmkEinsatzberichte, int intIdBerichte, int intInstanznummer, String strName, String strEinsatzart, String strNummer, Date dateUhrzeit_Alarmierung, Date dateUhrzeit_Rueckkehr, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, int intStandesbuchnummer, String strVorname, String strZuname, String strMeldung, String strFehlalarm, String strMsrepl_tran_version)
     {
         this.intId_StmkEinsatzberichte = intId_StmkEinsatzberichte;
         this.intIdBerichte = intIdBerichte;
@@ -265,7 +265,7 @@ public class EinsatzberichtUeberschrift
         {
             return false;
         }
-        final EinsatzberichtUeberschrift other = (EinsatzberichtUeberschrift) obj;
+        final Einsatzbericht other = (Einsatzbericht) obj;
         if (this.intId_StmkEinsatzberichte != other.intId_StmkEinsatzberichte)
         {
             return false;
