@@ -325,7 +325,4 @@ public class Einsatzbericht
         return "EinsatzberichtUeberschrift{" + "intId_StmkEinsatzberichte=" + intId_StmkEinsatzberichte + ", intInstanznummer=" + intInstanznummer + ", strName=" + strName + ", strEinsatzart=" + strEinsatzart + ", strNummer=" + strNummer + ", dateUhrzeit_Alarmierung=" + dateUhrzeit_Alarmierung + ", dateUhrzeit_Rueckkehr=" + dateUhrzeit_Rueckkehr + ", strStrasse=" + strStrasse + ", strNummerAdr=" + strNummerAdr + ", strStiege=" + strStiege + ", strPlz=" + strPlz + ", strOrt=" + strOrt + ", intStandesbuchnummer=" + intStandesbuchnummer + ", strVorname=" + strVorname + ", strZuname=" + strZuname + ", strMeldung=" + strMeldung + ", strFehlalarm=" + strFehlalarm + '}';
     }
     
-    
-    
-
 }
