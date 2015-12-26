@@ -1763,9 +1763,9 @@ public class DB_Access
 
     public StringBuilder getDynamischenBerichtMitUnd(String strEingabe[][]) throws Exception
     {
-        StringBuilder sbHtml = new StringBuilder("");
         LinkedList<String> liSpaltenUeberschriften = new LinkedList<>();
         String strSpaltenUeberschrift;
+        boolean boAdresse = false;
         int intRows = strEingabe.length % 6;
 
         initializeDBValuesWithDBTypes();
@@ -1815,91 +1815,146 @@ public class DB_Access
             }
         }
 
-        Connection conn = connPool.getConnection();
-        Statement stat = conn.createStatement();
         String sqlString = "SELECT ";
 
+        //To Do: Wo krieg ich Dienstgrad her
+        //bin zu dumm zum lesen, steht eh in stmkmitglieder
         if (liSpaltenUeberschriften.contains("Untersuchungen"))
         {
 
-        } else if (liSpaltenUeberschriften.contains("Leistungsabzeichen"))
+        }
+        if (liSpaltenUeberschriften.contains("Leistungsabzeichen"))
         {
 
-        } else if (liSpaltenUeberschriften.contains("Kurse"))
+        }
+        if (liSpaltenUeberschriften.contains("Kurse"))
         {
 
-        } else if (liSpaltenUeberschriften.contains("Funktionen"))
+        }
+        if (liSpaltenUeberschriften.contains("Funktionen"))
         {
 
-        } else if (liSpaltenUeberschriften.contains("Gesetzliche Fahrgenehmigungen"))
+        }
+        if (liSpaltenUeberschriften.contains("Gesetzliche Fahrgenehmigungen"))
         {
 
-        } else if (liSpaltenUeberschriften.contains("Auszeichnungen"))
+        }
+        if (liSpaltenUeberschriften.contains("Auszeichnungen"))
         {
 
-        } else if (liSpaltenUeberschriften.contains("Erreichbarkeiten"))
+        }
+        if (liSpaltenUeberschriften.contains("Erreichbarkeiten"))
         {
 
-        } else if (liSpaltenUeberschriften.contains("Adresse"))
+        }
+        //Adresse
+        if (liSpaltenUeberschriften.contains("Straße") || liSpaltenUeberschriften.contains("Hausnummer")
+                || liSpaltenUeberschriften.contains("Stiege/Stock/Tür") || liSpaltenUeberschriften.contains("Ort"))
         {
-
-        } else
+            boAdresse = true;
+            for (String titel : liSpaltenUeberschriften)
+            {
+                if (titel.equals("Straße") || titel.equals("Hausnummer") || titel.equals("Stiege/Stock/Tür") || titel.equals("Ort"))
+                {
+                    sqlString += "a." + titel.toUpperCase() + ", ";
+                }
+            }
+        }
+        //keine Joins notwendig
+        if (liSpaltenUeberschriften.contains("Anrede") || liSpaltenUeberschriften.contains("Geschlecht")
+                || liSpaltenUeberschriften.contains("Titel") || liSpaltenUeberschriften.contains("Amtstitel")
+                || liSpaltenUeberschriften.contains("Vorname") || liSpaltenUeberschriften.contains("Zuname")
+                || liSpaltenUeberschriften.contains("Namenszusatz") || liSpaltenUeberschriften.contains("Geburtsdatum")
+                || liSpaltenUeberschriften.contains("Alter") || liSpaltenUeberschriften.contains("Geburtsort")
+                || liSpaltenUeberschriften.contains("SVNR") || liSpaltenUeberschriften.contains("Staatsbürgerschaft")
+                || liSpaltenUeberschriften.contains("ISCO-Beruf") || liSpaltenUeberschriften.contains("Familienstand")
+                || liSpaltenUeberschriften.contains("Blutgruppe") || liSpaltenUeberschriften.contains("Standesbuchnummer")
+                || liSpaltenUeberschriften.contains("Eintrittsdatum") || liSpaltenUeberschriften.contains("Dienstalter")
+                || liSpaltenUeberschriften.contains("Angelobungsdatum") || liSpaltenUeberschriften.contains("Status")
+                || liSpaltenUeberschriften.contains("Vordienstzeit in Jahren"))
         {
             for (String titel : liSpaltenUeberschriften)
             {
-                sqlString += titel.toUpperCase() + ",";
-            }
-
-            sqlString = sqlString.substring(0, sqlString.lastIndexOf(",")) + " ";
-            sqlString += "FROM FDISK.dbo.stmkmitglieder WHERE ";
-
-            for (int i = 0; i < intRows; i++)
-            {
-                String strColWhere = strEingabe[i][1];
-                String strColSymbol = strEingabe[i][2];
-                String strColValue = strEingabe[i][3];
-                String strColWhereType = getDBTypeForValue(strColWhere);
-                System.out.println(strColWhere + "-" + strColWhereType);
-
-                if (strColSymbol.equals("<>"))
+                if (titel.equals("Anrede") || titel.equals("Geschlecht")
+                        || titel.equals("Titel") || titel.equals("Amtstitel") || titel.equals("Vorname") || titel.equals("Zuname")
+                        || titel.equals("Namenszusatz") || titel.equals("Geburtsdatum") || titel.equals("Alter") || titel.equals("Geburtsort")
+                        || titel.equals("SVNR") || titel.equals("Staatsbürgerschaft") || titel.equals("ISCO-Beruf") || titel.equals("Familienstand")
+                        || titel.equals("Blutgruppe") || titel.equals("Standesbuchnummer") || titel.equals("Eintrittsdatum") || titel.equals("Dienstalter")
+                        || titel.equals("Angelobungsdatum") || titel.equals("Status") || titel.equals("Vordienstzeit in Jahren"))
                 {
-                    strColSymbol = "!=";
+                    sqlString += "m." + titel.toUpperCase() + ", ";
                 }
+            }
+        }
 
-                //d.h. User gibt eine WHERE clause ein
-                if (!(strColSymbol.equals("")))
+        sqlString = sqlString.substring(0, sqlString.lastIndexOf(",")) + " ";
+
+        sqlString += "FROM FDISK.dbo.stmkmitglieder m ";
+        if (boAdresse == true)
+        {
+            sqlString += "INNER JOIN FDISK.dbo.stmkadressen a ON(a.id_personen = m.id_personen) ";
+        }
+        sqlString += " WHERE ";
+
+        for (int i = 0; i < intRows; i++)
+        {
+            String strColWhere = strEingabe[i][1];
+            String strColSymbol = strEingabe[i][2];
+            String strColValue = strEingabe[i][3];
+            String strColWhereType = getDBTypeForValue(strColWhere);
+            System.out.println(strColWhere + "-" + strColWhereType);
+
+            if (strColSymbol.equals("<>"))
+            {
+                strColSymbol = "!=";
+            }
+
+            //d.h. User gibt eine WHERE clause ein
+            if (!(strColSymbol.equals("")))
+            {
+                //Derweil ohne Tabellenalias, vielleicht funktionierts gänzlich ohne
+                switch (strColWhereType)
                 {
-                    switch (strColWhereType)
-                    {
-                        //Datumsformat: dd/MM/yyyy
-                        //TO_DATE gibt's bei Microsoft SQL nicht, CAST ist äquivalent
-                        case "datetime":
-                            sqlString += strColWhere + " " + strColSymbol + " CAST('" + strColValue + "' AS datetime) AND ";
-                            break;
-                        //default bei varchar, byte, tinyint, bigint, int
-                        default:
-                            sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' AND ";
-                            break;
-                    }
+                    //Datumsformat: dd/MM/yyyy
+                    //TO_DATE gibt's bei Microsoft SQL nicht, CAST ist äquivalent
+                    case "datetime":
+                        sqlString += strColWhere + " " + strColSymbol + " CAST('" + strColValue + "' AS datetime) AND ";
+                        break;
+
+                    case "varchar":
+                        sqlString += "UPPER(" + strColWhere + ") " + strColSymbol + " '" + strColValue.toUpperCase() + "' AND ";
+                        break;
+                    //default bei byte, tinyint, bigint, int
+                    default:
+                        sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' AND ";
+                        break;
                 }
-
             }
-            int intIndex = sqlString.lastIndexOf("AND");
+        }
+        int intIndex = sqlString.lastIndexOf("AND");
 
-            if (intIndex != -1)
-            {
-                sqlString = sqlString.substring(0, intIndex) + " ";
-            }
+        if (intIndex != -1)
+        {
+            sqlString = sqlString.substring(0, intIndex) + " ";
+        }
 
-            //Falls user keine WHERE clause angibt, sonst wirft SQL eine Exception
-            if (sqlString.endsWith("WHERE "))
-            {
-                sqlString = sqlString.replace("WHERE ", " ");
-            }
-
+        //Falls user keine WHERE clause angibt, sonst wirft SQL eine Exception
+        if (sqlString.endsWith("WHERE "))
+        {
+            sqlString = sqlString.replace("WHERE ", " ");
         }
 
         System.out.println("SQL: " + sqlString);
+        StringBuilder sbHtml = createDynamicReportGeneratorOutput(sqlString, liSpaltenUeberschriften);
+        return sbHtml;
+
+    }
+
+    public StringBuilder createDynamicReportGeneratorOutput(String sqlString, LinkedList<String> liSpaltenUeberschriften) throws Exception
+    {
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+        StringBuilder sbHtml = new StringBuilder("");
 
         ResultSet rs = stat.executeQuery(sqlString);
 
@@ -1976,7 +2031,6 @@ public class DB_Access
                     }
                 }
             }
-
             sbHtml.append("</tr>");
         }
 
@@ -1990,10 +2044,21 @@ public class DB_Access
     {
         //Tabelle stmkmitglieder
         //habs no net für alle gmacht, nur für a paar zum Testen... xD
+
+        /**
+         * **********************************************************************************************************************************************************
+         * !!!!!! nur für die, nach denen wirklich laut dynamischen Berichteg.
+         * gefiltert werden kann, d.h. das sind NICHT einfach alle, die in der
+         * DB stehen!!!!!! *
+         * **********************************************************************************************************************************************************
+         */
         haNamesTypes.put("vorname", "varchar");
         haNamesTypes.put("zuname", "varchar");
-        haNamesTypes.put("id_personen", "bigint");
         haNamesTypes.put("geburtsdatum", "datetime");
+        
+        
+        //Tabelle stmkadressen
+        haNamesTypes.put("ort", "varchar");
     }
 
     public String getDBTypeForValue(String strValue)
@@ -2067,7 +2132,10 @@ public class DB_Access
             String[][] dynamisch =
             {
                 {
-                    "(", "id_personen", "=", "223350", ")", "UND"
+                    "(", "Vorname", "=", "Enrico", ")", "UND"
+                },
+                {
+                    "(", "Ort", "=", "Graz", ")", "UND"
                 }
             };
 //            
