@@ -21,7 +21,6 @@ import Beans.LeerberichtMitglied;
 import Beans.Taetigkeitsbericht;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
@@ -31,7 +30,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Level;
@@ -1769,6 +1767,7 @@ public class DB_Access
         boolean boAdresse = false;
         boolean boAuszeichnung = false;
         boolean boLeistungsabzeichen = false;
+        boolean boKurse = false;
 
         int intRows = strEingabe.length % 6;
 
@@ -1796,7 +1795,10 @@ public class DB_Access
                         strEingabe[i][j] = "Stufe";
                         break;
                     case "LEISTUNGSABZEICHENDATUM":
-                        strEingabe[i][j] = "Datum";
+                        strEingabe[i][j] = "lam.Datum";
+                        break;
+                    case "KURSDATUM":
+                        strEingabe[i][j] = "k.Datum";
                         break;
                 }
             }
@@ -1842,10 +1844,10 @@ public class DB_Access
         {
 
         }
-        //Leistungsabzeichen
+        //Leistungsabzeichen - funktioniert
         if (liSpaltenUeberschriften.contains("Bezeichnung")
                 || liSpaltenUeberschriften.contains("Stufe")
-                || liSpaltenUeberschriften.contains("Datum"))
+                || liSpaltenUeberschriften.contains("lam.Datum"))
         {
             boLeistungsabzeichen = true;
             for (String titel : liSpaltenUeberschriften)
@@ -1853,15 +1855,26 @@ public class DB_Access
                 if (titel.equals("Bezeichnung") || titel.equals("Stufe"))
                 {
                     sqlString += "la." + titel.toUpperCase() + ", ";
-                } else if (titel.equals("Datum"))
+                } else if (titel.equals("lam.Datum"))
                 {
-                    sqlString += "lam." + titel.toUpperCase() + ", ";
+                    sqlString += titel.toUpperCase() + " AS 'lam.Datum', ";
                 }
             }
         }
-        if (liSpaltenUeberschriften.contains("Kurse"))
+        //Kurse - funktioniert
+        if (liSpaltenUeberschriften.contains("Kursbezeichnung") || liSpaltenUeberschriften.contains("k.Datum"))
         {
-
+            boKurse = true;
+            for (String titel : liSpaltenUeberschriften)
+            {
+                if (titel.equals("Kursbezeichnung"))
+                {
+                    sqlString += "k." + titel.toUpperCase() + ", ";
+                } else if (titel.equals("k.Datum"))
+                {
+                    sqlString += titel.toUpperCase() + " AS 'k.Datum', ";
+                }
+            }
         }
         if (liSpaltenUeberschriften.contains("Funktionen"))
         {
@@ -1943,14 +1956,21 @@ public class DB_Access
         if (boAuszeichnung == true)
         {
             sqlString += " INNER JOIN FDISK.dbo.stmkauszeichnungenmitglieder auszm ON(auszm.id_personen = m.id_personen) "
-                      +  " INNER JOIN FDISK.dbo.stmkauszeichnungen ausz ON(auszm.id_auszeichnungen = ausz.id_auszeichnungen) ";
+                    + " INNER JOIN FDISK.dbo.stmkauszeichnungen ausz ON(auszm.id_auszeichnungen = ausz.id_auszeichnungen) ";
         }
 
         if (boLeistungsabzeichen == true)
         {
-            sqlString += " INNER JOIN FDISK.dbo.stmkleistungsabzeichenmitglieder lam ON(m.id_personen = lam.id_personen) " +
-                         " INNER JOIN FDISK.dbo.stmkleistungsabzeichen la ON(la.id_leistungsabzeichen = lam.id_leistungsabzeichen) ";
+            sqlString += " INNER JOIN FDISK.dbo.stmkleistungsabzeichenmitglieder lam ON(m.id_personen = lam.id_personen) "
+                    + " INNER JOIN FDISK.dbo.stmkleistungsabzeichen la ON(la.id_leistungsabzeichen = lam.id_leistungsabzeichen) ";
         }
+
+        if (boKurse == true)
+        {
+            sqlString += " INNER JOIN FDISK.dbo.stmkkursemitglieder km ON(m.id_personen = km.id_mitgliedschaften) "
+                    + " INNER JOIN FDISK.dbo.stmkkurse k ON (k.id_kurse = km.id_kurse) ";
+        }
+
         sqlString += " WHERE ";
 
         for (int i = 0; i < intRows; i++)
@@ -2094,18 +2114,7 @@ public class DB_Access
     }
 
     public void initializeDBValuesWithDBTypes()
-    {
-        //habs no net für alle gmacht, nur für a paar zum Testen... xD
-
-        /**
-         * **********************************************************************
-         * !!!!!! nur für die, nach denen wirklich laut dynamischen Berichteg.
-         * gefiltert werden kann, d.h. das sind NICHT einfach alle, die in der
-         * DB stehen!!!!!! und bitte den DB namen, nicht den dynamisch BG namen
-         * **********************************************************************
-         */
-        
-        
+    {   
         //Tabelle stmkmitglieder
         haNamesTypes.put("vorname", "varchar");
         haNamesTypes.put("zuname", "varchar");
@@ -2118,10 +2127,15 @@ public class DB_Access
         haNamesTypes.put("verleihungsdatum", "datetime");
         haNamesTypes.put("auszeichnungsstufe", "varchar");
         haNamesTypes.put("auszeichnungsart", "varchar");
-        
+
         //Tabelle stmkleistungsabzeichen bzw. stmkleistungsabzeichenmitglieder
         haNamesTypes.put("stufe", "varchar");
-        haNamesTypes.put("datum", "datetime");
+        haNamesTypes.put("lam.Datum", "datetime");
+        
+        //Tabelle stmkleistungsabzeichen bzw. stmkleistungsabzeichenmitglieder
+        haNamesTypes.put("k.Datum", "datetime");
+        haNamesTypes.put("kursbezeichnung", "varchar");
+
     }
 
     public String getDBTypeForValue(String strValue)
@@ -2195,13 +2209,10 @@ public class DB_Access
             String[][] dynamisch =
             {
                 {
-                    "(", "Datum", "=", "14/11/2009", ")", "UND"
+                    "(", "Kursdatum", "=", "01/01/1993", ")", "UND"
                 },
                 {
-                    "(", "Vorname", "=", "Peter", ")", "UND"
-                },
-                {
-                    "(", "Ort", "=", "Gössendorf", ")", "UND"
+                    "(", "Vorname", "=", "Andreas", ")", "UND"
                 }
             };
 
