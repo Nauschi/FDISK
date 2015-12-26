@@ -1856,23 +1856,31 @@ public class DB_Access
             for (int i = 0; i < intRows; i++)
             {
                 String strColWhere = strEingabe[i][1];
-                
-                System.out.println(strColWhere);
                 String strColSymbol = strEingabe[i][2];
                 String strColValue = strEingabe[i][3];
                 String strColWhereType = getDBTypeForValue(strColWhere);
+                System.out.println(strColWhere + "-" + strColWhereType);
 
                 if (strColSymbol.equals("<>"))
                 {
                     strColSymbol = "!=";
                 }
 
-                
-                
                 //d.h. User gibt eine WHERE clause ein
                 if (!(strColSymbol.equals("")))
                 {
-                    sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' AND ";
+                    switch (strColWhereType)
+                    {
+                        //Datumsformat: dd/MM/yyyy
+                        //TO_DATE gibt's bei Microsoft SQL nicht, CAST ist äquivalent
+                        case "datetime":
+                            sqlString += strColWhere + " " + strColSymbol + " CAST('" + strColValue + "' AS datetime) AND ";
+                            break;
+                        //default bei varchar, byte, tinyint, bigint, int
+                        default:
+                            sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' AND ";
+                            break;
+                    }
                 }
 
             }
@@ -1883,6 +1891,7 @@ public class DB_Access
                 sqlString = sqlString.substring(0, intIndex) + " ";
             }
 
+            //Falls user keine WHERE clause angibt, sonst wirft SQL eine Exception
             if (sqlString.endsWith("WHERE "))
             {
                 sqlString = sqlString.replace("WHERE ", " ");
@@ -1925,43 +1934,44 @@ public class DB_Access
                     {
                         String strValue = pair.getValue().toString();
 
-                        if (strValue.equals("bit"))
+                        switch (strValue)
                         {
-                            boBoolean = rs.getBoolean(str);
-                            sbHtml.append("<td>");
-                            sbHtml.append(boBoolean);
-                            sbHtml.append("</td>");
-                        } else if (strValue.equals("datetime"))
-                        {
-                            dateDate = rs.getDate(str);
-                            sbHtml.append("<td>");
-                            sbHtml.append(dateDate);
-                            sbHtml.append("</td>");
-
-                        } else if (strValue.equals("varchar"))
-                        {
-                            strString = rs.getString(str);
-                            sbHtml.append("<td>");
-                            sbHtml.append(strString);
-                            sbHtml.append("</td>");
-                        } else if (strValue.equals("bigint"))
-                        {
-                            loLong = rs.getLong(str);
-                            sbHtml.append("<td>");
-                            sbHtml.append(loLong);
-                            sbHtml.append("</td>");
-                        } else if (strValue.equals("tinyint"))
-                        {
-                            byByte = rs.getByte(str);
-                            sbHtml.append("<td>");
-                            sbHtml.append(byByte);
-                            sbHtml.append("</td>");
-                        } else if (strValue.equals("int"))
-                        {
-                            intInt = rs.getInt(str);
-                            sbHtml.append("<td>");
-                            sbHtml.append(intInt);
-                            sbHtml.append("</td>");
+                            case "bit":
+                                boBoolean = rs.getBoolean(str);
+                                sbHtml.append("<td>");
+                                sbHtml.append(boBoolean);
+                                sbHtml.append("</td>");
+                                break;
+                            case "datetime":
+                                dateDate = rs.getDate(str);
+                                sbHtml.append("<td>");
+                                sbHtml.append(dateDate);
+                                sbHtml.append("</td>");
+                                break;
+                            case "varchar":
+                                strString = rs.getString(str);
+                                sbHtml.append("<td>");
+                                sbHtml.append(strString);
+                                sbHtml.append("</td>");
+                                break;
+                            case "bigint":
+                                loLong = rs.getLong(str);
+                                sbHtml.append("<td>");
+                                sbHtml.append(loLong);
+                                sbHtml.append("</td>");
+                                break;
+                            case "tinyint":
+                                byByte = rs.getByte(str);
+                                sbHtml.append("<td>");
+                                sbHtml.append(byByte);
+                                sbHtml.append("</td>");
+                                break;
+                            case "int":
+                                intInt = rs.getInt(str);
+                                sbHtml.append("<td>");
+                                sbHtml.append(intInt);
+                                sbHtml.append("</td>");
+                                break;
                         }
                     }
                 }
@@ -1979,24 +1989,23 @@ public class DB_Access
     public void initializeDBValuesWithDBTypes()
     {
         //Tabelle stmkmitglieder
+        //habs no net für alle gmacht, nur für a paar zum Testen... xD
         haNamesTypes.put("vorname", "varchar");
         haNamesTypes.put("zuname", "varchar");
         haNamesTypes.put("id_personen", "bigint");
+        haNamesTypes.put("geburtsdatum", "datetime");
     }
 
     public String getDBTypeForValue(String strValue)
     {
         String strType = "";
-        Iterator iter = haNamesTypes.entrySet().iterator();
-        while (iter.hasNext())
-        {
-            Map.Entry pair = (Map.Entry) iter.next();    
-            if(pair.getKey().toString().toUpperCase().equals(strValue.toUpperCase()))
-            {
-                strType = pair.getValue().toString();
-            }
 
-            return strType;
+        for (Map.Entry e : haNamesTypes.entrySet())
+        {
+            if (e.getKey().toString().toUpperCase().equals(strValue.toUpperCase()))
+            {
+                strType = e.getValue().toString();
+            }
         }
 
         return strType;
@@ -2052,15 +2061,25 @@ public class DB_Access
 //                System.out.println(li1.getStrVorname() + "-" + li1.getStrZuname());
 //            }
 
+            /*
+             FUNKTIONIERT MIT UND OHNE WHERE CLAUSE! YEY!
+             */
             String[][] dynamisch =
             {
                 {
-                    "(", "vorname", "=", "Matthias", ")", "UND"
-                },
-                {
-                    "(", "nachname", "=", "Eder", ")", "UND"
+                    "(", "id_personen", "=", "223350", ")", "UND"
                 }
             };
+//            
+//            String[][] dynamisch =
+//            {
+//                {
+//                    "(", "vorname", "", "", ")", "UND"
+//                },
+//                {
+//                    "(", "nachname", "", "", ")", "UND"
+//                }
+//            };
             StringBuilder html = theInstance.getDynamischenBerichtMitUnd(dynamisch);
             System.out.println(html);
 
