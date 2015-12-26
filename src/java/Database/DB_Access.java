@@ -1765,7 +1765,10 @@ public class DB_Access
     {
         LinkedList<String> liSpaltenUeberschriften = new LinkedList<>();
         String strSpaltenUeberschrift;
+
         boolean boAdresse = false;
+        boolean boAuszeichnung = false;
+
         int intRows = strEingabe.length % 6;
 
         initializeDBValuesWithDBTypes();
@@ -1777,9 +1780,13 @@ public class DB_Access
                 /*
                  !!!!!!!!!!!!!!!!!hier bitte die array-namen mit den namen wie sie in der DB stehen ersetzen!!!!!!!!!!!!!
                  */
-                if (strEingabe[i][j].equals("nachname"))
+                if (strEingabe[i][j].toUpperCase().equals("NACHNAME"))
                 {
                     strEingabe[i][j] = "zuname";
+                }
+                if (strEingabe[i][j].toUpperCase().equals("AUSZEICHNUNGSDATUM"))
+                {
+                    strEingabe[i][j] = "Verleihungsdatum";
                 }
             }
         }
@@ -1839,9 +1846,23 @@ public class DB_Access
         {
 
         }
-        if (liSpaltenUeberschriften.contains("Auszeichnungen"))
+        //Auszeichnungen
+        if (liSpaltenUeberschriften.contains("Auszeichnungsart")
+                || liSpaltenUeberschriften.contains("Auszeichnungsstufe")
+                || liSpaltenUeberschriften.contains("Verleihungsdatum"))
         {
-
+            boAuszeichnung = true;
+            for (String titel : liSpaltenUeberschriften)
+            {
+                if (titel.equals("Auszeichnungsart") || titel.equals("Auszeichnungsstufe"))
+                {
+                    sqlString += "ausz." + titel.toUpperCase() + ", ";
+                }
+                else if(titel.equals("Verleihungsdatum"))
+                {
+                    sqlString += "auszm." + titel.toUpperCase() + ", ";
+                }
+            }
         }
         if (liSpaltenUeberschriften.contains("Erreichbarkeiten"))
         {
@@ -1892,7 +1913,20 @@ public class DB_Access
         sqlString += "FROM FDISK.dbo.stmkmitglieder m ";
         if (boAdresse == true)
         {
-            sqlString += "INNER JOIN FDISK.dbo.stmkadressen a ON(a.id_personen = m.id_personen) ";
+            sqlString += " INNER JOIN FDISK.dbo.stmkadressen a ON(a.id_personen = m.id_personen) ";
+        }
+
+        /*
+         SELECT *
+         FROM FDISK.dbo.stmkmitglieder m INNER JOIN FDISK.dbo.stmkauszeichnungenmitglieder auszm ON(auszm.id_personen = m.id_personen)
+         INNER JOIN FDISK.dbo.stmkauszeichnungen ausz  ON(auszm.id_auszeichnungen = ausz.id_auszeichnungen)
+    
+         WHERE Verleihungsdatum = CAST('25/04/2008' AS datetime) AND UPPER(Vorname) = 'LEOPOLD'  
+         */
+        if (boAuszeichnung == true)
+        {
+            sqlString += " INNER JOIN FDISK.dbo.stmkauszeichnungenmitglieder auszm ON(auszm.id_personen = m.id_personen) "
+                      +  " INNER JOIN FDISK.dbo.stmkauszeichnungen ausz ON(auszm.id_auszeichnungen = ausz.id_auszeichnungen) ";
         }
         sqlString += " WHERE ";
 
@@ -2046,19 +2080,21 @@ public class DB_Access
         //habs no net für alle gmacht, nur für a paar zum Testen... xD
 
         /**
-         * **********************************************************************************************************************************************************
+         * **********************************************************************
          * !!!!!! nur für die, nach denen wirklich laut dynamischen Berichteg.
          * gefiltert werden kann, d.h. das sind NICHT einfach alle, die in der
          * DB stehen!!!!!! *
-         * **********************************************************************************************************************************************************
+         * ***********************************************************************
          */
         haNamesTypes.put("vorname", "varchar");
         haNamesTypes.put("zuname", "varchar");
         haNamesTypes.put("geburtsdatum", "datetime");
-        
-        
+
         //Tabelle stmkadressen
         haNamesTypes.put("ort", "varchar");
+
+        //Tabelle stmkauszeichnungen
+        haNamesTypes.put("verleihungsdatum", "datetime");
     }
 
     public String getDBTypeForValue(String strValue)
@@ -2132,20 +2168,20 @@ public class DB_Access
             String[][] dynamisch =
             {
                 {
-                    "(", "Vorname", "=", "Enrico", ")", "UND"
+                    "(", "Auszeichnungsdatum", "=", "25/04/2008", ")", "UND"
                 },
                 {
-                    "(", "Ort", "=", "Graz", ")", "UND"
+                    "(", "Vorname", "=", "Leopold", ")", "UND"
                 }
             };
-//            
+
 //            String[][] dynamisch =
 //            {
 //                {
-//                    "(", "vorname", "", "", ")", "UND"
+//                    "(", "Vorname", "", "", ")", "UND"
 //                },
 //                {
-//                    "(", "nachname", "", "", ")", "UND"
+//                    "(", "Ort", "", "", ")", "UND"
 //                }
 //            };
             StringBuilder html = theInstance.getDynamischenBerichtMitUnd(dynamisch);
