@@ -1768,6 +1768,7 @@ public class DB_Access
 
         boolean boAdresse = false;
         boolean boAuszeichnung = false;
+        boolean boLeistungsabzeichen = false;
 
         int intRows = strEingabe.length % 6;
 
@@ -1780,13 +1781,23 @@ public class DB_Access
                 /*
                  !!!!!!!!!!!!!!!!!hier bitte die array-namen mit den namen wie sie in der DB stehen ersetzen!!!!!!!!!!!!!
                  */
-                if (strEingabe[i][j].toUpperCase().equals("NACHNAME"))
+                switch (strEingabe[i][j].toUpperCase())
                 {
-                    strEingabe[i][j] = "zuname";
-                }
-                if (strEingabe[i][j].toUpperCase().equals("AUSZEICHNUNGSDATUM"))
-                {
-                    strEingabe[i][j] = "Verleihungsdatum";
+                    case "NACHNAME":
+                        strEingabe[i][j] = "Zuname";
+                        break;
+                    case "AUSZEICHNUNGSDATUM":
+                        strEingabe[i][j] = "Verleihungsdatum";
+                        break;
+                    case "LEISTUNGSABZEICHENBEZEICHNUNG":
+                        strEingabe[i][j] = "Bezeichnung";
+                        break;
+                    case "LEISTUNGSABZEICHEN STUFE":
+                        strEingabe[i][j] = "Stufe";
+                        break;
+                    case "LEISTUNGSABZEICHENDATUM":
+                        strEingabe[i][j] = "Datum";
+                        break;
                 }
             }
         }
@@ -1826,13 +1837,27 @@ public class DB_Access
 
         //To Do: Wo krieg ich Dienstgrad her
         //bin zu dumm zum lesen, steht eh in stmkmitglieder
+        //Tabelle "dbo.stmkuntersuchungen" fehlt?!
         if (liSpaltenUeberschriften.contains("Untersuchungen"))
         {
 
         }
-        if (liSpaltenUeberschriften.contains("Leistungsabzeichen"))
+        //Leistungsabzeichen
+        if (liSpaltenUeberschriften.contains("Bezeichnung")
+                || liSpaltenUeberschriften.contains("Stufe")
+                || liSpaltenUeberschriften.contains("Datum"))
         {
-
+            boLeistungsabzeichen = true;
+            for (String titel : liSpaltenUeberschriften)
+            {
+                if (titel.equals("Bezeichnung") || titel.equals("Stufe"))
+                {
+                    sqlString += "la." + titel.toUpperCase() + ", ";
+                } else if (titel.equals("Datum"))
+                {
+                    sqlString += "lam." + titel.toUpperCase() + ", ";
+                }
+            }
         }
         if (liSpaltenUeberschriften.contains("Kurse"))
         {
@@ -1846,7 +1871,7 @@ public class DB_Access
         {
 
         }
-        //Auszeichnungen
+        //Auszeichnungen - funktioniert
         if (liSpaltenUeberschriften.contains("Auszeichnungsart")
                 || liSpaltenUeberschriften.contains("Auszeichnungsstufe")
                 || liSpaltenUeberschriften.contains("Verleihungsdatum"))
@@ -1857,8 +1882,7 @@ public class DB_Access
                 if (titel.equals("Auszeichnungsart") || titel.equals("Auszeichnungsstufe"))
                 {
                     sqlString += "ausz." + titel.toUpperCase() + ", ";
-                }
-                else if(titel.equals("Verleihungsdatum"))
+                } else if (titel.equals("Verleihungsdatum"))
                 {
                     sqlString += "auszm." + titel.toUpperCase() + ", ";
                 }
@@ -1868,7 +1892,7 @@ public class DB_Access
         {
 
         }
-        //Adresse
+        //Adresse - funktioniert
         if (liSpaltenUeberschriften.contains("Straße") || liSpaltenUeberschriften.contains("Hausnummer")
                 || liSpaltenUeberschriften.contains("Stiege/Stock/Tür") || liSpaltenUeberschriften.contains("Ort"))
         {
@@ -1881,7 +1905,7 @@ public class DB_Access
                 }
             }
         }
-        //keine Joins notwendig
+        //keine Joins notwendig -  funktioniert
         if (liSpaltenUeberschriften.contains("Anrede") || liSpaltenUeberschriften.contains("Geschlecht")
                 || liSpaltenUeberschriften.contains("Titel") || liSpaltenUeberschriften.contains("Amtstitel")
                 || liSpaltenUeberschriften.contains("Vorname") || liSpaltenUeberschriften.contains("Zuname")
@@ -1916,17 +1940,16 @@ public class DB_Access
             sqlString += " INNER JOIN FDISK.dbo.stmkadressen a ON(a.id_personen = m.id_personen) ";
         }
 
-        /*
-         SELECT *
-         FROM FDISK.dbo.stmkmitglieder m INNER JOIN FDISK.dbo.stmkauszeichnungenmitglieder auszm ON(auszm.id_personen = m.id_personen)
-         INNER JOIN FDISK.dbo.stmkauszeichnungen ausz  ON(auszm.id_auszeichnungen = ausz.id_auszeichnungen)
-    
-         WHERE Verleihungsdatum = CAST('25/04/2008' AS datetime) AND UPPER(Vorname) = 'LEOPOLD'  
-         */
         if (boAuszeichnung == true)
         {
             sqlString += " INNER JOIN FDISK.dbo.stmkauszeichnungenmitglieder auszm ON(auszm.id_personen = m.id_personen) "
                       +  " INNER JOIN FDISK.dbo.stmkauszeichnungen ausz ON(auszm.id_auszeichnungen = ausz.id_auszeichnungen) ";
+        }
+
+        if (boLeistungsabzeichen == true)
+        {
+            sqlString += " INNER JOIN FDISK.dbo.stmkleistungsabzeichenmitglieder lam ON(m.id_personen = lam.id_personen) " +
+                         " INNER JOIN FDISK.dbo.stmkleistungsabzeichen la ON(la.id_leistungsabzeichen = lam.id_leistungsabzeichen) ";
         }
         sqlString += " WHERE ";
 
@@ -1954,7 +1977,6 @@ public class DB_Access
                     case "datetime":
                         sqlString += strColWhere + " " + strColSymbol + " CAST('" + strColValue + "' AS datetime) AND ";
                         break;
-
                     case "varchar":
                         sqlString += "UPPER(" + strColWhere + ") " + strColSymbol + " '" + strColValue.toUpperCase() + "' AND ";
                         break;
@@ -2014,11 +2036,8 @@ public class DB_Access
 
             for (String str : liSpaltenUeberschriften)
             {
-                Iterator iter = haNamesTypes.entrySet().iterator();
-                while (iter.hasNext())
+                for (Map.Entry pair : haNamesTypes.entrySet())
                 {
-                    Map.Entry pair = (Map.Entry) iter.next();
-
                     if (pair.getKey().toString().toUpperCase().equals(str.toUpperCase()))
                     {
                         String strValue = pair.getValue().toString();
@@ -2076,16 +2095,18 @@ public class DB_Access
 
     public void initializeDBValuesWithDBTypes()
     {
-        //Tabelle stmkmitglieder
         //habs no net für alle gmacht, nur für a paar zum Testen... xD
 
         /**
          * **********************************************************************
          * !!!!!! nur für die, nach denen wirklich laut dynamischen Berichteg.
          * gefiltert werden kann, d.h. das sind NICHT einfach alle, die in der
-         * DB stehen!!!!!! *
-         * ***********************************************************************
+         * DB stehen!!!!!! und bitte den DB namen, nicht den dynamisch BG namen
+         * **********************************************************************
          */
+        
+        
+        //Tabelle stmkmitglieder
         haNamesTypes.put("vorname", "varchar");
         haNamesTypes.put("zuname", "varchar");
         haNamesTypes.put("geburtsdatum", "datetime");
@@ -2093,8 +2114,14 @@ public class DB_Access
         //Tabelle stmkadressen
         haNamesTypes.put("ort", "varchar");
 
-        //Tabelle stmkauszeichnungen
+        //Tabelle stmkauszeichnungen bzw. stmkauszeichnungenmitglieder
         haNamesTypes.put("verleihungsdatum", "datetime");
+        haNamesTypes.put("auszeichnungsstufe", "varchar");
+        haNamesTypes.put("auszeichnungsart", "varchar");
+        
+        //Tabelle stmkleistungsabzeichen bzw. stmkleistungsabzeichenmitglieder
+        haNamesTypes.put("stufe", "varchar");
+        haNamesTypes.put("datum", "datetime");
     }
 
     public String getDBTypeForValue(String strValue)
@@ -2168,10 +2195,13 @@ public class DB_Access
             String[][] dynamisch =
             {
                 {
-                    "(", "Auszeichnungsdatum", "=", "25/04/2008", ")", "UND"
+                    "(", "Datum", "=", "14/11/2009", ")", "UND"
                 },
                 {
-                    "(", "Vorname", "=", "Leopold", ")", "UND"
+                    "(", "Vorname", "=", "Peter", ")", "UND"
+                },
+                {
+                    "(", "Ort", "=", "Gössendorf", ")", "UND"
                 }
             };
 
