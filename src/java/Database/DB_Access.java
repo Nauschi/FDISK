@@ -2049,24 +2049,42 @@ public class DB_Access {
         }
 
         sqlString += " WHERE ";
+        
+        String strColLink = "";
 
         for (int i = 0; i < intRows; i++) {
             String strColWhere = strEingabe[i][1];
             String strColSymbol = strEingabe[i][2];
             String strColValue = strEingabe[i][3];
+            strColLink = strEingabe[i][5];
             String strColWhereType = getDBTypeForValue(strColWhere);
             System.out.println(strColWhere + " - " + strColWhereType);
 
             if (strColSymbol.equals("<>")) {
                 strColSymbol = "!=";
             }
+            
+            switch (strColLink)
+            {
+                case "UND":
+                    strColLink = "AND";
+                    break;
+                case "ODER":
+                    strColLink = "OR";
+                    break;
+            }
+            
             if (strColWhere.equals("Geschlecht")) {
-                if (strColValue.equals("Herr")) {
-                    strColValue = "m";
-                } else if (strColValue.equals("Frau")) {
-                    strColValue = "w";
+                switch (strColValue)
+                {
+                    case "Herr":
+                        strColValue = "m";
+                        break;
+                    case "Frau":
+                        strColValue = "w";
+                        break;
                 }
-                sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' AND ";
+                sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' "+strColLink+" ";
                 continue;
             }
             /*
@@ -2086,20 +2104,27 @@ public class DB_Access {
                     //Datumsformat: dd/MM/yyyy
                     //TO_DATE gibt's bei Microsoft SQL nicht, CAST ist äquivalent
                     case "datetime":
-                        sqlString += strColWhere + " " + strColSymbol + " CAST('" + strColValue + "' AS datetime) AND ";
+                        sqlString += strColWhere + " " + strColSymbol + " CAST('" + strColValue + "' AS datetime) "+strColLink+" ";
                         break;
                     case "varchar":
-                        sqlString += "UPPER(" + strColWhere + ") " + strColSymbol + " '" + strColValue.toUpperCase() + "' AND ";
+                        sqlString += "UPPER(" + strColWhere + ") " + strColSymbol + " '" + strColValue.toUpperCase() + "' "+strColLink+" ";
                         break;
                     //default bei byte, tinyint, bigint, int
                     default:
-                        sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' AND ";
+                        sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' "+strColLink+" ";
                         break;
                 }
 
             }
         }
-        int intIndex = sqlString.lastIndexOf("AND");
+        
+        int intIndex = -1;
+        
+        if(!strColLink.isEmpty())
+        {
+            intIndex = sqlString.lastIndexOf(strColLink);
+        }
+       
 
         if (intIndex != -1) {
             sqlString = sqlString.substring(0, intIndex) + " ";
@@ -2249,12 +2274,12 @@ public class DB_Access {
     public String getDBTypeForValue(String strValue) {
         String strType = "";
 
-        for (Map.Entry e : haNamesTypes.entrySet()) {
+        for (Map.Entry e : haNamesTypes.entrySet()) 
+        {
             if (e.getKey().toString().toUpperCase().equals(strValue.toUpperCase())) {
                 strType = e.getValue().toString();
             }
         }
-
         return strType;
     }
 
@@ -2304,14 +2329,13 @@ public class DB_Access {
 //                System.out.println(li1.getStrVorname() + "-" + li1.getStrZuname());
 //            }
 
-            /*
-             FUNKTIONIERT MIT UND OHNE WHERE CLAUSE! YEY!
-             Wir sind alle so stolz auf dich xD
-             */
             String[][] dynamisch
                     = {
                         {
-                            "(", "Vorname", "=", "Enrico", ")", "UND"
+                            "(", "Anrede", "=", "m", ")", "ODER"
+                        },
+                        {
+                            "(", "Anrede", "=", "w", ")", "ODER"
                         }
                     };
 
