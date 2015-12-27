@@ -586,7 +586,7 @@ public class DB_Access
      * zurück.
      *
      * @return LinkedList
-     * @throws IOException
+     * @throws java.lang.Exception
      * @see Mitglied
      * @see MitgliedsAdresse
      * @see LinkedList
@@ -1884,13 +1884,13 @@ public class DB_Access
         {
             for (int j = 0; j < 6; j++)
             {
-                /*
-                 !!!!!!!!!!!!!!!!!hier bitte die array-namen mit den namen wie sie in der DB stehen ersetzen!!!!!!!!!!!!!
-                 */
                 switch (strEingabe[i][j].toUpperCase())
                 {
                     case "NACHNAME":
                         strEingabe[i][j] = "Zuname";
+                        break;
+                    case "ANREDE":
+                        strEingabe[i][j] = "Geschlecht";
                         break;
                     case "AUSZEICHNUNGSDATUM":
                         strEingabe[i][j] = "Verleihungsdatum";
@@ -1929,34 +1929,27 @@ public class DB_Access
                     case "FUNKTION BIS":
                         strEingabe[i][j] = "datum_bis";
                         break;
+                    case "STAATSBÜRGERSCHAFT":
+                        strEingabe[i][j] = "Staatsbuergerschaft";
+                        break;
+                    case "ISCO-BERUF":
+                        strEingabe[i][j] = "Beruf";
+                        break;
+                    case "VORDIENSTZEIT IN JAHREN":
+                        strEingabe[i][j] = "Vordienstzeit";
+                        break;
                 }
             }
         }
 
-        //Zeilen durchgehen
         for (int i = 0; i < intRows; i++)
         {
             strSpaltenUeberschrift = strEingabe[i][1];
 
-            if (strSpaltenUeberschrift.toUpperCase().equals("ANREDE"))
-            {
-                strSpaltenUeberschrift = "geschlecht";
-            } else if (strSpaltenUeberschrift.toUpperCase().equals("ALTER"))
-            {
-                strSpaltenUeberschrift = "geburtsdatum";
-            } else if (strSpaltenUeberschrift.toUpperCase().equals("STAATSBÜRGERSCHAFT"))
-            {
-                strSpaltenUeberschrift = "staatsbuergerschaft";
-            } else if (strSpaltenUeberschrift.toUpperCase().equals("ISCO-BERUF"))
-            {
-                strSpaltenUeberschrift = "beruf";
-            } else if (strSpaltenUeberschrift.toUpperCase().equals("STATUS"))
+            if (strSpaltenUeberschrift.toUpperCase().equals("STATUS"))
             {
                 strSpaltenUeberschrift = strEingabe[i][3];
-            } else if (strSpaltenUeberschrift.toUpperCase().equals("VORDIENSTZEIT IN JAHREN"))
-            {
-                strSpaltenUeberschrift = "vordienstzeit";
-            }
+            } 
 
             if (!liSpaltenUeberschriften.contains(strSpaltenUeberschrift))
             {
@@ -1966,8 +1959,6 @@ public class DB_Access
 
         String sqlString = "SELECT ";
 
-        //To Do: Wo krieg ich Dienstgrad her
-        //bin zu dumm zum lesen, steht eh in stmkmitglieder
         if (liSpaltenUeberschriften.contains("Untersuchungen"))
         {
 
@@ -2005,10 +1996,10 @@ public class DB_Access
             }
         }
         //Funktionen - funktioniert
-        if (liSpaltenUeberschriften.contains("id_instanztypen") || 
-                liSpaltenUeberschriften.contains("datum_von") || 
-                liSpaltenUeberschriften.contains("datum_bis") || 
-                liSpaltenUeberschriften.contains("f.bezeichnung"))
+        if (liSpaltenUeberschriften.contains("id_instanztypen")
+                || liSpaltenUeberschriften.contains("datum_von")
+                || liSpaltenUeberschriften.contains("datum_bis")
+                || liSpaltenUeberschriften.contains("f.bezeichnung"))
         {
             boFunktionen = true;
             for (String titel : liSpaltenUeberschriften)
@@ -2019,8 +2010,7 @@ public class DB_Access
                 } else if (titel.equals("f.bezeichnung"))
                 {
                     sqlString += titel.toUpperCase() + " AS 'f.bezeichnung', ";
-                }
-                else if(titel.equals("datum_von") || titel.equals("datum_bis"))
+                } else if (titel.equals("datum_von") || titel.equals("datum_bis"))
                 {
                     sqlString += "fm." + titel.toUpperCase() + ", ";
                 }
@@ -2086,25 +2076,25 @@ public class DB_Access
                 || liSpaltenUeberschriften.contains("Titel") || liSpaltenUeberschriften.contains("Amtstitel")
                 || liSpaltenUeberschriften.contains("Vorname") || liSpaltenUeberschriften.contains("Zuname")
                 || liSpaltenUeberschriften.contains("Namenszusatz") || liSpaltenUeberschriften.contains("Geburtsdatum")
-                || liSpaltenUeberschriften.contains("Alter") || liSpaltenUeberschriften.contains("Geburtsort")
-                || liSpaltenUeberschriften.contains("SVNR") || liSpaltenUeberschriften.contains("Staatsbürgerschaft")
-                || liSpaltenUeberschriften.contains("ISCO-Beruf") || liSpaltenUeberschriften.contains("Familienstand")
+                || liSpaltenUeberschriften.contains("Geburtsort")
+                || liSpaltenUeberschriften.contains("SVNR") || liSpaltenUeberschriften.contains("Staatsbuergerschaft")
+                || liSpaltenUeberschriften.contains("Beruf") || liSpaltenUeberschriften.contains("Familienstand")
                 || liSpaltenUeberschriften.contains("Blutgruppe") || liSpaltenUeberschriften.contains("Standesbuchnummer")
                 || liSpaltenUeberschriften.contains("Eintrittsdatum") || liSpaltenUeberschriften.contains("Dienstalter")
                 || liSpaltenUeberschriften.contains("Angelobungsdatum") || liSpaltenUeberschriften.contains("Status")
-                || liSpaltenUeberschriften.contains("Vordienstzeit in Jahren"))
+                || liSpaltenUeberschriften.contains("Vordienstzeit") || liSpaltenUeberschriften.contains("Dienstgrad"))
         {
             for (String titel : liSpaltenUeberschriften)
             {
                 if (titel.equals("Anrede") || titel.equals("Geschlecht")
                         || titel.equals("Titel") || titel.equals("Amtstitel") || titel.equals("Vorname") || titel.equals("Zuname")
-                        || titel.equals("Namenszusatz") || titel.equals("Geburtsdatum") || titel.equals("Alter") || titel.equals("Geburtsort")
-                        || titel.equals("SVNR") || titel.equals("Staatsbürgerschaft") || titel.equals("ISCO-Beruf") || titel.equals("Familienstand")
+                        || titel.equals("Namenszusatz") || titel.equals("Geburtsdatum") || titel.equals("Geburtsort")
+                        || titel.equals("SVNR") || titel.equals("Staatsbuergerschaft") || titel.equals("Beruf") || titel.equals("Familienstand")
                         || titel.equals("Blutgruppe") || titel.equals("Standesbuchnummer") || titel.equals("Eintrittsdatum") || titel.equals("Dienstalter")
-                        || titel.equals("Angelobungsdatum") || titel.equals("Status") || titel.equals("Vordienstzeit in Jahren"))
+                        || titel.equals("Angelobungsdatum") || titel.equals("Status") || titel.equals("Vordienstzeit") || titel.equals("Dienstgrad"))
                 {
                     sqlString += "m." + titel.toUpperCase() + ", ";
-                }
+                } 
             }
         }
 
@@ -2157,12 +2147,36 @@ public class DB_Access
             String strColSymbol = strEingabe[i][2];
             String strColValue = strEingabe[i][3];
             String strColWhereType = getDBTypeForValue(strColWhere);
-            System.out.println(strColWhere + "-" + strColWhereType);
+            System.out.println(strColWhere + " - " + strColWhereType);
 
             if (strColSymbol.equals("<>"))
             {
                 strColSymbol = "!=";
             }
+            if (strColWhere.equals("Geschlecht"))
+            {
+                if (strColValue.equals("Herr"))
+                {
+                    strColValue = "m";
+                } else if (strColValue.equals("Frau"))
+                {
+                    strColValue = "w";
+                }
+                sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' AND ";
+                continue;
+            }
+                /*
+                 WITH alle_alter AS
+                 (
+                 SELECT DATEDIFF(YY, geburtsdatum, GETDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum)   > GETDATE() THEN 1 ELSE 0 END  AS mitglied_alter
+                 FROM FDISK.dbo.stmkmitglieder
+                 )
+                 SELECT mitglied_alter
+                 FROM alle_alter
+                 WHERE zeit = 10 
+                 */
+
+            
 
             //d.h. User gibt eine WHERE clause ein
             if (!(strColSymbol.equals("")))
@@ -2182,6 +2196,7 @@ public class DB_Access
                         sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' AND ";
                         break;
                 }
+
             }
         }
         int intIndex = sqlString.lastIndexOf("AND");
@@ -2296,6 +2311,20 @@ public class DB_Access
         haNamesTypes.put("vorname", "varchar");
         haNamesTypes.put("zuname", "varchar");
         haNamesTypes.put("geburtsdatum", "datetime");
+        haNamesTypes.put("geschlecht", "varchar");
+        haNamesTypes.put("amtstitel", "varchar");
+        haNamesTypes.put("namenszusatz", "varchar");
+        haNamesTypes.put("geburtsort", "varchar");
+        haNamesTypes.put("svnr", "varchar");
+        haNamesTypes.put("staatsbuergerschaft", "varchar");
+        haNamesTypes.put("beruf", "varchar");
+        haNamesTypes.put("familienstand", "varchar");
+        haNamesTypes.put("blutgruppe", "varchar");
+        haNamesTypes.put("standesbuchnummer", "varchar");
+        haNamesTypes.put("eintrittsdatum", "datetime");
+        haNamesTypes.put("angelobungsdatum", "datetime");
+        haNamesTypes.put("dienstgrad", "varchar");
+        
 
         //Tabelle stmkadressen
         haNamesTypes.put("ort", "varchar");
@@ -2320,7 +2349,7 @@ public class DB_Access
         //Tabelle stmkgesetzl_fahrgenehmigungen
         haNamesTypes.put("fahrgenehmigungsklasse", "varchar");
         haNamesTypes.put("gueltig_bis", "datetime");
-        
+
         //Tabelle stmkfunktionenmitglieder bzw. stmkfunktionen
         haNamesTypes.put("datum_von", "datetime");
         haNamesTypes.put("datum_bis", "datetime");
@@ -2400,7 +2429,7 @@ public class DB_Access
             String[][] dynamisch =
             {
                 {
-                    "(", "Funktion bis", "=", "01/01/2009", ")", "UND"
+                    "(", "Vorname", "=", "Enrico", ")", "UND"
                 }
             };
 
