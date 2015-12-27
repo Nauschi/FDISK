@@ -1036,9 +1036,8 @@ public class DB_Access
                 + " ,meldung"
                 + " ,Fehlalarm"
                 + " FROM FDISK.dbo.stmkuebungsberichte"
-                + " WHERE uebungsart = 'Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN'"; 
-        
-        
+                + " WHERE uebungsart = 'Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN'";
+
         ResultSet rs = stat.executeQuery(sqlString);
 
         int intIdBericht;
@@ -1057,7 +1056,6 @@ public class DB_Access
         String strMeldung;
         String strFehlalarm;
 
-        
         while (rs.next())
         {
             intIdBericht = rs.getInt("ID");
@@ -1076,9 +1074,9 @@ public class DB_Access
             strMeldung = rs.getString("Meldung");
             strFehlalarm = rs.getString("Fehlalarm");
 
-            if(strTaetigkeitsart.equals("Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN"))
+            if (strTaetigkeitsart.equals("Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN"))
             {
-                strTaetigkeitsart = "Jugendübung"; 
+                strTaetigkeitsart = "Jugendübung";
             }
             Taetigkeitsbericht taetigkeitsbericht = new Taetigkeitsbericht(intIdBericht, intInstanznummer, strInstanzname, strTaetigkeitsart, strTaetigkeitsunterart, strNummer, dateBeginn, dateEnde, strStrasse, strNummerAdr, strStiege, strPlz, strOrt, strMeldung, strFehlalarm);
             liTaetigkeitsbericht.add(taetigkeitsbericht);
@@ -1088,11 +1086,9 @@ public class DB_Access
         return liTaetigkeitsbericht;
     }
 
-   
     /**
-     * 
-     * @return
-     * @throws Exception 
+     *
+     * @return @throws Exception
      */
     public LinkedList<Einsatzbericht> getEinsatzbericht() throws Exception
     {
@@ -1142,7 +1138,6 @@ public class DB_Access
         String strMeldung;
         String strFehlalarm;
 
-
         while (rs.next())
         {
             intIdBericht = rs.getInt("ID");
@@ -1163,10 +1158,10 @@ public class DB_Access
             strMeldung = rs.getString("Meldung");
             strFehlalarm = rs.getString("Fehlalarm");
 
-            Einsatzbericht einsatzbericht = new Einsatzbericht(intIdBericht, 
-                    intInstanznummer, strName, strEinsatzart, strNummer, 
-                    dateUhrzeit_Alarmierung, dateUhrzeit_Rueckkehr, strStrasse, 
-                    strNummerAdr, strStiege, strPlz, strOrt, intStandesbuchnummer, 
+            Einsatzbericht einsatzbericht = new Einsatzbericht(intIdBericht,
+                    intInstanznummer, strName, strEinsatzart, strNummer,
+                    dateUhrzeit_Alarmierung, dateUhrzeit_Rueckkehr, strStrasse,
+                    strNummerAdr, strStiege, strPlz, strOrt, intStandesbuchnummer,
                     strVorname, strZuname, strMeldung, strFehlalarm);
             liEinsatzbericht.add(einsatzbericht);
         }
@@ -1174,12 +1169,10 @@ public class DB_Access
         connPool.releaseConnection(conn);
         return liEinsatzbericht;
     }
-    
-    
+
     /**
-     * 
-     * @return
-     * @throws Exception 
+     *
+     * @return @throws Exception
      */
     public LinkedList<Uebungsbericht> getUebungsbericht() throws Exception
     {
@@ -1190,7 +1183,7 @@ public class DB_Access
 
         String sqlString = "";
 
-         sqlString = "SELECT DISTINCT TOP 1000 id_berichte \"ID\""
+        sqlString = "SELECT DISTINCT TOP 1000 id_berichte \"ID\""
                 + " ,instanznummer \"Instanznummer\""
                 + " ,name \"Instanzname\""
                 + " ,uebungsart \"Uebungsart\""
@@ -1226,7 +1219,6 @@ public class DB_Access
         String strMeldung;
         String strFehlalarm;
 
-        
         while (rs.next())
         {
             intIdBericht = rs.getInt("ID");
@@ -1245,9 +1237,9 @@ public class DB_Access
             strMeldung = rs.getString("Meldung");
             strFehlalarm = rs.getString("Fehlalarm");
 
-            Uebungsbericht uebungsbericht = new Uebungsbericht(intIdBericht, 
-                    intInstanznummer, strName, strUebungsart, strUebungsunterart, 
-                    strNummer, dateBeginn, dateEnde, strStrasse, strNummerAdr, 
+            Uebungsbericht uebungsbericht = new Uebungsbericht(intIdBericht,
+                    intInstanznummer, strName, strUebungsart, strUebungsunterart,
+                    strNummer, dateBeginn, dateEnde, strStrasse, strNummerAdr,
                     strStiege, strPlz, strOrt, strMeldung, strFehlalarm);
             liUebungsbericht.add(uebungsbericht);
         }
@@ -1881,6 +1873,8 @@ public class DB_Access
         boolean boAuszeichnung = false;
         boolean boLeistungsabzeichen = false;
         boolean boKurse = false;
+        boolean boErreichbarkeiten = false;
+        boolean boFahrgenehmigungen = false;
 
         int intRows = strEingabe.length % 6;
 
@@ -1912,6 +1906,15 @@ public class DB_Access
                         break;
                     case "KURSDATUM":
                         strEingabe[i][j] = "k.Datum";
+                        break;
+                    case "ERREICHBARKEIT":
+                        strEingabe[i][j] = "Code";
+                        break;
+                    case "FÜHRERSCHEINKLASSE":
+                        strEingabe[i][j] = "Fahrgenehmigungsklasse";
+                        break;
+                    case "FÜHRERSCHEINKLASSE - GÜLTIG BIS":
+                        strEingabe[i][j] = "Gueltig_bis";
                         break;
                 }
             }
@@ -1952,7 +1955,6 @@ public class DB_Access
 
         //To Do: Wo krieg ich Dienstgrad her
         //bin zu dumm zum lesen, steht eh in stmkmitglieder
-        //Tabelle "dbo.stmkuntersuchungen" fehlt?!
         if (liSpaltenUeberschriften.contains("Untersuchungen"))
         {
 
@@ -1993,9 +1995,17 @@ public class DB_Access
         {
 
         }
-        if (liSpaltenUeberschriften.contains("Gesetzliche Fahrgenehmigungen"))
+        //Gesetzliche Fahrgenehmigungen - funktioniert
+        if (liSpaltenUeberschriften.contains("Fahrgenehmigungsklasse") || liSpaltenUeberschriften.contains("Gueltig_bis"))
         {
-
+            boFahrgenehmigungen = true;
+            for (String titel : liSpaltenUeberschriften)
+            {
+                if (titel.equals("Fahrgenehmigungsklasse") || titel.equals("Gueltig_bis"))
+                {
+                    sqlString += "gf." + titel.toUpperCase() + ", ";
+                }
+            }
         }
         //Auszeichnungen - funktioniert
         if (liSpaltenUeberschriften.contains("Auszeichnungsart")
@@ -2014,9 +2024,18 @@ public class DB_Access
                 }
             }
         }
-        if (liSpaltenUeberschriften.contains("Erreichbarkeiten"))
-        {
 
+        //Erreichbarkeiten - funktioniert
+        if (liSpaltenUeberschriften.contains("Code") || liSpaltenUeberschriften.contains("Erreichbarkeitsart"))
+        {
+            boErreichbarkeiten = true;
+            for (String titel : liSpaltenUeberschriften)
+            {
+                if (titel.equals("Code") || titel.equals("Erreichbarkeitsart"))
+                {
+                    sqlString += "e." + titel.toUpperCase() + ", ";
+                } 
+            }
         }
         //Adresse - funktioniert
         if (liSpaltenUeberschriften.contains("Straße") || liSpaltenUeberschriften.contains("Hausnummer")
@@ -2083,6 +2102,15 @@ public class DB_Access
             sqlString += " INNER JOIN FDISK.dbo.stmkkursemitglieder km ON(m.id_personen = km.id_mitgliedschaften) "
                     + " INNER JOIN FDISK.dbo.stmkkurse k ON (k.id_kurse = km.id_kurse) ";
         }
+        if (boErreichbarkeiten == true)
+        {
+            sqlString += " INNER JOIN FDISK.dbo.stmkerreichbarkeiten e ON(m.id_personen = e.id_personen) ";
+        }
+
+        if (boFahrgenehmigungen == true)
+        {
+            sqlString += " INNER JOIN FDISK.dbo.stmkgesetzl_fahrgenehmigungen gf ON(m.id_personen = gf.fdisk_personen_id) ";
+        }
 
         sqlString += " WHERE ";
 
@@ -2102,7 +2130,6 @@ public class DB_Access
             //d.h. User gibt eine WHERE clause ein
             if (!(strColSymbol.equals("")))
             {
-                //Derweil ohne Tabellenalias, vielleicht funktionierts gänzlich ohne
                 switch (strColWhereType)
                 {
                     //Datumsformat: dd/MM/yyyy
@@ -2249,6 +2276,13 @@ public class DB_Access
         haNamesTypes.put("k.Datum", "datetime");
         haNamesTypes.put("kursbezeichnung", "varchar");
 
+        //Tabelle stmkerreichbarkeiten
+        haNamesTypes.put("code", "varchar");
+        haNamesTypes.put("erreichbarkeitsart", "varchar");
+        
+        //Tabelle stmkgesetzl_fahrgenehmigungen
+        haNamesTypes.put("fahrgenehmigungsklasse", "varchar");
+        haNamesTypes.put("gueltig_bis", "datetime");
     }
 
     public String getDBTypeForValue(String strValue)
@@ -2318,15 +2352,15 @@ public class DB_Access
 
             /*
              FUNKTIONIERT MIT UND OHNE WHERE CLAUSE! YEY!
-            Wir sind alle so stolz auf dich xD
+             Wir sind alle so stolz auf dich xD
              */
             String[][] dynamisch =
             {
                 {
-                    "(", "Kursdatum", "=", "01/01/1993", ")", "UND"
+                    "(", "Führerscheinklasse", "=", "E", ")", "UND"
                 },
                 {
-                    "(", "Vorname", "=", "Andreas", ")", "UND"
+                    "(", "Führerscheinklasse - Gültig bis", "=", "29/08/2011", ")", "UND"
                 }
             };
 
