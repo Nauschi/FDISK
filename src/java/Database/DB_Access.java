@@ -1293,7 +1293,7 @@ public class DB_Access
             getFilterFuerFunktion(typ);
         } else if (typ.toUpperCase().equals("ALTER"))
         {
-            getFilterFuerAlter(typ);
+            //getFilterFuerAlter(typ);
         } else if (typ.toUpperCase().equals("STATUS"))
         {
             getFilterFuerStatus(typ);
@@ -1534,7 +1534,7 @@ public class DB_Access
     }
 
     /**
-     * Sucht den passenden Filter für Kurse
+     * Sucht den passenden Filter für Funktionen
      *
      * @param typ
      * @return
@@ -1605,86 +1605,85 @@ public class DB_Access
      * @return
      * @throws Exception
      */
-    public HashMap<String, LinkedList<String>> getFilterFuerAlter(String typ) throws Exception
-    {
-        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
-        LinkedList<String> liFilter = new LinkedList<>();
-        Connection conn = connPool.getConnection();
-        Statement stat = conn.createStatement();
-
-        String sqlString = "SELECT DISTINCT geburtsdatum \"Typ\""
-                + " FROM FDISK.dbo.stmkmitglieder";
-        ResultSet rs = stat.executeQuery(sqlString);
-
-        while (rs.next())
-        {
-            String strFilter;
-            if (rs.getDate("Typ") != null)
-            {
-                Date dateGeburtsdatum = new Date(rs.getDate("Typ").getTime());
-
-                Calendar calGeburtsdatum = Calendar.getInstance();
-                Calendar calHeute = Calendar.getInstance();
-                calGeburtsdatum.setTime(dateGeburtsdatum);
-                int intAlter = Calendar.getInstance().get(Calendar.YEAR) - calGeburtsdatum.get(Calendar.YEAR);
-
-                if ((calGeburtsdatum.get(Calendar.DAY_OF_YEAR) - calHeute.get(Calendar.DAY_OF_YEAR) > 3)
-                        || (calGeburtsdatum.get(Calendar.MONTH) > calHeute.get(Calendar.MONTH)))
-                {
-                    intAlter--;
-
-                } else if ((calGeburtsdatum.get(Calendar.MONTH) == calHeute.get(Calendar.MONTH))
-                        && (calGeburtsdatum.get(Calendar.DAY_OF_MONTH) > calHeute.get(Calendar.DAY_OF_MONTH)))
-                {
-                    intAlter--;
-                }
-
-                if (intAlter <= 0)
-                {
-                    strFilter = "Unbekannt";
-                } else
-                {
-                    strFilter = intAlter + "";
-                }
-            } else
-            {
-                strFilter = "Unbekannt";
-            }
-
-            if (!liFilter.contains(strFilter))
-            {
-                liFilter.add(strFilter);
-            }
-        }
-
-        Collections.sort(liFilter, new Comparator<String>()
-        {
-
-            @Override
-            public int compare(String o1, String o2)
-            {
-                try
-                {
-                    return Integer.valueOf(o1).compareTo(Integer.valueOf(o2));
-                } catch (Exception e)
-                {
-                    return -1;
-                }
-
-            }
-        });
-
-        if (liFilter.contains("Unbekannt"))
-        {
-            liFilter.remove("Unbekannt");
-            liFilter.addFirst("Unbekannt");
-        }
-
-        hmFilter.put(typ, liFilter);
-        connPool.releaseConnection(conn);
-        return hmFilter;
-    }
-
+//    public HashMap<String, LinkedList<String>> getFilterFuerAlter(String typ) throws Exception
+//    {
+//        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
+//        LinkedList<String> liFilter = new LinkedList<>();
+//        Connection conn = connPool.getConnection();
+//        Statement stat = conn.createStatement();
+//
+//        String sqlString = "SELECT DISTINCT geburtsdatum \"Typ\""
+//                + " FROM FDISK.dbo.stmkmitglieder";
+//        ResultSet rs = stat.executeQuery(sqlString);
+//
+//        while (rs.next())
+//        {
+//            String strFilter;
+//            if (rs.getDate("Typ") != null)
+//            {
+//                Date dateGeburtsdatum = new Date(rs.getDate("Typ").getTime());
+//
+//                Calendar calGeburtsdatum = Calendar.getInstance();
+//                Calendar calHeute = Calendar.getInstance();
+//                calGeburtsdatum.setTime(dateGeburtsdatum);
+//                int intAlter = Calendar.getInstance().get(Calendar.YEAR) - calGeburtsdatum.get(Calendar.YEAR);
+//
+//                if ((calGeburtsdatum.get(Calendar.DAY_OF_YEAR) - calHeute.get(Calendar.DAY_OF_YEAR) > 3)
+//                        || (calGeburtsdatum.get(Calendar.MONTH) > calHeute.get(Calendar.MONTH)))
+//                {
+//                    intAlter--;
+//
+//                } else if ((calGeburtsdatum.get(Calendar.MONTH) == calHeute.get(Calendar.MONTH))
+//                        && (calGeburtsdatum.get(Calendar.DAY_OF_MONTH) > calHeute.get(Calendar.DAY_OF_MONTH)))
+//                {
+//                    intAlter--;
+//                }
+//
+//                if (intAlter <= 0)
+//                {
+//                    strFilter = "Unbekannt";
+//                } else
+//                {
+//                    strFilter = intAlter + "";
+//                }
+//            } else
+//            {
+//                strFilter = "Unbekannt";
+//            }
+//
+//            if (!liFilter.contains(strFilter))
+//            {
+//                liFilter.add(strFilter);
+//            }
+//        }
+//
+//        Collections.sort(liFilter, new Comparator<String>()
+//        {
+//
+//            @Override
+//            public int compare(String o1, String o2)
+//            {
+//                try
+//                {
+//                    return Integer.valueOf(o1).compareTo(Integer.valueOf(o2));
+//                } catch (Exception e)
+//                {
+//                    return -1;
+//                }
+//
+//            }
+//        });
+//
+//        if (liFilter.contains("Unbekannt"))
+//        {
+//            liFilter.remove("Unbekannt");
+//            liFilter.addFirst("Unbekannt");
+//        }
+//
+//        hmFilter.put(typ, liFilter);
+//        connPool.releaseConnection(conn);
+//        return hmFilter;
+//    }
     /**
      * Gibt die passenden Filter für die Status zurück
      *
@@ -1875,6 +1874,7 @@ public class DB_Access
         boolean boKurse = false;
         boolean boErreichbarkeiten = false;
         boolean boFahrgenehmigungen = false;
+        boolean boFunktionen = false;
 
         int intRows = strEingabe.length % 6;
 
@@ -1915,6 +1915,19 @@ public class DB_Access
                         break;
                     case "FÜHRERSCHEINKLASSE - GÜLTIG BIS":
                         strEingabe[i][j] = "Gueltig_bis";
+                        break;
+                    //Passt das so??
+                    case "FUNKTIONSINSTANZ":
+                        strEingabe[i][j] = "id_instanztypen";
+                        break;
+                    case "FUNKTIONSBEZEICHNUNG":
+                        strEingabe[i][j] = "f.bezeichnung";
+                        break;
+                    case "FUNKTION VON":
+                        strEingabe[i][j] = "datum_von";
+                        break;
+                    case "FUNKTION BIS":
+                        strEingabe[i][j] = "datum_bis";
                         break;
                 }
             }
@@ -1991,9 +2004,27 @@ public class DB_Access
                 }
             }
         }
-        if (liSpaltenUeberschriften.contains("Funktionen"))
+        //Funktionen - funktioniert
+        if (liSpaltenUeberschriften.contains("id_instanztypen") || 
+                liSpaltenUeberschriften.contains("datum_von") || 
+                liSpaltenUeberschriften.contains("datum_bis") || 
+                liSpaltenUeberschriften.contains("f.bezeichnung"))
         {
-
+            boFunktionen = true;
+            for (String titel : liSpaltenUeberschriften)
+            {
+                if (titel.equals("id_instanztypen"))
+                {
+                    sqlString += "f." + titel.toUpperCase() + ", ";
+                } else if (titel.equals("f.bezeichnung"))
+                {
+                    sqlString += titel.toUpperCase() + " AS 'f.bezeichnung', ";
+                }
+                else if(titel.equals("datum_von") || titel.equals("datum_bis"))
+                {
+                    sqlString += "fm." + titel.toUpperCase() + ", ";
+                }
+            }
         }
         //Gesetzliche Fahrgenehmigungen - funktioniert
         if (liSpaltenUeberschriften.contains("Fahrgenehmigungsklasse") || liSpaltenUeberschriften.contains("Gueltig_bis"))
@@ -2034,7 +2065,7 @@ public class DB_Access
                 if (titel.equals("Code") || titel.equals("Erreichbarkeitsart"))
                 {
                     sqlString += "e." + titel.toUpperCase() + ", ";
-                } 
+                }
             }
         }
         //Adresse - funktioniert
@@ -2110,6 +2141,12 @@ public class DB_Access
         if (boFahrgenehmigungen == true)
         {
             sqlString += " INNER JOIN FDISK.dbo.stmkgesetzl_fahrgenehmigungen gf ON(m.id_personen = gf.fdisk_personen_id) ";
+        }
+
+        if (boFunktionen == true)
+        {
+            sqlString += " INNER JOIN FDISK.dbo.stmkfunktionenmitglieder fm ON(m.id_personen = fm.id_mitgliedschaften) "
+                    + " INNER JOIN FDISK.dbo.stmkfunktionen f ON(f.id_funktionen = fm.id_funktionen) ";
         }
 
         sqlString += " WHERE ";
@@ -2279,10 +2316,16 @@ public class DB_Access
         //Tabelle stmkerreichbarkeiten
         haNamesTypes.put("code", "varchar");
         haNamesTypes.put("erreichbarkeitsart", "varchar");
-        
+
         //Tabelle stmkgesetzl_fahrgenehmigungen
         haNamesTypes.put("fahrgenehmigungsklasse", "varchar");
         haNamesTypes.put("gueltig_bis", "datetime");
+        
+        //Tabelle stmkfunktionenmitglieder bzw. stmkfunktionen
+        haNamesTypes.put("datum_von", "datetime");
+        haNamesTypes.put("datum_bis", "datetime");
+        haNamesTypes.put("id_instanztypen", "varchar");
+        haNamesTypes.put("f.bezeichnung", "varchar");
     }
 
     public String getDBTypeForValue(String strValue)
@@ -2357,10 +2400,7 @@ public class DB_Access
             String[][] dynamisch =
             {
                 {
-                    "(", "Führerscheinklasse", "=", "E", ")", "UND"
-                },
-                {
-                    "(", "Führerscheinklasse - Gültig bis", "=", "29/08/2011", ")", "UND"
+                    "(", "Funktion bis", "=", "01/01/2009", ")", "UND"
                 }
             };
 
