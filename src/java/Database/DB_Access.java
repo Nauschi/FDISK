@@ -1835,6 +1835,18 @@ public class DB_Access {
         for (int i = 0; i < intRows; i++) {
             for (int j = 0; j < 6; j++) {
                 switch (strEingabe[i][j].toUpperCase()) {
+                    case "[":
+                        strEingabe[i][j] = "(";
+                        break;
+                    case "]":
+                        strEingabe[i][j] = ")";
+                        break;
+                    case "{":
+                        strEingabe[i][j] = "(";
+                        break;
+                    case "}":
+                        strEingabe[i][j] = ")";
+                        break;
                     case "NACHNAME":
                         strEingabe[i][j] = "Zuname";
                         break;
@@ -1890,6 +1902,13 @@ public class DB_Access {
                 }
             }
         }
+        
+        for (int i = 0; i < intRows; i++) {
+            for (int j = 0; j < 6; j++) {
+                System.out.print(strEingabe[i][j] + " ");
+            }
+            System.out.println("");
+            }
 
         for (int i = 0; i < intRows; i++) {
             strSpaltenUeberschrift = strEingabe[i][1];
@@ -2071,6 +2090,12 @@ public class DB_Access {
                     break;
                 case "ODER":
                     strColLink = "OR";
+                    break;
+                case "UND NICHT":
+                    //ja das ist die große frage
+                    break;
+                case "ODER NICHT":
+                    //ja das ist die große frage
                     break;
             }
             
@@ -2332,10 +2357,10 @@ public class DB_Access {
             String[][] dynamisch
                     = {
                         {
-                            "(", "Anrede", "=", "m", ")", "ODER"
+                            "{", "Anrede", "=", "m", "}", "ODER"
                         },
                         {
-                            "(", "Anrede", "=", "w", ")", "ODER"
+                            "[", "Anrede", "=", "w", "]", "ODER"
                         }
                     };
 
