@@ -285,7 +285,49 @@ public class Uebungsbericht
     @Override
     public String toString()
     {
-        return "UebungsberichtUeberschrift{" + "intId_StmkUebungsberichte=" + intId_StmkUebungsberichte + ", intInstanznummer=" + intInstanznummer + ", strName=" + strName + ", strUebungsart=" + strUebungsart + ", strUebungsunterart=" + strUebungsunterart + ", strNummer=" + strNummer + ", dateBeginn=" + dateBeginn + ", dateEnde=" + dateEnde + ", strStrasse=" + strStrasse + ", strNummerAdr=" + strNummerAdr + ", strStiege=" + strStiege + ", strPlz=" + strPlz + ", strOrt=" + strOrt + ", strMeldung=" + strMeldung + ", strFehlalarm=" + strFehlalarm + '}';
+
+        if (strUebungsart == null)
+        {
+            strUebungsart = "";
+        }
+        if (strUebungsunterart == null)
+        {
+            strUebungsunterart = "";
+        }
+        if (strNummer == null)
+        {
+            strNummer = "";
+        }
+        if (strStrasse == null)
+        {
+            strStrasse = "";
+        }
+        if (strNummerAdr == null)
+        {
+            strNummerAdr = "";
+        }
+        if (strStiege == null)
+        {
+            strStiege = "";
+        }
+        if (strPlz == null)
+        {
+            strPlz = "";
+        }
+        if (strOrt == null)
+        {
+            strOrt = "";
+        }
+
+        String strHtml = "<tr><td>"
+                + strUebungsart + "</td><td>"
+                + strUebungsunterart + "</td><td>"
+                + strNummer + "</td><td>"
+                + dateBeginn + "</td><td>"
+                + dateEnde + "</td><td>"
+                + strStrasse + " "+strNummerAdr+" "+strStiege+ " "+strPlz +" "+strOrt+ "</td><td></td></tr>";
+
+        return strHtml;
     }
 
 }

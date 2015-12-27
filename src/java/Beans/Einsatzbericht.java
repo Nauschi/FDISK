@@ -14,6 +14,7 @@ import java.util.Objects;
  */
 public class Einsatzbericht
 {
+
     private int intId_StmkEinsatzberichte;
     private int intInstanznummer;
     private String strName;
@@ -31,7 +32,6 @@ public class Einsatzbericht
     private String strZuname;
     private String strMeldung;
     private String strFehlalarm;
-    
 
     public Einsatzbericht(int intId_StmkEinsatzberichte, int intInstanznummer, String strName, String strEinsatzart, String strNummer, Date dateUhrzeit_Alarmierung, Date dateUhrzeit_Rueckkehr, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, int intStandesbuchnummer, String strVorname, String strZuname, String strMeldung, String strFehlalarm)
     {
@@ -64,7 +64,6 @@ public class Einsatzbericht
         this.intId_StmkEinsatzberichte = intId_StmkEinsatzberichte;
     }
 
-  
     public int getIntInstanznummer()
     {
         return intInstanznummer;
@@ -315,14 +314,56 @@ public class Einsatzbericht
         return true;
     }
 
-   
-
-   
-
     @Override
     public String toString()
-    {//nbvngvhfh
-        return "EinsatzberichtUeberschrift{" + "intId_StmkEinsatzberichte=" + intId_StmkEinsatzberichte + ", intInstanznummer=" + intInstanznummer + ", strName=" + strName + ", strEinsatzart=" + strEinsatzart + ", strNummer=" + strNummer + ", dateUhrzeit_Alarmierung=" + dateUhrzeit_Alarmierung + ", dateUhrzeit_Rueckkehr=" + dateUhrzeit_Rueckkehr + ", strStrasse=" + strStrasse + ", strNummerAdr=" + strNummerAdr + ", strStiege=" + strStiege + ", strPlz=" + strPlz + ", strOrt=" + strOrt + ", intStandesbuchnummer=" + intStandesbuchnummer + ", strVorname=" + strVorname + ", strZuname=" + strZuname + ", strMeldung=" + strMeldung + ", strFehlalarm=" + strFehlalarm + '}';
+    {
+
+        if (strEinsatzart == null)
+        {
+            strEinsatzart = "";
+        }
+        if (strNummer == null)
+        {
+            strNummer = "";
+        }
+        if (strStrasse == null)
+        {
+            strStrasse = "";
+        }
+        if (strNummerAdr == null)
+        {
+            strNummerAdr = "";
+        }
+        if (strStiege == null)
+        {
+            strStiege = "";
+        }
+        if (strPlz == null)
+        {
+            strPlz = "";
+        }
+        if (strOrt == null)
+        {
+            strOrt = "";
+        }
+        if (strVorname == null)
+        {
+            strVorname = "";
+        }
+        if (strZuname == null)
+        {
+            strZuname = "";
+        }
+        String strHtml = "<tr><td>"
+                + strEinsatzart + "</td><td>"
+                + strNummer + "</td><td>"
+                + dateUhrzeit_Alarmierung + "</td><td>"
+                + dateUhrzeit_Rueckkehr + "</td><td>"
+                + strStrasse + " "+strNummerAdr+" "+strStiege+ " "+strPlz +" "+strOrt+"</td><td>"
+                + strVorname + "</td><td>"
+                + strZuname + "</td><td></td></tr>";
+
+        return strHtml;
     }
-    
+
 }

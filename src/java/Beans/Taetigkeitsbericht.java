@@ -14,7 +14,8 @@ import java.util.Objects;
  */
 public class Taetigkeitsbericht
 {
-    private int intId_StmkZaetigkeitsberichte; 
+
+    private int intId_StmkZaetigkeitsberichte;
     private int intInstanznummer;
     private String strInstanzname;
     private String strTaetigkeitsart;
@@ -281,16 +282,51 @@ public class Taetigkeitsbericht
         return true;
     }
 
-
-    
-    
     @Override
     public String toString()
     {
-        return "TaetigkeitsberichtUeberschrift{" + "intIdBericht=" + intId_StmkZaetigkeitsberichte + ", intInstanznummer=" + intInstanznummer + ", strInstanzname=" + strInstanzname + ", strTaetigkeitsart=" + strTaetigkeitsart + ", strTaetigkeitsunterart=" + strTaetigkeitsunterart + ", strNummer=" + strNummer + ", dateBeginn=" + dateBeginn + ", dateEnde=" + dateEnde + ", strStrasse=" + strStrasse + ", strNummerAdr=" + strNummerAdr + ", strStiege=" + strStiege + ", strPlz=" + strPlz + ", strOrt=" + strOrt + ", strMeldung=" + strMeldung + ", strFehlalarm=" + strFehlalarm +'}';
+        if (strTaetigkeitsart == null)
+        {
+            strTaetigkeitsart = "";
+        }
+        if (strTaetigkeitsunterart == null)
+        {
+            strTaetigkeitsunterart = "";
+        }
+        if (strNummer == null)
+        {
+            strNummer = "";
+        }
+        if (strStrasse == null)
+        {
+            strStrasse = "";
+        }
+        if (strNummerAdr == null)
+        {
+            strNummerAdr = "";
+        }
+        if (strStiege == null)
+        {
+            strStiege = "";
+        }
+        if (strPlz == null)
+        {
+            strPlz = "";
+        }
+        if (strOrt == null)
+        {
+            strOrt = "";
+        }
+
+        String strHtml = "<tr><td>"
+                + strTaetigkeitsart + "</td><td>"
+                + strTaetigkeitsunterart + "</td><td>"
+                + strNummer + "</td><td>"
+                + dateBeginn + "</td><td>"
+                + dateEnde + "</td><td>"
+                + strStrasse + " "+strNummerAdr+" "+strStiege+ " "+strPlz +" "+strOrt+ "</td><td></td></tr>";
+
+        return strHtml;
     }
-    
-    
-    
-    
+
 }
