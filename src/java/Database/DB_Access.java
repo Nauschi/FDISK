@@ -19,6 +19,7 @@ import Beans.MitgliedsErreichbarkeit;
 import Beans.MitgliedsGeburtstag;
 import Beans.LeerberichtMitglied;
 import Beans.Taetigkeitsbericht;
+import Beans.Uebungsbericht;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -1002,7 +1003,7 @@ public class DB_Access
 
         String sqlString = "";
 
-        sqlString = "SELECT id_berichte \"ID\""
+        sqlString = "SELECT DISTINCT TOP 1000 id_berichte \"ID\""
                 + " ,instanznummer \"Instanznummer\""
                 + " ,instanzname \"Instanzname\""
                 + " ,taetigkeitsart \"Taetigkeitsart\""
@@ -1017,8 +1018,27 @@ public class DB_Access
                 + " ,ort \"Ort\""
                 + " ,meldung \"Meldung\""
                 + " ,Fehlalarm \"Fehlalarm\""
-                + "  FROM FDISK.dbo.stmktaetigkeitsberichte";
-
+                + " FROM FDISK.dbo.stmktaetigkeitsberichte"
+                + " UNION"
+                + " SELECT DISTINCT TOP 1000 id_berichte"
+                + " ,instanznummer"
+                + " ,name"
+                + " ,uebungsart"
+                + " ,uebungsunterart"
+                + " ,nummer"
+                + " ,beginn"
+                + " ,ende"
+                + " ,strasse"
+                + " ,nummeradr"
+                + " ,stiege"
+                + " ,plz"
+                + " ,ort"
+                + " ,meldung"
+                + " ,Fehlalarm"
+                + " FROM FDISK.dbo.stmkuebungsberichte"
+                + " WHERE uebungsart = 'Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN'"; 
+        
+        
         ResultSet rs = stat.executeQuery(sqlString);
 
         int intIdBericht;
@@ -1037,6 +1057,7 @@ public class DB_Access
         String strMeldung;
         String strFehlalarm;
 
+        
         while (rs.next())
         {
             intIdBericht = rs.getInt("ID");
@@ -1055,6 +1076,10 @@ public class DB_Access
             strMeldung = rs.getString("Meldung");
             strFehlalarm = rs.getString("Fehlalarm");
 
+            if(strTaetigkeitsart.equals("Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN"))
+            {
+                strTaetigkeitsart = "Jugendübung"; 
+            }
             Taetigkeitsbericht taetigkeitsbericht = new Taetigkeitsbericht(intIdBericht, intInstanznummer, strInstanzname, strTaetigkeitsart, strTaetigkeitsunterart, strNummer, dateBeginn, dateEnde, strStrasse, strNummerAdr, strStiege, strPlz, strOrt, strMeldung, strFehlalarm);
             liTaetigkeitsbericht.add(taetigkeitsbericht);
         }
@@ -1063,11 +1088,11 @@ public class DB_Access
         return liTaetigkeitsbericht;
     }
 
+   
     /**
-     * !!Nicht fertig
-     *
+     * 
      * @return
-     * @throws Exception
+     * @throws Exception 
      */
     public LinkedList<Einsatzbericht> getEinsatzbericht() throws Exception
     {
@@ -1078,22 +1103,24 @@ public class DB_Access
 
         String sqlString = "";
 
-        sqlString = "SELECT id_berichte \"ID\""
+        sqlString = "SELECT DISTINCT TOP 1000 id_berichte \"ID\""
                 + " ,instanznummer \"Instanznummer\""
-                + " ,instanzname \"Instanzname\""
-                + " ,taetigkeitsart \"Taetigkeitsart\""
-                + " ,taetigkeitsunterart \"Taetigkeitsunterart\""
-                + " ,nummer \"Nummer\""
-                + " ,beginn \"Beginn\""
-                + " ,ende \"Ende\""
+                + " ,name \"Name\""
+                + " ,einsatzart \"Art\""
+                + " ,nummer \"Nr\""
+                + " ,uhrzeit_alarmierung \"Uhrzeit_Alarmierung\""
+                + " ,uhrzeit_rueckkehr \"Uhrzeit_Rueckkehr\""
                 + " ,strasse \"Strasse\""
-                + " ,nummeradr \"NummerAdr\""
+                + " ,nummeradr \"Nummeradr\""
                 + " ,stiege \"Stiege\""
                 + " ,plz \"PLZ\""
                 + " ,ort \"Ort\""
+                + " ,standesbuchnummer \"SBN\""
+                + " ,vorname \"Vorname\""
+                + " ,zuname \"Zuname\""
                 + " ,meldung \"Meldung\""
                 + " ,Fehlalarm \"Fehlalarm\""
-                + "  FROM FDISK.dbo.stmkeinsatzberichte";
+                + " FROM FDISK.dbo.stmkeinsatzberichte";
 
         ResultSet rs = stat.executeQuery(sqlString);
 
@@ -1115,32 +1142,118 @@ public class DB_Access
         String strMeldung;
         String strFehlalarm;
 
+
         while (rs.next())
         {
             intIdBericht = rs.getInt("ID");
             intInstanznummer = rs.getInt("Instanznummer");
-            strName = rs.getString("Instanzname");
-            strEinsatzart = rs.getString("Taetigkeitsart");
-            strNummer = rs.getString("Nummer");
-            dateUhrzeit_Alarmierung = rs.getDate("Beginn");
-            dateUhrzeit_Rueckkehr = rs.getDate("Ende");
+            strName = rs.getString("Name");
+            strEinsatzart = rs.getString("Art");
+            strNummer = rs.getString("Nr");
+            dateUhrzeit_Alarmierung = rs.getDate("Uhrzeit_Alarmierung");
+            dateUhrzeit_Rueckkehr = rs.getDate("Uhrzeit_Rueckkehr");
             strStrasse = rs.getString("Strasse");
             strNummerAdr = rs.getString("NummerAdr");
             strStiege = rs.getString("Stiege");
             strPlz = rs.getString("PLZ");
             strOrt = rs.getString("Ort");
-            intStandesbuchnummer = rs.getInt("Instanznummer");
-            strVorname = rs.getString("Ort");
-            strZuname = rs.getString("Ort");
+            intStandesbuchnummer = rs.getInt("SBN");
+            strVorname = rs.getString("Vorname");
+            strZuname = rs.getString("Zuname");
             strMeldung = rs.getString("Meldung");
             strFehlalarm = rs.getString("Fehlalarm");
 
-            Einsatzbericht einsatzbericht = new Einsatzbericht(intIdBericht, intInstanznummer, strName, strEinsatzart, strNummer, dateUhrzeit_Alarmierung, dateUhrzeit_Rueckkehr, strStrasse, strNummerAdr, strStiege, strPlz, strOrt, intStandesbuchnummer, strVorname, strZuname, strMeldung, strFehlalarm);
+            Einsatzbericht einsatzbericht = new Einsatzbericht(intIdBericht, 
+                    intInstanznummer, strName, strEinsatzart, strNummer, 
+                    dateUhrzeit_Alarmierung, dateUhrzeit_Rueckkehr, strStrasse, 
+                    strNummerAdr, strStiege, strPlz, strOrt, intStandesbuchnummer, 
+                    strVorname, strZuname, strMeldung, strFehlalarm);
             liEinsatzbericht.add(einsatzbericht);
         }
 
         connPool.releaseConnection(conn);
         return liEinsatzbericht;
+    }
+    
+    
+    /**
+     * 
+     * @return
+     * @throws Exception 
+     */
+    public LinkedList<Uebungsbericht> getUebungsbericht() throws Exception
+    {
+        LinkedList<Uebungsbericht> liUebungsbericht = new LinkedList<>();
+
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "";
+
+         sqlString = "SELECT DISTINCT TOP 1000 id_berichte \"ID\""
+                + " ,instanznummer \"Instanznummer\""
+                + " ,name \"Instanzname\""
+                + " ,uebungsart \"Uebungsart\""
+                + " ,uebungsunterart \"Uebungsunterart\""
+                + " ,nummer \"Nummer\""
+                + " ,beginn \"Beginn\""
+                + " ,ende \"Ende\""
+                + " ,strasse \"Strasse\""
+                + " ,nummeradr \"NummerAdr\""
+                + " ,stiege \"Stiege\""
+                + " ,plz \"PLZ\""
+                + " ,ort \"Ort\""
+                + " ,meldung \"Meldung\""
+                + " ,Fehlalarm \"Fehlalarm\""
+                + " FROM FDISK.dbo.stmkuebungsberichte"
+                + " WHERE uebungsart <> 'Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN'";
+
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        int intIdBericht;
+        int intInstanznummer;
+        String strName;
+        String strUebungsart;
+        String strUebungsunterart;
+        String strNummer;
+        Date dateBeginn;
+        Date dateEnde;
+        String strStrasse;
+        String strNummerAdr;
+        String strStiege;
+        String strPlz;
+        String strOrt;
+        String strMeldung;
+        String strFehlalarm;
+
+        
+        while (rs.next())
+        {
+            intIdBericht = rs.getInt("ID");
+            intInstanznummer = rs.getInt("Instanznummer");
+            strName = rs.getString("Instanzname");
+            strUebungsart = rs.getString("Uebungsart");
+            strUebungsunterart = rs.getString("Uebungsunterart");
+            strNummer = rs.getString("Nummer");
+            dateBeginn = rs.getDate("Beginn");
+            dateEnde = rs.getDate("Ende");
+            strStrasse = rs.getString("Strasse");
+            strNummerAdr = rs.getString("NummerAdr");
+            strStiege = rs.getString("Stiege");
+            strPlz = rs.getString("PLZ");
+            strOrt = rs.getString("Ort");
+            strMeldung = rs.getString("Meldung");
+            strFehlalarm = rs.getString("Fehlalarm");
+
+            Uebungsbericht uebungsbericht = new Uebungsbericht(intIdBericht, 
+                    intInstanznummer, strName, strUebungsart, strUebungsunterart, 
+                    strNummer, dateBeginn, dateEnde, strStrasse, strNummerAdr, 
+                    strStiege, strPlz, strOrt, strMeldung, strFehlalarm);
+            liUebungsbericht.add(uebungsbericht);
+        }
+
+        connPool.releaseConnection(conn);
+        return liUebungsbericht;
     }
 
     /**
@@ -2114,7 +2227,7 @@ public class DB_Access
     }
 
     public void initializeDBValuesWithDBTypes()
-    {   
+    {
         //Tabelle stmkmitglieder
         haNamesTypes.put("vorname", "varchar");
         haNamesTypes.put("zuname", "varchar");
@@ -2131,7 +2244,7 @@ public class DB_Access
         //Tabelle stmkleistungsabzeichen bzw. stmkleistungsabzeichenmitglieder
         haNamesTypes.put("stufe", "varchar");
         haNamesTypes.put("lam.Datum", "datetime");
-        
+
         //Tabelle stmkleistungsabzeichen bzw. stmkleistungsabzeichenmitglieder
         haNamesTypes.put("k.Datum", "datetime");
         haNamesTypes.put("kursbezeichnung", "varchar");
@@ -2205,6 +2318,7 @@ public class DB_Access
 
             /*
              FUNKTIONIERT MIT UND OHNE WHERE CLAUSE! YEY!
+            Wir sind alle so stolz auf dich xD
              */
             String[][] dynamisch =
             {
@@ -2231,7 +2345,7 @@ public class DB_Access
 //            LinkedList<Taetigkeitsbericht> li = theInstance.getTaetigkeitsbericht();
 //            for (Taetigkeitsbericht li1 : li)
 //            {
-//                System.out.println(li1.getDateBeginn() + "-" + li1.getStrTaetigkeitsart());
+//                System.out.println(li1.getDateBeginn()+ "-" + li1.getStrTaetigkeitsart()+ "-" +li1.getStrFehlalarm());
 //            }
         } catch (Exception ex)
         {

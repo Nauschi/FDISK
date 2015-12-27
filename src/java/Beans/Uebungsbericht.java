@@ -14,8 +14,8 @@ import java.util.Objects;
  */
 public class Uebungsbericht
 {
+
     private int intId_StmkUebungsberichte;
-    private int intIdBerichte;
     private int intInstanznummer;
     private String strName;
     private String strUebungsart;
@@ -30,10 +30,10 @@ public class Uebungsbericht
     private String strOrt;
     private String strMeldung;
     private String strFehlalarm;
-    public Uebungsbericht(int intId_StmkUebungsberichte, int intIdBerichte, int intInstanznummer, String strName, String strUebungsart, String strUebungsunterart, String strNummer, Date dateBeginn, Date dateEnde, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, String strMeldung, String strFehlalarm)
+
+    public Uebungsbericht(int intId_StmkUebungsberichte, int intInstanznummer, String strName, String strUebungsart, String strUebungsunterart, String strNummer, Date dateBeginn, Date dateEnde, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, String strMeldung, String strFehlalarm)
     {
         this.intId_StmkUebungsberichte = intId_StmkUebungsberichte;
-        this.intIdBerichte = intIdBerichte;
         this.intInstanznummer = intInstanznummer;
         this.strName = strName;
         this.strUebungsart = strUebungsart;
@@ -58,16 +58,6 @@ public class Uebungsbericht
     public void setIntId_StmkUebungsberichte(int intId_StmkUebungsberichte)
     {
         this.intId_StmkUebungsberichte = intId_StmkUebungsberichte;
-    }
-
-    public int getIntIdBerichte()
-    {
-        return intIdBerichte;
-    }
-
-    public void setIntIdBerichte(int intIdBerichte)
-    {
-        this.intIdBerichte = intIdBerichte;
     }
 
     public int getIntInstanznummer()
@@ -213,7 +203,7 @@ public class Uebungsbericht
     @Override
     public int hashCode()
     {
-        int hash = 5;
+        int hash = 3;
         return hash;
     }
 
@@ -230,10 +220,6 @@ public class Uebungsbericht
         }
         final Uebungsbericht other = (Uebungsbericht) obj;
         if (this.intId_StmkUebungsberichte != other.intId_StmkUebungsberichte)
-        {
-            return false;
-        }
-        if (this.intIdBerichte != other.intIdBerichte)
         {
             return false;
         }
@@ -296,15 +282,10 @@ public class Uebungsbericht
         return true;
     }
 
- 
-    
-
     @Override
     public String toString()
     {
-        return "UebungsberichtUeberschrift{" + "intId_StmkUebungsberichte=" + intId_StmkUebungsberichte + ", intIdBerichte=" + intIdBerichte + ", intInstanznummer=" + intInstanznummer + ", strName=" + strName + ", strUebungsart=" + strUebungsart + ", strUebungsunterart=" + strUebungsunterart + ", strNummer=" + strNummer + ", dateBeginn=" + dateBeginn + ", dateEnde=" + dateEnde + ", strStrasse=" + strStrasse + ", strNummerAdr=" + strNummerAdr + ", strStiege=" + strStiege + ", strPlz=" + strPlz + ", strOrt=" + strOrt + ", strMeldung=" + strMeldung + ", strFehlalarm=" + strFehlalarm +'}';
+        return "UebungsberichtUeberschrift{" + "intId_StmkUebungsberichte=" + intId_StmkUebungsberichte + ", intInstanznummer=" + intInstanznummer + ", strName=" + strName + ", strUebungsart=" + strUebungsart + ", strUebungsunterart=" + strUebungsunterart + ", strNummer=" + strNummer + ", dateBeginn=" + dateBeginn + ", dateEnde=" + dateEnde + ", strStrasse=" + strStrasse + ", strNummerAdr=" + strNummerAdr + ", strStiege=" + strStiege + ", strPlz=" + strPlz + ", strOrt=" + strOrt + ", strMeldung=" + strMeldung + ", strFehlalarm=" + strFehlalarm + '}';
     }
-    
-    
-    
+
 }
