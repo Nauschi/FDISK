@@ -1904,13 +1904,6 @@ public class DB_Access {
         }
         
         for (int i = 0; i < intRows; i++) {
-            for (int j = 0; j < 6; j++) {
-                System.out.print(strEingabe[i][j] + " ");
-            }
-            System.out.println("");
-            }
-
-        for (int i = 0; i < intRows; i++) {
             strSpaltenUeberschrift = strEingabe[i][1];
 
             if (strSpaltenUeberschrift.toUpperCase().equals("STATUS")) {
@@ -2112,16 +2105,6 @@ public class DB_Access {
                 sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' "+strColLink+" ";
                 continue;
             }
-            /*
-             WITH alle_alter AS
-             (
-             SELECT DATEDIFF(YY, geburtsdatum, GETDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum)   > GETDATE() THEN 1 ELSE 0 END  AS mitglied_alter
-             FROM FDISK.dbo.stmkmitglieder
-             )
-             SELECT mitglied_alter
-             FROM alle_alter
-             WHERE zeit = 10 
-             */
 
             //d.h. User gibt eine WHERE clause ein
             if (!(strColSymbol.equals(""))) {
