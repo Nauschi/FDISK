@@ -1787,6 +1787,7 @@ public class DB_Access {
                 + " FDISK.dbo.stmkleistungsabzeichenmitglieder mitglieder"
                 + " ON(mitglieder.id_leistungsabzeichenstufe = leistungsabzeichen.id_leistungsabzeichenstufe)";
         ResultSet rs = stat.executeQuery(sqlString);
+        
 
         while (rs.next()) {
             String strFilter;
@@ -1902,7 +1903,7 @@ public class DB_Access {
                 }
             }
         }
-        
+
         for (int i = 0; i < intRows; i++) {
             strSpaltenUeberschrift = strEingabe[i][1];
 
@@ -2061,7 +2062,7 @@ public class DB_Access {
         }
 
         sqlString += " WHERE ";
-        
+
         String strColLink = "";
 
         for (int i = 0; i < intRows; i++) {
@@ -2075,9 +2076,8 @@ public class DB_Access {
             if (strColSymbol.equals("<>")) {
                 strColSymbol = "!=";
             }
-            
-            switch (strColLink)
-            {
+
+            switch (strColLink) {
                 case "UND":
                     strColLink = "AND";
                     break;
@@ -2091,10 +2091,9 @@ public class DB_Access {
                     //ja das ist die große frage
                     break;
             }
-            
+
             if (strColWhere.equals("Geschlecht")) {
-                switch (strColValue)
-                {
+                switch (strColValue) {
                     case "Herr":
                         strColValue = "m";
                         break;
@@ -2102,7 +2101,7 @@ public class DB_Access {
                         strColValue = "w";
                         break;
                 }
-                sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' "+strColLink+" ";
+                sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' " + strColLink + " ";
                 continue;
             }
 
@@ -2112,27 +2111,25 @@ public class DB_Access {
                     //Datumsformat: dd/MM/yyyy
                     //TO_DATE gibt's bei Microsoft SQL nicht, CAST ist äquivalent
                     case "datetime":
-                        sqlString += strColWhere + " " + strColSymbol + " CAST('" + strColValue + "' AS datetime) "+strColLink+" ";
+                        sqlString += strColWhere + " " + strColSymbol + " CAST('" + strColValue + "' AS datetime) " + strColLink + " ";
                         break;
                     case "varchar":
-                        sqlString += "UPPER(" + strColWhere + ") " + strColSymbol + " '" + strColValue.toUpperCase() + "' "+strColLink+" ";
+                        sqlString += "UPPER(" + strColWhere + ") " + strColSymbol + " '" + strColValue.toUpperCase() + "' " + strColLink + " ";
                         break;
                     //default bei byte, tinyint, bigint, int
                     default:
-                        sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' "+strColLink+" ";
+                        sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' " + strColLink + " ";
                         break;
                 }
 
             }
         }
-        
+
         int intIndex = -1;
-        
-        if(!strColLink.isEmpty())
-        {
+
+        if (!strColLink.isEmpty()) {
             intIndex = sqlString.lastIndexOf(strColLink);
         }
-       
 
         if (intIndex != -1) {
             sqlString = sqlString.substring(0, intIndex) + " ";
@@ -2282,8 +2279,7 @@ public class DB_Access {
     public String getDBTypeForValue(String strValue) {
         String strType = "";
 
-        for (Map.Entry e : haNamesTypes.entrySet()) 
-        {
+        for (Map.Entry e : haNamesTypes.entrySet()) {
             if (e.getKey().toString().toUpperCase().equals(strValue.toUpperCase())) {
                 strType = e.getValue().toString();
             }
@@ -2303,7 +2299,36 @@ public class DB_Access {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        HashMap<String, LinkedList<String>> hm = new HashMap<>();
+//        HashMap<String, LinkedList<String>> hm = new HashMap<>();
+        LinkedList<Berechtigung> liBerechtigung = new LinkedList<>();
+        liBerechtigung = theInstance.getBerechtigungen(3536);
+        LinkedList<Mitglied> liMitglieder = new LinkedList<>();
+        LinkedList<Integer> liAbschnittnummern = new LinkedList<>();
+        LinkedList<String> liFubwehrnummern = new LinkedList<>();
+        for (Berechtigung berechtigung : liBerechtigung) {
+            System.out.println(berechtigung.getStrBerechtigung());
+            
+            liAbschnittnummern = theInstance.getAbschnittNummernFuerBereich(berechtigung.getIntBereich());
+            System.out.println("ABSCHNITTNUMMERN:");
+            for (Integer abschnittnr : liAbschnittnummern) {
+                System.out.println(abschnittnr);
+            }
+            liFubwehrnummern = theInstance.getFubwehrNummernFuerAbschnitt(liAbschnittnummern.get(0));
+            System.out.println("FUBWEHRNUMMERN in 4901");
+            for (String fubwehr : liFubwehrnummern) {
+                System.out.println(fubwehr);
+            }
+            
+            liMitglieder = theInstance.getEinfacheMitgliederliste(berechtigung.getIntBereich(), 4901, "999");
+        }
+
+        
+        int i = 0;
+        for (Mitglied mitglied : liMitglieder) {
+            System.out.println(mitglied.toString());
+            i++;
+        }
+        System.out.println(i);
         try {
 //            LinkedList<Berechtigung> lili = theInstance.getBerechtigungen(3566);
 //            System.out.println("zweite Berechtigung: " + lili.get(1).getIntIDGruppe());
@@ -2337,16 +2362,15 @@ public class DB_Access {
 //                System.out.println(li1.getStrVorname() + "-" + li1.getStrZuname());
 //            }
 
-            String[][] dynamisch
-                    = {
-                        {
-                            "{", "Anrede", "=", "m", "}", "ODER"
-                        },
-                        {
-                            "[", "Anrede", "=", "w", "]", "ODER"
-                        }
-                    };
-
+//            String[][] dynamisch
+//                    = {
+//                        {
+//                            "{", "Anrede", "=", "m", "}", "ODER"
+//                        },
+//                        {
+//                            "[", "Anrede", "=", "w", "]", "ODER"
+//                        }
+//                    };
 //            String[][] dynamisch =
 //            {
 //                {
@@ -2356,9 +2380,8 @@ public class DB_Access {
 //                    "(", "Ort", "", "", ")", "UND"
 //                }
 //            };
-            StringBuilder html = theInstance.getDynamischenBerichtMitUnd(dynamisch);
-            System.out.println(html);
-
+//            StringBuilder html = theInstance.getDynamischenBerichtMitUnd(dynamisch);
+//            System.out.println(html);
 //            LinkedList<Taetigkeitsbericht> li = theInstance.getTaetigkeitsbericht();
 //            for (Taetigkeitsbericht li1 : li)
 //            {
