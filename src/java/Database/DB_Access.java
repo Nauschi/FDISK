@@ -512,12 +512,53 @@ public class DB_Access {
      * @see Mitglied
      * @see LinkedList
      */
-    public LinkedList<MitgliedsGeburtstag> getGeburtstagsliste(int jahr) throws Exception {
+    public LinkedList<MitgliedsGeburtstag> getGeburtstagsliste(int jahr, int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
         LinkedList<MitgliedsGeburtstag> liMitgliedsGeburtstage = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
-        String sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\" \n"
-                + "FROM FDISK.dbo.stmkmitglieder";
+        String sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\""
+                + " FROM FDISK.dbo.stmkmitglieder";
+
+        if (intBereichnr == 0 && intAbschnittnr == 0) {
+            //nur Feuerwehrkommandant oder Mitglied
+            sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\""
+                    + " FROM FDISK.dbo.stmkmitglieder"
+                    + " WHERE instanznummer = '" + strFubwehr + "'";
+        } else {
+            if (intBereichnr == 0) {
+                if (strFubwehr.equals("999")) {
+                    //alle Feuerwehren wenn Abschnittkommandant 
+                    sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\""
+                            + " FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer) "
+                            + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
+                } else {
+                    //nur eine Feuerwehr wenn Abschnittkommandant
+                    sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\""
+                            + " FROM FDISK.dbo.stmkmitglieder"
+                            + " WHERE instanznummer = '" + strFubwehr + "'";
+                }
+            } else {
+                if (strFubwehr.equals("999") && intAbschnittnr == 999) {
+                    //alle Feuerwehren von allen Abschnitten wenn Bereichskommandant
+                    sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\""
+                            + " FROM FDISK.dbo.stmkmitglieder"
+                            + " WHERE SUBSTRING(instanznummer, 0, 3) = '" + intBereichnr + "'";
+                } else {
+                    if (strFubwehr.equals("999")) {
+                        //alle Feuerwehren von einem Abschnitt wenn Bereichskommandant
+                        sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\""
+                                + " FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer) "
+                                + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
+                    } else {
+                        //nur eine Feuerwehr von einem Abschnitt wenn Bereichkommandant
+                        sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\""
+                                + " FROM FDISK.dbo.stmkmitglieder "
+                                + " WHERE instanznummer = '" + strFubwehr + "'";
+                    }
+                }
+            }
+        }
+
         ResultSet rs = stat.executeQuery(sqlString);
 
         String strSTB;
@@ -542,7 +583,7 @@ public class DB_Access {
             Calendar current = new GregorianCalendar();
 
             calGeburtsdatum.setTime(dateGeburtsdatum);
-            int intCurrentYear = current.get(Calendar.YEAR);
+            int intCurrentYear = jahr - 1;
             intZielalter = intCurrentYear - calGeburtsdatum.get(Calendar.YEAR);
 
             calGeburtsdatum.set(Calendar.YEAR, intCurrentYear);
@@ -1787,7 +1828,6 @@ public class DB_Access {
                 + " FDISK.dbo.stmkleistungsabzeichenmitglieder mitglieder"
                 + " ON(mitglieder.id_leistungsabzeichenstufe = leistungsabzeichen.id_leistungsabzeichenstufe)";
         ResultSet rs = stat.executeQuery(sqlString);
-        
 
         while (rs.next()) {
             String strFilter;
@@ -2307,7 +2347,7 @@ public class DB_Access {
         LinkedList<String> liFubwehrnummern = new LinkedList<>();
         for (Berechtigung berechtigung : liBerechtigung) {
             System.out.println(berechtigung.getStrBerechtigung());
-            
+
             liAbschnittnummern = theInstance.getAbschnittNummernFuerBereich(berechtigung.getIntBereich());
             System.out.println("ABSCHNITTNUMMERN:");
             for (Integer abschnittnr : liAbschnittnummern) {
@@ -2318,11 +2358,10 @@ public class DB_Access {
             for (String fubwehr : liFubwehrnummern) {
                 System.out.println(fubwehr);
             }
-            
-            liMitglieder = theInstance.getEinfacheMitgliederliste(berechtigung.getIntBereich(), 4901, "999");
+
+            liMitglieder = theInstance.getEinfacheMitgliederliste(0, 4901, "999");
         }
 
-        
         int i = 0;
         for (Mitglied mitglied : liMitglieder) {
             System.out.println(mitglied.toString());
