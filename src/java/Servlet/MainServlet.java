@@ -230,7 +230,7 @@ public class MainServlet extends HttpServlet
                 request.setAttribute("liste", access.getAdressListe());
             } else if (strBericht.equals(liRohberichte.get(3).getStrBerichtname()))
             {
-                request.setAttribute("liste", access.getGeburtstagsliste(2014)); //welche Zahl??
+               //NEUE ÜBERGABEPARAMETER request.setAttribute("liste", access.getGeburtstagsliste(2014)); //welche Zahl??
             } else if (strBericht.equals(liRohberichte.get(4).getStrBerichtname()))
             {
                 System.out.println("MainServlet.generiereVorschau: In Tätigkeitsbericht");
