@@ -234,7 +234,7 @@ public class MainServlet extends HttpServlet
             } else if (strBericht.equals(liRohberichte.get(4).getStrBerichtname()))
             {
                 System.out.println("MainServlet.generiereVorschau: In Tätigkeitsbericht");
-                request.setAttribute("liste", access.getDienstzeitListe());
+                //NEUE ÜBERGABEPARAMTER request.setAttribute("liste", access.getDienstzeitListe());
             } else if (strBericht.equals(liRohberichte.get(6).getStrBerichtname()))
             {
                 request.setAttribute("liste", access.getLeerberichtMitglied());

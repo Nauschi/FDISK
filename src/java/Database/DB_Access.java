@@ -505,8 +505,12 @@ public class DB_Access {
     /**
      * Gibt eine Geburtstagsliste aller Mitarbeiter als LinkedList zurück.
      *
+     * @param intBereichnr
+     * @param strFubwehr
+     * @param intAbschnittnr
      * @return LinkedList
      * @param jahr
+     * @throws java.lang.Exception
      * @throws IOException
      * @see MitgliedsGeburtstag
      * @see Mitglied
@@ -603,18 +607,63 @@ public class DB_Access {
     /**
      * Gibt eine Dienstzeitliste aller Mitarbeiter als LinkedList zurück.
      *
+     * @param intBereichnr
+     * @param intAbschnittnr
+     * @param strFubwehr
      * @return LinkedList
+     * @throws java.lang.Exception
      * @throws IOException
      * @see Mitglied
      * @see MitgliedsDienstzeit
      * @see LinkedList
      */
-    public LinkedList<MitgliedsDienstzeit> getDienstzeitListe() throws Exception {
+    public LinkedList<MitgliedsDienstzeit> getDienstzeitListe(int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
         LinkedList<MitgliedsDienstzeit> liMitgliedsDienstzeiten = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
         String sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
-                + "FROM FDISK.dbo.stmkmitglieder ";
+                + " FROM FDISK.dbo.stmkmitglieder ";
+
+        if (intBereichnr == 0 && intAbschnittnr == 0) {
+            //nur Feuerwehrkommandant oder Mitglied
+            sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
+                    + " FROM FDISK.dbo.stmkmitglieder"
+                    + " WHERE instanznummer = '" + strFubwehr + "'";
+        } else {
+            if (intBereichnr == 0) {
+                if (strFubwehr.equals("999")) {
+                    //alle Feuerwehren wenn Abschnittkommandant 
+                    sqlString =  "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
+                            + " FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer)"
+                            + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
+                } else {
+                    //nur eine Feuerwehr wenn Abschnittkommandant
+                    sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
+                            + " FROM FDISK.dbo.stmkmitglieder"
+                            + " WHERE instanznummer = '" + strFubwehr + "'";
+                }
+            } else {
+                if (strFubwehr.equals("999") && intAbschnittnr == 999) {
+                    //alle Feuerwehren von allen Abschnitten wenn Bereichskommandant
+                    sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
+                            + " FROM FDISK.dbo.stmkmitglieder"
+                            + " WHERE SUBSTRING(instanznummer, 0, 3) = '" + intBereichnr + "'";
+                } else {
+                    if (strFubwehr.equals("999")) {
+                        //alle Feuerwehren von einem Abschnitt wenn Bereichskommandant
+                        sqlString =  "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
+                                + " FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer)"
+                                + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
+                    } else {
+                        //nur eine Feuerwehr von einem Abschnitt wenn Bereichkommandant
+                        sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
+                                + " FROM FDISK.dbo.stmkmitglieder"
+                                + " WHERE instanznummer = '" + strFubwehr + "'";
+                    }
+                }
+            }
+        }
+
         ResultSet rs = stat.executeQuery(sqlString);
 
         String strSTB;
