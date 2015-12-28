@@ -44,13 +44,13 @@ function onChangeVerknuepfung(intIndexVonZeile)
 
 function onErstellen(intZahler)
 {
-    var strWertVonLetzemSelect = document.getElementById("select_verknuepfung_" + intZahler).value;
-    if (strWertVonLetzemSelect != " ")
+    var strWertVonLetztemSelect = document.getElementById("select_verknuepfung_" + intZahler).value;
+    if (strWertVonLetztemSelect != " ")
     {
-        alert("Letzte Verknüpfung muss Leer sein");
+        alert("Letzte Verknüpfung muss leer sein!");
         document.getElementById("div_verknuepfung_" + intZahler).style.backgroundColor = "#C00518";
         return;
     }
-    alert("Weiter zum erstellen");
+    alert("Weiter zum Erstellen");
 }
 
