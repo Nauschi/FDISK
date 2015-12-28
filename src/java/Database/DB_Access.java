@@ -26,8 +26,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -40,22 +38,24 @@ import java.util.logging.Logger;
  *
  * @author philipp
  */
-public class DB_Access {
+public class DB_Access
+{
 
-    private static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
     private DB_ConnectionPool connPool;
     private static DB_Access theInstance = null;
     private HashMap<String, String> haNamesTypes = new HashMap<>();
-    private int intWhereAlter;
 
-    public static DB_Access getInstance() throws ClassNotFoundException {
-        if (theInstance == null) {
+    public static DB_Access getInstance() throws ClassNotFoundException
+    {
+        if (theInstance == null)
+        {
             theInstance = new DB_Access();
         }
         return theInstance;
     }
 
-    private DB_Access() throws ClassNotFoundException {
+    private DB_Access() throws ClassNotFoundException
+    {
         connPool = DB_ConnectionPool.getInstance();
     }
 
@@ -66,7 +66,8 @@ public class DB_Access {
      /*                       STATISCHER BERICHTGENERATOR                              *
      /*                                                                                *
      /**********************************************************************************/
-    public LinkedList<Berechtigung> getBerechtigungen(int intUserID) throws Exception {
+    public LinkedList<Berechtigung> getBerechtigungen(int intUserID) throws Exception
+    {
         System.out.println(intUserID);
         LinkedList<Berechtigung> liBerechtigungen = new LinkedList<>();
         LinkedList<LoginMitglied> liLoginBerechtigung = new LinkedList<>();
@@ -77,15 +78,19 @@ public class DB_Access {
         String bereich = getBereichsnameFuerFubwehr(fubwehr);
         String strBerechtigung = "";
 
-        if (liLoginBerechtigung.isEmpty()) {
+        if (liLoginBerechtigung.isEmpty())
+        {
             strBerechtigung = "Mitglied" + " - " + feuerwehrname;
             Berechtigung berechtigung = new Berechtigung(strBerechtigung, 0, fubwehr, getAbschnittsnummerForFubwehr(fubwehr), getBereichsnummerFuerFubwehr(fubwehr), intUserID);
             liBerechtigungen.add(berechtigung);
-        } else {
-            for (LoginMitglied loginMitglied : liLoginBerechtigung) {
+        } else
+        {
+            for (LoginMitglied loginMitglied : liLoginBerechtigung)
+            {
                 String bezeichnung = loginMitglied.getStrGruppe();
 
-                switch (loginMitglied.getIntIDGruppe()) {
+                switch (loginMitglied.getIntIDGruppe())
+                {
                     case 1:
                         strBerechtigung = bezeichnung + " - Alle Feuerwehren";
                         break;
@@ -118,7 +123,8 @@ public class DB_Access {
      * @throws SQLException
      * @throws Exception
      */
-    public int getUserID(String strUsername, String strPasswort) throws SQLException, Exception {
+    public int getUserID(String strUsername, String strPasswort) throws SQLException, Exception
+    {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
         String sqlString = "SELECT IDUser \"IDUser\", username \"username\", passwort \"passwort\" "
@@ -131,7 +137,8 @@ public class DB_Access {
          */
         ResultSet rs = stat.executeQuery(sqlString);
 
-        if (!rs.next()) {
+        if (!rs.next())
+        {
             connPool.releaseConnection(conn);
             return -1;
         }
@@ -152,7 +159,8 @@ public class DB_Access {
      * @throws SQLException
      * @throws Exception
      */
-    public LinkedList<LoginMitglied> getLoginMitglied(String strUsername, String strPasswort) throws SQLException, Exception {
+    public LinkedList<LoginMitglied> getLoginMitglied(String strUsername, String strPasswort) throws SQLException, Exception
+    {
         int intIDUser = getUserID(strUsername, strPasswort);
         LinkedList<LoginMitglied> liLoginMitglied = getLoginBerechtigung(intIDUser);
         return liLoginMitglied;
@@ -168,7 +176,8 @@ public class DB_Access {
      * @throws SQLException
      * @throws Exception
      */
-    public LinkedList<LoginMitglied> getLoginBerechtigung(int intUserID) throws SQLException, Exception {
+    public LinkedList<LoginMitglied> getLoginBerechtigung(int intUserID) throws SQLException, Exception
+    {
         LinkedList<LoginMitglied> liMitglieder = new LinkedList<>();
 
         Connection conn = connPool.getConnection();
@@ -179,14 +188,16 @@ public class DB_Access {
                 + "WHERE benutzerdetail.IDUser = " + intUserID;
         ResultSet rs = stat.executeQuery(sqlString);
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             String strFubwehr = rs.getString("Fubwehr");
             int intIDGruppe = rs.getInt("IDGruppe");
             String strBezeichnung = rs.getString("Bezeichnung");
             System.out.println("IDGruppe: " + intIDGruppe);
             System.out.println("Bezeichnung: " + strBezeichnung);
             System.out.println("Fubwehr: " + strFubwehr);
-            if (intIDGruppe == 1 || intIDGruppe == 5 || intIDGruppe == 9 || intIDGruppe == 15) {
+            if (intIDGruppe == 1 || intIDGruppe == 5 || intIDGruppe == 9 || intIDGruppe == 15)
+            {
                 LoginMitglied lm = new LoginMitglied(intUserID, strFubwehr, intIDGruppe, strBezeichnung);
                 liMitglieder.add(lm);
             }
@@ -205,7 +216,8 @@ public class DB_Access {
      * @throws SQLException
      * @throws Exception
      */
-    public String getFubwehrForUserID(int intUserID) throws SQLException, Exception {
+    public String getFubwehrForUserID(int intUserID) throws SQLException, Exception
+    {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
         String sqlString = "SELECT fubwehr \"Fubwehr\" "
@@ -215,7 +227,8 @@ public class DB_Access {
 
         String strFubwehr = "";
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             strFubwehr = rs.getString("Fubwehr");
         }
 
@@ -232,7 +245,8 @@ public class DB_Access {
      * @throws SQLException
      * @throws Exception
      */
-    public int getAbschnittsnummerForFubwehr(String strFubwehr) throws SQLException, Exception {
+    public int getAbschnittsnummerForFubwehr(String strFubwehr) throws SQLException, Exception
+    {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 //        String sqlString = "SELECT DISTINCT f.Abschnitt_Instanznummer \"Nummer\" "
@@ -246,7 +260,8 @@ public class DB_Access {
 
         int intAbschnittsnummer = 0;
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             intAbschnittsnummer = rs.getInt("Nummer");
         }
 
@@ -263,7 +278,8 @@ public class DB_Access {
      * @throws SQLException
      * @throws Exception
      */
-    public String getNameFuerFubwehr(String strFubwehr) throws SQLException, Exception {
+    public String getNameFuerFubwehr(String strFubwehr) throws SQLException, Exception
+    {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
         String sqlString = "SELECT TOP 1000 CONCAT(instanzart, ' ' , instanzname) \"Name\", instanznummer "
@@ -273,7 +289,8 @@ public class DB_Access {
 
         String strName = "";
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             strName = rs.getString("Name");
         }
 
@@ -290,7 +307,8 @@ public class DB_Access {
      * @throws SQLException
      * @throws Exception
      */
-    public String getAbschnittsnameFuerFubwehr(String strFubwehr) throws SQLException, Exception {
+    public String getAbschnittsnameFuerFubwehr(String strFubwehr) throws SQLException, Exception
+    {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
         System.out.println("strFubwerh: " + strFubwehr);
@@ -301,7 +319,8 @@ public class DB_Access {
 
         String strName = "";
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             strName = rs.getString("Name");
         }
 
@@ -317,7 +336,8 @@ public class DB_Access {
      * @throws SQLException
      * @throws Exception
      */
-    public String getBereichsnameFuerFubwehr(String strFubwehr) throws SQLException, Exception {
+    public String getBereichsnameFuerFubwehr(String strFubwehr) throws SQLException, Exception
+    {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
         String sqlString = "SELECT uebergeordneteInstanz \"Name\", Bereich_Nr \"Nr\" "
@@ -327,7 +347,8 @@ public class DB_Access {
 
         String strName = "";
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             strName = rs.getString("Name");
         }
 
@@ -335,7 +356,8 @@ public class DB_Access {
         return strName;
     }
 
-    public int getBereichsnummerFuerFubwehr(String strFubwehr) throws SQLException, Exception {
+    public int getBereichsnummerFuerFubwehr(String strFubwehr) throws SQLException, Exception
+    {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
         String sqlString = "SELECT Bereich_Nr \"Nr\" "
@@ -345,7 +367,8 @@ public class DB_Access {
 
         int intNummer = 0;
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             intNummer = rs.getInt("Nr");
         }
 
@@ -353,7 +376,8 @@ public class DB_Access {
         return intNummer;
     }
 
-    public String getBereichsnameFuerBereichnnummer(int bereichnummer) throws Exception {
+    public String getBereichsnameFuerBereichnnummer(int bereichnummer) throws Exception
+    {
         String bereichname = " - ";
         String sqlString;
         Connection conn = connPool.getConnection();
@@ -363,13 +387,15 @@ public class DB_Access {
                 + " FROM [FDISK].[dbo].[qry_alle_feuerwehren_mit_Abschnitt_und_Bereich]"
                 + " WHERE Bereich_Nr =" + bereichnummer;
         rs = stat.executeQuery(sqlString);
-        while (rs.next()) {
+        while (rs.next())
+        {
             bereichname = rs.getString("Bereichname");
         }
         return bereichname;
     }
 
-    public String getAbschnittsnameFuerAbschnittsnummer(int abschnittnummer) throws Exception {
+    public String getAbschnittsnameFuerAbschnittsnummer(int abschnittnummer) throws Exception
+    {
         String abschnittname = " - ";
         String sqlString;
         Connection conn = connPool.getConnection();
@@ -379,13 +405,15 @@ public class DB_Access {
                 + " FROM [FDISK].[dbo].[qry_alle_feuerwehren_mit_Abschnitt_und_Bereich]"
                 + " WHERE Abschnitt_Instanznummer =" + abschnittnummer;
         rs = stat.executeQuery(sqlString);
-        while (rs.next()) {
+        while (rs.next())
+        {
             abschnittname = rs.getString("Abschnittname");
         }
         return abschnittname;
     }
 
-    public LinkedList<Integer> getAbschnittNummernFuerBereich(int bereichnummer) throws Exception {
+    public LinkedList<Integer> getAbschnittNummernFuerBereich(int bereichnummer) throws Exception
+    {
         LinkedList<Integer> liAbschnittnummern = new LinkedList<>();
         String sqlString;
         Connection conn = connPool.getConnection();
@@ -395,13 +423,15 @@ public class DB_Access {
                 + " FROM FDISK.dbo.qry_alle_feuerwehren af INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(af.instanznummer = f.instanznummer)"
                 + " WHERE f.Bereich_Nr =" + bereichnummer;
         rs = stat.executeQuery(sqlString);
-        while (rs.next()) {
+        while (rs.next())
+        {
             liAbschnittnummern.add(rs.getInt("Abschnittnr"));
         }
         return liAbschnittnummern;
     }
 
-    public LinkedList<String> getFubwehrNummernFuerAbschnitt(int abschnittnummer) throws Exception {
+    public LinkedList<String> getFubwehrNummernFuerAbschnitt(int abschnittnummer) throws Exception
+    {
         LinkedList<String> liFubwehrnummern = new LinkedList<>();
         String sqlString;
         Connection conn = connPool.getConnection();
@@ -411,7 +441,8 @@ public class DB_Access {
                 + " FROM FDISK.dbo.qry_alle_feuerwehren af INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(af.instanznummer = f.instanznummer)"
                 + " WHERE f.abschnitt_instanznummer =" + abschnittnummer;
         rs = stat.executeQuery(sqlString);
-        while (rs.next()) {
+        while (rs.next())
+        {
             liFubwehrnummern.add(rs.getString("Fubwehr"));
         }
         return liFubwehrnummern;
@@ -426,7 +457,8 @@ public class DB_Access {
      * @see Mitglied
      * @see LinkedList
      */
-    public LinkedList<Mitglied> getEinfacheMitgliederliste(int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
+    public LinkedList<Mitglied> getEinfacheMitgliederliste(int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception
+    {
         LinkedList<Mitglied> liMitglieder = new LinkedList<>();
         //String strFubwehr = getFubwehrForUserID(intUserID) + "";
         //int intAbschnittsnummer = getAbschnittsnummerForFubwehr(strFubwehr);
@@ -438,37 +470,47 @@ public class DB_Access {
 
         String sqlString = "";
 
-        if (intBereichnr == 0 && intAbschnittnr == 0) {
+        if (intBereichnr == 0 && intAbschnittnr == 0)
+        {
             //nur Feuerwehrkommandant oder Mitglied
             sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
                     + "FROM FDISK.dbo.stmkmitglieder "
                     + "WHERE instanznummer = '" + strFubwehr + "'";
-        } else {
-            if (intBereichnr == 0) {
-                if (strFubwehr.equals("999")) {
+        } else
+        {
+            if (intBereichnr == 0)
+            {
+                if (strFubwehr.equals("999"))
+                {
                     //alle Feuerwehren wenn Abschnittkommandant 
                     sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
                             + " FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer) "
                             + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
-                } else {
+                } else
+                {
                     //nur eine Feuerwehr wenn Abschnittkommandant
                     sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
                             + "FROM FDISK.dbo.stmkmitglieder "
                             + "WHERE instanznummer = '" + strFubwehr + "'";
                 }
-            } else {
-                if (strFubwehr.equals("999") && intAbschnittnr == 999) {
+            } else
+            {
+                if (strFubwehr.equals("999") && intAbschnittnr == 999)
+                {
                     //alle Feuerwehren von allen Abschnitten wenn Bereichskommandant
                     sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
                             + "FROM FDISK.dbo.stmkmitglieder "
                             + "WHERE SUBSTRING(instanznummer, 0, 3) = '" + intBereichnr + "'";
-                } else {
-                    if (strFubwehr.equals("999")) {
+                } else
+                {
+                    if (strFubwehr.equals("999"))
+                    {
                         //alle Feuerwehren von einem Abschnitt wenn Bereichskommandant
                         sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
                                 + " FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer) "
                                 + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
-                    } else {
+                    } else
+                    {
                         //nur eine Feuerwehr von einem Abschnitt wenn Bereichkommandant
                         sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
                                 + "FROM FDISK.dbo.stmkmitglieder "
@@ -487,7 +529,8 @@ public class DB_Access {
         String strZuname;
         int intPersID;
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             intPersID = rs.getInt("PersID");
             strSTB = rs.getString("STB");
             strDGR = rs.getString("DGR");
@@ -517,44 +560,55 @@ public class DB_Access {
      * @see Mitglied
      * @see LinkedList
      */
-    public LinkedList<MitgliedsGeburtstag> getGeburtstagsliste(int jahr, int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
+    public LinkedList<MitgliedsGeburtstag> getGeburtstagsliste(int jahr, int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception
+    {
         LinkedList<MitgliedsGeburtstag> liMitgliedsGeburtstage = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
         String sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\""
                 + " FROM FDISK.dbo.stmkmitglieder";
 
-        if (intBereichnr == 0 && intAbschnittnr == 0) {
+        if (intBereichnr == 0 && intAbschnittnr == 0)
+        {
             //nur Feuerwehrkommandant oder Mitglied
             sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\""
                     + " FROM FDISK.dbo.stmkmitglieder"
                     + " WHERE instanznummer = '" + strFubwehr + "'";
-        } else {
-            if (intBereichnr == 0) {
-                if (strFubwehr.equals("999")) {
+        } else
+        {
+            if (intBereichnr == 0)
+            {
+                if (strFubwehr.equals("999"))
+                {
                     //alle Feuerwehren wenn Abschnittkommandant 
                     sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\""
                             + " FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer) "
                             + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
-                } else {
+                } else
+                {
                     //nur eine Feuerwehr wenn Abschnittkommandant
                     sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\""
                             + " FROM FDISK.dbo.stmkmitglieder"
                             + " WHERE instanznummer = '" + strFubwehr + "'";
                 }
-            } else {
-                if (strFubwehr.equals("999") && intAbschnittnr == 999) {
+            } else
+            {
+                if (strFubwehr.equals("999") && intAbschnittnr == 999)
+                {
                     //alle Feuerwehren von allen Abschnitten wenn Bereichskommandant
                     sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\""
                             + " FROM FDISK.dbo.stmkmitglieder"
                             + " WHERE SUBSTRING(instanznummer, 0, 3) = '" + intBereichnr + "'";
-                } else {
-                    if (strFubwehr.equals("999")) {
+                } else
+                {
+                    if (strFubwehr.equals("999"))
+                    {
                         //alle Feuerwehren von einem Abschnitt wenn Bereichskommandant
                         sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\""
                                 + " FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer) "
                                 + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
-                    } else {
+                    } else
+                    {
                         //nur eine Feuerwehr von einem Abschnitt wenn Bereichkommandant
                         sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\""
                                 + " FROM FDISK.dbo.stmkmitglieder "
@@ -575,7 +629,8 @@ public class DB_Access {
         Date dateGeburtsdatum;
         int intZielalter;
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             intPersID = rs.getInt("PersID");
             strSTB = rs.getString("STB");
             strDGR = rs.getString("DGR");
@@ -593,7 +648,8 @@ public class DB_Access {
 
             calGeburtsdatum.set(Calendar.YEAR, intCurrentYear);
 
-            if (current.after(calGeburtsdatum)) {
+            if (current.after(calGeburtsdatum))
+            {
                 intZielalter++;
                 calGeburtsdatum.add(Calendar.YEAR, 1);
             }
@@ -618,44 +674,55 @@ public class DB_Access {
      * @see MitgliedsDienstzeit
      * @see LinkedList
      */
-    public LinkedList<MitgliedsDienstzeit> getDienstzeitListe(int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
+    public LinkedList<MitgliedsDienstzeit> getDienstzeitListe(int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception
+    {
         LinkedList<MitgliedsDienstzeit> liMitgliedsDienstzeiten = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
         String sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
                 + " FROM FDISK.dbo.stmkmitglieder ";
 
-        if (intBereichnr == 0 && intAbschnittnr == 0) {
+        if (intBereichnr == 0 && intAbschnittnr == 0)
+        {
             //nur Feuerwehrkommandant oder Mitglied
             sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
                     + " FROM FDISK.dbo.stmkmitglieder"
                     + " WHERE instanznummer = '" + strFubwehr + "'";
-        } else {
-            if (intBereichnr == 0) {
-                if (strFubwehr.equals("999")) {
+        } else
+        {
+            if (intBereichnr == 0)
+            {
+                if (strFubwehr.equals("999"))
+                {
                     //alle Feuerwehren wenn Abschnittkommandant 
-                    sqlString =  "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
+                    sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
                             + " FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer)"
                             + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
-                } else {
+                } else
+                {
                     //nur eine Feuerwehr wenn Abschnittkommandant
                     sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
                             + " FROM FDISK.dbo.stmkmitglieder"
                             + " WHERE instanznummer = '" + strFubwehr + "'";
                 }
-            } else {
-                if (strFubwehr.equals("999") && intAbschnittnr == 999) {
+            } else
+            {
+                if (strFubwehr.equals("999") && intAbschnittnr == 999)
+                {
                     //alle Feuerwehren von allen Abschnitten wenn Bereichskommandant
                     sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
                             + " FROM FDISK.dbo.stmkmitglieder"
                             + " WHERE SUBSTRING(instanznummer, 0, 3) = '" + intBereichnr + "'";
-                } else {
-                    if (strFubwehr.equals("999")) {
+                } else
+                {
+                    if (strFubwehr.equals("999"))
+                    {
                         //alle Feuerwehren von einem Abschnitt wenn Bereichskommandant
-                        sqlString =  "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
+                        sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
                                 + " FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer)"
                                 + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
-                    } else {
+                    } else
+                    {
                         //nur eine Feuerwehr von einem Abschnitt wenn Bereichkommandant
                         sqlString = "SELECT TOP 1000 id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
                                 + " FROM FDISK.dbo.stmkmitglieder"
@@ -677,8 +744,10 @@ public class DB_Access {
         Date dateEintrittsdatum;
         int intVordienstzeit;
 
-        while (rs.next()) {
-            if (rs.getDate("Datum_abgemeldet") == null) {
+        while (rs.next())
+        {
+            if (rs.getDate("Datum_abgemeldet") == null)
+            {
                 intPersID = rs.getInt("PersID");
                 strSTB = rs.getString("STB");
                 strDGR = rs.getString("DGR");
@@ -693,11 +762,13 @@ public class DB_Access {
 
                 int intDienstzeit = Calendar.getInstance().get(Calendar.YEAR) - calEintrittsdatum.get(Calendar.YEAR);
 
-                if (Calendar.getInstance().get(Calendar.MONTH) < calEintrittsdatum.get(Calendar.MONTH)) {
+                if (Calendar.getInstance().get(Calendar.MONTH) < calEintrittsdatum.get(Calendar.MONTH))
+                {
                     intDienstzeit--;
                 }
 
-                if ((Calendar.getInstance().get(Calendar.MONTH) == calEintrittsdatum.get(Calendar.MONTH)) && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) < calEintrittsdatum.get(Calendar.DAY_OF_MONTH)) {
+                if ((Calendar.getInstance().get(Calendar.MONTH) == calEintrittsdatum.get(Calendar.MONTH)) && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) < calEintrittsdatum.get(Calendar.DAY_OF_MONTH))
+                {
                     intDienstzeit--;
                 }
 
@@ -722,7 +793,8 @@ public class DB_Access {
      * @see MitgliedsAdresse
      * @see LinkedList
      */
-    public LinkedList<MitgliedsAdresse> getAdressListe() throws Exception {
+    public LinkedList<MitgliedsAdresse> getAdressListe() throws Exception
+    {
         LinkedList<MitgliedsAdresse> liMitgliedsAdressen = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
@@ -750,7 +822,8 @@ public class DB_Access {
         int intPLZ;
         String strOrt;
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             intPersID = rs.getInt("PersID");
             strSTB = rs.getString("STB");
             strDGR = rs.getString("DGR");
@@ -780,7 +853,8 @@ public class DB_Access {
      * Achtung: Im Moment werden Daten aller Kurse zurückgegeben (nicht nur
      * Kursbesuch an der FWZS)
      */
-    public LinkedList<Kurs> getKursstatistik() throws Exception {
+    public LinkedList<Kurs> getKursstatistik() throws Exception
+    {
         LinkedList<Kurs> liKurse = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
@@ -825,7 +899,8 @@ public class DB_Access {
         Date dateBeginn;
         Date dateEnde;
 
-        while (rs.next()) {
+        while (rs.next())
+        {
 
             intIdBerichte = rs.getInt("IdBerichte");
             intTeilnehmer = rs.getInt("Teilnehmer");
@@ -856,7 +931,8 @@ public class DB_Access {
      * @see Fahrzeug
      * @see LinkedList
      */
-    public LinkedList<Fahrzeug> getFahrtenbuch() throws Exception {
+    public LinkedList<Fahrzeug> getFahrtenbuch() throws Exception
+    {
         LinkedList<Fahrzeug> liFahrzeuge = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
@@ -897,7 +973,8 @@ public class DB_Access {
         int intGesamtgewicht;
         String strTreibstoff;
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             strFahrzeugTyp = rs.getString("Fahrzeugtyp");
             strKennzeichen = rs.getString("Kennzeichen");
             intBaujahr = rs.getInt("Baujahr");
@@ -934,7 +1011,8 @@ public class DB_Access {
      * @see MitgliedsErreichbarkeit
      * @see LinkedList
      */
-    public LinkedList<MitgliedsErreichbarkeit> getErreichbarkeitsliste() throws Exception {
+    public LinkedList<MitgliedsErreichbarkeit> getErreichbarkeitsliste() throws Exception
+    {
         LinkedList<MitgliedsErreichbarkeit> liMitgliedsErreichbarkeiten = new LinkedList<>();
 
         Connection conn = connPool.getConnection();
@@ -957,7 +1035,8 @@ public class DB_Access {
         int intLetztePersID = 0;
 
         LinkedList<Erreichbarkeit> liErreichbarkeiten = new LinkedList<>();
-        while (rs.next()) {
+        while (rs.next())
+        {
 
             intPersID = rs.getInt("PersID");
             strErreichbarkeitsart = rs.getString("Erreichbarkeitsart");
@@ -970,12 +1049,16 @@ public class DB_Access {
             strVorname = rs.getString("Vorname");
             strZuname = rs.getString("Zuname");
 
-            if (intPersID == intLetztePersID) {
-                if (!liErreichbarkeiten.contains(new Erreichbarkeit(strErreichbarkeitsart, strCode, intPersID))) {
+            if (intPersID == intLetztePersID)
+            {
+                if (!liErreichbarkeiten.contains(new Erreichbarkeit(strErreichbarkeitsart, strCode, intPersID)))
+                {
                     liErreichbarkeiten.add(new Erreichbarkeit(strErreichbarkeitsart, strCode, intPersID));
                 }
-            } else {
-                if (liMitgliedsErreichbarkeiten.size() > 0) {
+            } else
+            {
+                if (liMitgliedsErreichbarkeiten.size() > 0)
+                {
                     liMitgliedsErreichbarkeiten.getLast().setLiErreichbarkeiten(liErreichbarkeiten);
                     liErreichbarkeiten = new LinkedList<Erreichbarkeit>();
                 }
@@ -1002,7 +1085,8 @@ public class DB_Access {
      * @return
      * @throws Exception
      */
-    public LinkedList<LeerberichtMitglied> getLeerberichtMitglied() throws Exception {
+    public LinkedList<LeerberichtMitglied> getLeerberichtMitglied() throws Exception
+    {
         LinkedList<LeerberichtMitglied> liLeerberichtMitglieder = new LinkedList<>();
 
         Connection conn = connPool.getConnection();
@@ -1022,7 +1106,8 @@ public class DB_Access {
         String strZuname;
         int intPersID;
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             intPersID = rs.getInt("PersID");
             strSTB = rs.getString("STB");
             strDGR = rs.getString("DGR");
@@ -1038,7 +1123,8 @@ public class DB_Access {
         return liLeerberichtMitglieder;
     }
 
-    public Date getEinsatzberichtEinsatzzeit() throws SQLException, Exception {
+    public Date getEinsatzberichtEinsatzzeit() throws SQLException, Exception
+    {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 
@@ -1050,7 +1136,8 @@ public class DB_Access {
         Date einsatzzeit = null;
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS");
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             einsatzzeit = sdf.parse(rs.getString("Einsatzzeit"));
         }
 
@@ -1058,7 +1145,8 @@ public class DB_Access {
         return einsatzzeit;
     }
 
-    public LinkedList<LeerberichtFahrzeug> getLeerberichtFahrzeug() throws Exception {
+    public LinkedList<LeerberichtFahrzeug> getLeerberichtFahrzeug() throws Exception
+    {
         LinkedList<LeerberichtFahrzeug> liFahrzeuge = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
@@ -1089,7 +1177,8 @@ public class DB_Access {
         String strFahrzeugmarke;
         int intInstanznummer;
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             strFahrzeugTyp = rs.getString("Fahrzeugtyp");
             strKennzeichen = rs.getString("Kennzeichen");
             intBaujahr = rs.getInt("Baujahr");
@@ -1107,7 +1196,8 @@ public class DB_Access {
         return liFahrzeuge;
     }
 
-    public LinkedList<Taetigkeitsbericht> getTaetigkeitsbericht() throws Exception {
+    public LinkedList<Taetigkeitsbericht> getTaetigkeitsbericht() throws Exception
+    {
         LinkedList<Taetigkeitsbericht> liTaetigkeitsbericht = new LinkedList<>();
 
         Connection conn = connPool.getConnection();
@@ -1168,7 +1258,8 @@ public class DB_Access {
         String strMeldung;
         String strFehlalarm;
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             intIdBericht = rs.getInt("ID");
             intInstanznummer = rs.getInt("Instanznummer");
             strInstanzname = rs.getString("Instanzname");
@@ -1185,7 +1276,8 @@ public class DB_Access {
             strMeldung = rs.getString("Meldung");
             strFehlalarm = rs.getString("Fehlalarm");
 
-            if (strTaetigkeitsart.equals("Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN")) {
+            if (strTaetigkeitsart.equals("Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN"))
+            {
                 strTaetigkeitsart = "Jugendübung";
             }
             Taetigkeitsbericht taetigkeitsbericht = new Taetigkeitsbericht(intIdBericht, intInstanznummer, strInstanzname, strTaetigkeitsart, strTaetigkeitsunterart, strNummer, dateBeginn, dateEnde, strStrasse, strNummerAdr, strStiege, strPlz, strOrt, strMeldung, strFehlalarm);
@@ -1200,7 +1292,8 @@ public class DB_Access {
      *
      * @return @throws Exception
      */
-    public LinkedList<Einsatzbericht> getEinsatzbericht() throws Exception {
+    public LinkedList<Einsatzbericht> getEinsatzbericht() throws Exception
+    {
         LinkedList<Einsatzbericht> liEinsatzbericht = new LinkedList<>();
 
         Connection conn = connPool.getConnection();
@@ -1247,7 +1340,8 @@ public class DB_Access {
         String strMeldung;
         String strFehlalarm;
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             intIdBericht = rs.getInt("ID");
             intInstanznummer = rs.getInt("Instanznummer");
             strName = rs.getString("Name");
@@ -1282,7 +1376,8 @@ public class DB_Access {
      *
      * @return @throws Exception
      */
-    public LinkedList<Uebungsbericht> getUebungsbericht() throws Exception {
+    public LinkedList<Uebungsbericht> getUebungsbericht() throws Exception
+    {
         LinkedList<Uebungsbericht> liUebungsbericht = new LinkedList<>();
 
         Connection conn = connPool.getConnection();
@@ -1326,7 +1421,8 @@ public class DB_Access {
         String strMeldung;
         String strFehlalarm;
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             intIdBericht = rs.getInt("ID");
             intInstanznummer = rs.getInt("Instanznummer");
             strName = rs.getString("Instanzname");
@@ -1367,16 +1463,22 @@ public class DB_Access {
      * @param typ
      * @throws Exception
      */
-    public void getMethodeFuerTyp(String typ) throws Exception {
-        if (typ.toUpperCase().equals("GRUPPE")) {
+    public void getMethodeFuerTyp(String typ) throws Exception
+    {
+        if (typ.toUpperCase().equals("GRUPPE"))
+        {
             getFilterFuerGruppe(typ);
-        } else if (typ.toUpperCase().equals("KURSBEZEICHNUNG") || typ.toUpperCase().equals("KURSDATUM")) {
-            if (typ.toUpperCase().equals("KURSDATUM")) {
+        } else if (typ.toUpperCase().equals("KURSBEZEICHNUNG") || typ.toUpperCase().equals("KURSDATUM"))
+        {
+            if (typ.toUpperCase().equals("KURSDATUM"))
+            {
                 typ = "DATUM";
             }
             getFilterFuerKurs(typ);
-        } else if (typ.toUpperCase().equals("FUNKTIONSINSTANZ") || typ.toUpperCase().equals("FUNKTIONSBEZEICHNUNG") || typ.toUpperCase().equals("FUNKTION VON") || typ.toUpperCase().equals("FUNKTION BIS")) {
-            switch (typ.toUpperCase()) {
+        } else if (typ.toUpperCase().equals("FUNKTIONSINSTANZ") || typ.toUpperCase().equals("FUNKTIONSBEZEICHNUNG") || typ.toUpperCase().equals("FUNKTION VON") || typ.toUpperCase().equals("FUNKTION BIS"))
+        {
+            switch (typ.toUpperCase())
+            {
                 case "FUNKTIONSBEZEICHNUNG":
                     typ = "BEZEICHNUNG";
                     break;
@@ -1391,24 +1493,33 @@ public class DB_Access {
                     break;
             }
             getFilterFuerFunktion(typ);
-        } else if (typ.toUpperCase().equals("ALTER")) {
+        } else if (typ.toUpperCase().equals("ALTER"))
+        {
             //getFilterFuerAlter(typ);
-        } else if (typ.toUpperCase().equals("STATUS")) {
+        } else if (typ.toUpperCase().equals("STATUS"))
+        {
             getFilterFuerStatus(typ);
-        } else if (typ.toUpperCase().equals("ERREICHBARKEITSART") || typ.toUpperCase().equals("ERREICHBARKEIT")) {
-            if (typ.toUpperCase().equals("ERREICHBARKEIT")) {
+        } else if (typ.toUpperCase().equals("ERREICHBARKEITSART") || typ.toUpperCase().equals("ERREICHBARKEIT"))
+        {
+            if (typ.toUpperCase().equals("ERREICHBARKEIT"))
+            {
                 typ = "CODE";
             }
             getFilterFuerErreichbarkeit(typ);
-        } else if (typ.toUpperCase().equals("ANREDE")) {
+        } else if (typ.toUpperCase().equals("ANREDE"))
+        {
             getFilterFuerAnrede(typ);
-        } else if (typ.toUpperCase().equals("AUSZEICHNUNGSART") || typ.toUpperCase().equals("AUSZEICHNUNGSSTUFE") || typ.toUpperCase().equals("AUSZEICHNUNGSDATUM")) {
-            if (typ.toUpperCase().equals("AUSZEICHNUNGSDATUM")) {
+        } else if (typ.toUpperCase().equals("AUSZEICHNUNGSART") || typ.toUpperCase().equals("AUSZEICHNUNGSSTUFE") || typ.toUpperCase().equals("AUSZEICHNUNGSDATUM"))
+        {
+            if (typ.toUpperCase().equals("AUSZEICHNUNGSDATUM"))
+            {
                 typ = "VERLEIHUNGSDATUM";
             }
             getFilterFuerAuszeichnung(typ);
-        } else if (typ.toUpperCase().equals("LEISTUNGSABZEICHENBEZEICHNUNG") || typ.toUpperCase().equals("LEISTUNGSABZEICHENSTUFE") || typ.toUpperCase().equals("LEISTUNGSABZEICHENDATUM")) {
-            switch (typ.toUpperCase()) {
+        } else if (typ.toUpperCase().equals("LEISTUNGSABZEICHENBEZEICHNUNG") || typ.toUpperCase().equals("LEISTUNGSABZEICHENSTUFE") || typ.toUpperCase().equals("LEISTUNGSABZEICHENDATUM"))
+        {
+            switch (typ.toUpperCase())
+            {
                 case "LEISTUNGSABZEICHENBEZEICHNUNG":
                     typ = "BEZEICHNUNG";
                     break;
@@ -1420,8 +1531,10 @@ public class DB_Access {
                     break;
             }
             getFilterFuerLeistungsabzeichen(typ);
-        } else {
-            if (typ.toUpperCase().equals("ISCO-BERUF")) {
+        } else
+        {
+            if (typ.toUpperCase().equals("ISCO-BERUF"))
+            {
                 typ = "BERUF";
             }
 
@@ -1436,7 +1549,8 @@ public class DB_Access {
      * @return
      * @throws Exception
      */
-    public HashMap<String, LinkedList<String>> getFilterFuerTyp(String typ) throws Exception {
+    public HashMap<String, LinkedList<String>> getFilterFuerTyp(String typ) throws Exception
+    {
         HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
         LinkedList<String> liFilter = new LinkedList<>();
         Connection conn = connPool.getConnection();
@@ -1446,18 +1560,22 @@ public class DB_Access {
                 + " FROM FDISK.dbo.stmkmitglieder";
         ResultSet rs = stat.executeQuery(sqlString);
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             String strFilter;
-            if (rs.getString("Typ") == null) {
+            if (rs.getString("Typ") == null)
+            {
                 strFilter = "Unbekannt";
                 continue;
             }
             strFilter = rs.getString("Typ");
 
-            if (strFilter.equals("") || strFilter.equals(" ")) {
+            if (strFilter.equals("") || strFilter.equals(" "))
+            {
                 strFilter = "Unbekannt";
             }
-            if (typ.toUpperCase().equals("BERUF")) {
+            if (typ.toUpperCase().equals("BERUF"))
+            {
                 typ = "ISCO-BERUF";
             }
             liFilter.add(strFilter);
@@ -1466,7 +1584,8 @@ public class DB_Access {
         hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
 
-        for (Map.Entry e : hmFilter.entrySet()) {
+        for (Map.Entry e : hmFilter.entrySet())
+        {
             System.out.println(e.getKey() + "---" + e.getValue());
         }
 
@@ -1480,40 +1599,19 @@ public class DB_Access {
      * @return
      * @throws Exception
      */
-    public HashMap<String, LinkedList<String>> getFilterFuerAnrede(String typ) throws Exception {
+    public HashMap<String, LinkedList<String>> getFilterFuerAnrede(String typ) throws Exception
+    {
         HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
+
         LinkedList<String> liFilter = new LinkedList<>();
-        Connection conn = connPool.getConnection();
-        Statement stat = conn.createStatement();
-
-        String sqlString = "SELECT DISTINCT Geschlecht"
-                + " FROM FDISK.dbo.stmkmitglieder";
-
-        ResultSet rs = stat.executeQuery(sqlString);
-
-        while (rs.next()) {
-            String strFilter = rs.getString("Geschlecht");
-
-            switch (strFilter) {
-                case "":
-                case " ":
-                    strFilter = "Unbekannt";
-                    break;
-                case "m":
-                    strFilter = "Herr";
-                    break;
-                case "w":
-                    strFilter = "Frau";
-                    break;
-            }
-
-            liFilter.add(strFilter);
-        }
+        liFilter.add("Frau");
+        liFilter.add("Herr");
+        liFilter.add("Unbekannt");
 
         hmFilter.put(typ, liFilter);
-        connPool.releaseConnection(conn);
 
-        for (Map.Entry e : hmFilter.entrySet()) {
+        for (Map.Entry e : hmFilter.entrySet())
+        {
             System.out.println(e.getKey() + "---" + e.getValue());
         }
 
@@ -1527,7 +1625,8 @@ public class DB_Access {
      * @return
      * @throws Exception
      */
-    public HashMap<String, LinkedList<String>> getFilterFuerGruppe(String typ) throws Exception {
+    public HashMap<String, LinkedList<String>> getFilterFuerGruppe(String typ) throws Exception
+    {
         HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
         LinkedList<String> liFilter = new LinkedList<>();
         Connection conn = connPool.getConnection();
@@ -1538,10 +1637,12 @@ public class DB_Access {
 
         ResultSet rs = stat.executeQuery(sqlString);
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             String strFilter = rs.getString("Bezeichnung");
 
-            if (strFilter.equals("") || strFilter.equals(" ")) {
+            if (strFilter.equals("") || strFilter.equals(" "))
+            {
                 strFilter = "Unbekannt";
             }
 
@@ -1551,7 +1652,8 @@ public class DB_Access {
         hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
 
-        for (Map.Entry e : hmFilter.entrySet()) {
+        for (Map.Entry e : hmFilter.entrySet())
+        {
             System.out.println(e.getKey() + "---" + e.getValue());
         }
 
@@ -1565,7 +1667,8 @@ public class DB_Access {
      * @return
      * @throws Exception
      */
-    public HashMap<String, LinkedList<String>> getFilterFuerKurs(String typ) throws Exception {
+    public HashMap<String, LinkedList<String>> getFilterFuerKurs(String typ) throws Exception
+    {
         HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
         LinkedList<String> liFilter = new LinkedList<>();
         Connection conn = connPool.getConnection();
@@ -1575,27 +1678,32 @@ public class DB_Access {
                 + " FROM FDISK.dbo.stmkkurse";
         ResultSet rs = stat.executeQuery(sqlString);
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             String strFilter;
-            if (rs.getString("Typ") == null) {
+            if (rs.getString("Typ") == null)
+            {
                 strFilter = "Unbekannt";
                 continue;
             }
             strFilter = rs.getString("Typ");
 
-            if (strFilter.equals("") || strFilter.equals(" ")) {
+            if (strFilter.equals("") || strFilter.equals(" "))
+            {
                 strFilter = "Unbekannt";
             }
             liFilter.add(strFilter);
         }
 
-        if (typ.toUpperCase().equals("DATUM")) {
+        if (typ.toUpperCase().equals("DATUM"))
+        {
             typ = "KURSDATUM";
         }
         hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
 
-        for (Map.Entry e : hmFilter.entrySet()) {
+        for (Map.Entry e : hmFilter.entrySet())
+        {
             System.out.println(e.getKey() + "---" + e.getValue());
         }
 
@@ -1609,7 +1717,8 @@ public class DB_Access {
      * @return
      * @throws Exception
      */
-    public HashMap<String, LinkedList<String>> getFilterFuerFunktion(String typ) throws Exception {
+    public HashMap<String, LinkedList<String>> getFilterFuerFunktion(String typ) throws Exception
+    {
         HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
         LinkedList<String> liFilter = new LinkedList<>();
         Connection conn = connPool.getConnection();
@@ -1621,21 +1730,25 @@ public class DB_Access {
                 + " ON(mitglieder.id_funktionen = funktionen.id_funktionen)";
         ResultSet rs = stat.executeQuery(sqlString);
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             String strFilter;
-            if (rs.getString("Typ") == null) {
+            if (rs.getString("Typ") == null)
+            {
                 strFilter = "Unbekannt";
                 continue;
             }
             strFilter = rs.getString("Typ");
 
-            if (strFilter.equals("") || strFilter.equals(" ")) {
+            if (strFilter.equals("") || strFilter.equals(" "))
+            {
                 strFilter = "Unbekannt";
             }
             liFilter.add(strFilter);
         }
 
-        switch (typ.toUpperCase()) {
+        switch (typ.toUpperCase())
+        {
             case "BEZEICHNUNG":
                 typ = "FUNKTIONSBEZEICHNUNG";
                 break;
@@ -1653,7 +1766,8 @@ public class DB_Access {
         hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
 
-        for (Map.Entry e : hmFilter.entrySet()) {
+        for (Map.Entry e : hmFilter.entrySet())
+        {
             System.out.println(e.getKey() + "---" + e.getValue());
         }
 
@@ -1754,14 +1868,15 @@ public class DB_Access {
      * @return
      * @throws Exception
      */
-    public HashMap<String, LinkedList<String>> getFilterFuerStatus(String typ) throws Exception {
+    public HashMap<String, LinkedList<String>> getFilterFuerStatus(String typ) throws Exception
+    {
         HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
         LinkedList<String> liFilter = new LinkedList<>();
         liFilter.add("Jugend");
         liFilter.add("Aktiv");
         liFilter.add("Reserve");
         liFilter.add("Ehrenmitglied");
-        liFilter.add("Unbekannt");
+        liFilter.add("Abgemeldet");
 
         hmFilter.put(typ, liFilter);
         return hmFilter;
@@ -1774,7 +1889,8 @@ public class DB_Access {
      * @return
      * @throws Exception
      */
-    public HashMap<String, LinkedList<String>> getFilterFuerErreichbarkeit(String typ) throws Exception {
+    public HashMap<String, LinkedList<String>> getFilterFuerErreichbarkeit(String typ) throws Exception
+    {
         HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
         LinkedList<String> liFilter = new LinkedList<>();
         Connection conn = connPool.getConnection();
@@ -1784,29 +1900,34 @@ public class DB_Access {
                 + " FROM FDISK.dbo.stmkerreichbarkeiten";
         ResultSet rs = stat.executeQuery(sqlString);
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             String strFilter;
-            if (rs.getString("Typ") == null) {
+            if (rs.getString("Typ") == null)
+            {
                 strFilter = "Unbekannt";
                 continue;
             }
             strFilter = rs.getString("Typ");
 
-            if (strFilter.equals("") || strFilter.equals(" ") || strFilter.equals("-") || strFilter.equals("--")) {
+            if (strFilter.equals("") || strFilter.equals(" ") || strFilter.equals("-") || strFilter.equals("--"))
+            {
                 strFilter = "Unbekannt";
             }
 
             liFilter.add(strFilter.trim());
         }
 
-        if (typ.toUpperCase().equals("ERREICHBARKEIT")) {
+        if (typ.toUpperCase().equals("ERREICHBARKEIT"))
+        {
             typ = "CODE";
         }
 
         hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
 
-        for (Map.Entry e : hmFilter.entrySet()) {
+        for (Map.Entry e : hmFilter.entrySet())
+        {
             System.out.println(e.getKey() + "---" + e.getValue());
         }
 
@@ -1820,7 +1941,8 @@ public class DB_Access {
      * @return
      * @throws Exception
      */
-    public HashMap<String, LinkedList<String>> getFilterFuerAuszeichnung(String typ) throws Exception {
+    public HashMap<String, LinkedList<String>> getFilterFuerAuszeichnung(String typ) throws Exception
+    {
         HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
         LinkedList<String> liFilter = new LinkedList<>();
         Connection conn = connPool.getConnection();
@@ -1832,28 +1954,33 @@ public class DB_Access {
                 + " ON(mitglieder.id_auszeichnungen = auszeichnungen.id_auszeichnungen)";
         ResultSet rs = stat.executeQuery(sqlString);
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             String strFilter;
-            if (rs.getString("Typ") == null) {
+            if (rs.getString("Typ") == null)
+            {
                 strFilter = "Unbekannt";
                 continue;
             }
             strFilter = rs.getString("Typ");
 
-            if (strFilter.equals("") || strFilter.equals(" ")) {
+            if (strFilter.equals("") || strFilter.equals(" "))
+            {
                 strFilter = "Unbekannt";
             }
             liFilter.add(strFilter);
         }
 
-        if (typ.toUpperCase().equals("VERLEIHUNGSDATUM")) {
+        if (typ.toUpperCase().equals("VERLEIHUNGSDATUM"))
+        {
             typ = "DATUM";
         }
 
         hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
 
-        for (Map.Entry e : hmFilter.entrySet()) {
+        for (Map.Entry e : hmFilter.entrySet())
+        {
             System.out.println(e.getKey() + "---" + e.getValue());
         }
 
@@ -1867,7 +1994,8 @@ public class DB_Access {
      * @return
      * @throws Exception
      */
-    public HashMap<String, LinkedList<String>> getFilterFuerLeistungsabzeichen(String typ) throws Exception {
+    public HashMap<String, LinkedList<String>> getFilterFuerLeistungsabzeichen(String typ) throws Exception
+    {
         HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
         LinkedList<String> liFilter = new LinkedList<>();
         Connection conn = connPool.getConnection();
@@ -1879,35 +2007,40 @@ public class DB_Access {
                 + " ON(mitglieder.id_leistungsabzeichenstufe = leistungsabzeichen.id_leistungsabzeichenstufe)";
         ResultSet rs = stat.executeQuery(sqlString);
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             String strFilter;
-            if (rs.getString("Typ") == null) {
+            if (rs.getString("Typ") == null)
+            {
                 strFilter = "Unbekannt";
                 continue;
             }
             strFilter = rs.getString("Typ");
 
-            if (strFilter.equals("") || strFilter.equals(" ")) {
+            if (strFilter.equals("") || strFilter.equals(" "))
+            {
                 strFilter = "Unbekannt";
             }
             liFilter.add(strFilter);
         }
 
-        if (typ.toUpperCase().equals("DATUM")) {
+        if (typ.toUpperCase().equals("DATUM"))
+        {
             typ = "LEISTUNGSABZEICHENDATUM";
         }
 
         hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
 
-        for (Map.Entry e : hmFilter.entrySet()) {
+        for (Map.Entry e : hmFilter.entrySet())
+        {
             System.out.println(e.getKey() + "---" + e.getValue());
         }
 
         return hmFilter;
     }
 
- public StringBuilder getDynamischenBerichtMitUnd(String strEingabe[][]) throws Exception
+    public StringBuilder getDynamischerBericht(String strEingabe[][]) throws Exception
     {
         LinkedList<String> liSpaltenUeberschriften = new LinkedList<>();
         String strSpaltenUeberschrift;
@@ -1918,6 +2051,7 @@ public class DB_Access {
         boolean boErreichbarkeiten = false;
         boolean boFahrgenehmigungen = false;
         boolean boFunktionen = false;
+        boolean boUntersuchungen = false;
 
         int intRows = strEingabe.length % 6;
 
@@ -1993,6 +2127,12 @@ public class DB_Access {
                     case "VORDIENSTZEIT IN JAHREN":
                         strEingabe[i][j] = "Vordienstzeit";
                         break;
+                    case "UNTERSUCHUNGSART":
+                        strEingabe[i][j] = "Expr1";
+                        break;
+                    case "UNTERSUCHUNGSDATUM":
+                        strEingabe[i][j] = "u.Datum";
+                        break;
                 }
             }
         }
@@ -2000,7 +2140,7 @@ public class DB_Access {
         for (int i = 0; i < intRows; i++)
         {
             strSpaltenUeberschrift = strEingabe[i][1];
-
+            
             if (strSpaltenUeberschrift.toUpperCase().equals("STATUS"))
             {
                 strSpaltenUeberschrift = strEingabe[i][3];
@@ -2014,9 +2154,22 @@ public class DB_Access {
 
         String sqlString = "SELECT ";
 
-        if (liSpaltenUeberschriften.contains("Untersuchungen"))
+        //Untersuchungen - funktioniert
+        if (liSpaltenUeberschriften.contains("Expr1") || liSpaltenUeberschriften.contains("u.Datum"))
         {
-
+            boUntersuchungen = true;
+            for (String titel : liSpaltenUeberschriften)
+            {
+                switch (titel)
+                {
+                    case "Expr1":
+                        sqlString += "u." + titel.toUpperCase() + ", ";
+                        break;
+                    case "u.Datum":
+                        sqlString += titel.toUpperCase() + " AS 'u.Datum', ";
+                        break;
+                }
+            }
         }
         //Leistungsabzeichen - funktioniert
         if (liSpaltenUeberschriften.contains("Bezeichnung")
@@ -2026,12 +2179,15 @@ public class DB_Access {
             boLeistungsabzeichen = true;
             for (String titel : liSpaltenUeberschriften)
             {
-                if (titel.equals("Bezeichnung") || titel.equals("Stufe"))
+                switch (titel)
                 {
-                    sqlString += "la." + titel.toUpperCase() + ", ";
-                } else if (titel.equals("lam.Datum"))
-                {
-                    sqlString += titel.toUpperCase() + " AS 'lam.Datum', ";
+                    case "Bezeichnung":
+                    case "Stufe":
+                        sqlString += "la." + titel.toUpperCase() + ", ";
+                        break;
+                    case "lam.Datum":
+                        sqlString += titel.toUpperCase() + " AS 'lam.Datum', ";
+                        break;
                 }
             }
         }
@@ -2041,12 +2197,14 @@ public class DB_Access {
             boKurse = true;
             for (String titel : liSpaltenUeberschriften)
             {
-                if (titel.equals("Kursbezeichnung"))
+                switch (titel)
                 {
-                    sqlString += "k." + titel.toUpperCase() + ", ";
-                } else if (titel.equals("k.Datum"))
-                {
-                    sqlString += titel.toUpperCase() + " AS 'k.Datum', ";
+                    case "Kursbezeichnung":
+                        sqlString += "k." + titel.toUpperCase() + ", ";
+                        break;
+                    case "k.Datum":
+                        sqlString += titel.toUpperCase() + " AS 'k.Datum', ";
+                        break;
                 }
             }
         }
@@ -2059,15 +2217,18 @@ public class DB_Access {
             boFunktionen = true;
             for (String titel : liSpaltenUeberschriften)
             {
-                if (titel.equals("id_instanztypen"))
+                switch (titel)
                 {
-                    sqlString += "f." + titel.toUpperCase() + ", ";
-                } else if (titel.equals("f.bezeichnung"))
-                {
-                    sqlString += titel.toUpperCase() + " AS 'f.bezeichnung', ";
-                } else if (titel.equals("datum_von") || titel.equals("datum_bis"))
-                {
-                    sqlString += "fm." + titel.toUpperCase() + ", ";
+                    case "id_instanztypen":
+                        sqlString += "f." + titel.toUpperCase() + ", ";
+                        break;
+                    case "f.bezeichnung":
+                        sqlString += titel.toUpperCase() + " AS 'f.bezeichnung', ";
+                        break;
+                    case "datum_von":
+                    case "datum_bis":
+                        sqlString += "fm." + titel.toUpperCase() + ", ";
+                        break;
                 }
             }
         }
@@ -2091,12 +2252,15 @@ public class DB_Access {
             boAuszeichnung = true;
             for (String titel : liSpaltenUeberschriften)
             {
-                if (titel.equals("Auszeichnungsart") || titel.equals("Auszeichnungsstufe"))
+                switch (titel)
                 {
-                    sqlString += "ausz." + titel.toUpperCase() + ", ";
-                } else if (titel.equals("Verleihungsdatum"))
-                {
-                    sqlString += "auszm." + titel.toUpperCase() + ", ";
+                    case "Auszeichnungsart":
+                    case "Auszeichnungsstufe":
+                        sqlString += "ausz." + titel.toUpperCase() + ", ";
+                        break;
+                    case "Verleihungsdatum":
+                        sqlString += "auszm." + titel.toUpperCase() + ", ";
+                        break;
                 }
             }
         }
@@ -2141,17 +2305,54 @@ public class DB_Access {
         {
             for (String titel : liSpaltenUeberschriften)
             {
-                if (titel.equals("Anrede") || titel.equals("Geschlecht")
-                        || titel.equals("Titel") || titel.equals("Amtstitel") || titel.equals("Vorname") || titel.equals("Zuname")
-                        || titel.equals("Namenszusatz") || titel.equals("Geburtsdatum") || titel.equals("Geburtsort")
-                        || titel.equals("SVNR") || titel.equals("Staatsbuergerschaft") || titel.equals("Beruf") || titel.equals("Familienstand")
-                        || titel.equals("Blutgruppe") || titel.equals("Standesbuchnummer") || titel.equals("Eintrittsdatum") || titel.equals("Dienstalter")
-                        || titel.equals("Angelobungsdatum") || titel.equals("Status") || titel.equals("Vordienstzeit") || titel.equals("Dienstgrad"))
+                switch (titel)
                 {
-                    sqlString += "m." + titel.toUpperCase() + ", ";
-                } else if (titel.equals("Alter"))
+                    case "Anrede":
+                    case "Geschlecht":
+                    case "Titel":
+                    case "Amtstitel":
+                    case "Vorname":
+                    case "Zuname":
+                    case "Namenszusatz":
+                    case "Geburtsdatum":
+                    case "Geburtsort":
+                    case "SVNR":
+                    case "Staatsbuergerschaft":
+                    case "Beruf":
+                    case "Familienstand":
+                    case "Blutgruppe":
+                    case "Standesbuchnummer":
+                    case "Eintrittsdatum":
+                    case "Dienstalter":
+                    case "Angelobungsdatum":
+                    case "Status":
+                    case "Vordienstzeit":
+                    case "Dienstgrad":
+                        sqlString += "m." + titel.toUpperCase() + ", ";
+                        break;
+                    case "Alter":
+                        sqlString += "DATEDIFF(YY, geburtsdatum, GETDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum) > GETDATE() THEN 1 ELSE 0 END  AS Lebensalter, ";
+                        break;
+                }
+            }
+        }
+
+        if (liSpaltenUeberschriften.contains("Jugend") || liSpaltenUeberschriften.contains("Aktiv")
+                || liSpaltenUeberschriften.contains("Reserve") || liSpaltenUeberschriften.contains("Abgemeldet")
+                || liSpaltenUeberschriften.contains("Ehrenmitglied"))
+        {
+            boErreichbarkeiten = true;
+            for (String titel : liSpaltenUeberschriften)
+            {
+                switch (titel)
                 {
-                    sqlString += "DATEDIFF(YY, geburtsdatum, GETDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum) > GETDATE() THEN 1 ELSE 0 END  AS Lebensalter, ";
+                    case "Jugend":
+                    case "Aktiv":
+                    case "Reserve":
+                    case "Abgemeldet":
+                    case "Ehrenmitglied":
+                        sqlString += "m." + titel.toUpperCase() + ", ";
+
                 }
             }
         }
@@ -2197,6 +2398,11 @@ public class DB_Access {
                     + " INNER JOIN FDISK.dbo.stmkfunktionen f ON(f.id_funktionen = fm.id_funktionen) ";
         }
 
+        if (boUntersuchungen == true)
+        {
+            sqlString += " INNER JOIN FDISK.dbo.stmkuntersuchungenmitglieder u ON(m.id_personen = u.id_mitgliedschaften) ";
+        }
+
         sqlString += " WHERE ";
 
         String strColLink = "";
@@ -2206,10 +2412,7 @@ public class DB_Access {
             String strColWhere = strEingabe[i][1];
             String strColSymbol = strEingabe[i][2];
             String strColValue = strEingabe[i][3];
-            if (strColWhere.equals("Alter"))
-            {
-                intWhereAlter = Integer.parseInt(strColValue);
-            }
+
             strColLink = strEingabe[i][5];
             String strColWhereType = getDBTypeForValue(strColWhere);
             System.out.println(strColWhere + " - " + strColWhereType);
@@ -2251,7 +2454,7 @@ public class DB_Access {
             }
 
             //d.h. User gibt eine WHERE clause ein
-            if (!(strColSymbol.equals(""))&& !strColWhere.equals("Alter"))
+            if (!(strColSymbol.equals("")) && !strColWhere.equals("Alter") && !strColWhere.equals("Status"))
             {
                 switch (strColWhereType)
                 {
@@ -2268,10 +2471,19 @@ public class DB_Access {
                         sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' " + strColLink + " ";
                         break;
                 }
-            }
-            else if(strColWhere.equals("Alter"))
+            } else if (strColWhere.equals("Alter"))
             {
-                sqlString += "(DATEDIFF(YY, geburtsdatum, GETDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum) > GETDATE() THEN 1 ELSE 0 END )" + " " + strColSymbol + " '" + strColValue + "' " + strColLink + " ";
+                if (!strColSymbol.equals(""))
+                {
+                    sqlString += "(DATEDIFF(YY, geburtsdatum, GETDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum) > GETDATE() THEN 1 ELSE 0 END )" + " " + strColSymbol + " '" + strColValue + "' " + strColLink + " ";
+                }
+            }
+            else if (strColWhere.equals("Status"))
+            {
+                if (!strColSymbol.equals(""))
+                {
+                    sqlString += strColValue + " " + strColSymbol + " '1' ";
+                }
             }
         }
 
@@ -2287,7 +2499,6 @@ public class DB_Access {
             sqlString = sqlString.substring(0, intIndex) + " ";
         }
 
-        //Falls user keine WHERE clause angibt, sonst wirft SQL eine Exception
         if (sqlString.endsWith("WHERE "))
         {
             sqlString = sqlString.replace("WHERE ", " ");
@@ -2296,7 +2507,6 @@ public class DB_Access {
         System.out.println("SQL: " + sqlString);
         StringBuilder sbHtml = createDynamicReportGeneratorOutput(sqlString, liSpaltenUeberschriften);
         return sbHtml;
-
     }
 
     public StringBuilder createDynamicReportGeneratorOutput(String sqlString, LinkedList<String> liSpaltenUeberschriften) throws Exception
@@ -2340,17 +2550,36 @@ public class DB_Access {
                             case "bit":
                                 boBoolean = rs.getBoolean(str);
                                 sbHtml.append("<td>");
-                                sbHtml.append(boBoolean);
+
+                                if (boBoolean)
+                                {
+                                    sbHtml.append("Ja");
+                                }
+                                else
+                                {
+                                    sbHtml.append("Nein");
+                                }
+                                
                                 sbHtml.append("</td>");
                                 break;
                             case "datetime":
                                 dateDate = rs.getDate(str);
                                 sbHtml.append("<td>");
-                                sbHtml.append(dateDate);
+                                if (dateDate == null)
+                                {
+                                    sbHtml.append("Unbekannt");
+                                } else
+                                {
+                                    sbHtml.append(dateDate);
+                                }
                                 sbHtml.append("</td>");
                                 break;
                             case "varchar":
                                 strString = rs.getString(str);
+                                if (strString.equals(""))
+                                {
+                                    strString = "Unbekannt";
+                                }
                                 sbHtml.append("<td>");
                                 sbHtml.append(strString);
                                 sbHtml.append("</td>");
@@ -2380,15 +2609,21 @@ public class DB_Access {
                                     intAlter = Integer.parseInt(rs.getString("Lebensalter"));
                                 } catch (NumberFormatException e)
                                 {
-
                                 }
 
-                                    sbHtml.append("<td>");
+                                sbHtml.append("<td>");
+                                if (intAlter < 0)
+                                {
+                                    sbHtml.append("Unbekannt");
+                                } else
+                                {
                                     sbHtml.append(intAlter);
-                                    sbHtml.append("</td>");
-                                    break;
+                                }
+                                sbHtml.append("</td>");
+                                break;
 
                         }
+
                     }
                 }
             }
@@ -2422,6 +2657,11 @@ public class DB_Access {
         haNamesTypes.put("angelobungsdatum", "datetime");
         haNamesTypes.put("dienstgrad", "varchar");
         haNamesTypes.put("alter", "default-alter");
+        haNamesTypes.put("aktiv", "bit");
+        haNamesTypes.put("jugend", "bit");
+        haNamesTypes.put("reserve", "bit");
+        haNamesTypes.put("abgemeldet", "bit");
+        haNamesTypes.put("ehrenmitglied", "bit");
 
         //Tabelle stmkadressen
         haNamesTypes.put("ort", "varchar");
@@ -2452,6 +2692,10 @@ public class DB_Access {
         haNamesTypes.put("datum_bis", "datetime");
         haNamesTypes.put("id_instanztypen", "varchar");
         haNamesTypes.put("f.bezeichnung", "varchar");
+
+        //Tabelle stmkuntersuchungenmitglieder
+        haNamesTypes.put("Expr1", "varchar");
+        haNamesTypes.put("u.datum", "datetime");
     }
 
     public String getDBTypeForValue(String strValue)
@@ -2468,16 +2712,18 @@ public class DB_Access {
         return strType;
     }
 
-
     /**
      *
      * @param args
      * @throws Exception
      */
-    public static void main(String[] args) throws Exception {
-        try {
+    public static void main(String[] args) throws Exception
+    {
+        try
+        {
             theInstance = DB_Access.getInstance();
-        } catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException ex)
+        {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -2510,7 +2756,8 @@ public class DB_Access {
 //            i++;
 //        }
 //        System.out.println(i);
-        try {
+        try
+        {
 //            LinkedList<Berechtigung> lili = theInstance.getBerechtigungen(3566);
 //            System.out.println("zweite Berechtigung: " + lili.get(1).getIntIDGruppe());
 //            System.out.println("erste Berechtigung: " + lili.get(0).getIntIDGruppe());
@@ -2544,13 +2791,12 @@ public class DB_Access {
 //            }
 
             String[][] dynamisch
-                    = {
+                    =
+                    {
                         {
-                            "{", "Alter", "=", "34", "}", "ODER"
-                        },
-                        {
-                            "[", "Vorname", "=", "Enrico", "]", "ODER"
+                            "", "Status", "<>", "Reserve", "", "UND"
                         }
+
                     };
 //            String[][] dynamisch =
 //            {
@@ -2561,14 +2807,15 @@ public class DB_Access {
 //                    "(", "Ort", "", "", ")", "UND"
 //                }
 //            };
-            StringBuilder html = theInstance.getDynamischenBerichtMitUnd(dynamisch);
+            StringBuilder html = theInstance.getDynamischerBericht(dynamisch);
             System.out.println(html);
 //            LinkedList<Taetigkeitsbericht> li = theInstance.getTaetigkeitsbericht();
 //            for (Taetigkeitsbericht li1 : li)
 //            {
 //                System.out.println(li1.getDateBeginn()+ "-" + li1.getStrTaetigkeitsart()+ "-" +li1.getStrFehlalarm());
 //            }
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
