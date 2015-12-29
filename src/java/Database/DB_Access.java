@@ -1197,7 +1197,7 @@ public class DB_Access
         return liFahrzeuge;
     }
 
-    public LinkedList<Taetigkeitsbericht> getTaetigkeitsbericht() throws Exception
+    public LinkedList<Taetigkeitsbericht> getTaetigkeitsbericht(String strVon, String strBis) throws Exception
     {
         LinkedList<Taetigkeitsbericht> liTaetigkeitsbericht = new LinkedList<>();
 
@@ -1222,6 +1222,7 @@ public class DB_Access
                 + " ,meldung \"Meldung\""
                 + " ,Fehlalarm \"Fehlalarm\""
                 + " FROM FDISK.dbo.stmktaetigkeitsberichte"
+                + " WHERE beginn >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND ende < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1)"
                 + " UNION"
                 + " SELECT DISTINCT TOP 1000 id_berichte"
                 + " ,instanznummer"
@@ -1239,7 +1240,8 @@ public class DB_Access
                 + " ,meldung"
                 + " ,Fehlalarm"
                 + " FROM FDISK.dbo.stmkuebungsberichte"
-                + " WHERE uebungsart = 'Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN'";
+                + " WHERE uebungsart = 'Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN'"
+                + " AND (beginn >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND ende < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1))";
 
         ResultSet rs = stat.executeQuery(sqlString);
 
@@ -1293,7 +1295,7 @@ public class DB_Access
      *
      * @return @throws Exception
      */
-    public LinkedList<Einsatzbericht> getEinsatzbericht() throws Exception
+    public LinkedList<Einsatzbericht> getEinsatzbericht(String strVon, String strBis) throws Exception
     {
         LinkedList<Einsatzbericht> liEinsatzbericht = new LinkedList<>();
 
@@ -1319,7 +1321,8 @@ public class DB_Access
                 + " ,zuname \"Zuname\""
                 + " ,meldung \"Meldung\""
                 + " ,Fehlalarm \"Fehlalarm\""
-                + " FROM FDISK.dbo.stmkeinsatzberichte";
+                + " FROM FDISK.dbo.stmkeinsatzberichte"
+                + " WHERE uhrzeit_alarmierung >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND uhrzeit_rueckkehr < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1)";
 
         ResultSet rs = stat.executeQuery(sqlString);
 
@@ -1377,7 +1380,7 @@ public class DB_Access
      *
      * @return @throws Exception
      */
-    public LinkedList<Uebungsbericht> getUebungsbericht() throws Exception
+    public LinkedList<Uebungsbericht> getUebungsbericht(String strVon, String strBis) throws Exception
     {
         LinkedList<Uebungsbericht> liUebungsbericht = new LinkedList<>();
 
@@ -1402,7 +1405,8 @@ public class DB_Access
                 + " ,meldung \"Meldung\""
                 + " ,Fehlalarm \"Fehlalarm\""
                 + " FROM FDISK.dbo.stmkuebungsberichte"
-                + " WHERE uebungsart <> 'Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN'"; 
+                + " WHERE uebungsart <> 'Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN'"
+                + " AND (beginn >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND ende < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1))";
 
         ResultSet rs = stat.executeQuery(sqlString);
 
@@ -1451,7 +1455,7 @@ public class DB_Access
         return liUebungsbericht;
     }
 
-    public LinkedList<Bericht> getAlleBerichte() throws Exception
+    public LinkedList<Bericht> getAlleBerichte(String strVon, String strBis) throws Exception
     {
         LinkedList<Bericht> liBericht = new LinkedList<>();
 
@@ -1475,6 +1479,7 @@ public class DB_Access
                 + " ,meldung \"Meldung\""
                 + " ,Fehlalarm \"Fehlalarm\""
                 + " FROM FDISK.dbo.stmkuebungsberichte"
+                + " WHERE beginn >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND ende < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1)"
                 + " UNION" //Start Einsatzbericht
                 + " SELECT DISTINCT TOP 1000 id_berichte"
                 + " ,instanznummer"
@@ -1491,6 +1496,7 @@ public class DB_Access
                 + " ,meldung"
                 + " ,Fehlalarm"
                 + " FROM FDISK.dbo.stmkeinsatzberichte"
+                + " WHERE uhrzeit_alarmierung >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND uhrzeit_rueckkehr < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1)"
                 + " UNION" //Start Tätigkeitsbericht + UNION Übungsberichte Jungend
                 + " SELECT DISTINCT TOP 1000 id_berichte "
                 + " ,instanznummer"
@@ -1507,7 +1513,8 @@ public class DB_Access
                 + " ,meldung"
                 + " ,Fehlalarm"
                 + " FROM FDISK.dbo.stmktaetigkeitsberichte"
-                + " ORDER BY beginn"; 
+                + " WHERE (beginn >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND ende < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1))"
+                + " ORDER BY beginn";
 
         ResultSet rs = stat.executeQuery(sqlString);
 
@@ -1543,12 +1550,11 @@ public class DB_Access
             strMeldung = rs.getString("Meldung");
             strFehlalarm = rs.getString("Fehlalarm");
 
-            
             if (strArt.equals("Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN"))
             {
                 strArt = "Jugendübung";
             }
-              
+
             Bericht bericht = new Bericht(intIdBericht,
                     intInstanznummer, strName, strArt,
                     strNummer, dateBeginn, dateEnde, strStrasse, strNummerAdr,
@@ -1559,8 +1565,7 @@ public class DB_Access
         connPool.releaseConnection(conn);
         return liBericht;
     }
-    
-    
+
     /**
      * *******************************************************************************
      */
@@ -2251,7 +2256,7 @@ public class DB_Access
         for (int i = 0; i < intRows; i++)
         {
             strSpaltenUeberschrift = strEingabe[i][1];
-            
+
             if (strSpaltenUeberschrift.toUpperCase().equals("STATUS"))
             {
                 strSpaltenUeberschrift = strEingabe[i][3];
@@ -2588,8 +2593,7 @@ public class DB_Access
                 {
                     sqlString += "(DATEDIFF(YY, geburtsdatum, GETDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum) > GETDATE() THEN 1 ELSE 0 END )" + " " + strColSymbol + " '" + strColValue + "' " + strColLink + " ";
                 }
-            }
-            else if (strColWhere.equals("Status"))
+            } else if (strColWhere.equals("Status"))
             {
                 if (!strColSymbol.equals(""))
                 {
@@ -2665,12 +2669,11 @@ public class DB_Access
                                 if (boBoolean)
                                 {
                                     sbHtml.append("Ja");
-                                }
-                                else
+                                } else
                                 {
                                     sbHtml.append("Nein");
                                 }
-                                
+
                                 sbHtml.append("</td>");
                                 break;
                             case "datetime":
@@ -2901,7 +2904,6 @@ public class DB_Access
 //                System.out.println(li1.getStrVorname() + "-" + li1.getStrZuname());
 //            }
 
-
             String[][] dynamisch
                     =
                     {
@@ -2921,13 +2923,14 @@ public class DB_Access
 //            };
             StringBuilder html = theInstance.getDynamischerBericht(dynamisch);
             System.out.println(html);
-//           
-            
-//            LinkedList<Bericht> li = theInstance.getAlleBerichte();
+           
+
+//            LinkedList<Bericht> li = theInstance.getAlleBerichte("11.12.2013", "13.12.2013");
 //            for (Bericht li1 : li)
 //            {
-//                System.out.println(li1.getDateBeginn()+ "-" + li1.getStrArt()+ "-" +li1.getIntId_Berichte());
+//                System.out.println(li1.getDateBeginn() + " " + li1.getDateEnde());
 //            }
+            
         } catch (Exception ex)
         {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
