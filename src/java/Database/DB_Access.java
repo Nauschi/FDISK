@@ -6,6 +6,7 @@
 package Database;
 
 import Beans.Berechtigung;
+import Beans.Bericht;
 import Beans.Einsatzbericht;
 import Beans.Erreichbarkeit;
 import Beans.Fahrzeug;
@@ -1401,7 +1402,7 @@ public class DB_Access
                 + " ,meldung \"Meldung\""
                 + " ,Fehlalarm \"Fehlalarm\""
                 + " FROM FDISK.dbo.stmkuebungsberichte"
-                + " WHERE uebungsart <> 'Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN'";
+                + " WHERE uebungsart <> 'Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN'"; 
 
         ResultSet rs = stat.executeQuery(sqlString);
 
@@ -1450,6 +1451,116 @@ public class DB_Access
         return liUebungsbericht;
     }
 
+    public LinkedList<Bericht> getAlleBerichte() throws Exception
+    {
+        LinkedList<Bericht> liBericht = new LinkedList<>();
+
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "";
+        //Übungsbericht UNION Einsatzbericht UNION Tätigkeitsbericht 
+        sqlString = " SELECT DISTINCT TOP 1000 id_berichte \"ID\""
+                + " ,instanznummer \"Instanznummer\""
+                + " ,name \"Instanzname\""
+                + " ,uebungsart \"Art\""
+                + " ,nummer \"Nummer\""
+                + " ,beginn \"Beginn\""
+                + " ,ende \"Ende\""
+                + " ,strasse \"Strasse\""
+                + " ,nummeradr \"NummerAdr\""
+                + " ,stiege \"Stiege\""
+                + " ,plz \"PLZ\""
+                + " ,ort \"Ort\""
+                + " ,meldung \"Meldung\""
+                + " ,Fehlalarm \"Fehlalarm\""
+                + " FROM FDISK.dbo.stmkuebungsberichte"
+                + " UNION" //Start Einsatzbericht
+                + " SELECT DISTINCT TOP 1000 id_berichte"
+                + " ,instanznummer"
+                + " ,name"
+                + " ,einsatzart"
+                + " ,nummer"
+                + " ,uhrzeit_alarmierung"
+                + " ,uhrzeit_rueckkehr"
+                + " ,strasse"
+                + " ,nummeradr"
+                + " ,stiege"
+                + " ,plz"
+                + " ,ort"
+                + " ,meldung"
+                + " ,Fehlalarm"
+                + " FROM FDISK.dbo.stmkeinsatzberichte"
+                + " UNION" //Start Tätigkeitsbericht + UNION Übungsberichte Jungend
+                + " SELECT DISTINCT TOP 1000 id_berichte "
+                + " ,instanznummer"
+                + " ,instanzname"
+                + " ,taetigkeitsart"
+                + " ,nummer"
+                + " ,beginn"
+                + " ,ende"
+                + " ,strasse"
+                + " ,nummeradr"
+                + " ,stiege"
+                + " ,plz"
+                + " ,ort"
+                + " ,meldung"
+                + " ,Fehlalarm"
+                + " FROM FDISK.dbo.stmktaetigkeitsberichte"
+                + " ORDER BY beginn"; 
+
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        int intIdBericht;
+        int intInstanznummer;
+        String strName;
+        String strArt;
+        String strNummer;
+        Date dateBeginn;
+        Date dateEnde;
+        String strStrasse;
+        String strNummerAdr;
+        String strStiege;
+        String strPlz;
+        String strOrt;
+        String strMeldung;
+        String strFehlalarm;
+
+        while (rs.next())
+        {
+            intIdBericht = rs.getInt("ID");
+            intInstanznummer = rs.getInt("Instanznummer");
+            strName = rs.getString("Instanzname");
+            strArt = rs.getString("Art");
+            strNummer = rs.getString("Nummer");
+            dateBeginn = rs.getDate("Beginn");
+            dateEnde = rs.getDate("Ende");
+            strStrasse = rs.getString("Strasse");
+            strNummerAdr = rs.getString("NummerAdr");
+            strStiege = rs.getString("Stiege");
+            strPlz = rs.getString("PLZ");
+            strOrt = rs.getString("Ort");
+            strMeldung = rs.getString("Meldung");
+            strFehlalarm = rs.getString("Fehlalarm");
+
+            
+            if (strArt.equals("Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN"))
+            {
+                strArt = "Jugendübung";
+            }
+              
+            Bericht bericht = new Bericht(intIdBericht,
+                    intInstanznummer, strName, strArt,
+                    strNummer, dateBeginn, dateEnde, strStrasse, strNummerAdr,
+                    strStiege, strPlz, strOrt, strMeldung, strFehlalarm);
+            liBericht.add(bericht);
+        }
+
+        connPool.releaseConnection(conn);
+        return liBericht;
+    }
+    
+    
     /**
      * *******************************************************************************
      */
@@ -2790,6 +2901,7 @@ public class DB_Access
 //                System.out.println(li1.getStrVorname() + "-" + li1.getStrZuname());
 //            }
 
+
             String[][] dynamisch
                     =
                     {
@@ -2809,10 +2921,12 @@ public class DB_Access
 //            };
             StringBuilder html = theInstance.getDynamischerBericht(dynamisch);
             System.out.println(html);
-//            LinkedList<Taetigkeitsbericht> li = theInstance.getTaetigkeitsbericht();
-//            for (Taetigkeitsbericht li1 : li)
+//           
+            
+//            LinkedList<Bericht> li = theInstance.getAlleBerichte();
+//            for (Bericht li1 : li)
 //            {
-//                System.out.println(li1.getDateBeginn()+ "-" + li1.getStrTaetigkeitsart()+ "-" +li1.getStrFehlalarm());
+//                System.out.println(li1.getDateBeginn()+ "-" + li1.getStrArt()+ "-" +li1.getIntId_Berichte());
 //            }
         } catch (Exception ex)
         {

@@ -10,6 +10,6 @@ Einsatzbericht leer;....;....;.....;0;
 Liste aller Einsatzberichte;Einsatzart;Nummer;Alarmierung;Rückkehr;Adresse;Vorname;Nachname;2;
 Liste aller Tätigkeitsberichte;Tätigkeitsart;Tätigkeitsunterart;Nummer;Begin;Ende;Adresse;2;
 Liste aller Übungsberichte;Übungsart;Übungsunterart;Nummer;Begin;Ende;Adresse;2;
-Liste aller Berichte;....;....;.....;2;
+Liste aller Berichte;Beginn;Ende;Beschreibung;2;
 Kursstatistik;Anz Teilnehmer;Kursbezeichnnung;Kilometer;Tatigkeitsart;Tatigkeitsunterart;Begin;Ende;2;
 Digitales Fahrtenbuch;Fahrzeugart;Kennzeiche;Baujahr;Aufbaufirma;Fahrzeugmarke;Treibstoff;2;
