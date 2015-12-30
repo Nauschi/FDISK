@@ -5,18 +5,25 @@
  */
 package PDF;
 
+import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.ExceptionConverter;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,47 +35,59 @@ public class PDF_KopfFußzeile extends PdfPageEventHelper
 {
 
     int pagenumber;
+    Font fontCambria;
+    Image img;
+
+    public PDF_KopfFußzeile(String strFontPath)
+    {
+        try
+        {
+            img = Image.getInstance(strFontPath.replace("Cambria.ttf", "logo_oben.png"));
+            fontCambria = new Font(BaseFont.createFont(strFontPath, "", BaseFont.NOT_EMBEDDED));
+            fontCambria.setSize(10);
+        } catch (DocumentException ex)
+        {
+            Logger.getLogger(PDF_KopfFußzeile.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex)
+        {
+            Logger.getLogger(PDF_KopfFußzeile.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     @Override
     public void onStartPage(PdfWriter writer, Document document)
     {
         pagenumber++;
     }
-    
-
 
     @Override
     public void onEndPage(PdfWriter writer, Document document)
     {
         
-                    Rectangle rect = writer.getBoxSize("footer");
-         ColumnText.showTextAligned(writer.getDirectContent(),
-                    Element.ALIGN_CENTER, new Phrase(String.format("Seite %d", pagenumber)),
-                    (rect.getLeft() + rect.getRight()) / 2, rect.getBottom() - 18,0);
-//         try
-//        {
-//            PdfPTable table = new PdfPTable(3);
-//
-//            table.setWidths(new int[]
-//            {
-//                24, 24, 2
-//            });
-//            table.setTotalWidth(527);
-//            table.setLockedWidth(true);
-//            table.getDefaultCell().setFixedHeight(20);
-//            table.getDefaultCell().setBorder(Rectangle.BOTTOM);
-//            table.addCell("123");
-//            table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);
-//            table.addCell(String.format("Page %d of", writer.getPageNumber()));
-//            PdfPCell cell = new PdfPCell(new Phrase(pagenumber));
-//            cell.setBorder(Rectangle.BOTTOM);
-//            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-//            table.addCell(cell);
-//            table.writeSelectedRows(0, -1, 34, 803, writer.getDirectContent());
-//        } catch (DocumentException ex)
-//        {
-//            Logger.getLogger(PDF_KopfFußzeile.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        Rectangle rect = writer.getBoxSize("pageRect");
+        ColumnText.showTextAligned(writer.getDirectContent(),
+                Element.ALIGN_CENTER, new Phrase(String.format("Seite %d", pagenumber), fontCambria),
+                (rect.getLeft() + rect.getRight()) / 2, rect.getBottom() - 20, 0);
+        
+        LocalDate ld = LocalDate.now();
+        String strTime = ld.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        Phrase phraseDate = new Phrase(String.format("erstellt am %s", strTime), fontCambria);
+        ColumnText.showTextAligned(writer.getDirectContent(),
+                Element.ALIGN_RIGHT, phraseDate, rect.getRight(), rect.getBottom() - 20, 0);
+        
+        ColumnText.showTextAligned(writer.getDirectContent(),
+                Element.ALIGN_LEFT, new Phrase("Landesfeuerwehrverband Steiermark", fontCambria), rect.getLeft(), rect.getBottom() - 20, 0);
+        
+        
+        img.scaleAbsolute(120, 40);
+        img.setAbsolutePosition(rect.getRight()-120, rect.getTop()-25);
+        try
+        {
+            writer.getDirectContent().addImage(img);
+        } catch (DocumentException ex)
+        {
+            Logger.getLogger(PDF_KopfFußzeile.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 

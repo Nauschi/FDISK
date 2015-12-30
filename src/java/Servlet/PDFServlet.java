@@ -167,8 +167,10 @@ public class PDFServlet extends HttpServlet
 
         String strContextPath = this.getServletContext().getRealPath("/");
         String strCSSPath1 = strContextPath.replace("build\\web", "web\\css\\pdfSimpel.css");
-
+        String strFontPath = strContextPath.replace("build\\web", "web\\res\\Cambria.ttf");
+        
         System.out.println("PDFServlet.doPost: CSSPath:" + strCSSPath1);
+        Rectangle rect;
 
         try
         {
@@ -176,17 +178,21 @@ public class PDFServlet extends HttpServlet
 //            document = new Document(PageSize.A4, 36, 36, 54, 54);
             if(liBerHochformat.contains(strBerichtname))
             {
-                 document = new Document(PageSize.A4, 36, 36, 54, 54);
+                 document = new Document(PageSize.A4, 36, 36, 100, 54);
+                 rect = new Rectangle(36, 54, 559, 788);
             }else
             {
-                document = new Document(PageSize.A4.rotate(), 36, 36, 54, 54);
+                document = new Document(PageSize.A4.rotate(), 36, 36, 70, 54);
+                rect = new Rectangle(36, 54, 805, 559);
             }
+            
+            
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PdfWriter writer = PdfWriter.getInstance(document, baos);
             
-            PDF_KopfFußzeile event = new PDF_KopfFußzeile();
-            writer.setBoxSize("footer", new Rectangle(36, 54, 559, 788));
+            PDF_KopfFußzeile event = new PDF_KopfFußzeile(strFontPath);
+            writer.setBoxSize("pageRect", rect);
             writer.setPageEvent(event);
 
             document.open();
