@@ -97,6 +97,12 @@ public class CSVServlet extends HttpServlet
         writeCsv(strRows, response.getOutputStream());
     }
 
+    /**
+     * Zerlegt den HTML String damit es möglich ist ein CSV File zu erstellen
+     * Zurückgegeben wird ein Sting Feld an Zeilen mit Informationen geteilt durch einen Strichpunkt
+     * @param strTable
+     * @return 
+     */
     public String [] erstelleCSVString(String strTable)
     {
         String strCSV = strTable.replace("<table id=\"table\" class=\"ui sortable celled table\"> <thead>     ", "");
@@ -112,6 +118,14 @@ public class CSVServlet extends HttpServlet
         return strRows;
     }
 
+    /**
+     * Schreibt die Informationen von strRows in den BufferedWriter
+     * strRows sind die Zeilen die in das Dokument geschrieben werden
+     * output ist der von der Response bekommene OutputStream
+     * @param strRows
+     * @param output
+     * @throws IOException 
+     */
     public void writeCsv(String[] strRows, OutputStream output) throws IOException
     {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, "UTF-8"));

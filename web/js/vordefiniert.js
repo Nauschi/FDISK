@@ -4,9 +4,10 @@
  * and open the template in the editor.
  */
 
-
+//Initialisiert die Dropdowns
 $('.ui.dropdown').dropdown();
 
+//Initialisiert die Datepicker
 $(function () {
     $("#input_von_datum").datepicker({
         onSelect: function (selected)
@@ -32,6 +33,10 @@ $(function () {
 });
 
 
+//Wird von onListItemClicked aufgerufen
+/*
+ * Andert je nach Bericht die Informationen die angegeben werden müssen
+ */
 function onChangeTypeOfDateUI(intTypeOfDateUI)
 {
     if(intTypeOfDateUI==0)
@@ -58,8 +63,10 @@ function onChangeTypeOfDateUI(intTypeOfDateUI)
     }
 }
 
-
-
+//Wird aufgerufen wenn bei der Liste ein anderer Bericht ausgewählt wird
+/*
+ * ändert die angezeigten Informationen je nach Bericht
+ */
 function onListItemClicked(item)
 {
     var liItems = document.getElementById("div_liste").getElementsByTagName("a");
@@ -81,7 +88,9 @@ function onListItemClicked(item)
 
 
 
-
+/*
+ * Leitet zum PDFServlet weiter um eine PDF zu erstellen, anzuzeigen und herunterzuladen
+ */
 function saveDataForPDF()
 {
     var strTable = document.getElementById("div_table").innerHTML;
@@ -90,6 +99,9 @@ function saveDataForPDF()
     document.formPDF.submit();
 }
 
+/*
+ * Leitet zum CSVServlet weiter um eine CSV zu erstellen und herunterzuladen
+ */
 function saveDataForCSV()
 {
     var strTable = document.getElementById("div_table").innerHTML;

@@ -234,6 +234,12 @@ public class PDFServlet extends HttpServlet
 
     }
 
+    /**
+     * Generiert einen Tätigkeitsbericht mit Hilfe des übergebenen Strings
+     * strTable ist der HTML String der Zeilen des Tables (<tr>...</tr><tr>...</tr><tr>...</tr>....)
+     * @param strTable
+     * @return 
+     */
     public String generiereAusgabeTaetigkeitsberichtLeer(String strTable)
     {
         String strHTMLOutput = strTaetigkeitsbericht;
@@ -241,7 +247,12 @@ public class PDFServlet extends HttpServlet
 
         return strHTMLOutput;
     }
-    
+    /**
+     * Generiert einen Uebungsbericht mit Hilfe des übergebenen Strings
+     * strTable ist der HTML String der Zeilen des Tables (<tr>...</tr><tr>...</tr><tr>...</tr>....)
+     * @param strTable
+     * @return 
+     */
     public String generiereAusgabeUebungsberichtLeer(String strTable)
     {
         String strHTMLOutput = strUebungsbericht;
