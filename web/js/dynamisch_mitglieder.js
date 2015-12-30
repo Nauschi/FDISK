@@ -21,11 +21,17 @@ function onTypChanged(select_typ)
     var strBoxArt = strTyp.split(";")[1];
     if (strBoxArt == "cb")
     {
+        
         document.getElementById("div_filter_cb_" + strID).style.display = "block";
         document.getElementById("div_filter_txt_" + strID).style.display = "none";
         document.getElementById("div_filter_datepicker_" + strID).style.display = "none";
     } else if (strBoxArt == "txt")
     {
+        $("#select_operator_"+strID+" option[value='<=']").remove();
+        $("#select_operator_"+strID+" option[value='>=']").remove();
+        $("#select_operator_"+strID+" option[value='<']").remove();
+        $("#select_operator_"+strID+" option[value='>']").remove();
+//        document.getElementById("select_operator_"+strID).selectedIndex = "0"; geht irgendwie nd.. vl Framework das problem... (http://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_select_selectedindex)
         document.getElementById("div_filter_cb_" + strID).style.display = "none";
         document.getElementById("div_filter_txt_" + strID).style.display = "block";
         document.getElementById("div_filter_datepicker_" + strID).style.display = "none";
@@ -35,8 +41,31 @@ function onTypChanged(select_typ)
         document.getElementById("div_filter_txt_" + strID).style.display = "none";
         document.getElementById("div_filter_datepicker_" + strID).style.display = "block";
     }
+    
+    if((strBoxArt =="datepicker"|| strBoxArt == "cb")&&document.getElementById("select_operator_"+strID).options[2]==null)
+    {
+        select_operator = document.getElementById("select_operator_"+strID);
+        var opt1 = document.createElement('option');
+        opt1.value = "<=";
+        opt1.innerHTML = "<=";
+        select_operator.appendChild(opt1);
+        var opt2 = document.createElement('option');
+        opt2.value = ">=";
+        opt2.innerHTML = ">=";
+        select_operator.appendChild(opt2);
+        var opt3 = document.createElement('option');
+        opt3.value = "<";
+        opt3.innerHTML = "<";
+        select_operator.appendChild(opt3);
+        var opt4 = document.createElement('option');
+        opt4.value = ">";
+        opt4.innerHTML = ">";
+        select_operator.appendChild(opt4);
+    }
 
 }
+
+
 
 
 function onChangeVerknuepfung(intIndexVonZeile)

@@ -35,7 +35,7 @@
 
             String[] strFeldOperator =
             {
-                "=", ">=", "<=", ">", "<", "<>"
+                "=", "<>","<=", ">=", "<", ">"
             };
 
             String[] strFeldFilter =
@@ -157,8 +157,8 @@
                     </select>
 
                 </div>
-                <div class="two wide column" id="div_operator" style="width: 100%;">
-                    <select name="select_operator_<%=i%>" class="ui fluid dropdown" id="select_operator">
+                <div class="two wide column" id="div_operator_<%=i%>" style="width: 100%;">
+                    <select name="select_operator_<%=i%>" class="ui fluid dropdown" id="select_operator_<%=i%>">
                         <!--<option value="">Operator</option>-->
                         <%=generiereSelect("select_operator_" + i, strFeldOperator, request)%>
                     </select>
