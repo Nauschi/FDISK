@@ -39,21 +39,21 @@ $(function () {
  */
 function onChangeTypeOfDateUI(intTypeOfDateUI)
 {
-    if(intTypeOfDateUI==0)
+    if (intTypeOfDateUI == 0)
     {
         document.getElementById("div_input_von_datum").style.display = "none";
         document.getElementById("div_input_bis_datum").style.display = "none";
         document.getElementById("div_kein_datum_1").style.display = "block";
         document.getElementById("div_kein_datum_2").style.display = "block";
         document.getElementById("div_select_jahr").style.display = "none";
-    }else if(intTypeOfDateUI==1)
+    } else if (intTypeOfDateUI == 1)
     {
         document.getElementById("div_input_von_datum").style.display = "none";
         document.getElementById("div_input_bis_datum").style.display = "none";
         document.getElementById("div_kein_datum_1").style.display = "block";
         document.getElementById("div_kein_datum_2").style.display = "none";
         document.getElementById("div_select_jahr").style.display = "block";
-    }else if(intTypeOfDateUI==2)
+    } else if (intTypeOfDateUI == 2)
     {
         document.getElementById("div_input_von_datum").style.display = "block";
         document.getElementById("div_input_bis_datum").style.display = "block";
@@ -95,7 +95,7 @@ function saveDataForPDF()
 {
     var strTable = document.getElementById("div_table").innerHTML;
     var strName = document.getElementById("h2_bericht").innerHTML;
-    document.getElementById("hidden_pdfData").value = strName+"###"+strTable;
+    document.getElementById("hidden_pdfData").value = strName + "###" + strTable;
     document.formPDF.submit();
 }
 
@@ -106,10 +106,31 @@ function saveDataForCSV()
 {
     var strTable = document.getElementById("div_table").innerHTML;
     var strName = document.getElementById("h2_bericht").innerHTML;
-    document.getElementById("hidden_CSVData").value = strName+"###"+strTable;
+    document.getElementById("hidden_CSVData").value = strName + "###" + strTable;
     document.formCSV.submit();
 }
 
 
+function abschittChanged(select_abschnitt)
+{
+    alert("Abschnitt_value: "+select_abschnitt.value);
+    if (select_abschnitt.value != -1)
+    {
+        alert("IN abschnitt changed");
+        var strFeuerwehrOptions = document.getElementById("div_" + select_abschnitt.value).innerHTML;
+        document.getElementById("select_feuerwehr").innerHTML = strFeuerwehrOptions;
+        alert(strFeuerwehrOptions);
+    }
+}
 
-
+function bezirkChanged(select_bezirk)
+{
+    alert("Bezirk_value: "+select_bezirk.value);
+    if (select_bezirk.value != -1)
+    {
+        alert("IN bezirk changed");
+        var strAbschnittOptions = document.getElementById("div_" + select_bezirk.value).innerHTML;
+        document.getElementById("select_abschnitt").innerHTML = strAbschnittOptions;
+        alert(strAbschnittOptions);
+    }
+}

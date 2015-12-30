@@ -67,16 +67,24 @@ public class Bezirk
     @Override
     public String toString()
     {
-        String strHTML = "<option value='" + intBezirksNummer + "'>" + strName;
-        strHTML += "<div style='display:none'>";
+        String strHTML = "<option value='" + intBezirksNummer + "'>" + strName+"</option>";
+        return strHTML;
+    }
+    
+    public String generiereHiddenDiv()
+    {
+        System.out.println("Bezirk.generiereHiddenDiv: start");
+        String strHTML = "<div style='display:none' id='div_"+intBezirksNummer+"' >";
         if (liAbschnitte != null)
         {
+            System.out.println("Bezirk.generiereHiddenDiv: if+ size="+liAbschnitte.size());
             for (Abschnitt abschnitt : liAbschnitte)
             {
                 strHTML+=abschnitt.toString();
             }
         }
-        strHTML += "</div></option>";
+        strHTML += "</div>";
+        
         return strHTML;
     }
 }

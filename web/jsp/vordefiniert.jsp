@@ -26,9 +26,10 @@ aaaaasdfsdf
     </head>
     <body>
         <%!
-            private int intIDGruppe = -1;
+            private int intIDGruppe;
         %>
         <%
+            intIDGruppe=-1;
             session.setAttribute("lastPage", "vordefiniert");
         %>
 
@@ -89,15 +90,28 @@ aaaaasdfsdf
                         <div class="ui equal width grid">
 
                             <div class="column">
-                                <select name="select_bezirk" class="ui fluid dropdown" id="select_bezirk">
+                                <select name="select_bezirk" class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
                                     <%=generiereBezirk(session)%>
                                 </select>
                             </div>
+                            <%
+                                if (intIDGruppe == 5)
+                                {
+                                    out.println(generiereHiddenBezirkDiv(session));
+                                }
+                            %>
                             <div class="column">
-                                <select name="select_kA" class="ui fluid dropdown" id="select_kA">
+                                <select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)">
                                     <%=generiereAbschnitt(session)%>
                                 </select>
                             </div>
+
+                            <%
+                                if (intIDGruppe == 15 || intIDGruppe == 5)
+                                {
+                                    out.println(generiereHiddenAbschnittDiv(session));
+                                }
+                            %>
                             <div class="column">
                                 <select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr">
                                     <%=generiereFeuerwehr(session)%>
@@ -246,7 +260,7 @@ aaaaasdfsdf
                 }
             %>
                                                 document.getElementById("div_loader").className = "ui disabled loader";
-                                                
+
                                             });
 
 
@@ -257,6 +271,31 @@ aaaaasdfsdf
 </html>
 
 <%!
+    private String generiereHiddenAbschnittDiv(HttpSession session)
+    {
+        if (intIDGruppe == 15)
+        {
+            Abschnitt abschnitt = (Abschnitt) session.getAttribute("abschnitt");
+            return abschnitt.generiereHiddenDiv();
+        }else 
+        {
+            String strAbschnittDivs = "";
+            Bezirk bezirk = (Bezirk) session.getAttribute("bezirk");
+            LinkedList<Abschnitt> liAbschnitte = bezirk.getLiAbschnitte();
+            for(Abschnitt abschnitt:liAbschnitte)
+            {
+                strAbschnittDivs+=abschnitt.generiereHiddenDiv();
+            }
+            return strAbschnittDivs;
+        }
+    }
+
+    private String generiereHiddenBezirkDiv(HttpSession session)
+    {
+        Bezirk bezirk = (Bezirk) session.getAttribute("bezirk");
+        return bezirk.generiereHiddenDiv();
+    }
+
     private String generiereBezirk(HttpSession session)
     {
         if (session.getAttribute("bezirk") != null)
@@ -266,11 +305,11 @@ aaaaasdfsdf
             return bezirk.toString();
         } else
         {
-            String strName = (String)session.getAttribute("bezirkName");
-            return "<option value='-1'>"+strName+"</option>";
+            String strName = (String) session.getAttribute("bezirkName");
+            return "<option value='-1'>" + strName + "</option>";
         }
     }
-    
+
     private String generiereAbschnitt(HttpSession session)
     {
         if (session.getAttribute("abschnitt") != null)
@@ -278,19 +317,19 @@ aaaaasdfsdf
             intIDGruppe = 15;
             Abschnitt abschnitt = (Abschnitt) session.getAttribute("abschnitt");
             return abschnitt.toString();
-        } else if(intIDGruppe!=-1)
+        } else if (intIDGruppe != -1)
         {
             return "";
-        }else
+        } else
         {
-            String strName = (String)session.getAttribute("abschnittName");
-            return "<option value='-1'>"+strName+"</option>";
+            String strName = (String) session.getAttribute("abschnittName");
+            return "<option value='-1'>" + strName + "</option>";
         }
     }
-    
+
     private String generiereFeuerwehr(HttpSession session)
     {
-        
+
         if (session.getAttribute("feuerwehr") != null)
         {
             System.out.println("vordefiniert.generiereFeuerwehr: if");

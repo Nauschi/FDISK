@@ -60,7 +60,23 @@ public class Abschnitt {
     public String toString() {
 //        return "Abschnitt{" + "strName=" + strName + ", intAbschnittsNummer=" + intAbschnittsNummer + ", liFeuerwehren=" + liFeuerwehren + '}';
         String strHTML = "<option value='" + intAbschnittsNummer + "'>" + strName;
-        strHTML += "<div style='display:none'>";
+//        strHTML += "<div style='display:none'>";
+//        if (liFeuerwehren != null)
+//        {
+//            for (Feuerwehr feuerwehr : liFeuerwehren)
+//            {
+//                strHTML+=feuerwehr.toString();
+//            }
+//        }
+//        strHTML += "</div></option>";
+        strHTML +="</option>";
+        return strHTML;
+    }
+    
+    
+    public String generiereHiddenDiv()
+    {
+        String strHTML = "<div style='display:none' id='div_"+intAbschnittsNummer+"' >";
         if (liFeuerwehren != null)
         {
             for (Feuerwehr feuerwehr : liFeuerwehren)
@@ -68,7 +84,7 @@ public class Abschnitt {
                 strHTML+=feuerwehr.toString();
             }
         }
-        strHTML += "</div></option>";
+        strHTML += "</div>";
         return strHTML;
     }
 

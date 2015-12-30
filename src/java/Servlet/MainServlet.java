@@ -222,17 +222,33 @@ public class MainServlet extends HttpServlet
         {
             System.out.println("MainServlet.getBerechtigungsinformationen: id=5");
             session.setAttribute("bezirk",access.getBezrik(intIDUser));
+            session.setAttribute("bezirkName",null);
+            session.setAttribute("abschnitt", null);
+            session.setAttribute("abschnittName",null);
+            session.setAttribute("feuerwehr", null);
         }else if(aktBerechtigung.getIntIDGruppe()==15)
         {
             System.out.println("MainServlet.getBerechtigungsinformationen: id=15");
+            session.setAttribute("bezirk",null);
             session.setAttribute("bezirkName",access.getBereichsnameFuerBereichnnummer(aktBerechtigung.getIntBereich()));
             session.setAttribute("abschnitt", access.getAbschnitt(aktBerechtigung.getIntAbschnitt()));
+            session.setAttribute("abschnittName",null);
+            session.setAttribute("feuerwehr", null);
         }else if(aktBerechtigung.getIntIDGruppe()==9||aktBerechtigung.getIntIDGruppe()==0)
         {
             System.out.println("MainServlet.getBerechtigungsinformationen: id=9/0");
+            session.setAttribute("bezirk",null);
             session.setAttribute("bezirkName",access.getBereichsnameFuerBereichnnummer(aktBerechtigung.getIntBereich()));
+            session.setAttribute("abschnitt", null);
             session.setAttribute("abschnittName",access.getAbschnittsnameFuerAbschnittsnummer(aktBerechtigung.getIntAbschnitt()));
             session.setAttribute("feuerwehr", access.getFeuerwehr(aktBerechtigung.getStrFubwehr()));
+        }else
+        {
+            session.setAttribute("bezirk",null);
+            session.setAttribute("bezirkName",null);
+            session.setAttribute("abschnitt", null);
+            session.setAttribute("abschnittName",null);
+            session.setAttribute("feuerwehr", null);
         }
         
         System.out.println("MainServlet.doPost: bestaetigen");
