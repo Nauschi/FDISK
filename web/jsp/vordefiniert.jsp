@@ -81,19 +81,7 @@ aaaaasdfsdf
                         <input type="hidden" name="input_aktbericht" id="input_hidden"/>
 
                         <div class="ui equal width grid">
-                            <div class="column">
-                                <select name="select_kA" class="ui fluid dropdown" id="select_kA">
-                                    <option value="">Abschnitt</option>
-                                    <option value="Test1">Test1</option>
-                                    <option value="Test2">Test2</option>
-                                    <option value="Test3">Test3</option>
-                                    <option value="Test4">Test4</option>
-                                    <option value="Test5">Test5</option>
-                                    <option value="Test6">Test6</option>
-                                    <option value="Test7">Test7</option>
-                                    <option value="Test8">Test8</option>
-                                </select>
-                            </div>
+                            
                             <div class="column">
                                 <select name="select_bezirk" class="ui fluid dropdown" id="select_bezirk">
                                     <option value="">Bezirk</option>
@@ -105,6 +93,19 @@ aaaaasdfsdf
                                     <option value="Bezirk6">Bezirk6</option>
                                     <option value="Bezirk7">Bezirk7</option>
                                     <option value="Bezirk8">Bezirk8</option>
+                                </select>
+                            </div>
+                            <div class="column">
+                                <select name="select_kA" class="ui fluid dropdown" id="select_kA">
+                                    <option value="">Abschnitt</option>
+                                    <option value="Test1">Test1</option>
+                                    <option value="Test2">Test2</option>
+                                    <option value="Test3">Test3</option>
+                                    <option value="Test4">Test4</option>
+                                    <option value="Test5">Test5</option>
+                                    <option value="Test6">Test6</option>
+                                    <option value="Test7">Test7</option>
+                                    <option value="Test8">Test8</option>
                                 </select>
                             </div>
                             <div class="column">

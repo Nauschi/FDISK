@@ -5,6 +5,7 @@
  */
 package Servlet;
 
+import Beans.Berechtigung;
 import Beans.Rohbericht;
 import Database.DB_Access;
 import PDF.PDFCreator;
@@ -124,9 +125,13 @@ public class MainServlet extends HttpServlet
         {
             if (request.getParameter("select_berechtigung") != null)
             {
-                int intIDGruppe =  Integer.parseInt(request.getParameter("select_berechtigung"));
-                System.out.println("MainServlet.doPost: bestaetigen");
-                request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
+                try
+                {
+                    getBerechtigungsinformationen(request, response, session);
+                } catch (Exception ex)
+                {
+                    System.out.println(ex.toString());
+                }
             } else if (request.getParameter("dynamisch") != null)
             {
                 System.out.println("MainServlet.doPost: dynamisch");
@@ -145,7 +150,7 @@ public class MainServlet extends HttpServlet
             } else if (request.getParameter("logout") != null)
             {
                 System.out.println("MainServlet.doPost: logout");
-                request.getSession(false).invalidate();
+
                 if (request.getSession(false) == null)
                 {
                     System.out.println("session deleted");
@@ -181,6 +186,7 @@ public class MainServlet extends HttpServlet
             try
             {
                 session.setAttribute("loggedIn", true);
+                session.setAttribute("intUserID", intIDUser);
                 request.setAttribute("berechtigungen", access.getBerechtigungen(intIDUser));
                 System.out.println("Berechtigungen gesetzt");
             } catch (Exception ex)
@@ -194,6 +200,27 @@ public class MainServlet extends HttpServlet
             request.setAttribute("login_error", true);
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
         }
+    }
+
+    private void getBerechtigungsinformationen(HttpServletRequest request,HttpServletResponse response, HttpSession session) throws Exception
+    {
+        System.out.println("OnSelectBerechtigung");
+        int intIDUser = (int) session.getAttribute("intUserID");
+        LinkedList<Berechtigung> liBerechtigungen = access.getBerechtigungen(intIDUser);
+        String strBerechtigung = request.getParameter("select_berechtigung");
+        Berechtigung aktBerechtigung;
+        for (Berechtigung berechtigung : liBerechtigungen)
+        {
+            if(strBerechtigung.equals(berechtigung.getStrBerechtigung()))
+            {
+                aktBerechtigung=berechtigung;
+            }
+        }
+        
+        
+        
+        System.out.println("MainServlet.doPost: bestaetigen");
+        request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
     }
 
     private void generiereVorschau(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
@@ -230,7 +257,7 @@ public class MainServlet extends HttpServlet
                 request.setAttribute("liste", access.getAdressListe());
             } else if (strBericht.equals(liRohberichte.get(3).getStrBerichtname()))
             {
-               //NEUE ÜBERGABEPARAMETER request.setAttribute("liste", access.getGeburtstagsliste(2014)); //welche Zahl??
+                //NEUE ÜBERGABEPARAMETER request.setAttribute("liste", access.getGeburtstagsliste(2014)); //welche Zahl??
             } else if (strBericht.equals(liRohberichte.get(4).getStrBerichtname()))
             {
                 System.out.println("MainServlet.generiereVorschau: In Tätigkeitsbericht");
@@ -241,24 +268,23 @@ public class MainServlet extends HttpServlet
             } else if (strBericht.equals(liRohberichte.get(8).getStrBerichtname()))
             {
                 request.setAttribute("liste", access.getLeerberichtMitglied());
-            }else if (strBericht.equals(liRohberichte.get(9).getStrBerichtname()))
+            } else if (strBericht.equals(liRohberichte.get(9).getStrBerichtname()))
             {
                 //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
                 //request.setAttribute("liste", access.getEinsatzbericht());
-            }else if (strBericht.equals(liRohberichte.get(10).getStrBerichtname()))
+            } else if (strBericht.equals(liRohberichte.get(10).getStrBerichtname()))
             {
                 //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
-              //  request.setAttribute("liste", access.getTaetigkeitsbericht());
-            }else if (strBericht.equals(liRohberichte.get(11).getStrBerichtname()))
+                //  request.setAttribute("liste", access.getTaetigkeitsbericht());
+            } else if (strBericht.equals(liRohberichte.get(11).getStrBerichtname()))
             {
                 //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
-               // request.setAttribute("liste", access.getUebungsbericht());
-            }else if (strBericht.equals(liRohberichte.get(12).getStrBerichtname()))
+                // request.setAttribute("liste", access.getUebungsbericht());
+            } else if (strBericht.equals(liRohberichte.get(12).getStrBerichtname()))
             {
                 //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
-              //  request.setAttribute("liste", access.getAlleBerichte());
-            }            
-            else if (strBericht.equals(liRohberichte.get(13).getStrBerichtname()))
+                //  request.setAttribute("liste", access.getAlleBerichte());
+            } else if (strBericht.equals(liRohberichte.get(13).getStrBerichtname()))
             {
                 request.setAttribute("liste", access.getKursstatistik());
             } else if (strBericht.equals(liRohberichte.get(14).getStrBerichtname()))
@@ -348,13 +374,13 @@ public class MainServlet extends HttpServlet
             int intTypeOfDateUI;
             String[] strElemente = strReihe.split(";");
             strBerichtname = strElemente[0];
-            intTypeOfDateUI = Integer.parseInt(strElemente[strElemente.length-1]);
-            for (int i = 1; i < strElemente.length-1; i++)
+            intTypeOfDateUI = Integer.parseInt(strElemente[strElemente.length - 1]);
+            for (int i = 1; i < strElemente.length - 1; i++)
             {
                 liBerichtSpalten.add(strElemente[i]);
             }
-            
-            liRohberichte.add(new Rohbericht(strBerichtname, liBerichtSpalten,intTypeOfDateUI));
+
+            liRohberichte.add(new Rohbericht(strBerichtname, liBerichtSpalten, intTypeOfDateUI));
         }
         br.close();
 

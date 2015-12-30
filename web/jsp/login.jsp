@@ -127,7 +127,8 @@
 </html>
 
 
-<%!    public String generiereBerechtigungen()
+<%!    
+    public String generiereBerechtigungen()
     {
         String strAusgabe = "";
         if (liBerechtigungen != null)
@@ -135,7 +136,7 @@
 
             for (Berechtigung ber : liBerechtigungen)
             {
-                strAusgabe += "<option value=" + ber.getIntIDGruppe() + ">" + ber.getStrBerechtigung() + "</option>";
+                strAusgabe += "<option value=" +  ber.getStrBerechtigung() + ">" + ber.getStrBerechtigung() + "</option>";
             }
 
         }

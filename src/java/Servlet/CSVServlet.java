@@ -113,6 +113,8 @@ public class CSVServlet extends HttpServlet
         strCSV = strCSV.replaceAll("<td>", "");
         strCSV = strCSV.replaceAll("</td>", ";");
         strCSV = strCSV.replaceAll("<tr>", "");
+        strCSV = strCSV.replaceAll("<b>", "");
+        strCSV = strCSV.replaceAll("</b>", "");
         String[] strRows = strCSV.split("</tr>");
         
         return strRows;
