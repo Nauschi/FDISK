@@ -1300,7 +1300,7 @@ public class DB_Access {
 
         String sqlString = "";
 
-        sqlString = "SELECT DISTINCT id_berichte \"ID\""
+        sqlString = "SELECT DISTINCT TOP 1000 id_berichte \"ID\""
                 + " ,instanznummer \"Instanznummer\""
                 + " ,name \"Name\""
                 + " ,einsatzart \"Art\""
