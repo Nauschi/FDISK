@@ -220,7 +220,7 @@ public class DB_Access {
     }
 
     public Feuerwehr getFeuerwehr(String feuerwehrnummer) throws Exception {
-        Feuerwehr feuerwehr = new Feuerwehr(feuerwehrnummer, getNameFuerFubwehr(feuerwehrnummer));
+        Feuerwehr feuerwehr = new Feuerwehr(getNameFuerFubwehr(feuerwehrnummer), feuerwehrnummer);
         return feuerwehr;
     }
 
