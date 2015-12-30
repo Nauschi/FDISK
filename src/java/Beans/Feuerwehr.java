@@ -14,12 +14,12 @@ import java.util.Objects;
 public class Feuerwehr
 {
     private String strName;
-    private int intFeuerwehrNummer;
+    private String strFeuerwehrNummer;
 
-    public Feuerwehr(String strName, int intFeuerwehrNummer)
+    public Feuerwehr(String strName, String strFeuerwehrNummer)
     {
         this.strName = strName;
-        this.intFeuerwehrNummer = intFeuerwehrNummer;
+        this.strFeuerwehrNummer = strFeuerwehrNummer;
     }
 
     public String getStrName()
@@ -32,50 +32,18 @@ public class Feuerwehr
         this.strName = strName;
     }
 
-    public int getIntFeuerwehrNummer()
-    {
-        return intFeuerwehrNummer;
+    public String getStrFeuerwehrNummer() {
+        return strFeuerwehrNummer;
     }
 
-    public void setIntFeuerwehrNummer(int intFeuerwehrNummer)
-    {
-        this.intFeuerwehrNummer = intFeuerwehrNummer;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        int hash = 3;
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (obj == null)
-        {
-            return false;
-        }
-        if (getClass() != obj.getClass())
-        {
-            return false;
-        }
-        final Feuerwehr other = (Feuerwehr) obj;
-        if (!Objects.equals(this.strName, other.strName))
-        {
-            return false;
-        }
-        if (this.intFeuerwehrNummer != other.intFeuerwehrNummer)
-        {
-            return false;
-        }
-        return true;
+    public void setStrFeuerwehrNummer(String strFeuerwehrNummer) {
+        this.strFeuerwehrNummer = strFeuerwehrNummer;
     }
 
     @Override
     public String toString()
     {
-        return "Feuerwehr{" + "strName=" + strName + ", intFeuerwehrNummer=" + intFeuerwehrNummer + '}';
+        return "Feuerwehr{" + "strName=" + strName + ", strFeuerwehrNummer=" + strFeuerwehrNummer + '}';
     }
     
     

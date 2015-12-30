@@ -16,13 +16,13 @@ public class Bezirk
 {
     private String strName;
     private int intBezirksNummer;
-    private LinkedList<Feuerwehr> liFeuerwehren;
+    private LinkedList<Abschnitt> liAbschnitte;
 
-    public Bezirk(String strName, int intBezNr, LinkedList<Feuerwehr> liFeuerwehren)
+    public Bezirk(String strName, int intBezNr, LinkedList<Abschnitt> liAbschnitte)
     {
         this.strName = strName;
         this.intBezirksNummer = intBezNr;
-        this.liFeuerwehren = liFeuerwehren;
+        this.liAbschnitte = liAbschnitte;
     }
 
     public String getStrName()
@@ -45,62 +45,25 @@ public class Bezirk
         this.intBezirksNummer = intBezirksNummer;
     }
 
-    public LinkedList<Feuerwehr> getLiFeuerwehren()
-    {
-        return liFeuerwehren;
+    public LinkedList<Abschnitt> getLiAbschnitte() {
+        return liAbschnitte;
     }
 
-    public void setLiFeuerwehren(LinkedList<Feuerwehr> liFeuerwehren)
-    {
-        this.liFeuerwehren = liFeuerwehren;
+    public void setLiAbschnitte(LinkedList<Abschnitt> liAbschnitte) {
+        this.liAbschnitte = liAbschnitte;
     }
+
     
-    public void addFeuerwehr(Feuerwehr f)
-    {
-        if(!liFeuerwehren.contains(f))
-        {
-            liFeuerwehren.add(f);
+     public void addAbschnitt(Abschnitt a) {
+        if (!liAbschnitte.contains(a)) {
+            liAbschnitte.add(a);
         }
-    }
-
-    @Override
-    public int hashCode()
-    {
-        int hash = 7;
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (obj == null)
-        {
-            return false;
-        }
-        if (getClass() != obj.getClass())
-        {
-            return false;
-        }
-        final Bezirk other = (Bezirk) obj;
-        if (!Objects.equals(this.strName, other.strName))
-        {
-            return false;
-        }
-        if (this.intBezirksNummer != other.intBezirksNummer)
-        {
-            return false;
-        }
-        if (!Objects.equals(this.liFeuerwehren, other.liFeuerwehren))
-        {
-            return false;
-        }
-        return true;
     }
 
     @Override
     public String toString()
     {
-        return "Bezirk{" + "strName=" + strName + ", intBezirksNummer=" + intBezirksNummer + ", liFeuerwehren=" + liFeuerwehren + '}';
+        return "Bezirk{" + "strName=" + strName + ", intBezirksNummer=" + intBezirksNummer + ", liAbschnitte=" + liAbschnitte + '}';
     } 
 }
 

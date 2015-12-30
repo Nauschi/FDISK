@@ -12,100 +12,53 @@ import java.util.Objects;
  *
  * @author Corinna
  */
-public class Abschnitt
-{
+public class Abschnitt {
+
     private String strName;
     private int intAbschnittsNummer;
-    private LinkedList<Bezirk> liBezirke;
+    private LinkedList<Feuerwehr> liFeuerwehren;
 
-    public Abschnitt(String strName, int intAbschnittsNummer, LinkedList<Bezirk> liBezirke)
-    {
+    public Abschnitt(String strName, int intAbschnittsNummer, LinkedList<Feuerwehr> liFeuerwehren) {
         this.strName = strName;
         this.intAbschnittsNummer = intAbschnittsNummer;
-        this.liBezirke = liBezirke;
+        this.liFeuerwehren = liFeuerwehren;
     }
 
-    public String getStrName()
-    {
+    public String getStrName() {
         return strName;
     }
 
-    public void setStrName(String strName)
-    {
+    public void setStrName(String strName) {
         this.strName = strName;
     }
 
-    public int getIntAbschnittsNummer()
-    {
+    public int getIntAbschnittsNummer() {
         return intAbschnittsNummer;
     }
 
-    public void setIntAbschnittsNummer(int intAbschnittsNummer)
-    {
+    public void setIntAbschnittsNummer(int intAbschnittsNummer) {
         this.intAbschnittsNummer = intAbschnittsNummer;
     }
 
-    public LinkedList<Bezirk> getLiBezirke()
-    {
-        return liBezirke;
+    public LinkedList<Feuerwehr> getLiFeuerwehren() {
+        return liFeuerwehren;
     }
 
-    public void setLiBezirke(LinkedList<Bezirk> liBezirke)
-    {
-        this.liBezirke = liBezirke;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        int hash = 5;
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (obj == null)
-        {
-            return false;
-        }
-        if (getClass() != obj.getClass())
-        {
-            return false;
-        }
-        final Abschnitt other = (Abschnitt) obj;
-        if (!Objects.equals(this.strName, other.strName))
-        {
-            return false;
-        }
-        if (this.intAbschnittsNummer != other.intAbschnittsNummer)
-        {
-            return false;
-        }
-        if (!Objects.equals(this.liBezirke, other.liBezirke))
-        {
-            return false;
-        }
-        return true;
+    public void setLiFeuerwehren(LinkedList<Feuerwehr> liFeuerwehren) {
+        this.liFeuerwehren = liFeuerwehren;
     }
     
-    
-
-    public void addBezirk(Bezirk b)
+    public void addFeuerwehr(Feuerwehr f)
     {
-        if(!liBezirke.contains(b))
+        if(!liFeuerwehren.contains(f))
         {
-            liBezirke.add(b);
+            liFeuerwehren.add(f);
         }
     }
 
     @Override
-    public String toString()
-    {
-        return "Abschnitt{" + "strName=" + strName + ", intAbschnittsNummer=" + intAbschnittsNummer + ", liBezirke=" + liBezirke + '}';
+    public String toString() {
+        return "Abschnitt{" + "strName=" + strName + ", intAbschnittsNummer=" + intAbschnittsNummer + ", liFeuerwehren=" + liFeuerwehren + '}';
     }
 
-   
-    
 }
-
