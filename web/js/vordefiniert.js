@@ -113,24 +113,24 @@ function saveDataForCSV()
 
 function abschittChanged(select_abschnitt)
 {
-    alert("Abschnitt_value: "+select_abschnitt.value);
+    //alert("Abschnitt_value: "+select_abschnitt.value);
     if (select_abschnitt.value != -1)
     {
-        alert("IN abschnitt changed");
+        //alert("IN abschnitt changed");
         var strFeuerwehrOptions = document.getElementById("div_" + select_abschnitt.value).innerHTML;
         document.getElementById("select_feuerwehr").innerHTML = strFeuerwehrOptions;
-        alert(strFeuerwehrOptions);
+        //alert(strFeuerwehrOptions);
     }
 }
 
 function bezirkChanged(select_bezirk)
 {
-    alert("Bezirk_value: "+select_bezirk.value);
+    //alert("Bezirk_value: "+select_bezirk.value);
     if (select_bezirk.value != -1)
     {
-        alert("IN bezirk changed");
+        //alert("IN bezirk changed");
         var strAbschnittOptions = document.getElementById("div_" + select_bezirk.value).innerHTML;
         document.getElementById("select_abschnitt").innerHTML = strAbschnittOptions;
-        alert(strAbschnittOptions);
+        //alert(strAbschnittOptions);
     }
 }
