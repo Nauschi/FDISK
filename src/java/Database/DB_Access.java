@@ -1138,7 +1138,8 @@ public class DB_Access {
      * Liefert den Teil des SQL Strings, der für die Datumsabfrage benötigt
      * wird, zurück
      *
-     * intBericht = 1 => Einsatzbericht intBericht = 2 => Taetigkeitsbericht
+     * intBericht = 1 => Einsatzbericht 
+     * intBericht = 2 => Taetigkeitsbericht
      * intBericht = 3 => Uebungsbericht
      *
      * @param strVon
@@ -1158,13 +1159,13 @@ public class DB_Access {
         }
 
         if (intBericht == 1) {
-            if ((strVon.isEmpty() || strVon.equals("")) && (!strBis.isEmpty() || !strBis.equals(""))) {
+            if ((strVon.isEmpty() || strVon.equals("")) && (!strBis.isEmpty() || !strBis.equals("")))  {
                 dateString += " uhrzeit_rueckkehr < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1)";
 
-            } else if ((strBis.isEmpty() || strBis.equals("")) && (!strVon.isEmpty() || !strVon.equals(""))) {
+            }  else if (strBis.isEmpty() || strBis.equals("") && (!strVon.isEmpty() || !strVon.equals(""))) {
                 dateString += " uhrzeit_alarmierung >= CAST('" + strVon + " 00:00.000' AS DATETIME)";
 
-            } else if ((!strBis.isEmpty() || !strBis.equals("")) && (!strVon.isEmpty() || !strVon.equals(""))) {
+            } else if (!strBis.isEmpty() && !strBis.equals("") && !strVon.isEmpty() && !strVon.equals(""))  {
                 dateString += " uhrzeit_alarmierung >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND uhrzeit_rueckkehr < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1)";
             }
         } else {
@@ -2792,13 +2793,13 @@ public class DB_Access {
             System.out.println(html);
 
 // !!!!!!!!!!!!! SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!
-//            LinkedList<Taetigkeitsbericht> li = theInstance.getTaetigkeitsbericht("01.01.2015", "02.02.2015");
+//            LinkedList<Taetigkeitsbericht> li = theInstance.getTaetigkeitsbericht("", "");
 //
 //            for (Taetigkeitsbericht li1 : li)
 //            {
 //                System.out.println(li1.getDateBeginn() + " " + li1.getDateEnde());
 //            }
-//             LinkedList<Einsatzbericht> li = theInstance.getEinsatzbericht("01.01.2015", "02.02.2015");
+//             LinkedList<Einsatzbericht> li = theInstance.getEinsatzbericht("", "");
 //            for (Einsatzbericht li1 : li)
 //            {
 //               System.out.println(li1.getDateUhrzeit_Alarmierung()+ " " + li1.getDateUhrzeit_Rueckkehr());
