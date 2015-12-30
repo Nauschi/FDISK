@@ -6,6 +6,7 @@
 package Servlet;
 
 import Beans.Berechtigung;
+import Beans.Bezirk;
 import Beans.Rohbericht;
 import Database.DB_Access;
 import PDF.PDFCreator;
@@ -204,20 +205,35 @@ public class MainServlet extends HttpServlet
 
     private void getBerechtigungsinformationen(HttpServletRequest request,HttpServletResponse response, HttpSession session) throws Exception
     {
-        System.out.println("OnSelectBerechtigung");
         int intIDUser = (int) session.getAttribute("intUserID");
         LinkedList<Berechtigung> liBerechtigungen = access.getBerechtigungen(intIDUser);
         String strBerechtigung = request.getParameter("select_berechtigung");
-        Berechtigung aktBerechtigung;
+        Berechtigung aktBerechtigung=null;
         for (Berechtigung berechtigung : liBerechtigungen)
         {
+            System.out.println(berechtigung.getStrBerechtigung()+" equals "+strBerechtigung);
             if(strBerechtigung.equals(berechtigung.getStrBerechtigung()))
             {
                 aktBerechtigung=berechtigung;
             }
         }
         
-        
+        if(aktBerechtigung.getIntIDGruppe()==5)
+        {
+            System.out.println("MainServlet.getBerechtigungsinformationen: id=5");
+            session.setAttribute("bezirk",access.getBezrik(intIDUser));
+        }else if(aktBerechtigung.getIntIDGruppe()==15)
+        {
+            System.out.println("MainServlet.getBerechtigungsinformationen: id=15");
+            session.setAttribute("bezirkName",access.getBereichsnameFuerBereichnnummer(aktBerechtigung.getIntBereich()));
+            session.setAttribute("abschnitt", access.getAbschnitt(aktBerechtigung.getIntAbschnitt()));
+        }else if(aktBerechtigung.getIntIDGruppe()==9||aktBerechtigung.getIntIDGruppe()==0)
+        {
+            System.out.println("MainServlet.getBerechtigungsinformationen: id=9/0");
+            session.setAttribute("bezirkName",access.getBereichsnameFuerBereichnnummer(aktBerechtigung.getIntBereich()));
+            session.setAttribute("abschnittName",access.getAbschnittsnameFuerAbschnittsnummer(aktBerechtigung.getIntAbschnitt()));
+            session.setAttribute("feuerwehr", access.getFeuerwehr(aktBerechtigung.getStrFubwehr()));
+        }
         
         System.out.println("MainServlet.doPost: bestaetigen");
         request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
@@ -257,6 +273,7 @@ public class MainServlet extends HttpServlet
                 request.setAttribute("liste", access.getAdressListe());
             } else if (strBericht.equals(liRohberichte.get(3).getStrBerichtname()))
             {
+                
                 //NEUE ÜBERGABEPARAMETER request.setAttribute("liste", access.getGeburtstagsliste(2014)); //welche Zahl??
             } else if (strBericht.equals(liRohberichte.get(4).getStrBerichtname()))
             {
@@ -318,6 +335,7 @@ public class MainServlet extends HttpServlet
         try
         {
             access = DB_Access.getInstance();
+            
         } catch (ClassNotFoundException ex)
         {
             Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);

@@ -14,6 +14,7 @@ import java.util.Objects;
  */
 public class Bezirk
 {
+
     private String strName;
     private int intBezirksNummer;
     private LinkedList<Abschnitt> liAbschnitte;
@@ -45,17 +46,20 @@ public class Bezirk
         this.intBezirksNummer = intBezirksNummer;
     }
 
-    public LinkedList<Abschnitt> getLiAbschnitte() {
+    public LinkedList<Abschnitt> getLiAbschnitte()
+    {
         return liAbschnitte;
     }
 
-    public void setLiAbschnitte(LinkedList<Abschnitt> liAbschnitte) {
+    public void setLiAbschnitte(LinkedList<Abschnitt> liAbschnitte)
+    {
         this.liAbschnitte = liAbschnitte;
     }
 
-    
-     public void addAbschnitt(Abschnitt a) {
-        if (!liAbschnitte.contains(a)) {
+    public void addAbschnitt(Abschnitt a)
+    {
+        if (!liAbschnitte.contains(a))
+        {
             liAbschnitte.add(a);
         }
     }
@@ -63,8 +67,16 @@ public class Bezirk
     @Override
     public String toString()
     {
-        return "Bezirk{" + "strName=" + strName + ", intBezirksNummer=" + intBezirksNummer + ", liAbschnitte=" + liAbschnitte + '}';
-    } 
+        String strHTML = "<option value='" + intBezirksNummer + "'>" + strName;
+        strHTML += "<div style='display:none'>";
+        if (liAbschnitte != null)
+        {
+            for (Abschnitt abschnitt : liAbschnitte)
+            {
+                strHTML+=abschnitt.toString();
+            }
+        }
+        strHTML += "</div></option>";
+        return strHTML;
+    }
 }
-
-

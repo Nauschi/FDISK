@@ -43,7 +43,9 @@ public class Feuerwehr
     @Override
     public String toString()
     {
-        return "Feuerwehr{" + "strName=" + strName + ", strFeuerwehrNummer=" + strFeuerwehrNummer + '}';
+//        return "Feuerwehr{" + "strName=" + strName + ", strFeuerwehrNummer=" + strFeuerwehrNummer + '}';
+        String strHTML = "<option value='" + strFeuerwehrNummer + "'>" + strName+"</option>";
+        return strHTML;
     }
     
     

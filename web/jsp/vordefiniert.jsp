@@ -5,6 +5,9 @@
 aaaaasdfsdf
 --%>
 
+<%@page import="Beans.Feuerwehr"%>
+<%@page import="Beans.Abschnitt"%>
+<%@page import="Beans.Bezirk"%>
 <%@page import="Beans.Berechtigung"%>
 <%@page import="java.lang.Object"%>
 <%@page import="Beans.Rohbericht"%>
@@ -22,6 +25,9 @@ aaaaasdfsdf
         <title>Vordefiniert</title>
     </head>
     <body>
+        <%!
+            private int intIDGruppe = -1;
+        %>
         <%
             session.setAttribute("lastPage", "vordefiniert");
         %>
@@ -81,46 +87,26 @@ aaaaasdfsdf
                         <input type="hidden" name="input_aktbericht" id="input_hidden"/>
 
                         <div class="ui equal width grid">
-                            
+
                             <div class="column">
                                 <select name="select_bezirk" class="ui fluid dropdown" id="select_bezirk">
-                                    <option value="">Bezirk</option>
-                                    <option value="Bezirk1">Bezirk1</option>
-                                    <option value="Bezirk2">Bezirk2</option>
-                                    <option value="Bezirk3">Bezirk3</option>
-                                    <option value="Bezirk4">Bezirk4</option>
-                                    <option value="Bezirk5">Bezirk5</option>
-                                    <option value="Bezirk6">Bezirk6</option>
-                                    <option value="Bezirk7">Bezirk7</option>
-                                    <option value="Bezirk8">Bezirk8</option>
+                                    <%=generiereBezirk(session)%>
                                 </select>
                             </div>
                             <div class="column">
                                 <select name="select_kA" class="ui fluid dropdown" id="select_kA">
-                                    <option value="">Abschnitt</option>
-                                    <option value="Test1">Test1</option>
-                                    <option value="Test2">Test2</option>
-                                    <option value="Test3">Test3</option>
-                                    <option value="Test4">Test4</option>
-                                    <option value="Test5">Test5</option>
-                                    <option value="Test6">Test6</option>
-                                    <option value="Test7">Test7</option>
-                                    <option value="Test8">Test8</option>
+                                    <%=generiereAbschnitt(session)%>
                                 </select>
                             </div>
                             <div class="column">
                                 <select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr">
-                                    <option value="">Feuerwehr</option>
-                                    <option value="Feuerwehr1">Feuerwehr1</option>
-                                    <option value="Feuerwehr2">Feuerwehr2</option>
-                                    <option value="Feuerwehr3">Feuerwehr3</option>
+                                    <%=generiereFeuerwehr(session)%>
                                 </select>
                             </div>
                             <!--<div class="column">
 
                                 <select name="select_berechtigung" class="ui fluid dropdown" id="select_feuerwehr">
-                            <%
-                                //LinkedList<Berechtigung> liBerechtigung = (LinkedList<Berechtigung>) session.getAttribute("berechtigungen");
+                            <%                                //LinkedList<Berechtigung> liBerechtigung = (LinkedList<Berechtigung>) session.getAttribute("berechtigungen");
                                 //for (Berechtigung be : liBerechtigung)
                                 //{
                                 //   out.println("<option value=" + be.getIntIDGruppe() + ">" + be.getStrBerechtigung() + "</option>");
@@ -152,7 +138,7 @@ aaaaasdfsdf
                                     <option value="Feuerwehr3">2013</option>
                                 </select>
                             </div>
-                            
+
                             <div class="column">
                                 <button type="submit" name="button_vorschau" class="ui button styleGrau" onclick="document.getElementById('div_loader').className = 'ui active inverted dimmer';" style="background-color: #707173; width: 100%; color: white;">Vorschau</button>
                             </div>
@@ -184,7 +170,7 @@ aaaaasdfsdf
         </div>
         <br/>
 
-        <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+        <script src="js/jquery-2.1.1.min.js"></script>
         <script src="semantic/dist/semantic.min.js"></script>
         <script src="js/jquery-ui.js"></script> 
         <script src="js/tablesort.js"></script>
@@ -213,7 +199,7 @@ aaaaasdfsdf
                                         document.getElementById("div_table").innerHTML = strTable;
                                         var intTypeOfDateUI = item.getElementsByTagName("div")[1].innerHTML;
                                         onChangeTypeOfDateUI(intTypeOfDateUI);
-                                        
+
             <%
                 if (request.getAttribute("liste") != null)
                 {
@@ -270,3 +256,52 @@ aaaaasdfsdf
 
     </body>
 </html>
+
+<%!
+    private String generiereBezirk(HttpSession session)
+    {
+        if (session.getAttribute("bezirk") != null)
+        {
+            intIDGruppe = 5;
+            Bezirk bezirk = (Bezirk) session.getAttribute("bezirk");
+            return bezirk.toString();
+        } else
+        {
+            String strName = (String)session.getAttribute("bezirkName");
+            return "<option value='-1'>"+strName+"</option>";
+        }
+    }
+    
+    private String generiereAbschnitt(HttpSession session)
+    {
+        if (session.getAttribute("abschnitt") != null)
+        {
+            intIDGruppe = 15;
+            Abschnitt abschnitt = (Abschnitt) session.getAttribute("abschnitt");
+            return abschnitt.toString();
+        } else if(intIDGruppe!=-1)
+        {
+            return "";
+        }else
+        {
+            String strName = (String)session.getAttribute("abschnittName");
+            return "<option value='-1'>"+strName+"</option>";
+        }
+    }
+    
+    private String generiereFeuerwehr(HttpSession session)
+    {
+        
+        if (session.getAttribute("feuerwehr") != null)
+        {
+            System.out.println("vordefiniert.generiereFeuerwehr: if");
+            intIDGruppe = 9;
+            Feuerwehr feuerwehr = (Feuerwehr) session.getAttribute("feuerwehr");
+            return feuerwehr.toString();
+        } else
+        {
+            System.out.println("vordefiniert.generiereFeuerwehr: if");
+            return "";
+        }
+    }
+%>

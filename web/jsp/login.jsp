@@ -136,7 +136,7 @@
 
             for (Berechtigung ber : liBerechtigungen)
             {
-                strAusgabe += "<option value=" +  ber.getStrBerechtigung() + ">" + ber.getStrBerechtigung() + "</option>";
+                strAusgabe += "<option value='" +  ber.getStrBerechtigung() + "'>" + ber.getStrBerechtigung() + "</option>";
             }
 
         }

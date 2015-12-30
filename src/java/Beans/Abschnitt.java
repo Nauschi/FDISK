@@ -58,7 +58,18 @@ public class Abschnitt {
 
     @Override
     public String toString() {
-        return "Abschnitt{" + "strName=" + strName + ", intAbschnittsNummer=" + intAbschnittsNummer + ", liFeuerwehren=" + liFeuerwehren + '}';
+//        return "Abschnitt{" + "strName=" + strName + ", intAbschnittsNummer=" + intAbschnittsNummer + ", liFeuerwehren=" + liFeuerwehren + '}';
+        String strHTML = "<option value='" + intAbschnittsNummer + "'>" + strName;
+        strHTML += "<div style='display:none'>";
+        if (liFeuerwehren != null)
+        {
+            for (Feuerwehr feuerwehr : liFeuerwehren)
+            {
+                strHTML+=feuerwehr.toString();
+            }
+        }
+        strHTML += "</div></option>";
+        return strHTML;
     }
 
 }
