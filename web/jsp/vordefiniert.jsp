@@ -162,9 +162,7 @@ aaaaasdfsdf
                                 <button type="button" class="ui button styleGruen" onClick="saveDataForCSV()"  style="background-color: #007336; width: 100%; color: white;">CSV</button>
                             </div>
                         </div>
-                    </div>
-
-
+                    </div>  
                 </div>
             </div>
         </div>
@@ -248,6 +246,7 @@ aaaaasdfsdf
                 }
             %>
                                                 document.getElementById("div_loader").className = "ui disabled loader";
+                                                
                                             });
 
 
