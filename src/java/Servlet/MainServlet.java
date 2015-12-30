@@ -278,45 +278,56 @@ public class MainServlet extends HttpServlet
 //            {
 //                System.out.println(ex.toString());
 //            }
-            if (strBericht.equals(liRohberichte.get(0).getStrBerichtname()))
+            if (strBericht.equals(liRohberichte.get(0).getStrBerichtname()))//Einfache Mitgliederliste
             {
 //                request.setAttribute("liste", access.getEinfacheMitgliederliste());
-            } else if (strBericht.equals(liRohberichte.get(1).getStrBerichtname()))
+            } else if (strBericht.equals(liRohberichte.get(1).getStrBerichtname()))//Erreichbarkeitsliste
             {
                 request.setAttribute("liste", access.getErreichbarkeitsliste());
-            } else if (strBericht.equals(liRohberichte.get(2).getStrBerichtname()))
+            } else if (strBericht.equals(liRohberichte.get(2).getStrBerichtname()))//Adressliste
             {
                 request.setAttribute("liste", access.getAdressListe());
-            } else if (strBericht.equals(liRohberichte.get(3).getStrBerichtname()))
+            } else if (strBericht.equals(liRohberichte.get(3).getStrBerichtname()))//Geburtstagsliste
             {
                 
                 //NEUE ÜBERGABEPARAMETER request.setAttribute("liste", access.getGeburtstagsliste(2014)); //welche Zahl??
-            } else if (strBericht.equals(liRohberichte.get(4).getStrBerichtname()))
+            } else if (strBericht.equals(liRohberichte.get(4).getStrBerichtname()))//Dienstzeitliste
             {
-                System.out.println("MainServlet.generiereVorschau: In Tätigkeitsbericht");
                 //NEUE ÜBERGABEPARAMTER request.setAttribute("liste", access.getDienstzeitListe());
-            } else if (strBericht.equals(liRohberichte.get(6).getStrBerichtname()))
+            }else if (strBericht.equals(liRohberichte.get(5).getStrBerichtname()))//Stundenauswertung je Mitglied je Instanz
+            {
+//                request.setAttribute("liste", );
+            }else if (strBericht.equals(liRohberichte.get(6).getStrBerichtname()))//Tätigkeitsbericht leer
             {
                 request.setAttribute("liste", access.getLeerberichtMitglied());
-            } else if (strBericht.equals(liRohberichte.get(8).getStrBerichtname()))
+            } else if (strBericht.equals(liRohberichte.get(8).getStrBerichtname()))//Übungsbericht leer
             {
                 request.setAttribute("liste", access.getLeerberichtMitglied());
             } else if (strBericht.equals(liRohberichte.get(9).getStrBerichtname()))
             {
+                String strVonDatum = request.getParameter("input_von_datum");
+                String strBisDatum = request.getParameter("input_bis_datum");
+                System.out.println("MainServler.generiereVorschau: "+strVonDatum+" bis "+strBisDatum);
                 //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
-                //request.setAttribute("liste", access.getEinsatzbericht());
+                request.setAttribute("liste", access.getEinsatzbericht(strVonDatum,strBisDatum));
             } else if (strBericht.equals(liRohberichte.get(10).getStrBerichtname()))
             {
+                String strVonDatum = request.getParameter("input_von_datum");
+                String strBisDatum = request.getParameter("input_bis_datum");
                 //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
-                //  request.setAttribute("liste", access.getTaetigkeitsbericht());
+                request.setAttribute("liste", access.getTaetigkeitsbericht(strVonDatum,strBisDatum));
             } else if (strBericht.equals(liRohberichte.get(11).getStrBerichtname()))
             {
+                String strVonDatum = request.getParameter("input_von_datum");
+                String strBisDatum = request.getParameter("input_bis_datum");
                 //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
-                // request.setAttribute("liste", access.getUebungsbericht());
+                 request.setAttribute("liste", access.getUebungsbericht(strVonDatum,strBisDatum));
             } else if (strBericht.equals(liRohberichte.get(12).getStrBerichtname()))
             {
+                String strVonDatum = request.getParameter("input_von_datum");
+                String strBisDatum = request.getParameter("input_bis_datum");
                 //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
-                //  request.setAttribute("liste", access.getAlleBerichte());
+                request.setAttribute("liste", access.getAlleBerichte(strVonDatum,strBisDatum));
             } else if (strBericht.equals(liRohberichte.get(13).getStrBerichtname()))
             {
                 request.setAttribute("liste", access.getKursstatistik());
