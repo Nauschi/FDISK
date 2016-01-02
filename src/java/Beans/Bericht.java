@@ -1,5 +1,7 @@
 package Beans;
 
+import Database.DB_Access;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -25,7 +27,10 @@ public class Bericht
     private String strMeldung;
     private String strFehlalarm;
 
-    public Bericht(int intId_Berichte, int intInstanznummer, String strName, String strArt, String strNummer, Date dateBeginn, Date dateEnde, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, String strMeldung, String strFehlalarm)
+    private DB_Access theInstance;
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
+
+    public Bericht(int intId_Berichte, int intInstanznummer, String strName, String strArt, String strNummer, Date dateBeginn, Date dateEnde, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, String strMeldung, String strFehlalarm) throws ClassNotFoundException
     {
         this.intId_Berichte = intId_Berichte;
         this.intInstanznummer = intInstanznummer;
@@ -41,6 +46,7 @@ public class Bericht
         this.strOrt = strOrt;
         this.strMeldung = strMeldung;
         this.strFehlalarm = strFehlalarm;
+        theInstance = DB_Access.getInstance();
     }
 
     public int getIntId_Berichte()
@@ -268,9 +274,12 @@ public class Bericht
         {
             strArt = "";
         }
+
+//        strArt = theInstance.capitalizeEachWord(strArt);
+
         String strHtml = "<tr><td>"
-                + dateBeginn + "</td><td>"
-                + dateEnde + "</td><td>"
+                + sdf.format(dateBeginn) + "</td><td>"
+                + sdf.format(dateEnde) + "</td><td>"
                 + strArt + "</td><td></td></tr>";
 
         return strHtml;

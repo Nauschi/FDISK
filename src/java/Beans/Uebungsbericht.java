@@ -5,12 +5,14 @@
  */
 package Beans;
 
+import Database.DB_Access;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
 /**
  *
- * @author Corinna
+ * @author Yvonne
  */
 public class Uebungsbericht
 {
@@ -31,7 +33,10 @@ public class Uebungsbericht
     private String strMeldung;
     private String strFehlalarm;
 
-    public Uebungsbericht(int intId_StmkUebungsberichte, int intInstanznummer, String strName, String strUebungsart, String strUebungsunterart, String strNummer, Date dateBeginn, Date dateEnde, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, String strMeldung, String strFehlalarm)
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
+    private DB_Access theInstance;
+
+    public Uebungsbericht(int intId_StmkUebungsberichte, int intInstanznummer, String strName, String strUebungsart, String strUebungsunterart, String strNummer, Date dateBeginn, Date dateEnde, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, String strMeldung, String strFehlalarm) throws ClassNotFoundException
     {
         this.intId_StmkUebungsberichte = intId_StmkUebungsberichte;
         this.intInstanznummer = intInstanznummer;
@@ -48,6 +53,8 @@ public class Uebungsbericht
         this.strOrt = strOrt;
         this.strMeldung = strMeldung;
         this.strFehlalarm = strFehlalarm;
+
+        theInstance = DB_Access.getInstance();
     }
 
     public int getIntId_StmkUebungsberichte()
@@ -319,13 +326,18 @@ public class Uebungsbericht
             strOrt = "";
         }
 
+//        strUebungsart = theInstance.capitalizeEachWord(strUebungsart);
+//        strUebungsunterart = theInstance.capitalizeEachWord(strUebungsunterart);
+//        strStrasse = theInstance.capitalizeEachWord(strStrasse);
+//        strOrt = theInstance.capitalizeEachWord(strOrt);
+
         String strHtml = "<tr><td>"
                 + strUebungsart + "</td><td>"
                 + strUebungsunterart + "</td><td>"
                 + strNummer + "</td><td>"
-                + dateBeginn + "</td><td>"
-                + dateEnde + "</td><td>"
-                + strStrasse + " "+strNummerAdr+" "+strStiege+ " "+strPlz +" "+strOrt+ "</td><td></td></tr>";
+                + sdf.format(dateBeginn) + "</td><td>"
+                + sdf.format(dateEnde) + "</td><td>"
+                + strStrasse + " " + strNummerAdr + " " + strStiege + " " + strPlz + " " + strOrt + "</td><td></td></tr>";
 
         return strHtml;
     }

@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import Database.DB_Access;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -21,6 +22,8 @@ public class MitgliedsErreichbarkeit extends Mitglied
 
     LinkedList<Erreichbarkeit> liErreichbarkeiten;
     private boolean boBemerkung;
+    
+    private DB_Access theInstance; 
 
 //    public MitgliedsErreichbarkeit(int intId_Erreichbarkeiten, String strErreichbarkeitsArt, String strSichtbarkeit, String strCode, boolean boBemerkung, int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname) {
 //        super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
@@ -30,11 +33,13 @@ public class MitgliedsErreichbarkeit extends Mitglied
 //        this.strCode = strCode;
 //        this.boBemerkung = boBemerkung;
 //    }
-    public MitgliedsErreichbarkeit(boolean boBemerkung, int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname)
+    public MitgliedsErreichbarkeit(boolean boBemerkung, int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname) throws ClassNotFoundException
     {
         super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
         this.liErreichbarkeiten = liErreichbarkeiten;
         this.boBemerkung = boBemerkung;
+        
+        theInstance = DB_Access.getInstance();
     }
 
     public LinkedList<Erreichbarkeit> getLiErreichbarkeiten()
@@ -111,6 +116,10 @@ public class MitgliedsErreichbarkeit extends Mitglied
         {
             strZuname = "";
         }
+        
+//        strDienstgrad = strDienstgrad.toUpperCase(); 
+//        strVorname = theInstance.capitalizeEachWord(strVorname); 
+//        strZuname = theInstance.capitalizeEachWord(strZuname); 
 
         String strHtml = "<tr><td>"
                 + strStammblattnummer + "</td><td>"

@@ -5,12 +5,14 @@
  */
 package Beans;
 
+import Database.DB_Access;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
 /**
  *
- * @author Corinna
+ * @author Yvonne
  */
 public class Taetigkeitsbericht
 {
@@ -31,7 +33,10 @@ public class Taetigkeitsbericht
     private String strMeldung;
     private String strFehlalarm;
 
-    public Taetigkeitsbericht(int intIdBericht, int intInstanznummer, String strInstanzname, String strTaetigkeitsart, String strTaetigkeitsunterart, String strNummer, Date dateBeginn, Date dateEnde, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, String strMeldung, String strFehlalarm)
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
+    private DB_Access theInstance;
+
+    public Taetigkeitsbericht(int intIdBericht, int intInstanznummer, String strInstanzname, String strTaetigkeitsart, String strTaetigkeitsunterart, String strNummer, Date dateBeginn, Date dateEnde, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, String strMeldung, String strFehlalarm) throws ClassNotFoundException
     {
         this.intId_StmkZaetigkeitsberichte = intIdBericht;
         this.intInstanznummer = intInstanznummer;
@@ -48,6 +53,8 @@ public class Taetigkeitsbericht
         this.strOrt = strOrt;
         this.strMeldung = strMeldung;
         this.strFehlalarm = strFehlalarm;
+
+        theInstance = DB_Access.getInstance();
     }
 
     public int getIntIdBericht()
@@ -318,13 +325,18 @@ public class Taetigkeitsbericht
             strOrt = "";
         }
 
+//        strTaetigkeitsunterart = theInstance.capitalizeEachWord(strTaetigkeitsunterart);
+//        strTaetigkeitsart = theInstance.capitalizeEachWord(strTaetigkeitsart);
+//        strStrasse = theInstance.capitalizeEachWord(strStrasse);
+//        strOrt = theInstance.capitalizeEachWord(strOrt);
+
         String strHtml = "<tr><td>"
                 + strTaetigkeitsart + "</td><td>"
                 + strTaetigkeitsunterart + "</td><td>"
                 + strNummer + "</td><td>"
-                + dateBeginn + "</td><td>"
-                + dateEnde + "</td><td>"
-                + strStrasse + " "+strNummerAdr+" "+strStiege+ " "+strPlz +" "+strOrt+ "</td><td></td></tr>";
+                + sdf.format(dateBeginn) + "</td><td>"
+                + sdf.format(dateEnde) + "</td><td>"
+                + strStrasse + " " + strNummerAdr + " " + strStiege + " " + strPlz + " " + strOrt + "</td><td></td></tr>";
 
         return strHtml;
     }

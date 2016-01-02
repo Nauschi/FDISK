@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import Database.DB_Access;
 import java.util.Objects;
 
 /**
@@ -20,8 +21,9 @@ public class Mitglied
     public String strTitel;
     public String strVorname;
     public String strZuname;
+    private DB_Access theInstance;
 
-    public Mitglied(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname)
+    public Mitglied(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname) throws ClassNotFoundException
     {
         this.intId_Personen = intId_Personen;
         this.strStammblattnummer = strStammblattnummer;
@@ -29,6 +31,8 @@ public class Mitglied
         this.strTitel = strTitel;
         this.strVorname = strVorname;
         this.strZuname = strZuname;
+
+        theInstance = DB_Access.getInstance();
     }
 
     public int getIntId_Personen()
@@ -161,6 +165,10 @@ public class Mitglied
         {
             strZuname = "";
         }
+
+//        strDienstgrad = strDienstgrad.toUpperCase();
+//        strZuname = theInstance.capitalizeEachWord(strZuname);
+//        strVorname = theInstance.capitalizeEachWord(strVorname);
 
         String strHtml = "<tr><td>"
                 + strStammblattnummer + "</td><td>"

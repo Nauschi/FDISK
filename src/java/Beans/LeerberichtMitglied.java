@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import Database.DB_Access;
 import java.util.Objects;
 
 /**
@@ -14,14 +15,15 @@ import java.util.Objects;
 public class LeerberichtMitglied
 {
 
-   private int intId_Personen;
+    private int intId_Personen;
     public String strStammblattnummer;
     public String strDienstgrad;
     public String strTitel;
     public String strVorname;
     public String strZuname;
+    private DB_Access theInstance;
 
-    public LeerberichtMitglied(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname)
+    public LeerberichtMitglied(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname) throws ClassNotFoundException
     {
         this.intId_Personen = intId_Personen;
         this.strStammblattnummer = strStammblattnummer;
@@ -29,6 +31,8 @@ public class LeerberichtMitglied
         this.strTitel = strTitel;
         this.strVorname = strVorname;
         this.strZuname = strZuname;
+
+        theInstance = DB_Access.getInstance();
     }
 
     public int getIntId_Personen()
@@ -142,12 +146,6 @@ public class LeerberichtMitglied
         }
         return true;
     }
-    
-    
-  
-
-
-   
 
     @Override
     public String toString()
@@ -165,11 +163,13 @@ public class LeerberichtMitglied
             strZuname = "";
         }
 
-        if(strTitel != null && !strTitel.isEmpty())
+//        strVorname = theInstance.capitalizeEachWord(strVorname);
+
+        if (strTitel != null && !strTitel.isEmpty())
         {
-            return "<td>&Omicron;&nbsp;" + strTitel +" "+ strZuname.toUpperCase()+ " " + strVorname+", " + strStammblattnummer + "</td>";
+            return "<td>&Omicron;&nbsp;" + strTitel + " " + strZuname.toUpperCase() + " " + strVorname + ", " + strStammblattnummer + "</td>";
         }
-        String strHtml = "<td>&Omicron;&nbsp;" + strZuname.toUpperCase()+ " " + strVorname+", " + strStammblattnummer + "</td>";
+        String strHtml = "<td>&Omicron;&nbsp;" + strZuname.toUpperCase() + " " + strVorname + ", " + strStammblattnummer + "</td>";
         return strHtml;
     }
 }

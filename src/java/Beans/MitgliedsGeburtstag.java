@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import Database.DB_Access;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
@@ -19,12 +20,15 @@ public class MitgliedsGeburtstag extends Mitglied
     private Date dateGeburtsdatum;
     private int intZielalter;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+    private DB_Access theInstance;
 
-    public MitgliedsGeburtstag(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, Date dateGeburtsdatum, int intAlter)
+    public MitgliedsGeburtstag(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, Date dateGeburtsdatum, int intAlter) throws ClassNotFoundException
     {
         super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
         this.dateGeburtsdatum = dateGeburtsdatum;
         this.intZielalter = intAlter;
+
+        theInstance = DB_Access.getInstance();
     }
 
     public Date getDateGeburtsdatum()
@@ -103,7 +107,12 @@ public class MitgliedsGeburtstag extends Mitglied
         if (dateGeburtsdatum == null)
         {
         }
+        
+//        strDienstgrad = strDienstgrad.toUpperCase();
+//        strZuname = theInstance.capitalizeEachWord(strZuname);
+//        strVorname = theInstance.capitalizeEachWord(strVorname);
 
+        
         String strHtml = "<tr><td>"
                 + strStammblattnummer + "</td><td>"
                 + strDienstgrad + "</td><td>"

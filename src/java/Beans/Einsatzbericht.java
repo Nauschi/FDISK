@@ -5,12 +5,14 @@
  */
 package Beans;
 
+import Database.DB_Access;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
 /**
  *
- * @author Corinna
+ * @author Yvonne
  */
 public class Einsatzbericht
 {
@@ -32,8 +34,11 @@ public class Einsatzbericht
     private String strZuname;
     private String strMeldung;
     private String strFehlalarm;
+    private DB_Access theInstance; 
 
-    public Einsatzbericht(int intId_StmkEinsatzberichte, int intInstanznummer, String strName, String strEinsatzart, String strNummer, Date dateUhrzeit_Alarmierung, Date dateUhrzeit_Rueckkehr, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, int intStandesbuchnummer, String strVorname, String strZuname, String strMeldung, String strFehlalarm)
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
+
+    public Einsatzbericht(int intId_StmkEinsatzberichte, int intInstanznummer, String strName, String strEinsatzart, String strNummer, Date dateUhrzeit_Alarmierung, Date dateUhrzeit_Rueckkehr, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, int intStandesbuchnummer, String strVorname, String strZuname, String strMeldung, String strFehlalarm) throws ClassNotFoundException
     {
         this.intId_StmkEinsatzberichte = intId_StmkEinsatzberichte;
         this.intInstanznummer = intInstanznummer;
@@ -52,6 +57,8 @@ public class Einsatzbericht
         this.strZuname = strZuname;
         this.strMeldung = strMeldung;
         this.strFehlalarm = strFehlalarm;
+         theInstance = DB_Access.getInstance();
+         
     }
 
     public int getIntId_StmkEinsatzberichte()
@@ -354,12 +361,18 @@ public class Einsatzbericht
         {
             strZuname = "";
         }
+
+             
+//        strEinsatzart = theInstance.capitalizeEachWord(strEinsatzart); 
+//        strVorname = theInstance.capitalizeEachWord(strVorname); 
+//        strZuname = theInstance.capitalizeEachWord(strZuname); 
+
         String strHtml = "<tr><td>"
                 + strEinsatzart + "</td><td>"
                 + strNummer + "</td><td>"
-                + dateUhrzeit_Alarmierung + "</td><td>"
-                + dateUhrzeit_Rueckkehr + "</td><td>"
-                + strStrasse + " "+strNummerAdr+" "+strStiege+ " "+strPlz +" "+strOrt+"</td><td>"
+                + sdf.format(dateUhrzeit_Alarmierung) + "</td><td>"
+                + sdf.format(dateUhrzeit_Rueckkehr) + "</td><td>"
+                + strStrasse + " " + strNummerAdr + " " + strStiege + " " + strPlz + " " + strOrt + "</td><td>"
                 + strVorname + "</td><td>"
                 + strZuname + "</td><td></td></tr>";
 

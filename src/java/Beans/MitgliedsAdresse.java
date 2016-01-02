@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import Database.DB_Access;
 import java.util.Objects;
 
 /**
@@ -22,7 +23,9 @@ public class MitgliedsAdresse extends Mitglied
     private String strOrt;
     private boolean boBemerkung;
 
-    public MitgliedsAdresse(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, int intId_Adressen, String strStrasse, String intNummer, String strStiege, int intPLZ, String strOrt, boolean boBemerkung)
+    private DB_Access theInstance;
+
+    public MitgliedsAdresse(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, int intId_Adressen, String strStrasse, String intNummer, String strStiege, int intPLZ, String strOrt, boolean boBemerkung) throws ClassNotFoundException
     {
         super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
         this.intId_Adressen = intId_Adressen;
@@ -32,6 +35,8 @@ public class MitgliedsAdresse extends Mitglied
         this.intPLZ = intPLZ;
         this.strOrt = strOrt;
         this.boBemerkung = boBemerkung;
+
+        theInstance = DB_Access.getInstance();
     }
 
     public int getIntId_Adressen()
@@ -189,6 +194,12 @@ public class MitgliedsAdresse extends Mitglied
         {
             strOrt = "";
         }
+
+//        strDienstgrad = strDienstgrad.toUpperCase();
+//        strZuname = theInstance.capitalizeEachWord(strZuname);
+//        strVorname = theInstance.capitalizeEachWord(strVorname);
+//        strStrasse = theInstance.capitalizeEachWord(strStrasse);
+//        strOrt = theInstance.capitalizeEachWord(strOrt);
 
         String strHtml = "<tr><td>"
                 + strStammblattnummer + "</td><td>"

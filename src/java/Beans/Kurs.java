@@ -1,5 +1,6 @@
 package Beans;
 
+import Database.DB_Access;
 import java.util.Date;
 import java.util.Objects;
 
@@ -22,7 +23,9 @@ public class Kurs
     private Date dateBegin;
     private Date dateEnde;
 
-    public Kurs(int intIdBerichte, int intTeilnehmer, String strBezeichnung, int intKm, int intInstanznummer, String strInstanzname, String strTaetigkeitsart, String strTaetigkeitsunterart, String strNummer, Date dateBeginn, Date dateEnde)
+    private DB_Access theInstance;
+
+    public Kurs(int intIdBerichte, int intTeilnehmer, String strBezeichnung, int intKm, int intInstanznummer, String strInstanzname, String strTaetigkeitsart, String strTaetigkeitsunterart, String strNummer, Date dateBeginn, Date dateEnde) throws ClassNotFoundException
     {
         this.intIdBerichte = intIdBerichte;
         this.intTeilnehmer = intTeilnehmer;
@@ -35,6 +38,7 @@ public class Kurs
         this.strNummer = strNummer;
         this.dateBegin = dateBeginn;
         this.dateEnde = dateEnde;
+        theInstance = DB_Access.getInstance();
     }
 
     public int getIntIdBerichte()
@@ -228,6 +232,10 @@ public class Kurs
         {
             strTaetigkeitsunterart = "";
         }
+
+//        strBezeichnung = theInstance.capitalizeEachWord(strBezeichnung);
+//        strTaetigkeitsart = theInstance.capitalizeEachWord(strTaetigkeitsart);
+//        strTaetigkeitsunterart = theInstance.capitalizeEachWord(strTaetigkeitsunterart);
 
         String strHtml = "<tr><td>"
                 + intTeilnehmer + "</td><td>"

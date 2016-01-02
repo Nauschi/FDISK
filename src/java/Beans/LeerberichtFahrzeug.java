@@ -1,5 +1,6 @@
 package Beans;
 
+import Database.DB_Access;
 import java.util.Objects;
 
 /**
@@ -18,8 +19,9 @@ public class LeerberichtFahrzeug
     private String strBezeichnung;
     private String strFahrzeugmarke;
     private int intInstanznummer;
+    private DB_Access theInstance; 
 
-    public LeerberichtFahrzeug(String strFahrzeugTyp, String strKennzeichen, int intBaujahr, String strAufbaufirma, String strTaktischeBezeichnung, int intId_fahrzeuge, String strBezeichnung, String strFahrzeugmarke, int intInstanznummer)
+    public LeerberichtFahrzeug(String strFahrzeugTyp, String strKennzeichen, int intBaujahr, String strAufbaufirma, String strTaktischeBezeichnung, int intId_fahrzeuge, String strBezeichnung, String strFahrzeugmarke, int intInstanznummer) throws ClassNotFoundException
     {
         this.strFahrzeugTyp = strFahrzeugTyp;
         this.strKennzeichen = strKennzeichen;
@@ -30,6 +32,7 @@ public class LeerberichtFahrzeug
         this.strBezeichnung = strBezeichnung;
         this.strFahrzeugmarke = strFahrzeugmarke;
         this.intInstanznummer = intInstanznummer;
+         theInstance = DB_Access.getInstance();
     }
 
     public String getStrFahrzeugTyp()
@@ -119,6 +122,9 @@ public class LeerberichtFahrzeug
         {
             return ""; 
         }
+        
+//        strBezeichnung = theInstance.capitalizeEachWord(strBezeichnung); 
+
         String strHtml = "<td>&Omicron;&nbsp;" + strBezeichnung + "</td>";
         return strHtml;
     }

@@ -5,8 +5,8 @@
  */
 package Beans;
 
+import Database.DB_Access;
 import java.util.Objects;
-
 /**
  *
  * @author kinco_000
@@ -29,7 +29,9 @@ public class Fahrzeug
     private int intGesamtgewicht;
     private String strTreibstoff;
 
-    public Fahrzeug(String strFahrzeugTyp, String strKennzeichen, int intBaujahr, String strAufbaufirma, String strTaktischeBezeichnung, int intId_fahrzeuge, String strBezeichnung, String strFahrzeugmarke, int intInstanznummer, String strFahrzeugart, int intLeistung, int intEigengewicht, int intGesamtgewicht, String strTreibstoff)
+    private DB_Access theInstance; 
+    
+    public Fahrzeug(String strFahrzeugTyp, String strKennzeichen, int intBaujahr, String strAufbaufirma, String strTaktischeBezeichnung, int intId_fahrzeuge, String strBezeichnung, String strFahrzeugmarke, int intInstanznummer, String strFahrzeugart, int intLeistung, int intEigengewicht, int intGesamtgewicht, String strTreibstoff) throws ClassNotFoundException
     {
         this.strFahrzeugTyp = strFahrzeugTyp;
         this.strKennzeichen = strKennzeichen;
@@ -45,6 +47,8 @@ public class Fahrzeug
         this.intEigengewicht = intEigengewicht;
         this.intGesamtgewicht = intGesamtgewicht;
         this.strTreibstoff = strTreibstoff;
+        
+        theInstance = DB_Access.getInstance();
     }
 
     public String getStrFahrzeugTyp()
@@ -268,6 +272,7 @@ public class Fahrzeug
     @Override
     public String toString()
     {
+        
         if (strFahrzeugart == null)
         {
             strFahrzeugart = "";
@@ -289,6 +294,13 @@ public class Fahrzeug
             strFahrzeugmarke = "";
         }
 
+//        strFahrzeugart = theInstance.capitalizeEachWord(strFahrzeugart); 
+//        strKennzeichen = strKennzeichen.toUpperCase(); 
+//        strAufbaufirma = theInstance.capitalizeEachWord(strAufbaufirma); 
+//        strFahrzeugmarke = theInstance.capitalizeEachWord(strFahrzeugmarke); 
+//        strTreibstoff = theInstance.capitalizeEachWord(strTreibstoff); 
+        
+              
         String strHtml = "<tr><td>"
                 + strFahrzeugart + "</td><td>"
                 + strKennzeichen + "</td><td>"
