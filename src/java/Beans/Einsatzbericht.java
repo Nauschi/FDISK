@@ -363,9 +363,9 @@ public class Einsatzbericht
         }
 
              
-//        strEinsatzart = theInstance.capitalizeEachWord(strEinsatzart); 
-//        strVorname = theInstance.capitalizeEachWord(strVorname); 
-//        strZuname = theInstance.capitalizeEachWord(strZuname); 
+        strEinsatzart = theInstance.capitalizeEachWord(strEinsatzart); 
+        strVorname = theInstance.capitalizeEachWord(strVorname); 
+        strZuname = theInstance.capitalizeEachWord(strZuname); 
 
         String strHtml = "<tr><td>"
                 + strEinsatzart + "</td><td>"

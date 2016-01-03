@@ -65,23 +65,33 @@ public class DB_Access
 
     public String capitalizeEachWord(String strFormat)
     {
-        if(strFormat.equals(""))
+        if (strFormat.equals("") || strFormat.isEmpty() || strFormat == null || strFormat.equals(" "))
         {
-            return ""; 
+            return "";
         }
         String[] strFormatTeile = strFormat.split(" ");
-   
+
         StringBuilder strNeuesFormat = new StringBuilder("");
         if (strFormatTeile.length > 1)
         {
             for (String word : strFormatTeile)
             {
-                strNeuesFormat.append(word.substring(0, 1).toUpperCase());
-                strNeuesFormat.append(word.substring(1).toLowerCase());
+                if (word.length() > 1)
+                {
+                    strNeuesFormat.append(word.substring(0, 1).toUpperCase());
+                    strNeuesFormat.append(word.substring(1).toLowerCase());
+                }
+                else
+                {
+                    strNeuesFormat.append(word); 
+                }
+
                 strNeuesFormat.append(" ");
             }
         } else if (strFormatTeile.length == 1)
         {
+            // if (word.length() > 1)
+              // {
             strNeuesFormat.append(strFormat.substring(0, 1).toUpperCase());
             strNeuesFormat.append(strFormat.substring(1).toLowerCase());
         }
@@ -3105,6 +3115,8 @@ public class DB_Access
 //                System.out.println(li1.getDateBeginn() + " " + li1.getDateEnde());
 //            }
 // !!!!!!!!!!!!! Ende SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!
+            
+
         } catch (Exception ex)
         {
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);

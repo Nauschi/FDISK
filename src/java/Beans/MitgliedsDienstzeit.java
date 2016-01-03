@@ -110,10 +110,11 @@ public class MitgliedsDienstzeit extends Mitglied
 
         }
 
-//        strDienstgrad = strDienstgrad.toUpperCase();
-//
-//        strZuname = theInstance.capitalizeEachWord(strZuname);
-//        strVorname = theInstance.capitalizeEachWord(strVorname);
+        strDienstgrad = strDienstgrad.toUpperCase();
+
+        strZuname = theInstance.capitalizeEachWord(strZuname);
+        strVorname = theInstance.capitalizeEachWord(strVorname);
+        
 
         String strHtml = "<tr><td>"
                 + strStammblattnummer + "</td><td>"

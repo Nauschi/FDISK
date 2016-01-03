@@ -117,9 +117,9 @@ public class MitgliedsErreichbarkeit extends Mitglied
             strZuname = "";
         }
         
-//        strDienstgrad = strDienstgrad.toUpperCase(); 
-//        strVorname = theInstance.capitalizeEachWord(strVorname); 
-//        strZuname = theInstance.capitalizeEachWord(strZuname); 
+        strDienstgrad = strDienstgrad.toUpperCase(); 
+        strVorname = theInstance.capitalizeEachWord(strVorname); 
+        strZuname = theInstance.capitalizeEachWord(strZuname); 
 
         String strHtml = "<tr><td>"
                 + strStammblattnummer + "</td><td>"

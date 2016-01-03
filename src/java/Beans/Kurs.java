@@ -233,9 +233,9 @@ public class Kurs
             strTaetigkeitsunterart = "";
         }
 
-//        strBezeichnung = theInstance.capitalizeEachWord(strBezeichnung);
-//        strTaetigkeitsart = theInstance.capitalizeEachWord(strTaetigkeitsart);
-//        strTaetigkeitsunterart = theInstance.capitalizeEachWord(strTaetigkeitsunterart);
+        strBezeichnung = theInstance.capitalizeEachWord(strBezeichnung);
+        strTaetigkeitsart = theInstance.capitalizeEachWord(strTaetigkeitsart);
+        strTaetigkeitsunterart = theInstance.capitalizeEachWord(strTaetigkeitsunterart);
 
         String strHtml = "<tr><td>"
                 + intTeilnehmer + "</td><td>"

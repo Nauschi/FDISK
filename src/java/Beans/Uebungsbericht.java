@@ -326,10 +326,10 @@ public class Uebungsbericht
             strOrt = "";
         }
 
-//        strUebungsart = theInstance.capitalizeEachWord(strUebungsart);
-//        strUebungsunterart = theInstance.capitalizeEachWord(strUebungsunterart);
-//        strStrasse = theInstance.capitalizeEachWord(strStrasse);
-//        strOrt = theInstance.capitalizeEachWord(strOrt);
+        strUebungsart = theInstance.capitalizeEachWord(strUebungsart);
+        strUebungsunterart = theInstance.capitalizeEachWord(strUebungsunterart);
+        strStrasse = theInstance.capitalizeEachWord(strStrasse);
+        strOrt = theInstance.capitalizeEachWord(strOrt);
 
         String strHtml = "<tr><td>"
                 + strUebungsart + "</td><td>"

@@ -275,7 +275,7 @@ public class Bericht
             strArt = "";
         }
 
-//        strArt = theInstance.capitalizeEachWord(strArt);
+        strArt = theInstance.capitalizeEachWord(strArt);
 
         String strHtml = "<tr><td>"
                 + sdf.format(dateBeginn) + "</td><td>"

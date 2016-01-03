@@ -195,11 +195,11 @@ public class MitgliedsAdresse extends Mitglied
             strOrt = "";
         }
 
-//        strDienstgrad = strDienstgrad.toUpperCase();
-//        strZuname = theInstance.capitalizeEachWord(strZuname);
-//        strVorname = theInstance.capitalizeEachWord(strVorname);
-//        strStrasse = theInstance.capitalizeEachWord(strStrasse);
-//        strOrt = theInstance.capitalizeEachWord(strOrt);
+        strDienstgrad = strDienstgrad.toUpperCase();
+        strZuname = theInstance.capitalizeEachWord(strZuname);
+        strVorname = theInstance.capitalizeEachWord(strVorname);
+        strStrasse = theInstance.capitalizeEachWord(strStrasse);
+        strOrt = theInstance.capitalizeEachWord(strOrt);
 
         String strHtml = "<tr><td>"
                 + strStammblattnummer + "</td><td>"
