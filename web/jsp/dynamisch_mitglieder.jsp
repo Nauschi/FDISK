@@ -26,11 +26,11 @@
 
             String[] strFeldKlammerAuf =
             {
-                " ", "(", "[", "{"
+                "N/A", "(", "[", "{"
             };
             String[] strFeldKlammerZu =
             {
-                " ", ")", "]", "}"
+                "N/A", ")", "]", "}"
             };
 
             String[] strFeldOperator =
@@ -45,7 +45,7 @@
 
             String[] strFeldVerknuepfung =
             {
-                " ", "UND", "UND NICHT", "ODER", "ODER NICHT"
+                "N/A", "UND", "UND NICHT", "ODER", "ODER NICHT"
             };
         %>
 

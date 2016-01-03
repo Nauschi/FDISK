@@ -132,12 +132,12 @@ aaaaasdfsdf
                         <div class="ui equal width grid">
                             <div class="column" id="div_input_von_datum" style="display: none">
                                 <div class="ui input" style="width: 100%">
-                                    <input name="input_von_datum" id="input_von_datum" placeholder="von..." autocomplete="off" type="text">
+                                    <input name="input_von_datum" id="input_von_datum" placeholder="von..." autocomplete="off" readonly="true" type="text">
                                 </div>
                             </div>
                             <div class="column" id="div_input_bis_datum" style="display: none">
                                 <div class="ui input" style="width: 100%">
-                                    <input name="input_bis_datum" id="input_bis_datum" placeholder="bis..." autocomplete="off" type="text">
+                                    <input name="input_bis_datum" id="input_bis_datum" placeholder="bis..." autocomplete="off" readonly="true" type="text">
                                 </div>
                             </div >
                             <div class="column" id="div_kein_datum_1" style="display: none">
