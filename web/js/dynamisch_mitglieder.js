@@ -102,8 +102,9 @@ function initialisiereCBFilter(strTyp, strID)
             opt.value = strSplitFilter[i];
             opt.innerHTML = strSplitFilter[i];
             select_filter.appendChild(opt);
-            alert(strSplitFilter[i]);
         }
+        
+        //set selected index auf erstes element...
     }
 }
 

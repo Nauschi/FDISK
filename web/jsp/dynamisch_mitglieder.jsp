@@ -290,7 +290,7 @@
                     if (it.hasNext())
                     {
                         out.println("',");
-                    }else
+                    } else
                     {
                         out.println("'");
                     }
@@ -300,6 +300,15 @@
 
                             };
                             setMap(mapAlt);
+            <%                                
+//                for (int i = 1; i <= intZaehler; i++)
+//                                {
+            %>
+                    //                    onTypChanged(document.getElementById("select_typ_<%--<%=i%>--%>"));
+            <%
+//                                }
+            %>
+                            
                         });
         </script>
 
