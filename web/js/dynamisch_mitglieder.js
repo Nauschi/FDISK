@@ -4,9 +4,18 @@
  * and open the template in the editor.
  */
 
+var map = {'Test': 'anushgjk'};
+
+
 //Initialisiert die Dropdowns
 $('.ui.dropdown').dropdown();
 
+
+
+function setMap(otherMap)
+{
+    map = otherMap;
+}
 
 
 //Wird aufgerufen wenn in einem Dropdown wo der Typ bestimmt wird sich etwas ändert
@@ -15,16 +24,20 @@ $('.ui.dropdown').dropdown();
  */
 function onTypChanged(select_typ)
 {
-    var strTyp = select_typ.value;
+    var strTypPlusBox = select_typ.value;
     var strID = select_typ.getAttribute('id');
     strID = strID.split("_")[2];
-    var strBoxArt = strTyp.split(";")[1];
+    var strBoxArt = strTypPlusBox.split(";")[1];
+    var strTyp = strTypPlusBox.split(";")[0];
     if (strBoxArt == "cb")
     {
 
         document.getElementById("div_filter_cb_" + strID).style.display = "block";
         document.getElementById("div_filter_txt_" + strID).style.display = "none";
         document.getElementById("div_filter_datepicker_" + strID).style.display = "none";
+        initialisiereCBFilter(strTyp, strID);
+
+
     } else if (strBoxArt == "txt")
     {
         $("#select_operator_" + strID + " option[value='<=']").remove();
@@ -63,6 +76,35 @@ function onTypChanged(select_typ)
         select_operator.appendChild(opt4);
     }
 
+}
+
+
+function removeOptions(selectbox)
+{
+    var i;
+    for (i = selectbox.options.length - 1; i >= 0; i--)
+    {
+        selectbox.remove(i);
+    }
+}
+
+
+function initialisiereCBFilter(strTyp, strID)
+{
+    if (map[strTyp] != undefined)
+    {
+        var select_filter = document.getElementById("select_filter_cb_" + strID);
+        removeOptions(select_filter);
+        var strHTMLFilter = map['Anrede'];
+        var strSplitFilter = strHTMLFilter.split(';');
+        for (var i = 0; i < strSplitFilter.length; i++) {
+            var opt = document.createElement('option');
+            opt.value = strSplitFilter[i];
+            opt.innerHTML = strSplitFilter[i];
+            select_filter.appendChild(opt);
+            alert(strSplitFilter[i]);
+        }
+    }
 }
 
 

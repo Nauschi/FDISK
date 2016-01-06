@@ -1,4 +1,7 @@
 
+<%@page import="java.util.Iterator"%>
+<%@page import="java.util.Set"%>
+<%@page import="java.util.HashMap"%>
 <%-- 
     Document   : dynamisch_mitarbeiter
     Created on : 18.08.2015, 17:15:59
@@ -168,7 +171,7 @@
 
 
                 <div class="four wide column" id="div_filter_cb_<%=i%>" style="width: 100%; display: none;">
-                    <select name="select_filter_<%=i%>" class="ui fluid dropdown" id="select_filter">
+                    <select name="select_filter_cb_<%=i%>" class="ui fluid dropdown" id="select_filter_cb_<%=i%>">
                         <!--<option value="">Filter</option>-->
                         <%=generiereSelect("select_filter_" + i, strFeldFilter, request)%>
                     </select>
@@ -255,9 +258,51 @@
                             });
             <%
                 }
+                HashMap<String, LinkedList<String>> hsFilter = new HashMap<>();
+                LinkedList<String> liTest = new LinkedList<String>();
+                for (int i = 1; i < 10; i++)
+                {
+                    liTest.add("" + i);
+                }
+                hsFilter.put("Anrede", liTest);
+                hsFilter.put("Geschlecht", liTest);
+                Set<String> set = hsFilter.keySet();
+                Iterator it = set.iterator();
             %>
+                            var mapAlt = {
+            <%
+                while (it.hasNext())
+                {
+                    String strKey = (String) it.next();
+                    LinkedList<String> liValues = hsFilter.get(strKey);
+                    out.print("'" + strKey + "' : '");
+                    for (String value : liValues)
+                    {
+                        if (liValues.getLast().equals(value))
+                        {
+                            out.print(value);
+                        } else
+                        {
+                            out.print(value + ";");
+                        }
+
+                    }
+                    if (it.hasNext())
+                    {
+                        out.println("',");
+                    }else
+                    {
+                        out.println("'");
+                    }
+                }
+
+            %>
+
+                            };
+                            setMap(mapAlt);
                         });
         </script>
+
 
     </body>
 </html>
