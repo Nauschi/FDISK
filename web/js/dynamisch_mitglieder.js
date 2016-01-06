@@ -40,10 +40,8 @@ function onTypChanged(select_typ)
 
     } else if (strBoxArt == "txt")
     {
-        $("#select_operator_" + strID + " option[value='<=']").remove();
-        $("#select_operator_" + strID + " option[value='>=']").remove();
-        $("#select_operator_" + strID + " option[value='<']").remove();
-        $("#select_operator_" + strID + " option[value='>']").remove();
+        var operatorFeld = ["=", "<>"];
+        aktualisiereOperator(strID,operatorFeld);
 //        document.getElementById("select_operator_"+strID).selectedIndex = "0"; geht irgendwie nd.. vl Framework das problem... (http://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_select_selectedindex)
         document.getElementById("div_filter_cb_" + strID).style.display = "none";
         document.getElementById("div_filter_txt_" + strID).style.display = "block";
@@ -57,54 +55,52 @@ function onTypChanged(select_typ)
 
     if ((strBoxArt == "datepicker" || strBoxArt == "cb") && document.getElementById("select_operator_" + strID).options[2] == null)
     {
-        select_operator = document.getElementById("select_operator_" + strID);
-        var opt1 = document.createElement('option');
-        opt1.value = "<=";
-        opt1.innerHTML = "<=";
-        select_operator.appendChild(opt1);
-        var opt2 = document.createElement('option');
-        opt2.value = ">=";
-        opt2.innerHTML = ">=";
-        select_operator.appendChild(opt2);
-        var opt3 = document.createElement('option');
-        opt3.value = "<";
-        opt3.innerHTML = "<";
-        select_operator.appendChild(opt3);
-        var opt4 = document.createElement('option');
-        opt4.value = ">";
-        opt4.innerHTML = ">";
-        select_operator.appendChild(opt4);
+        var operatorFeld = ["=", "<>", "<=", ">=", "<", ">"];
+        aktualisiereOperator(strID,operatorFeld);
     }
 
 }
 
-
-function removeOptions(selectbox)
+function aktualisiereOperator(strID, operatorFeld)
 {
-    var i;
-    for (i = selectbox.options.length - 1; i >= 0; i--)
+    var div_operator = document.getElementById("div_operator_" + strID);
+    div_operator.innerHTML = '<select name="select_operator_' + strID + '" class="ui fluid dropdown" id="select_operator_' + strID + '">';
+    var select_operator = document.getElementById("select_operator_" + strID);
+    for (var i = 0; i < operatorFeld.length; i++)
     {
-        selectbox.remove(i);
+        var opt = document.createElement('option');
+        opt.value = operatorFeld[i];
+        opt.innerHTML = operatorFeld[i];
+        select_operator.appendChild(opt);
     }
+
+
+    $('#select_operator_' + strID).dropdown();
 }
 
 
 function initialisiereCBFilter(strTyp, strID)
 {
-    if (map[strTyp] != undefined)
+
+    if (map['Anrede'] != undefined)
     {
+        $('#select_filter_cb_' + strID).dropdown('clear');
+
+        var div_filter = document.getElementById("div_filter_cb_" + strID);
+
+        div_filter.innerHTML = '<select name="select_filter_cb_' + strID + '>" class="ui fluid dropdown" id="select_filter_cb_' + strID + '"></select>';
         var select_filter = document.getElementById("select_filter_cb_" + strID);
-        removeOptions(select_filter);
+
         var strHTMLFilter = map['Anrede'];
         var strSplitFilter = strHTMLFilter.split(';');
-        for (var i = 0; i < strSplitFilter.length; i++) {
+        for (var i = 0; i < strSplitFilter.length; i++)
+        {
             var opt = document.createElement('option');
             opt.value = strSplitFilter[i];
             opt.innerHTML = strSplitFilter[i];
             select_filter.appendChild(opt);
         }
-        
-        //set selected index auf erstes element...
+        $('#select_filter_cb_' + strID).dropdown();
     }
 }
 
