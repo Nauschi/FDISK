@@ -187,6 +187,7 @@ aaaaasdfsdf
         <script src="js/jquery-ui.js"></script> 
         <script src="js/tablesort.js"></script>
         <script src="js/vordefiniert.js"></script>
+        <script src="js/datepicker-de.js"></script>
         <script>
 
                                     $(document).ready(function () {

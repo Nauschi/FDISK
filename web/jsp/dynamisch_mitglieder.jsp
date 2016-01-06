@@ -236,6 +236,7 @@
         <script src="semantic/dist/semantic.min.js"></script>
         <script src="js/jquery-ui.js"></script> 
         <script src="js/dynamisch_mitglieder.js"></script>
+        <script src="js/datepicker-de.js"></script>
 
         <script>
                         $(function () {

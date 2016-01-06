@@ -13,20 +13,6 @@ $('.ui.dropdown').dropdown();
 /*
  * Stellt je nach Typ in der Zeile, den Filter auf ein Dropdown, Textfield oder Datepicker
  */
-//function aktiviereDatepicker(strDatpickerID)
-//{
-//    alert("sdasa");
-//    $("#" + strDatpickerID).datepicker({
-//        onSelect: function (selected)
-//        {
-//            $("#input_von_datum").datepicker("option", "showAnim", "slideDown");
-//            $("#input_von_datum").datepicker("option", "dateFormat", "dd.mm.yy");
-//            $("#input_von_datum").datepicker("option", $.datepicker.regional['de']);
-//        }
-//    });
-//}
-
-
 function onTypChanged(select_typ)
 {
     var strTyp = select_typ.value;
@@ -54,7 +40,6 @@ function onTypChanged(select_typ)
         document.getElementById("div_filter_cb_" + strID).style.display = "none";
         document.getElementById("div_filter_txt_" + strID).style.display = "none";
         document.getElementById("div_filter_datepicker_" + strID).style.display = "block";
-//        aktiviereDatepicker("input_filter_datepicker_" + strID);
     }
 
     if ((strBoxArt == "datepicker" || strBoxArt == "cb") && document.getElementById("select_operator_" + strID).options[2] == null)
@@ -79,8 +64,6 @@ function onTypChanged(select_typ)
     }
 
 }
-
-
 
 
 function onChangeVerknuepfung(intIndexVonZeile)
