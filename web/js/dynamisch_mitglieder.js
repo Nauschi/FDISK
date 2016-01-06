@@ -19,8 +19,10 @@ function setMap(otherMap)
 
 
 //Wird aufgerufen wenn in einem Dropdown wo der Typ bestimmt wird sich etwas ändert
-/*
+/**
  * Stellt je nach Typ in der Zeile, den Filter auf ein Dropdown, Textfield oder Datepicker
+ * @param {type} select_typ
+ * @returns {undefined}
  */
 function onTypChanged(select_typ)
 {
@@ -41,8 +43,7 @@ function onTypChanged(select_typ)
     } else if (strBoxArt == "txt")
     {
         var operatorFeld = ["=", "<>"];
-        aktualisiereOperator(strID,operatorFeld);
-//        document.getElementById("select_operator_"+strID).selectedIndex = "0"; geht irgendwie nd.. vl Framework das problem... (http://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_select_selectedindex)
+        aktualisiereOperator(strID, operatorFeld);
         document.getElementById("div_filter_cb_" + strID).style.display = "none";
         document.getElementById("div_filter_txt_" + strID).style.display = "block";
         document.getElementById("div_filter_datepicker_" + strID).style.display = "none";
@@ -56,11 +57,16 @@ function onTypChanged(select_typ)
     if ((strBoxArt == "datepicker" || strBoxArt == "cb") && document.getElementById("select_operator_" + strID).options[2] == null)
     {
         var operatorFeld = ["=", "<>", "<=", ">=", "<", ">"];
-        aktualisiereOperator(strID,operatorFeld);
+        aktualisiereOperator(strID, operatorFeld);
     }
 
 }
-
+/**
+ * 
+ * @param {type} strID
+ * @param {type} operatorFeld
+ * @returns {undefined}
+ */
 function aktualisiereOperator(strID, operatorFeld)
 {
     var div_operator = document.getElementById("div_operator_" + strID);
@@ -73,8 +79,6 @@ function aktualisiereOperator(strID, operatorFeld)
         opt.innerHTML = operatorFeld[i];
         select_operator.appendChild(opt);
     }
-
-
     $('#select_operator_' + strID).dropdown();
 }
 
@@ -107,20 +111,34 @@ function initialisiereCBFilter(strTyp, strID)
 
 function onChangeVerknuepfung(intIndexVonZeile)
 {
+    var div_verknuefung = document.getElementById("div_verknuepfung_" + intIndexVonZeile);
+    var style = getStyle(div_verknuefung,'backgroundColor');
+    if (style == 'rgb(192, 5, 24)'||style == '#c00518')
+    {
+        div_verknuefung.style.backgroundColor = "white";
+    }
+}
 
-    document.getElementById("div_verknuepfung_" + intIndexVonZeile).style.backgroundColor = "white";
+function getStyle(el,styleProp)
+{
+    if (el.currentStyle)
+        return el.currentStyle[styleProp];
+
+    return document.defaultView.getComputedStyle(el,null)[styleProp];
 }
 
 //Wir aufgerufen wenn der Button erstellen gecklickt wird.
-/*
+/**
  * Überprüft ob die letzte Verknüpfung leer ist, 
  * falls sie leer ist wird das div rot eingefärbt,
  * falls nicht....
+ * @param {type} intZahler
+ * @returns {undefined}
  */
 function onErstellen(intZahler)
 {
     var strWertVonLetztemSelect = document.getElementById("select_verknuepfung_" + intZahler).value;
-    if (strWertVonLetztemSelect != " ")
+    if (strWertVonLetztemSelect != "N/A")
     {
         alert("Letzte Verknüpfung muss leer sein!");
         document.getElementById("div_verknuepfung_" + intZahler).style.backgroundColor = "#C00518";
