@@ -14,8 +14,8 @@
         <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
         <link rel="stylesheet" type="text/css" href="css/standardDesign.css">
         <link rel="stylesheet" type="text/css" href="css/login.css">
-        <link rel="stylesheet" href="css/jquery-ui_1.css">
-        <link href="css/jquery-ui_2.css" rel="Stylesheet"type="text/css"/>
+        <link rel="stylesheet" type="text/css" href="css/jquery-ui_1.css">
+        <link rel="stylesheet" type="text/css" href="css/jquery-ui_2.css">
         <title>Login</title>
     </head>
     <body>
@@ -44,29 +44,29 @@
             if (liBerechtigungen != null)
             {
         %>
-        
-            <div class="ui modal">
 
-                <div class="header">
-                    Wählen Sie bitte eine Instanz aus
-                </div>
-                <div class="content">
-                    <form action="MainServlet" method="POST" name="form_submit">
+        <div class="ui modal">
+
+            <div class="header">
+                Wählen Sie bitte eine Instanz aus
+            </div>
+            <div class="content">
+                <form action="MainServlet" method="POST" name="form_submit">
                     <select name="select_berechtigung" class="ui fluid dropdown" id="select_verknüpfung">
                         <%=generiereBerechtigungen()%>
                     </select>
-                    </form>
-                </div>
+                </form>
+            </div>
 
-                <div class="actions">
+            <div class="actions">
 
-                    <!--<button type="button" name="button_abbrechen" class="ui button styleRot" style="background-color: #C00518; width: 20%; color: white;">Abbrechen </button>-->
-                    <button type="button" onClick="document.form_submit.submit();" name="button_bestaetigen" class="ui button styleGruen"  style="background-color: #007336; width: 20%; color: white;">Bestätigen</button>
-
-                </div>
+                <!--<button type="button" name="button_abbrechen" class="ui button styleRot" style="background-color: #C00518; width: 20%; color: white;">Abbrechen </button>-->
+                <button type="button" onClick="document.form_submit.submit();" name="button_bestaetigen" class="ui button styleGruen"  style="background-color: #007336; width: 20%; color: white;">Bestätigen</button>
 
             </div>
-        
+
+        </div>
+
         <%
             }
         %>
@@ -102,33 +102,33 @@
                 </div>
             </div>
         </form>
+
+
+
+
+        <script src="js/jquery-2.1.1.min.js"></script>
+        <script src="semantic/dist/semantic.min.js"></script>
+        <script src="js/jquery-ui.js"></script> 
+        <script>
+                    $(document).ready(function () {
+            <%
+                if (liBerechtigungen != null)
+
+                {
+            %>
+
+                        $('.ui.modal').modal('show');
+                        $('.ui.dropdown').dropdown();
+            <%
+                }
+            %>
+                    });
+        </script>
     </body>
-
-
-
-    <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
-    <script src="semantic/dist/semantic.min.js"></script>
-    <script src="js/jquery-ui.js"></script> 
-    <script>
-        $(document).ready(function () {
-        <%
-            if (liBerechtigungen != null)
-
-            {
-        %>
-
-            $('.ui.modal').modal('show');
-            $('.ui.dropdown').dropdown();
-        <%
-            }
-        %>
-        });
-    </script>
 </html>
 
 
-<%!    
-    public String generiereBerechtigungen()
+<%!    public String generiereBerechtigungen()
     {
         String strAusgabe = "";
         if (liBerechtigungen != null)
@@ -136,7 +136,7 @@
 
             for (Berechtigung ber : liBerechtigungen)
             {
-                strAusgabe += "<option value='" +  ber.getStrBerechtigung() + "'>" + ber.getStrBerechtigung() + "</option>";
+                strAusgabe += "<option value='" + ber.getStrBerechtigung() + "'>" + ber.getStrBerechtigung() + "</option>";
             }
 
         }

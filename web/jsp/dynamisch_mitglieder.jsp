@@ -13,8 +13,8 @@
         <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
         <link rel="stylesheet" type="text/css" href="css/standardDesign.css">
         <link rel="stylesheet" type="text/css" href="css/dynamisch.css">
-        <link rel="stylesheet" href="css/jquery-ui_1.css">
-        <link href="css/jquery-ui_2.css" rel="Stylesheet"type="text/css"/>
+        <link rel="stylesheet" type="text/css" href="css/jquery-ui_1.css">
+        <link rel="stylesheet" type="text/css" href="css/jquery-ui_2.css">
         <title>Dynamisch - Mitglieder</title>
     </head>
     <body>
@@ -35,7 +35,7 @@
 
             String[] strFeldOperator =
             {
-                "=", "<>","<=", ">=", "<", ">"
+                "=", "<>", "<=", ">=", "<", ">"
             };
 
             String[] strFeldFilter =
@@ -180,7 +180,7 @@
                 </div>
                 <div class="four wide column" id="div_filter_datepicker_<%=i%>" style="width: 100%; display: none;">
                     <div class="ui input" style="width: 100%">
-                        <input name="input_filter_date" id="input_filter_date_<%=i%>" placeholder="Filter" autocomplete="off" type="text">
+                        <input name="input_filter_datepicker_<%=i%>" id="input_filter_datepicker_<%=i%>" placeholder="Filter" autocomplete="off" readonly="true" type="text">
                     </div>
                 </div>
 
@@ -201,14 +201,14 @@
                     </select>
                 </div>
             </div>
-            
+
             <%
-                    
+
                 }
             %>
 
-            
-            
+
+
             </br>
             <div id="div_plusminus" class="ui segment" style="width: 10%; margin: auto;">
                 <div class="ui equal width grid" >
@@ -232,33 +232,30 @@
         <br/>
         <!--</div>-->
         <br/>
-        <<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
         <script src="semantic/dist/semantic.min.js"></script>
         <script src="js/jquery-ui.js"></script> 
         <script src="js/dynamisch_mitglieder.js"></script>
 
         <script>
-                            $(function () {
+                        $(function () {
             <%
                 for (int i = 1; i <= intZaehler; i++)
                 {
             %>
-                                $("#input_filter_date_<%=i%>").datepicker({
-                                    onSelect: function (selected)
-                                    {
-                                        var dt = new Date(selected);
-                                        dt.setDate(dt.getDate() + 1);
-                                        $("#input_bis_datum").datepicker("option", "minDate", dt);
-                                        $("#input_von_datum").datepicker("option", "showAnim", "slideDown");
-                                        $("#input_von_datum").datepicker("option", "dateFormat", "dd.mm.yy");
-                                        $("#input_von_datum").datepicker("option", $.datepicker.regional['de']);
-                                    }
-                                });
 
+                            $("#input_filter_datepicker_<%=i%>").datepicker({
+                                onSelect: function (selected)
+                                {
+                                    $("#input_filter_datepicker_<%=i%>").datepicker("option", "showAnim", "slideDown");
+                                    $("#input_filter_datepicker_<%=i%>").datepicker("option", "dateFormat", "dd.mm.yy");
+                                    $("#input_filter_datepicker_<%=i%>").datepicker("option", $.datepicker.regional['de']);
+                                }
+                            });
             <%
                 }
             %>
-                            });
+                        });
         </script>
 
     </body>
