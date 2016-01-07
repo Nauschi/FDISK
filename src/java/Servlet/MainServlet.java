@@ -221,7 +221,9 @@ public class MainServlet extends HttpServlet
         if(aktBerechtigung.getIntIDGruppe()==5)
         {
             System.out.println("MainServlet.getBerechtigungsinformationen: id=5");
-            session.setAttribute("bezirk",access.getBezrik(intIDUser));
+            System.out.println("MainServlet.getBerechtigungsinformationen: userID: "+intIDUser);
+            session.setAttribute("bezirk",access.getBezrik(aktBerechtigung.getIntBereich()));
+            System.out.println("MainServlet.getBerechtigungsinformationen: "+access.getBezrik(intIDUser));
             session.setAttribute("bezirkName",null);
             session.setAttribute("abschnitt", null);
             session.setAttribute("abschnittName",null);
