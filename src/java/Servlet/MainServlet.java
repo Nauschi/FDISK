@@ -285,7 +285,7 @@ public class MainServlet extends HttpServlet
 //                request.setAttribute("liste", access.getEinfacheMitgliederliste());
             } else if (strBericht.equals(liRohberichte.get(1).getStrBerichtname()))//Erreichbarkeitsliste
             {
-                request.setAttribute("liste", access.getErreichbarkeitsliste());
+//                request.setAttribute("liste", access.getErreichbarkeitsliste());
             } else if (strBericht.equals(liRohberichte.get(2).getStrBerichtname()))//Adressliste
             {
                 //request.setAttribute("liste", access.getAdressListe());

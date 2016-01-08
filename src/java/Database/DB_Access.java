@@ -939,16 +939,31 @@ public class DB_Access {
      * @see MitgliedsErreichbarkeit
      * @see LinkedList
      */
-    public LinkedList<MitgliedsErreichbarkeit> getErreichbarkeitsliste() throws Exception {
+    public LinkedList<MitgliedsErreichbarkeit> getErreichbarkeitsliste(int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
         LinkedList<MitgliedsErreichbarkeit> liMitgliedsErreichbarkeiten = new LinkedList<>();
 
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 
-        String sqlString = "SELECT DISTINCT TOP 1000 sm.id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", se.erreichbarkeitsart \"Erreichbarkeitsart\", se.code \"Code\""
-                + " FROM FDISK.dbo.stmkmitglieder sm INNER JOIN FDISK.dbo.stmkerreichbarkeiten se ON(sm.id_personen = se.id_personen)"
-                + " ORDER BY sm.id_personen;";
+        String sqlString = "";
 
+        if (strFubwehr.equals("-1")) {
+            sqlString = "SELECT DISTINCT sm.id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", se.erreichbarkeitsart \"Erreichbarkeitsart\", se.code \"Code\""
+                    + " FROM FDISK.dbo.stmkmitglieder sm INNER JOIN FDISK.dbo.stmkerreichbarkeiten se ON(sm.id_personen = se.id_personen)"
+                    + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(sm.instanznummer = f.instanznummer)"
+                    + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr
+                    + " ORDER BY sm.id_personen;";
+        } else {
+            sqlString = "SELECT DISTINCT sm.id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", se.erreichbarkeitsart \"Erreichbarkeitsart\", se.code \"Code\""
+                    + " FROM FDISK.dbo.stmkmitglieder sm INNER JOIN FDISK.dbo.stmkerreichbarkeiten se ON(sm.id_personen = se.id_personen)"
+                    + " WHERE sm.instanznummer = '" + strFubwehr + "'"
+                    + " ORDER BY sm.id_personen;";
+        }
+
+//WICHTIG NICHT LÖSCHEN!
+//sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
+//                + " FROM FDISK.dbo.stmkmitglieder"
+//                + " WHERE SUBSTRING(instanznummer, 0, 3) = '" + intBereichnr + "'";
         ResultSet rs = stat.executeQuery(sqlString);
         String strErreichbarkeitsart;
         String strCode;

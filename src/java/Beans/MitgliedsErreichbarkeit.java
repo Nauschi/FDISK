@@ -120,6 +120,7 @@ public class MitgliedsErreichbarkeit extends Mitglied
         strDienstgrad = strDienstgrad.toUpperCase(); 
         strVorname = theInstance.capitalizeEachWord(strVorname); 
         strZuname = theInstance.capitalizeEachWord(strZuname); 
+        
 
         String strHtml = "<tr><td>"
                 + strStammblattnummer + "</td><td>"
@@ -130,7 +131,8 @@ public class MitgliedsErreichbarkeit extends Mitglied
 
         for (Erreichbarkeit erreichbarkeit : liErreichbarkeiten)
         {
-            strHtml+= "<p>"+erreichbarkeit.getStrErreichbarkeitsArt()+": "+erreichbarkeit.getStrCode()+"</p>";
+            String str = theInstance.capitalizeEachWord(erreichbarkeit.getStrErreichbarkeitsArt());
+            strHtml+= "<p>"+str+": "+erreichbarkeit.getStrCode()+"</p>";
         }
         strHtml += "</td><td></td></tr>";
 
