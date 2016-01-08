@@ -2724,6 +2724,8 @@ public class DB_Access {
                 System.out.println("Abschnitt: " + abschnitt.getStrName());
             }
         }
+        
+        
         try {
 //            LinkedList<Berechtigung> lili = theInstance.getBerechtigungen(3566);
 //            System.out.println("zweite Berechtigung: " + lili.get(1).getIntIDGruppe());

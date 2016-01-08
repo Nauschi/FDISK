@@ -32,7 +32,7 @@ Auszeichnungsart;cb
 Auszeichnungsstufe;cb
 Auszeichnungsdatum;datepicker
 Führerscheinklasse;cb
-Gültig bis;datepicker
+Führerscheinklasse - Gültig bis;datepicker
 Funktionsinstanz;cb
 Funktionsbezeichnung;cb
 Funktion von;datepicker
