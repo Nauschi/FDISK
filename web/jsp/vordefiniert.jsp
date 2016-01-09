@@ -5,6 +5,7 @@
 aaaaasdfsdf
 --%>
 
+<%@page import="java.time.LocalDate"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="Beans.Feuerwehr"%>
@@ -158,11 +159,17 @@ aaaaasdfsdf
                                 <select name="select_jahr" class="ui fluid dropdown" id="select_jahr" style="display: none">
                                     <option value="">Jahr</option>
                                     <%
-                                        
+                                        int intYear = LocalDate.now().getYear();
+                                        for(int i = intYear; i >= 1950; i--)
+                                        {
+                                            %>
+                                            <option value="<%=i%>"><%=i%></option>
+                                            <%
+                                        }
                                     %>
-                                    <option value="2015">2015</option>
+                                    <!--<0option value="2015">2015</option>
                                     <option value="2014">2014</option>
-                                    <option value="2013">2013</option>
+                                    <option value="2013">2013</option> -->
                                 </select>
                             </div>
 
