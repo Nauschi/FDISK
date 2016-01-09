@@ -89,7 +89,7 @@ aaaaasdfsdf
 
                         <div class="ui equal width grid">
 
-                            <div class="column">
+                            <div class="column" id="div_bezirk">
                                 <select name="select_bezirk" class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
                                     <%=generiereBezirk(session)%>
                                 </select>
@@ -100,7 +100,7 @@ aaaaasdfsdf
                                     out.println(generiereHiddenBezirkDiv(session));
                                 }
                             %>
-                            <div class="column">
+                            <div class="column" id="div_abschnitt">
                                 <select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)">
                                     <%=generiereAbschnitt(session)%>
                                 </select>
@@ -112,7 +112,7 @@ aaaaasdfsdf
                                     out.println(generiereHiddenAbschnittDiv(session));
                                 }
                             %>
-                            <div class="column">
+                            <div class="column" id="div_feuerwehr">
                                 <select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr">
                                     <%=generiereFeuerwehr(session)%>
                                 </select>

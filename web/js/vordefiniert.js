@@ -118,7 +118,9 @@ function abschittChanged(select_abschnitt)
     {
         //alert("IN abschnitt changed");
         var strFeuerwehrOptions = document.getElementById("div_" + select_abschnitt.value).innerHTML;
+        document.getElementById("div_feuerwehr").innerHTML = '<select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr"></select>';
         document.getElementById("select_feuerwehr").innerHTML = strFeuerwehrOptions;
+        $('#select_feuerwehr').dropdown();
         //alert(strFeuerwehrOptions);
     }
 }
@@ -130,7 +132,9 @@ function bezirkChanged(select_bezirk)
     {
         //alert("IN bezirk changed");
         var strAbschnittOptions = document.getElementById("div_" + select_bezirk.value).innerHTML;
+        document.getElementById("div_abschnitt").innerHTML = '<select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)"></select>';
         document.getElementById("select_abschnitt").innerHTML = strAbschnittOptions;
+        $('#select_abschnitt').dropdown();
         //alert(strAbschnittOptions);
     }
 }
