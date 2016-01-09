@@ -108,22 +108,22 @@
             <input type="hidden" name="hidden_zaehler" value="<%=intZaehler%>">
             <div class="ui grid" id="div_dyn_headers">
                 <div class="two wide column" style="width: 100%;">
-                    Klammer auf
+                    <b>Klammer auf</b>
                 </div>
                 <div class="three wide column" style="width: 100%;">
-                    Typ
+                    <b>Typ</b>
                 </div>
                 <div class="two wide column" style="width: 100%;">
-                    Operator
+                    <b>Operator</b>
                 </div>
                 <div class="four wide column" style="width: 100%;">
-                    Filter
+                    <b>Filter</b>
                 </div>
                 <div class="two wide column" style="width: 100%;">
-                    Klammer zu
+                    <b>Klammer zu</b>
                 </div>
                 <div class="three wide column" style="width: 100%;">
-                    Verknüpfung
+                    <b>Verknüpfung</b>
                 </div>
             </div>
             <%
@@ -262,6 +262,7 @@
 
         <script>
                         $(function () {
+                            alert("In Function");
             <%
                 for (int i = 1; i <= intZaehler; i++)
                 {
@@ -278,14 +279,6 @@
             <%
                 }
                 HashMap<String, LinkedList<String>> hsFilter = (HashMap<String, LinkedList<String>>) session.getAttribute("hashMap_typ");
-
-//                LinkedList<String> liTest = new LinkedList<String>();
-//                for (int i = 1; i < 10; i++)
-//                {
-//                    liTest.add("" + i);
-//                }
-//                hsFilter.put("Anrede", liTest);
-//                hsFilter.put("Geschlecht", liTest);
                 Set<String> set = hsFilter.keySet();
                 Iterator it = set.iterator();
             %>
@@ -298,6 +291,8 @@
                     out.print("'" + strKey + "' : '");
                     for (String value : liValues)
                     {
+                        value = value.replace("''", "\"");
+                        value = value.replace(";", "");
                         if (liValues.getLast().equals(value))
                         {
                             out.print(value);

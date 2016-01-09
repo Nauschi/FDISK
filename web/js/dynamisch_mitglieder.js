@@ -14,7 +14,7 @@ $('.ui.dropdown').dropdown();
 
 function setMap(otherMap)
 {
-    
+    alert("dynamisch-Mitglieder.js.setMap: setMap");
     map = otherMap;
 }
 
