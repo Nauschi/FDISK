@@ -91,7 +91,7 @@ aaaaasdfsdf
 
                             <div class="column" id="div_bezirk">
                                 <fieldset style="width:100%;border: 0px;" id="fieldset_bezirk">
-                                    <legend>Bezirk</legend>
+                                    <legend><b>Bezirk</b></legend>
                                     <select name="select_bezirk" class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
                                         <%=generiereBezirk(session)%>
                                     </select>
@@ -105,7 +105,7 @@ aaaaasdfsdf
                             %>
                             <div class="column" id="div_abschnitt">
                                 <fieldset style="width:100%;border: 0px;" id="fieldset_abschnitt">
-                                    <legend>Abschnitt</legend>
+                                    <legend><b>Abschnitt</b></legend>
                                     <select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)">
                                         <%=generiereAbschnitt(session)%>
                                     </select>

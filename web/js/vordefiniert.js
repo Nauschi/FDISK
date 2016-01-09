@@ -132,7 +132,7 @@ function bezirkChanged(select_bezirk)
     {
         //alert("IN bezirk changed");
         var strAbschnittOptions = document.getElementById("div_" + select_bezirk.value).innerHTML;
-        document.getElementById("fieldset_abschnitt").innerHTML = '<legend>Abschnitt</legend><select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)"></select>';
+        document.getElementById("fieldset_abschnitt").innerHTML = '<legend><b>Abschnitt</b></legend><select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)"></select>';
         document.getElementById("select_abschnitt").innerHTML = strAbschnittOptions;
         $('#select_abschnitt').dropdown();
         //alert(strAbschnittOptions);
