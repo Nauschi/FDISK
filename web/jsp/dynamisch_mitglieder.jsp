@@ -141,7 +141,7 @@
                 </div>
 
                 <div class="three wide column" id="div_typ_<%=i%>" style="width: 100%;">
-                    <select name="select_typ_<%=i%>" class="ui fluid dropdown" onchange="onTypChanged(this)" id="select_typ_<%=i%>">
+                    <select name="select_typ_<%=i%>" class="ui fluid dropdown" onchange="onTypChanged(this,null)" id="select_typ_<%=i%>">
                         <%
                             String strAktTypMitBoxArt = "";
                             if (request.getParameter("select_typ_" + i) != null)
@@ -310,17 +310,31 @@
                         out.print("'");
                     }
                 }
-                
+
             %>
                             };
                             setMap(mapAlt);
-            <%//                for (int i = 1; i <= intZaehler; i++)
-//                                {
+
+            <%                for (int i = 1; i <= intZaehler; i++)
+                {
             %>
-                            //                    onTypChanged(document.getElementById("select_typ_<%--<%=i%>--%>"));
-            <%//                                }
+                    var strLastSelection = null;
+            <%
+                    out.println("alert('"+request.getParameter("select_filter_cb_" + i)+"');");
+                                if (request.getParameter("select_filter_cb_" + i) != null)
+                                {
+                                    
+                                    out.println("alert('strLastSelectionNotNull')");
+                                }else
+                                {
+                                    //out.println("null;");
+                                }
+                                    
             %>
-                    
+                            onTypChanged(document.getElementById("select_typ_<%=i%>"),strLastSelection);
+            <%   }
+            %>
+
                         });
         </script>
 

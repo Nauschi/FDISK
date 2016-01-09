@@ -25,7 +25,7 @@ function setMap(otherMap)
  * @param {type} select_typ
  * @returns {undefined}
  */
-function onTypChanged(select_typ)
+function onTypChanged(select_typ,strLastSelection)
 {
     var strTypPlusBox = select_typ.value;
     var strID = select_typ.getAttribute('id');
@@ -38,7 +38,7 @@ function onTypChanged(select_typ)
         document.getElementById("div_filter_cb_" + strID).style.display = "block";
         document.getElementById("div_filter_txt_" + strID).style.display = "none";
         document.getElementById("div_filter_datepicker_" + strID).style.display = "none";
-        initialisiereCBFilter(strTyp, strID);
+        initialisiereCBFilter(strTyp, strID,strLastSelection);
 
 
     } else if (strBoxArt == "txt")
@@ -68,7 +68,7 @@ function onTypChanged(select_typ)
  * @param {type} operatorFeld
  * @returns {undefined}
  */
-function aktualisiereOperator(strID, operatorFeld)
+function aktualisiereOperator(strID, operatorFeld,strLastSelection)
 {
     var div_operator = document.getElementById("div_operator_" + strID);
     div_operator.innerHTML = '<select name="select_operator_' + strID + '" class="ui fluid dropdown" id="select_operator_' + strID + '">';
@@ -76,6 +76,10 @@ function aktualisiereOperator(strID, operatorFeld)
     for (var i = 0; i < operatorFeld.length; i++)
     {
         var opt = document.createElement('option');
+        if(strLastSelection==operatorFeld[i])
+        {
+            alert("Dynamisch_mitglieder.aktualisiereOperator: Beide Gleich")
+        }
         opt.value = operatorFeld[i];
         opt.innerHTML = operatorFeld[i];
         select_operator.appendChild(opt);
@@ -86,7 +90,6 @@ function aktualisiereOperator(strID, operatorFeld)
 
 function initialisiereCBFilter(strTyp, strID)
 {
-    alert(strTyp.toUpperCase());
     if (map[strTyp.toUpperCase()] != undefined)
     {
         var div_filter = document.getElementById("div_filter_cb_" + strID);
