@@ -5,6 +5,8 @@
 aaaaasdfsdf
 --%>
 
+<%@page import="java.util.Date"%>
+<%@page import="java.util.Calendar"%>
 <%@page import="Beans.Feuerwehr"%>
 <%@page import="Beans.Abschnitt"%>
 <%@page import="Beans.Bezirk"%>
@@ -155,9 +157,12 @@ aaaaasdfsdf
                             <div class="column" id="div_select_jahr" style="display: none">
                                 <select name="select_jahr" class="ui fluid dropdown" id="select_jahr" style="display: none">
                                     <option value="">Jahr</option>
-                                    <option value="Feuerwehr1">2015</option>
-                                    <option value="Feuerwehr2">2014</option>
-                                    <option value="Feuerwehr3">2013</option>
+                                    <%
+                                        
+                                    %>
+                                    <option value="2015">2015</option>
+                                    <option value="2014">2014</option>
+                                    <option value="2013">2013</option>
                                 </select>
                             </div>
 

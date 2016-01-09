@@ -288,31 +288,35 @@ public class MainServlet extends HttpServlet
 //            {
 //                System.out.println(ex.toString());
 //            }
+            int intBereichNr = Integer.parseInt(request.getParameter("select_bezirk"));
+            int intAbschnittNr = Integer.parseInt(request.getParameter("select_abschnitt"));
+            String strFeuerwehr = request.getParameter("select_feuerwehr");
             if (strBericht.equals(liRohberichte.get(0).getStrBerichtname()))//Einfache Mitgliederliste
             {
-//                request.setAttribute("liste", access.getEinfacheMitgliederliste());
+                request.setAttribute("liste", access.getEinfacheMitgliederliste(intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals(liRohberichte.get(1).getStrBerichtname()))//Erreichbarkeitsliste
             {
-//                request.setAttribute("liste", access.getErreichbarkeitsliste());
+                request.setAttribute("liste", access.getErreichbarkeitsliste(intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals(liRohberichte.get(2).getStrBerichtname()))//Adressliste
             {
-                //request.setAttribute("liste", access.getAdressListe());
+                
+                request.setAttribute("liste", access.getAdressListe(intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals(liRohberichte.get(3).getStrBerichtname()))//Geburtstagsliste
             {
-                
-                //NEUE ÜBERGABEPARAMETER request.setAttribute("liste", access.getGeburtstagsliste(2014)); //welche Zahl??
+                int intJahr = Integer.parseInt(request.getParameter("select_jahr"));
+                request.setAttribute("liste", access.getGeburtstagsliste(intJahr, intBereichNr, intAbschnittNr, strFeuerwehr)); //welche Zahl??
             } else if (strBericht.equals(liRohberichte.get(4).getStrBerichtname()))//Dienstzeitliste
             {
-                //NEUE ÜBERGABEPARAMTER request.setAttribute("liste", access.getDienstzeitListe());
+                request.setAttribute("liste", access.getDienstzeitListe(intBereichNr, intAbschnittNr, strFeuerwehr));
             }else if (strBericht.equals(liRohberichte.get(5).getStrBerichtname()))//Stundenauswertung je Mitglied je Instanz
             {
-//                request.setAttribute("liste", );
+                //request.setAttribute("liste", );
             }else if (strBericht.equals(liRohberichte.get(6).getStrBerichtname()))//Tätigkeitsbericht leer
             {
                 request.setAttribute("liste", access.getLeerberichtMitglied());
             }else if (strBericht.equals(liRohberichte.get(8).getStrBerichtname()))//Einsatzbericht leer
             {
-//                request.setAttribute("liste", );
+                //request.setAttribute("liste", );
             }
             else if (strBericht.equals(liRohberichte.get(8).getStrBerichtname()))//Übungsbericht leer
             {
