@@ -154,6 +154,7 @@ public class MainServlet extends HttpServlet
                 generiereVorschau(request, response);
             } else if (request.getParameter("hidden_zaehler") != null)
             {
+                System.out.println("MainServlet.doPost: hidden_zaeler. 1typ: "+request.getParameter("select_typ_1"));
                 System.out.println("MainServlet.doPost: hidden_zaeler");
                 request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
             } else if (request.getParameter("logout") != null)

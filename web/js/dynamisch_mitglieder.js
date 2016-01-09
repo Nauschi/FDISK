@@ -73,6 +73,7 @@ function aktualisiereOperator(strID, operatorFeld,strLastSelection)
     var div_operator = document.getElementById("div_operator_" + strID);
     div_operator.innerHTML = '<select name="select_operator_' + strID + '" class="ui fluid dropdown" id="select_operator_' + strID + '">';
     var select_operator = document.getElementById("select_operator_" + strID);
+    
     for (var i = 0; i < operatorFeld.length; i++)
     {
         var opt = document.createElement('option');

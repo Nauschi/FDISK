@@ -104,8 +104,7 @@
         <!--<div class="ui grid" id="div_mitte">-->
 
         <br/>
-        <form action="MainServlet" method="POST">
-            <input type="hidden" name="hidden_zaehler" value="<%=intZaehler%>">
+        
             <div class="ui grid" id="div_dyn_headers">
                 <div class="two wide column" style="width: 100%;">
                     <b>Klammer auf</b>
@@ -126,6 +125,8 @@
                     <b>Verknüpfung</b>
                 </div>
             </div>
+        <form action="MainServlet" method="POST">
+            <input type="hidden" name="hidden_zaehler" value="<%=intZaehler%>">
             <%
                 for (int i = 1; i <= intZaehler; i++)
                 {
@@ -182,7 +183,7 @@
                 <div class="two wide column" id="div_operator_<%=i%>" style="width: 100%;">
                     <select name="select_operator_<%=i%>" class="ui fluid dropdown" id="select_operator_<%=i%>">
                         <!--<option value="">Operator</option>-->
-                        <%=generiereSelect("select_operator_" + i, strFeldOperator, request)%>
+                        <%--<%=generiereSelect("select_operator_" + i, strFeldOperator, request)%>--%>
                     </select>
                 </div>
 
@@ -192,7 +193,7 @@
                 <div class="four wide column" id="div_filter_cb_<%=i%>" style="width: 100%; display: none;">
                     <select name="select_filter_cb_<%=i%>" class="ui fluid dropdown" id="select_filter_cb_<%=i%>">
                         <!--<option value="">Filter</option>-->
-                        <%=generiereSelect("select_filter_" + i, strFeldFilter, request)%>
+                        <%--<%=generiereSelect("select_filter_" + i, strFeldFilter, request)%>--%>
                     </select>
                 </div>
                 <div class="four wide column" id="div_filter_txt_<%=i%>" style="width: 100%; display: none;">
