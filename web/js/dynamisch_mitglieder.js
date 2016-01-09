@@ -14,6 +14,7 @@ $('.ui.dropdown').dropdown();
 
 function setMap(otherMap)
 {
+    
     map = otherMap;
 }
 
@@ -85,17 +86,15 @@ function aktualisiereOperator(strID, operatorFeld)
 
 function initialisiereCBFilter(strTyp, strID)
 {
-
-    if (map['Anrede'] != undefined)
+    alert(strTyp.toUpperCase());
+    if (map[strTyp.toUpperCase()] != undefined)
     {
-        $('#select_filter_cb_' + strID).dropdown('clear');
-
         var div_filter = document.getElementById("div_filter_cb_" + strID);
 
         div_filter.innerHTML = '<select name="select_filter_cb_' + strID + '>" class="ui fluid dropdown" id="select_filter_cb_' + strID + '"></select>';
         var select_filter = document.getElementById("select_filter_cb_" + strID);
 
-        var strHTMLFilter = map['Anrede'];
+        var strHTMLFilter = map[strTyp.toUpperCase()];
         var strSplitFilter = strHTMLFilter.split(';');
         for (var i = 0; i < strSplitFilter.length; i++)
         {
@@ -105,6 +104,9 @@ function initialisiereCBFilter(strTyp, strID)
             select_filter.appendChild(opt);
         }
         $('#select_filter_cb_' + strID).dropdown();
+    }else
+    {
+        alert('not in');
     }
 }
 

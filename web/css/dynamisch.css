@@ -22,3 +22,18 @@ td
 {
     border: 0px !important;
 }
+
+#div_dyn_headers
+{
+    width: 90%;
+    margin: 0 auto !important;
+    background-color: #C00518;
+    color: white;
+}
+
+.dyn_element
+{
+    width: 90%;
+    margin: 0 auto !important;
+    background-color: white;
+}

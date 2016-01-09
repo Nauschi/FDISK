@@ -106,22 +106,41 @@
         <br/>
         <form action="MainServlet" method="POST">
             <input type="hidden" name="hidden_zaehler" value="<%=intZaehler%>">
-
+            <div class="ui grid" id="div_dyn_headers">
+                <div class="two wide column" style="width: 100%;">
+                    Klammer auf
+                </div>
+                <div class="three wide column" style="width: 100%;">
+                    Typ
+                </div>
+                <div class="two wide column" style="width: 100%;">
+                    Operator
+                </div>
+                <div class="four wide column" style="width: 100%;">
+                    Filter
+                </div>
+                <div class="two wide column" style="width: 100%;">
+                    Klammer zu
+                </div>
+                <div class="three wide column" style="width: 100%;">
+                    Verknüpfung
+                </div>
+            </div>
             <%
                 for (int i = 1; i <= intZaehler; i++)
                 {
             %>
 
-            <div class="ui grid" id="div_mitte">
+            <div class="ui grid dyn_element">
 
-                <div class="one wide column" id="div_klammerAuf" style="width: 100%;">
+                <div class="two wide column" id="div_klammerAuf_<%=i%>" style="width: 100%;">
                     <select name="select_klammer_auf_<%=i%>" class="ui fluid dropdown" id="select_klammer">
                         <!--<option value=""></option>-->
                         <%=generiereSelect("select_klammer_auf_" + i, strFeldKlammerAuf, request)%>
                     </select>
                 </div>
 
-                <div class="four wide column" id="div_typ_<%=i%>" style="width: 100%;">
+                <div class="three wide column" id="div_typ_<%=i%>" style="width: 100%;">
                     <select name="select_typ_<%=i%>" class="ui fluid dropdown" onchange="onTypChanged(this)" id="select_typ_<%=i%>">
                         <%
                             String strAktTypMitBoxArt = "";
@@ -191,13 +210,13 @@
 
 
 
-                <div class="one wide column" id="div_klammerZu" style="width: 100%;">
+                <div class="two wide column" id="div_klammerZu" style="width: 100%;">
                     <select name="select_klammer_zu_<%=i%>" class="ui fluid dropdown" id="select_klammer_zu_<%=i%>">
                         <!--<option value=""></option>-->
                         <%=generiereSelect("select_klammer_zu_" + i, strFeldKlammerZu, request)%>
                     </select>
                 </div>
-                <div class="four wide column" id="div_verknuepfung_<%=i%>" style="width: 100%;">
+                <div class="three wide column" id="div_verknuepfung_<%=i%>" style="width: 100%;">
                     <select name="select_verknuepfung_<%=i%>" class="ui fluid dropdown" onchange="onChangeVerknuepfung(<%=i%>)" id="select_verknuepfung_<%=i%>">
                         <!--<option value="">Verknüpfung</option>-->
                         <%=generiereSelect("select_verknuepfung_" + i, strFeldVerknuepfung, request)%>
@@ -258,15 +277,15 @@
                             });
             <%
                 }
-                HashMap<String, LinkedList<String>> hsFilter = new HashMap<>();
-                
-                LinkedList<String> liTest = new LinkedList<String>();
-                for (int i = 1; i < 10; i++)
-                {
-                    liTest.add("" + i);
-                }
-                hsFilter.put("Anrede", liTest);
-                hsFilter.put("Geschlecht", liTest);
+                HashMap<String, LinkedList<String>> hsFilter = (HashMap<String, LinkedList<String>>) session.getAttribute("hashMap_typ");
+
+//                LinkedList<String> liTest = new LinkedList<String>();
+//                for (int i = 1; i < 10; i++)
+//                {
+//                    liTest.add("" + i);
+//                }
+//                hsFilter.put("Anrede", liTest);
+//                hsFilter.put("Geschlecht", liTest);
                 Set<String> set = hsFilter.keySet();
                 Iterator it = set.iterator();
             %>
@@ -293,23 +312,20 @@
                         out.println("',");
                     } else
                     {
-                        out.println("'");
+                        out.print("'");
                     }
                 }
-
+                
             %>
-
                             };
                             setMap(mapAlt);
-            <%                                
-//                for (int i = 1; i <= intZaehler; i++)
+            <%//                for (int i = 1; i <= intZaehler; i++)
 //                                {
             %>
-                    //                    onTypChanged(document.getElementById("select_typ_<%--<%=i%>--%>"));
-            <%
-//                                }
+                            //                    onTypChanged(document.getElementById("select_typ_<%--<%=i%>--%>"));
+            <%//                                }
             %>
-                            
+                    
                         });
         </script>
 

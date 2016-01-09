@@ -136,7 +136,15 @@ public class MainServlet extends HttpServlet
             } else if (request.getParameter("dynamisch") != null)
             {
                 System.out.println("MainServlet.doPost: dynamisch");
-                request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
+                try
+                {
+                    session.setAttribute("hashMap_typ", access.getMethodeFuerTyp());
+                    request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
+                } catch (Exception ex)
+                {
+                    Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
             } else if (request.getParameter("vordefiniert") != null)
             {
                 System.out.println("MainServlet.doPost: vordefiniert");
