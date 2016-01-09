@@ -88,66 +88,75 @@
         </div>
         <%
             int intZaehler = 1;
-            if (request.getParameter("button_plus") != null)
+            
+            if (request.getParameter("hidden_action") != null)
             {
-                intZaehler = Integer.parseInt(request.getParameter("hidden_zaehler")) + 1;
-            } else if (request.getParameter("button_minus") != null)
-            {
-                intZaehler = Integer.parseInt(request.getParameter("hidden_zaehler")) - 1;
-                if (intZaehler < 1)
+                
+                String strAction = request.getParameter("hidden_action");
+                if (strAction.equals("plus"))
                 {
-                    intZaehler = 1;
+                    intZaehler = Integer.parseInt(request.getParameter("hidden_zaehler")) + 1;
+                } else if (strAction.equals("minus"))
+                {
+                    intZaehler = Integer.parseInt(request.getParameter("hidden_zaehler")) - 1;
+                    if (intZaehler < 1)
+                    {
+                        intZaehler = 1;
+                    }
                 }
+
             }
         %>
         <h1>Dynamisch - Mitglieder</h1>
         <!--<div class="ui grid" id="div_mitte">-->
 
         <br/>
-        
-            <div class="ui grid" id="div_dyn_headers">
-                <div class="two wide column" style="width: 100%;">
-                    <b>Klammer auf</b>
-                </div>
-                <div class="three wide column" style="width: 100%;">
-                    <b>Typ</b>
-                </div>
-                <div class="two wide column" style="width: 100%;">
-                    <b>Operator</b>
-                </div>
-                <div class="four wide column" style="width: 100%;">
-                    <b>Filter</b>
-                </div>
-                <div class="two wide column" style="width: 100%;">
-                    <b>Klammer zu</b>
-                </div>
-                <div class="three wide column" style="width: 100%;">
-                    <b>Verknüpfung</b>
-                </div>
+
+        <div class="ui grid" id="div_dyn_headers">
+            <div class="two wide column" style="width: 100%;">
+                <b>Klammer auf</b>
             </div>
-        <form action="MainServlet" method="POST">
+            <div class="three wide column" style="width: 100%;">
+                <b>Typ</b>
+            </div>
+            <div class="two wide column" style="width: 100%;">
+                <b>Operator</b>
+            </div>
+            <div class="four wide column" style="width: 100%;">
+                <b>Filter</b>
+            </div>
+            <div class="two wide column" style="width: 100%;">
+                <b>Klammer zu</b>
+            </div>
+            <div class="three wide column" style="width: 100%;">
+                <b>Verknüpfung</b>
+            </div>
+        </div>
+        <form action="MainServlet" method="POST" name="form_plus_minus_erstellen">
             <input type="hidden" name="hidden_zaehler" value="<%=intZaehler%>">
             <%
                 for (int i = 1; i <= intZaehler; i++)
                 {
             %>
 
-            <div class="ui grid dyn_element">
+            <div class="ui grid dyn_element" id="div_element_<%=i%>">
 
                 <div class="two wide column" id="div_klammerAuf_<%=i%>" style="width: 100%;">
-                    <select name="select_klammer_auf_<%=i%>" class="ui fluid dropdown" id="select_klammer">
+                    <select class="ui fluid dropdown" id="select_klammer_<%=i%>">
                         <!--<option value=""></option>-->
-                        <%=generiereSelect("select_klammer_auf_" + i, strFeldKlammerAuf, request)%>
+                        <%=generiereSelect(0, strFeldKlammerAuf, request, i)%>
                     </select>
                 </div>
 
                 <div class="three wide column" id="div_typ_<%=i%>" style="width: 100%;">
-                    <select name="select_typ_<%=i%>" class="ui fluid dropdown" onchange="onTypChanged(this,null)" id="select_typ_<%=i%>">
+                    <select class="ui fluid dropdown" onchange="onTypChanged(this, null,null)" id="select_typ_<%=i%>">
                         <%
                             String strAktTypMitBoxArt = "";
-                            if (request.getParameter("select_typ_" + i) != null)
+                            if (request.getParameter("hidden_element_data_" + i) != null)
                             {
-                                strAktTypMitBoxArt = request.getParameter("select_typ_" + i);
+                                String strTyp = request.getParameter("hidden_element_data_" + i).split(";")[1];
+                                String strBoxArt = request.getParameter("hidden_element_data_" + i).split(";")[2];
+                                strAktTypMitBoxArt = strTyp+";"+ strBoxArt;
                             }
                         %>
 
@@ -181,7 +190,7 @@
 
                 </div>
                 <div class="two wide column" id="div_operator_<%=i%>" style="width: 100%;">
-                    <select name="select_operator_<%=i%>" class="ui fluid dropdown" id="select_operator_<%=i%>">
+                    <select class="ui fluid dropdown" id="select_operator_<%=i%>">
                         <!--<option value="">Operator</option>-->
                         <%--<%=generiereSelect("select_operator_" + i, strFeldOperator, request)%>--%>
                     </select>
@@ -191,19 +200,19 @@
 
 
                 <div class="four wide column" id="div_filter_cb_<%=i%>" style="width: 100%; display: none;">
-                    <select name="select_filter_cb_<%=i%>" class="ui fluid dropdown" id="select_filter_cb_<%=i%>">
+                    <select class="ui fluid dropdown" id="select_filter_cb_<%=i%>">
                         <!--<option value="">Filter</option>-->
                         <%--<%=generiereSelect("select_filter_" + i, strFeldFilter, request)%>--%>
                     </select>
                 </div>
                 <div class="four wide column" id="div_filter_txt_<%=i%>" style="width: 100%; display: none;">
                     <div class="ui input" style="width: 100%">
-                        <input name="input_filter" id="input_filter" placeholder="Filter" autocomplete="off" type="text">
+                        <input id="input_filter_<%=i%>" placeholder="Filter" autocomplete="off" type="text">
                     </div>
                 </div>
                 <div class="four wide column" id="div_filter_datepicker_<%=i%>" style="width: 100%; display: none;">
                     <div class="ui input" style="width: 100%">
-                        <input name="input_filter_datepicker_<%=i%>" id="input_filter_datepicker_<%=i%>" placeholder="Filter" autocomplete="off" readonly="true" type="text">
+                        <input id="input_filter_datepicker_<%=i%>" placeholder="Filter" autocomplete="off" readonly="true" type="text">
                     </div>
                 </div>
 
@@ -212,15 +221,15 @@
 
 
                 <div class="two wide column" id="div_klammerZu" style="width: 100%;">
-                    <select name="select_klammer_zu_<%=i%>" class="ui fluid dropdown" id="select_klammer_zu_<%=i%>">
+                    <select class="ui fluid dropdown" id="select_klammer_zu_<%=i%>">
                         <!--<option value=""></option>-->
-                        <%=generiereSelect("select_klammer_zu_" + i, strFeldKlammerZu, request)%>
+                        <%=generiereSelect(5, strFeldKlammerZu, request,i)%>
                     </select>
                 </div>
                 <div class="three wide column" id="div_verknuepfung_<%=i%>" style="width: 100%;">
-                    <select name="select_verknuepfung_<%=i%>" class="ui fluid dropdown" onchange="onChangeVerknuepfung(<%=i%>)" id="select_verknuepfung_<%=i%>">
+                    <select class="ui fluid dropdown" onchange="onChangeVerknuepfung(<%=i%>)" id="select_verknuepfung_<%=i%>">
                         <!--<option value="">Verknüpfung</option>-->
-                        <%=generiereSelect("select_verknuepfung_" + i, strFeldVerknuepfung, request)%>
+                        <%=generiereSelect(6, strFeldVerknuepfung, request,i)%>
                     </select>
                 </div>
             </div>
@@ -237,12 +246,12 @@
                 <div class="ui equal width grid" >
 
                     <div class="column">
-                        <button name="button_minus" type="submit" class="ui button styleRot" style="text-align: center; padding: 10%; background-color: #C00518; float: left; width: 100%; color: white;">-</button>
+                        <button name="button_minus" type="button" onclick="onPlusMinusZeile(<%=intZaehler%>, 'minus')" class="ui button styleRot" style="text-align: center; padding: 10%; background-color: #C00518; float: left; width: 100%; color: white;">-</button>
                     </div>
 
                     <div class="column">
-                        <button name="button_plus" type="submit" class="ui button styleGruen" style="text-align: center; padding: 10%; background-color: #007336; float: right; width: 100%; color: white; ">+</button>
-                    </div> 
+                        <button name="button_plus" type="button" onclick="onPlusMinusZeile(<%=intZaehler%>, 'plus')" class="ui button styleGruen" style="text-align: center; padding: 10%; background-color: #007336; float: right; width: 100%; color: white; ">+</button>
+                    </div>
                 </div>
             </div>
             </br>
@@ -263,7 +272,6 @@
 
         <script>
                         $(function () {
-                            alert("In Function");
             <%
                 for (int i = 1; i <= intZaehler; i++)
                 {
@@ -319,20 +327,17 @@
             <%                for (int i = 1; i <= intZaehler; i++)
                 {
             %>
-                    var strLastSelection = null;
+                            var strLastFilter = null;
+                            var strLastOperator = null;
             <%
-                    out.println("alert('"+request.getParameter("select_filter_cb_" + i)+"');");
-                                if (request.getParameter("select_filter_cb_" + i) != null)
-                                {
-                                    
-                                    out.println("alert('strLastSelectionNotNull')");
-                                }else
-                                {
-                                    //out.println("null;");
-                                }
-                                    
-            %>
-                            onTypChanged(document.getElementById("select_typ_<%=i%>"),strLastSelection);
+                if (request.getParameter("hidden_element_data_" + i) != null)
+                {
+                    out.println("strLastFilter= '"+request.getParameter("hidden_element_data_" + i).split(";")[4]+"';");
+                    out.println("strLastOperator= '"+request.getParameter("hidden_element_data_" + i).split(";")[3]+"';");
+                }
+
+            %>              
+                            onTypChanged(document.getElementById("select_typ_<%=i%>"), strLastFilter,strLastOperator);
             <%   }
             %>
 
@@ -350,15 +355,15 @@
      * Generiert den Inhalt eines Dropdowns und setzt, falls vorhanden, zuletzt
      * gewähltes Item auf "selected"
      */
-    public String generiereSelect(String strSelectName, String[] strFeld, HttpServletRequest request)
+    public String generiereSelect(int intIndex, String[] strFeld, HttpServletRequest request,int intAktI)
     {
         try
         {
             String strAusgabe = "";
             String strLetzteAuswahl = "";
-            if (request.getParameter(strSelectName) != null)
+            if (request.getParameter("hidden_element_data_"+intAktI) != null)
             {
-                strLetzteAuswahl = request.getParameter(strSelectName);
+                strLetzteAuswahl = request.getParameter("hidden_element_data_"+intAktI).split(";")[intIndex];
             }
             for (String strElement : strFeld)
             {
