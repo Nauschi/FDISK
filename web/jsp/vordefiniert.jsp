@@ -29,7 +29,7 @@ aaaaasdfsdf
             private int intIDGruppe;
         %>
         <%
-            intIDGruppe=-1;
+            intIDGruppe = -1;
             session.setAttribute("lastPage", "vordefiniert");
         %>
 
@@ -90,9 +90,12 @@ aaaaasdfsdf
                         <div class="ui equal width grid">
 
                             <div class="column" id="div_bezirk">
-                                <select name="select_bezirk" class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
-                                    <%=generiereBezirk(session)%>
-                                </select>
+                                <fieldset style="width:100%;border: 0px;" id="fieldset_bezirk">
+                                    <legend>Bezirk</legend>
+                                    <select name="select_bezirk" class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
+                                        <%=generiereBezirk(session)%>
+                                    </select>
+                                </fieldset>
                             </div>
                             <%
                                 if (intIDGruppe == 5)
@@ -101,9 +104,12 @@ aaaaasdfsdf
                                 }
                             %>
                             <div class="column" id="div_abschnitt">
-                                <select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)">
-                                    <%=generiereAbschnitt(session)%>
-                                </select>
+                                <fieldset style="width:100%;border: 0px;" id="fieldset_abschnitt">
+                                    <legend>Abschnitt</legend>
+                                    <select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)">
+                                        <%=generiereAbschnitt(session)%>
+                                    </select>
+                                </fieldset>
                             </div>
 
                             <%
@@ -113,6 +119,8 @@ aaaaasdfsdf
                                 }
                             %>
                             <div class="column" id="div_feuerwehr">
+                                <fieldset style="width:100%;border: 0px;" id="fieldset_feuerwehr">
+                                    <legend><b>Feuerwehr</b></legend>
                                 <select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr">
                                     <%=generiereFeuerwehr(session)%>
                                 </select>
@@ -278,14 +286,14 @@ aaaaasdfsdf
         {
             Abschnitt abschnitt = (Abschnitt) session.getAttribute("abschnitt");
             return abschnitt.generiereHiddenDiv();
-        }else 
+        } else
         {
             String strAbschnittDivs = "";
             Bezirk bezirk = (Bezirk) session.getAttribute("bezirk");
             LinkedList<Abschnitt> liAbschnitte = bezirk.getLiAbschnitte();
-            for(Abschnitt abschnitt:liAbschnitte)
+            for (Abschnitt abschnitt : liAbschnitte)
             {
-                strAbschnittDivs+=abschnitt.generiereHiddenDiv();
+                strAbschnittDivs += abschnitt.generiereHiddenDiv();
             }
             return strAbschnittDivs;
         }
