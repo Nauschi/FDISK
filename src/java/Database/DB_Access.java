@@ -956,21 +956,64 @@ public class DB_Access
                 + ",f.eigengewicht \"Eigengewicht\" "
                 + ",f.gesamtgewicht \"Gesamtgewicht\" "
                 + ",f.treibstoff \"Treibstoff\" "
-                + " FROM FDISK.dbo.stmkfahrzeuge f INNER JOIN "
-                + " FDISK.dbo.stmkuebungsberichtefahrzeuge uf ON(f.id_fahrzeuge = uf.id_fahrzeuge)"
-                + " INNER JOIN FDISK.dbo.stmkuebungsberichte u ON(uf.id_berichte = u.id_berichte)"
-                + " INNER JOIN FDISK.dbo.stmkeinsatzberichtefahrzeuge ef ON(f.id_fahrzeuge = ef.id_fahrzeuge)"
-                + " INNER JOIN FDISK.dbo.stmkeinsatzberichte e ON(ef.id_berichte = e.id_berichte)"
-                + " INNER JOIN FDISK.dbo.stmktaetigkeitsberichtefahrzeuge tf ON(f.id_fahrzeuge = tf.id_fahrzeuge)"
-                + " INNER JOIN FDISK.dbo.stmktaetigkeitsberichte t ON(tf.id_berichte = t.id_berichte)"
+                + " FROM"
+                + " FDISK.dbo.stmkfahrzeuge f INNER JOIN"
+                + " FDISK.dbo.stmkuebungsberichtefahrzeuge uf ON(f.id_fahrzeuge = uf.id_fahrzeuge) "
+                + " INNER JOIN FDISK.dbo.stmkuebungsberichte u"
+                + " ON(uf.id_berichte = u.id_berichte) "
                 + " WHERE f.status = 'aktiv' ";
-        
-        sqlString += getSqlDateString(strVon, strBis, 4, false);
-//        sqlString += getSqlDateString(strVon, strBis, 5, false);
-//        sqlString += getSqlDateString(strVon, strBis, 6, false);
 
-        System.out.println("heu " + sqlString +" heu");
-        ResultSet rs = stat.executeQuery(sqlString); 
+        sqlString += getSqlDateString(strVon, strBis, 3, false);
+
+        sqlString += " UNION SELECT TOP 1000 "
+                + "f.kennzeichen \"Kennzeichen\" "
+                + ",f.id_fahrzeuge \"Id_Fahrzeuge\" "
+                + ",f.fahrzeugtyp \"Fahrzeugtyp\" "
+                + ",f.taktischebezeichnung \"Taktische Bezeichnung\" "
+                + ",f.bezeichnung \"Bezeichnung\" "
+                + ",f.status \"Status\" "
+                + ",f.baujahr \"Baujahr\" "
+                + ",f.fahrzeugmarke \"Fahrzeugmarke\" "
+                + ",f.aufbaufirma \"Aufbaufirma\""
+                + ",f.instanznummer \"Instanzummer\" "
+                + ",f.fahrzeugart \"Fahrzeugart\" "
+                + ",f.leistung \"Leistung\" "
+                + ",f.eigengewicht \"Eigengewicht\" "
+                + ",f.gesamtgewicht \"Gesamtgewicht\" "
+                + ",f.treibstoff \"Treibstoff\" "
+                + " FROM"
+                + " FDISK.dbo.stmkfahrzeuge f INNER JOIN"
+                + " FDISK.dbo.stmkeinsatzberichtefahrzeuge ef ON(f.id_fahrzeuge = ef.id_fahrzeuge) "
+                + " INNER JOIN FDISK.dbo.stmkeinsatzberichte e ON(ef.id_berichte = e.id_berichte)"
+                + " WHERE f.status = 'aktiv' ";
+
+        sqlString += getSqlDateString(strVon, strBis, 1, false);
+
+        sqlString += " UNION SELECT TOP 1000 "
+                + "f.kennzeichen \"Kennzeichen\" "
+                + ",f.id_fahrzeuge \"Id_Fahrzeuge\" "
+                + ",f.fahrzeugtyp \"Fahrzeugtyp\" "
+                + ",f.taktischebezeichnung \"Taktische Bezeichnung\" "
+                + ",f.bezeichnung \"Bezeichnung\" "
+                + ",f.status \"Status\" "
+                + ",f.baujahr \"Baujahr\" "
+                + ",f.fahrzeugmarke \"Fahrzeugmarke\" "
+                + ",f.aufbaufirma \"Aufbaufirma\""
+                + ",f.instanznummer \"Instanzummer\" "
+                + ",f.fahrzeugart \"Fahrzeugart\" "
+                + ",f.leistung \"Leistung\" "
+                + ",f.eigengewicht \"Eigengewicht\" "
+                + ",f.gesamtgewicht \"Gesamtgewicht\" "
+                + ",f.treibstoff \"Treibstoff\" "
+                + " FROM"
+                + " FDISK.dbo.stmkfahrzeuge f INNER JOIN"
+                + " FDISK.dbo.stmktaetigkeitsberichtefahrzeuge tf ON(f.id_fahrzeuge = tf.id_fahrzeuge) "
+                + " INNER JOIN FDISK.dbo.stmktaetigkeitsberichte t ON(tf.id_berichte = t.id_berichte) "
+                + " WHERE f.status = 'aktiv' ";
+
+        sqlString += getSqlDateString(strVon, strBis, 2, false);
+
+        ResultSet rs = stat.executeQuery(sqlString);
 
         String strFahrzeugTyp;
         String strKennzeichen;
@@ -1244,16 +1287,16 @@ public class DB_Access
     {
 
         String dateString = "";
-        
-        if(strBis.isEmpty() && strBis.equals("") && strVon.isEmpty() && strVon.equals(""))
+
+        if (strBis.isEmpty() && strBis.equals("") && strVon.isEmpty() && strVon.equals(""))
         {
-            return ""; 
+            return "";
         }
 
         if (boWhere)
         {
             dateString += " WHERE";
-        } else if(!boWhere)
+        } else if (!boWhere)
         {
             dateString += " AND";
         }
@@ -1272,7 +1315,7 @@ public class DB_Access
             {
                 dateString += " uhrzeit_alarmierung >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND uhrzeit_rueckkehr < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1)";
             }
-        } else if(intBericht == 2 || intBericht == 3)
+        } else if (intBericht == 2 || intBericht == 3)
         {
             if ((strVon.isEmpty() || strVon.equals("")) && (!strBis.isEmpty() || !strBis.equals("")))
             {
@@ -1285,8 +1328,7 @@ public class DB_Access
             {
                 dateString += " (beginn >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND ende < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1))";
             }
-        }
-        //!!! Nur vorübergehend für Digitales Fahrtenbuch
+        } //!!! Nur vorübergehend für Digitales Fahrtenbuch
         else if (intBericht == 4)
         {
             if ((strVon.isEmpty() || strVon.equals("")) && (!strBis.isEmpty() || !strBis.equals("")))
@@ -1301,7 +1343,7 @@ public class DB_Access
             {
                 dateString += " e.uhrzeit_alarmierung >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND e.uhrzeit_rueckkehr < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1)";
             }
-        } else if(intBericht == 5)
+        } else if (intBericht == 5)
         {
             if ((strVon.isEmpty() || strVon.equals("")) && (!strBis.isEmpty() || !strBis.equals("")))
             {
@@ -1314,7 +1356,7 @@ public class DB_Access
             {
                 dateString += " (t.beginn >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND t.ende < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1))";
             }
-        }else if(intBericht == 6)
+        } else if (intBericht == 6)
         {
             if ((strVon.isEmpty() || strVon.equals("")) && (!strBis.isEmpty() || !strBis.equals("")))
             {
@@ -1328,7 +1370,6 @@ public class DB_Access
                 dateString += " (u.beginn >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND u.ende < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1))";
             }
         }
-        
 
         return dateString;
     }
