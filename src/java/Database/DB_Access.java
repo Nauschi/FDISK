@@ -926,37 +926,51 @@ public class DB_Access
      * Gibt alle relevanten Daten (Fahrzeugtyp, Kennzeichen, Baujahr etc...) von
      * jedem Fahrzeug als LinkedList zurück.
      *
+     * @param strVon
+     * @param strBis
      * @return LinkedList
      * @throws Exception
      * @see Fahrzeug
      * @see LinkedList
      */
-    public LinkedList<Fahrzeug> getFahrtenbuch() throws Exception
+    public LinkedList<Fahrzeug> getFahrtenbuch(String strVon, String strBis) throws Exception
     {
+        //!!!!!!!!!!!!!Das geht no net so ganz wies soll 
         LinkedList<Fahrzeug> liFahrzeuge = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 
         String sqlString = "SELECT TOP 1000 "
-                + "kennzeichen \"Kennzeichen\" "
-                + ",id_fahrzeuge \"Id_Fahrzeuge\" "
-                + ",fahrzeugtyp \"Fahrzeugtyp\" "
-                + ",taktischebezeichnung \"Taktische Bezeichnung\" "
-                + ",bezeichnung \"Bezeichnung\" "
-                + ",status \"Status\" "
-                + ",baujahr \"Baujahr\" "
-                + ",fahrzeugmarke \"Fahrzeugmarke\" "
-                + ",aufbaufirma \"Aufbaufirma\""
-                + ",instanznummer \"Instanzummer\" "
-                + ",fahrzeugart \"Fahrzeugart\" "
-                + ",leistung \"Leistung\" "
-                + ",eigengewicht \"Eigengewicht\" "
-                + ",gesamtgewicht \"Gesamtgewicht\" "
-                + ",treibstoff \"Treibstoff\" "
-                + "FROM FDISK.dbo.stmkfahrzeuge "
-                + "WHERE status = 'aktiv'";
+                + "f.kennzeichen \"Kennzeichen\" "
+                + ",f.id_fahrzeuge \"Id_Fahrzeuge\" "
+                + ",f.fahrzeugtyp \"Fahrzeugtyp\" "
+                + ",f.taktischebezeichnung \"Taktische Bezeichnung\" "
+                + ",f.bezeichnung \"Bezeichnung\" "
+                + ",f.status \"Status\" "
+                + ",f.baujahr \"Baujahr\" "
+                + ",f.fahrzeugmarke \"Fahrzeugmarke\" "
+                + ",f.aufbaufirma \"Aufbaufirma\""
+                + ",f.instanznummer \"Instanzummer\" "
+                + ",f.fahrzeugart \"Fahrzeugart\" "
+                + ",f.leistung \"Leistung\" "
+                + ",f.eigengewicht \"Eigengewicht\" "
+                + ",f.gesamtgewicht \"Gesamtgewicht\" "
+                + ",f.treibstoff \"Treibstoff\" "
+                + " FROM FDISK.dbo.stmkfahrzeuge f INNER JOIN "
+                + " FDISK.dbo.stmkuebungsberichtefahrzeuge uf ON(f.id_fahrzeuge = uf.id_fahrzeuge)"
+                + " INNER JOIN FDISK.dbo.stmkuebungsberichte u ON(uf.id_berichte = u.id_berichte)"
+                + " INNER JOIN FDISK.dbo.stmkeinsatzberichtefahrzeuge ef ON(f.id_fahrzeuge = ef.id_fahrzeuge)"
+                + " INNER JOIN FDISK.dbo.stmkeinsatzberichte e ON(ef.id_berichte = e.id_berichte)"
+                + " INNER JOIN FDISK.dbo.stmktaetigkeitsberichtefahrzeuge tf ON(f.id_fahrzeuge = tf.id_fahrzeuge)"
+                + " INNER JOIN FDISK.dbo.stmktaetigkeitsberichte t ON(tf.id_berichte = t.id_berichte)"
+                + " WHERE f.status = 'aktiv' ";
+        
+        sqlString += getSqlDateString(strVon, strBis, 4, false);
+//        sqlString += getSqlDateString(strVon, strBis, 5, false);
+//        sqlString += getSqlDateString(strVon, strBis, 6, false);
 
-        ResultSet rs = stat.executeQuery(sqlString);
+        System.out.println("heu " + sqlString +" heu");
+        ResultSet rs = stat.executeQuery(sqlString); 
 
         String strFahrzeugTyp;
         String strKennzeichen;
@@ -1230,11 +1244,16 @@ public class DB_Access
     {
 
         String dateString = "";
+        
+        if(strBis.isEmpty() && strBis.equals("") && strVon.isEmpty() && strVon.equals(""))
+        {
+            return ""; 
+        }
 
         if (boWhere)
         {
             dateString += " WHERE";
-        } else
+        } else if(!boWhere)
         {
             dateString += " AND";
         }
@@ -1253,7 +1272,7 @@ public class DB_Access
             {
                 dateString += " uhrzeit_alarmierung >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND uhrzeit_rueckkehr < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1)";
             }
-        } else
+        } else if(intBericht == 2 || intBericht == 3)
         {
             if ((strVon.isEmpty() || strVon.equals("")) && (!strBis.isEmpty() || !strBis.equals("")))
             {
@@ -1267,6 +1286,49 @@ public class DB_Access
                 dateString += " (beginn >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND ende < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1))";
             }
         }
+        //!!! Nur vorübergehend für Digitales Fahrtenbuch
+        else if (intBericht == 4)
+        {
+            if ((strVon.isEmpty() || strVon.equals("")) && (!strBis.isEmpty() || !strBis.equals("")))
+            {
+                dateString += " e.uhrzeit_rueckkehr < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1)";
+
+            } else if (strBis.isEmpty() || strBis.equals("") && (!strVon.isEmpty() || !strVon.equals("")))
+            {
+                dateString += " e.uhrzeit_alarmierung >= CAST('" + strVon + " 00:00.000' AS DATETIME)";
+
+            } else if (!strBis.isEmpty() && !strBis.equals("") && !strVon.isEmpty() && !strVon.equals(""))
+            {
+                dateString += " e.uhrzeit_alarmierung >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND e.uhrzeit_rueckkehr < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1)";
+            }
+        } else if(intBericht == 5)
+        {
+            if ((strVon.isEmpty() || strVon.equals("")) && (!strBis.isEmpty() || !strBis.equals("")))
+            {
+                dateString += " (t.ende < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1))";
+
+            } else if (strBis.isEmpty() || strBis.equals("") && (!strVon.isEmpty() || !strVon.equals("")))
+            {
+                dateString += " (t.beginn >= CAST('" + strVon + " 00:00.000' AS DATETIME))";
+            } else if (!strBis.isEmpty() && !strBis.equals("") && !strVon.isEmpty() && !strVon.equals(""))
+            {
+                dateString += " (t.beginn >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND t.ende < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1))";
+            }
+        }else if(intBericht == 6)
+        {
+            if ((strVon.isEmpty() || strVon.equals("")) && (!strBis.isEmpty() || !strBis.equals("")))
+            {
+                dateString += " (u.ende < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1))";
+
+            } else if (strBis.isEmpty() || strBis.equals("") && (!strVon.isEmpty() || !strVon.equals("")))
+            {
+                dateString += " (u.beginn >= CAST('" + strVon + " 00:00.000' AS DATETIME))";
+            } else if (!strBis.isEmpty() && !strBis.equals("") && !strVon.isEmpty() && !strVon.equals(""))
+            {
+                dateString += " (u.beginn >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND u.ende < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1))";
+            }
+        }
+        
 
         return dateString;
     }
@@ -1715,8 +1777,10 @@ public class DB_Access
         hmAlleTypenUndFilter.put(strKey6, getFilterFuerErreichbarkeit("ERREICHBARKEITSART").get(strKey6));
 
         //ERREICHBARKEIT
-        String strKey7 = getFilterFuerErreichbarkeit("CODE").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey7, getFilterFuerErreichbarkeit("CODE").get(strKey7));
+//        String strKey7 = getFilterFuerErreichbarkeit("CODE").keySet().iterator().next();
+//        hmAlleTypenUndFilter.put(strKey7, getFilterFuerErreichbarkeit("CODE").get(strKey7));
+        String strKey7 = getFilterFuerTyp("STAATSBUERGERSCHAFT").keySet().iterator().next();
+        hmAlleTypenUndFilter.put(strKey7, getFilterFuerTyp("STAATSBUERGERSCHAFT").get(strKey7));
 
         String strKey8 = getFilterFuerAnrede("ANREDE").keySet().iterator().next();
         hmAlleTypenUndFilter.put(strKey8, getFilterFuerAnrede("ANREDE").get(strKey8));
@@ -1738,33 +1802,32 @@ public class DB_Access
         //ISCO-BERUF
         String strKey13 = getFilterFuerTyp("BERUF").keySet().iterator().next();
         hmAlleTypenUndFilter.put(strKey13, getFilterFuerTyp("BERUF").get(strKey13));
-        
+
         String strKey14 = getFilterFuerTyp("GESCHLECHT").keySet().iterator().next();
         hmAlleTypenUndFilter.put(strKey14, getFilterFuerTyp("GESCHLECHT").get(strKey14));
-        
+
         String strKey15 = getFilterFuerTyp("TITEL").keySet().iterator().next();
         hmAlleTypenUndFilter.put(strKey15, getFilterFuerTyp("TITEL").get(strKey15));
-        
+
         String strKey16 = getFilterFuerTyp("AMTSTITEL").keySet().iterator().next();
         hmAlleTypenUndFilter.put(strKey16, getFilterFuerTyp("AMTSTITEL").get(strKey16));
-        
+
         String strKey17 = getFilterFuerTyp("BLUTGRUPPE").keySet().iterator().next();
         hmAlleTypenUndFilter.put(strKey17, getFilterFuerTyp("BLUTGRUPPE").get(strKey17));
-        
+
         String strKey18 = getFilterFuerTyp("FAMILIENSTAND").keySet().iterator().next();
         hmAlleTypenUndFilter.put(strKey18, getFilterFuerTyp("FAMILIENSTAND").get(strKey18));
-        
+
         String strKey19 = getFilterFuerTyp("DIENSTGRAD").keySet().iterator().next();
         hmAlleTypenUndFilter.put(strKey19, getFilterFuerTyp("DIENSTGRAD").get(strKey19));
-        
+
 //        String strKey20 = getFilterFuerTyp("führerscheinklasse").keySet().iterator().next();
 //        hmAlleTypenUndFilter.put(strKey20, getFilterFuerTyp("BERUF").get(strKey20));
 //        
 //        String strKey21 = getFilterFuerTyp("untersuchungsart").keySet().iterator().next();
 //        hmAlleTypenUndFilter.put(strKey21, getFilterFuerTyp("BERUF").get(strKey21));
-                
-        return hmAlleTypenUndFilter; 
-                
+        return hmAlleTypenUndFilter;
+
     }
 
     /**
@@ -1788,31 +1851,24 @@ public class DB_Access
         while (rs.next())
         {
             String strFilter;
-            if (rs.getString("Typ") == null)
+            if (rs.getString("Typ") == null || rs.getString("Typ").equals("") || rs.getString("Typ").equals(" "))
             {
-                strFilter = "Unbekannt";
                 continue;
             }
             strFilter = rs.getString("Typ");
 
-            if (strFilter.equals("") || strFilter.equals(" "))
-            {
-                strFilter = "Unbekannt";
-            }
             if (typ.toUpperCase().equals("BERUF"))
             {
                 typ = "ISCO-BERUF";
+            } else if (typ.toUpperCase().equals("STAATSBUERGERSCHAFT"))
+            {
+                typ = "STAATSBÜRGERSCHAFT";
             }
             liFilter.add(strFilter);
         }
 
         hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
-
-        for (Map.Entry e : hmFilter.entrySet())
-        {
-            System.out.println(e.getKey() + "---" + e.getValue());
-        }
 
         return hmFilter;
     }
@@ -1831,14 +1887,8 @@ public class DB_Access
         LinkedList<String> liFilter = new LinkedList<>();
         liFilter.add("Frau");
         liFilter.add("Herr");
-        liFilter.add("Unbekannt");
 
         hmFilter.put(typ, liFilter);
-
-        for (Map.Entry e : hmFilter.entrySet())
-        {
-            System.out.println(e.getKey() + "---" + e.getValue());
-        }
 
         return hmFilter;
     }
@@ -1866,9 +1916,9 @@ public class DB_Access
         {
             String strFilter = rs.getString("Bezeichnung");
 
-            if (strFilter.equals("") || strFilter.equals(" "))
+            if (strFilter == null || strFilter.equals("") || strFilter.equals(" "))
             {
-                strFilter = "Unbekannt";
+                continue;
             }
 
             liFilter.add(strFilter);
@@ -1876,11 +1926,6 @@ public class DB_Access
 
         hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
-
-        for (Map.Entry e : hmFilter.entrySet())
-        {
-            System.out.println(e.getKey() + "---" + e.getValue());
-        }
 
         return hmFilter;
     }
@@ -1906,31 +1951,16 @@ public class DB_Access
         while (rs.next())
         {
             String strFilter;
-            if (rs.getString("Typ") == null)
+            if (rs.getString("Typ") == null || rs.getString("Typ").equals("") || rs.getString("Typ").equals(" "))
             {
-                strFilter = "Unbekannt";
                 continue;
             }
             strFilter = rs.getString("Typ");
 
-            if (strFilter.equals("") || strFilter.equals(" "))
-            {
-                strFilter = "Unbekannt";
-            }
             liFilter.add(strFilter);
-        }
-
-        if (typ.toUpperCase().equals("DATUM"))
-        {
-            typ = "KURSDATUM";
         }
         hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
-
-        for (Map.Entry e : hmFilter.entrySet())
-        {
-            System.out.println(e.getKey() + "---" + e.getValue());
-        }
 
         return hmFilter;
     }
@@ -1958,17 +1988,12 @@ public class DB_Access
         while (rs.next())
         {
             String strFilter;
-            if (rs.getString("Typ") == null)
+            if (rs.getString("Typ") == null || rs.getString("Typ").equals("") || rs.getString("Typ").equals(" "))
             {
-                strFilter = "Unbekannt";
                 continue;
             }
             strFilter = rs.getString("Typ");
 
-            if (strFilter.equals("") || strFilter.equals(" "))
-            {
-                strFilter = "Unbekannt";
-            }
             liFilter.add(strFilter);
         }
 
@@ -1980,21 +2005,10 @@ public class DB_Access
             case "ID_INSTANZTYPEN":
                 typ = "FUNKTIONSINSTANZ";
                 break;
-            case "DATUM_VON":
-                typ = "FUNKTION VON";
-                break;
-            case "DATUM_BIS":
-                typ = "FUNKTION BIS";
-                break;
         }
 
         hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
-
-        for (Map.Entry e : hmFilter.entrySet())
-        {
-            System.out.println(e.getKey() + "---" + e.getValue());
-        }
 
         return hmFilter;
     }
@@ -2041,17 +2055,11 @@ public class DB_Access
         while (rs.next())
         {
             String strFilter;
-            if (rs.getString("Typ") == null)
+            if (rs.getString("Typ") == null || rs.getString("Typ").equals("") || rs.getString("Typ").equals(" ") || rs.getString("Typ").equals("-") || rs.getString("Typ").equals("--"))
             {
-                strFilter = "Unbekannt";
                 continue;
             }
             strFilter = rs.getString("Typ");
-
-            if (strFilter.equals("") || strFilter.equals(" ") || strFilter.equals("-") || strFilter.equals("--"))
-            {
-                strFilter = "Unbekannt";
-            }
 
             liFilter.add(strFilter.trim());
         }
@@ -2063,11 +2071,6 @@ public class DB_Access
 
         hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
-
-        for (Map.Entry e : hmFilter.entrySet())
-        {
-            System.out.println(e.getKey() + "---" + e.getValue());
-        }
 
         return hmFilter;
     }
@@ -2095,32 +2098,17 @@ public class DB_Access
         while (rs.next())
         {
             String strFilter;
-            if (rs.getString("Typ") == null)
+            if (rs.getString("Typ") == null || rs.getString("Typ").equals("") || rs.getString("Typ").equals(" "))
             {
-                strFilter = "Unbekannt";
                 continue;
             }
             strFilter = rs.getString("Typ");
 
-            if (strFilter.equals("") || strFilter.equals(" "))
-            {
-                strFilter = "Unbekannt";
-            }
             liFilter.add(strFilter);
-        }
-
-        if (typ.toUpperCase().equals("VERLEIHUNGSDATUM"))
-        {
-            typ = "DATUM";
         }
 
         hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
-
-        for (Map.Entry e : hmFilter.entrySet())
-        {
-            System.out.println(e.getKey() + "---" + e.getValue());
-        }
 
         return hmFilter;
     }
@@ -2148,32 +2136,25 @@ public class DB_Access
         while (rs.next())
         {
             String strFilter;
-            if (rs.getString("Typ") == null)
+            if (rs.getString("Typ") == null || rs.getString("Typ").equals("") || rs.getString("Typ").equals(" "))
             {
-                strFilter = "Unbekannt";
                 continue;
             }
             strFilter = rs.getString("Typ");
 
-            if (strFilter.equals("") || strFilter.equals(" "))
-            {
-                strFilter = "Unbekannt";
-            }
             liFilter.add(strFilter);
         }
 
-        if (typ.toUpperCase().equals("DATUM"))
+        if (typ.toUpperCase().equals("BEZEICHNUNG"))
         {
-            typ = "LEISTUNGSABZEICHENDATUM";
+            typ = "LEISTUNGSABZEICHENBEZEICHNUNG";
+        } else if (typ.toUpperCase().equals("STUFE"))
+        {
+            typ = "LEISTUNGSABZEICHEN STUFE";
         }
 
         hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
-
-        for (Map.Entry e : hmFilter.entrySet())
-        {
-            System.out.println(e.getKey() + "---" + e.getValue());
-        }
 
         return hmFilter;
     }

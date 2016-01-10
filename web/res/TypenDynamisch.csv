@@ -9,7 +9,7 @@ Geburtsdatum;datepicker
 Alter;txt
 Geburtsort;txt
 SVNR;txt
-Staatsbürgerschaft;txt
+Staatsbürgerschaft;cb
 ISCO-Beruf;cb
 Familienstand;cb
 Blutgruppe;cb
@@ -27,7 +27,7 @@ Hausnummer;txt
 Stiege/Stock/Tür;txt
 Ort;txt
 Erreichbarkeitsart;cb
-Erreichbarkeit;cb
+Erreichbarkeit;txt
 Auszeichnungsart;cb
 Auszeichnungsstufe;cb
 Auszeichnungsdatum;datepicker

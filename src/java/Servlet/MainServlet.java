@@ -352,7 +352,9 @@ public class MainServlet extends HttpServlet
                 request.setAttribute("liste", access.getKursstatistik());
             } else if (strBericht.equals(liRohberichte.get(14).getStrBerichtname()))//Digitales Fahrtenbuch
             {
-                request.setAttribute("liste", access.getFahrtenbuch());
+                String strVonDatum = request.getParameter("input_von_datum");
+                String strBisDatum = request.getParameter("input_bis_datum");
+                request.setAttribute("liste", access.getFahrtenbuch(strVonDatum, strBisDatum));
             }
         } catch (Exception ex)
         {
