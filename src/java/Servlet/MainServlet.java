@@ -314,8 +314,9 @@ public class MainServlet extends HttpServlet
                 //request.setAttribute("liste", );
             }else if (strBericht.equals(liRohberichte.get(6).getStrBerichtname()))//Tätigkeitsbericht leer
             {
+                
                 request.setAttribute("liste", access.getLeerberichtMitglied());
-            }else if (strBericht.equals(liRohberichte.get(8).getStrBerichtname()))//Einsatzbericht leer
+            }else if (strBericht.equals(liRohberichte.get(7).getStrBerichtname()))//Einsatzbericht leer
             {
                 //request.setAttribute("liste", );
             }
@@ -355,6 +356,9 @@ public class MainServlet extends HttpServlet
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
                 request.setAttribute("liste", access.getFahrtenbuch(strVonDatum, strBisDatum));
+            }else
+            {
+                System.out.println("MainServlet.generiereVorschau: last else");
             }
         } catch (Exception ex)
         {
