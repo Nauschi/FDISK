@@ -925,7 +925,7 @@ public class DB_Access
     /**
      * Gibt alle relevanten Daten (Fahrzeugtyp, Kennzeichen, Baujahr etc...) von
      * jedem Fahrzeug als LinkedList zurück.
-     *
+     *adasd
      * @param strVon
      * @param strBis
      * @return LinkedList
