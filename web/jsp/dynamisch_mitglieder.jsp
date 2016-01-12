@@ -266,7 +266,7 @@
         if(request.getAttribute("dyn_table")!=null)
         {
             StringBuilder sbDynHTML = (StringBuilder) request.getAttribute("dyn_table");
-            out.println("<div style='width:90%; margin: 0 auto !important;'>");
+            out.println("<div style='margin: 0 auto !important;'>");
             out.println(sbDynHTML);
             out.println("</div>");
         }
