@@ -2676,7 +2676,8 @@ public class DB_Access
 
         ResultSet rs = stat.executeQuery(sqlString);
 
-        sbHtml.append("<html><table><tr>");
+        sbHtml.append("<html><table class='ui sortable celled table' id='dyn_table'><tr>");
+        
         for (String str : liSpaltenUeberschriften)
         {
             sbHtml.append("<td>");
