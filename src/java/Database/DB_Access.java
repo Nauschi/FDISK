@@ -2496,6 +2496,12 @@ public class DB_Access {
         if (sqlString.endsWith("WHERE ")) {
             sqlString = sqlString.replace("WHERE ", " ");
         }
+        if (sqlString.endsWith("AND ")|| sqlString.endsWith("AND")) {
+            sqlString = sqlString.replace("AND ", " ");
+        }
+        if (sqlString.endsWith("OR ")|| sqlString.endsWith("OR")) {
+            sqlString = sqlString.replace("OR", " ");
+        }
 
         System.out.println("SQL: " + sqlString);
         StringBuilder sbHtml = createDynamicReportGeneratorOutput(sqlString, liSpaltenUeberschriften);
@@ -2509,14 +2515,14 @@ public class DB_Access {
 
         ResultSet rs = stat.executeQuery(sqlString);
 
-        sbHtml.append("<html><table class='ui sortable celled table' id='dyn_table'><thead><tr>");
+        sbHtml.append("<table class='ui sortable celled table' id='dyn_table'><thead><tr>");
 
         for (String str : liSpaltenUeberschriften) {
             sbHtml.append("<th data-content='nach ").append(str).append(" sortieren'>");
             sbHtml.append(str);
             sbHtml.append("</th>");
         }
-        sbHtml.append("</tr></thead><body>");
+        sbHtml.append("</tr></thead><tbody>");
 
         while (rs.next()) {
             boolean boBoolean;
@@ -2610,7 +2616,7 @@ public class DB_Access {
         connPool.releaseConnection(conn);
 
 //        sbHtml = new StringBuilder(sbHtml.toString().replace("<tr></tr>",""));
-        sbHtml.append("</body></table></html>");
+        sbHtml.append("</tbody></table>");
         return sbHtml;
     }
 
