@@ -246,22 +246,32 @@
                 <div class="ui equal width grid" >
 
                     <div class="column">
-                        <button name="button_minus" type="button" onclick="onPlusMinusZeile(<%=intZaehler%>, 'minus')" class="ui button styleRot" style="text-align: center; padding: 10%; background-color: #C00518; float: left; width: 100%; color: white;">-</button>
+                        <button name="button_minus" type="button" onclick="onPlusMinusZeile_Erstellen(<%=intZaehler%>, 'minus')" class="ui button styleRot" style="text-align: center; padding: 10%; background-color: #C00518; float: left; width: 100%; color: white;">-</button>
                     </div>
 
                     <div class="column">
-                        <button name="button_plus" type="button" onclick="onPlusMinusZeile(<%=intZaehler%>, 'plus')" class="ui button styleGruen" style="text-align: center; padding: 10%; background-color: #007336; float: right; width: 100%; color: white; ">+</button>
+                        <button name="button_plus" type="button" onclick="onPlusMinusZeile_Erstellen(<%=intZaehler%>, 'plus')" class="ui button styleGruen" style="text-align: center; padding: 10%; background-color: #007336; float: right; width: 100%; color: white; ">+</button>
                     </div>
                 </div>
             </div>
             </br>
             <div id="div_erstellen" class="ui segment" style="width: 8%; margin: auto;">
                 <div class="column" >
-                    <button name="button_erstellen" type="button" onclick="onErstellen(<%=intZaehler%>)" class="ui button styleGrau" style="text-align: center; padding: 10%; background-color: #707173; width: 100%; color: white;">Erstellen</button>
+                    <button name="button_erstellen" type="button" onclick="onPlusMinusZeile_Erstellen(<%=intZaehler%>,'erstellen')" class="ui button styleGrau" style="text-align: center; padding: 10%; background-color: #707173; width: 100%; color: white;">Erstellen</button>
                 </div>
             </div> 
         </form>
         <br/>
+        <%
+        if(request.getAttribute("dyn_table")!=null)
+        {
+            StringBuilder sbDynHTML = (StringBuilder) request.getAttribute("dyn_table");
+            out.println("<div style='width:100%'>");
+            out.println(sbDynHTML);
+            out.println("</div>");
+        }
+        
+        %>
         <!--</div>-->
         <br/>
         <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>

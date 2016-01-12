@@ -153,17 +153,23 @@ function onErstellen(intZahler)
         alert("Letzte Verknüpfung muss leer sein!");
         document.getElementById("div_verknuepfung_" + intZahler).style.backgroundColor = "#C00518";
         return;
+    }else
+    {
+        
+        document.form_plus_minus_erstellen.submit();
+        alert("Weiter zum Erstellen");
     }
-    alert("Weiter zum Erstellen");
+    
+    
 }
 
-function onPlusMinusZeile(intZahler, strButton)
+function onPlusMinusZeile_Erstellen(intZaehler, strButton)
 {
     if(strButton =="minus")
     {
-        intZahler--;
+        intZaehler--;
     }
-    for (var i = 1; i <= intZahler; i++)
+    for (var i = 1; i <= intZaehler; i++)
     {
         var div_element = document.getElementById("div_element_" + i);
         var strKlammerAuf_value = document.getElementById("select_klammer_" + i).value;
@@ -192,6 +198,13 @@ function onPlusMinusZeile(intZahler, strButton)
     }
     strHTML = '<input type="hidden" name="hidden_action" value="' + strButton + '">';
     div_element.innerHTML = div_element.innerHTML + strHTML;
-    document.form_plus_minus_erstellen.submit();
+    if(strButton =="erstellen")
+    {
+        onErstellen(intZaehler);
+    }else
+    {
+        document.form_plus_minus_erstellen.submit();
+    }
+    
 }
 

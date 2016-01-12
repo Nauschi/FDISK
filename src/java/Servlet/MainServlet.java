@@ -152,12 +152,22 @@ public class MainServlet extends HttpServlet
             } else if (request.getParameter("button_vorschau") != null)
             {
                 generiereVorschau(request, response);
-            } else if (request.getParameter("hidden_zaehler") != null)
+            } else if (request.getParameter("hidden_action") != null)
             {
-                System.out.println("MainServlet.doPost: hidden_zaeler. 1typ: "+request.getParameter("select_typ_1"));
-                System.out.println("MainServlet.doPost: hidden_zaeler");
+                
+                System.out.println("MainServlet.doPost: hidden_action: "+request.getParameter("hidden_action"));
+                if(request.getParameter("hidden_action").equals("erstellen"))
+                {
+                    System.out.println("MainServlet.doPost: hidden_action: in Erstellen");
+                    erstelleDynamischenBericht(request, response, session);
+                }else
+                {
+                    System.out.println("MainServlet.doPost: hidden_action: in plus-minus");
+                    
+                }
                 request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
-            } else if (request.getParameter("logout") != null)
+            }
+            else if (request.getParameter("logout") != null)
             {
                 System.out.println("MainServlet.doPost: logout");
 
@@ -367,6 +377,36 @@ public class MainServlet extends HttpServlet
         request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
     }
 
+    
+    private void erstelleDynamischenBericht(HttpServletRequest request, HttpServletResponse response,HttpSession session)
+    {
+        
+        int intZaehler = Integer.parseInt(request.getParameter("hidden_zaehler"));
+        System.out.println("MainServlet.doPost: hidden_action: zaehler: "+intZaehler);
+        String [][] strDaten = new String[intZaehler][6];
+        for (int i = 0; i < intZaehler; i++)
+        {
+            String strZeile = request.getParameter("hidden_element_data_"+(i+1));
+            System.out.println("MainServlet.erstelleDynamischenBericht: zeile: "+strZeile);
+            String [] splitString = strZeile.split(";");
+            System.out.println("MainServlet.erstelleDynamischenBericht: splitString size: "+splitString.length);
+            strDaten[i][0]=splitString[0];
+            strDaten[i][1]=splitString[1];
+            strDaten[i][2]=splitString[3];
+            strDaten[i][3]=splitString[4];
+            strDaten[i][4]=splitString[5];
+            strDaten[i][5]=splitString[6];
+        }
+        
+        try
+        {
+            StringBuilder sbDynHTML = access.getDynamischerBericht(strDaten);
+            request.setAttribute("dyn_table", sbDynHTML);
+        } catch (Exception ex)
+        {
+            Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     /**
      * Returns a short description of the servlet.
      *
