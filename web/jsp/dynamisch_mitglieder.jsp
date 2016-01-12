@@ -88,10 +88,10 @@
         </div>
         <%
             int intZaehler = 1;
-            
+
             if (request.getParameter("hidden_action") != null)
             {
-                
+
                 String strAction = request.getParameter("hidden_action");
                 if (strAction.equals("plus"))
                 {
@@ -149,14 +149,14 @@
                 </div>
 
                 <div class="three wide column" id="div_typ_<%=i%>" style="width: 100%;">
-                    <select class="ui fluid dropdown" onchange="onTypChanged(this, null,null)" id="select_typ_<%=i%>">
+                    <select class="ui fluid dropdown" onchange="onTypChanged(this, null, null)" id="select_typ_<%=i%>">
                         <%
                             String strAktTypMitBoxArt = "";
                             if (request.getParameter("hidden_element_data_" + i) != null)
                             {
                                 String strTyp = request.getParameter("hidden_element_data_" + i).split(";")[1];
                                 String strBoxArt = request.getParameter("hidden_element_data_" + i).split(";")[2];
-                                strAktTypMitBoxArt = strTyp+";"+ strBoxArt;
+                                strAktTypMitBoxArt = strTyp + ";" + strBoxArt;
                             }
                         %>
 
@@ -223,13 +223,13 @@
                 <div class="two wide column" id="div_klammerZu" style="width: 100%;">
                     <select class="ui fluid dropdown" id="select_klammer_zu_<%=i%>">
                         <!--<option value=""></option>-->
-                        <%=generiereSelect(5, strFeldKlammerZu, request,i)%>
+                        <%=generiereSelect(5, strFeldKlammerZu, request, i)%>
                     </select>
                 </div>
                 <div class="three wide column" id="div_verknuepfung_<%=i%>" style="width: 100%;">
                     <select class="ui fluid dropdown" onchange="onChangeVerknuepfung(<%=i%>)" id="select_verknuepfung_<%=i%>">
                         <!--<option value="">Verknüpfung</option>-->
-                        <%=generiereSelect(6, strFeldVerknuepfung, request,i)%>
+                        <%=generiereSelect(6, strFeldVerknuepfung, request, i)%>
                     </select>
                 </div>
             </div>
@@ -257,20 +257,20 @@
             </br>
             <div id="div_erstellen" class="ui segment" style="width: 8%; margin: auto;">
                 <div class="column" >
-                    <button name="button_erstellen" type="button" onclick="onPlusMinusZeile_Erstellen(<%=intZaehler%>,'erstellen')" class="ui button styleGrau" style="text-align: center; padding: 10%; background-color: #707173; width: 100%; color: white;">Erstellen</button>
+                    <button name="button_erstellen" type="button" onclick="onPlusMinusZeile_Erstellen(<%=intZaehler%>, 'erstellen')" class="ui button styleGrau" style="text-align: center; padding: 10%; background-color: #707173; width: 100%; color: white;">Erstellen</button>
                 </div>
             </div> 
         </form>
         <br/>
         <%
-        if(request.getAttribute("dyn_table")!=null)
-        {
-            StringBuilder sbDynHTML = (StringBuilder) request.getAttribute("dyn_table");
-            out.println("<div style='margin: 0 auto !important;'>");
-            out.println(sbDynHTML);
-            out.println("</div>");
-        }
-        
+            if (request.getAttribute("dyn_table") != null)
+            {
+                StringBuilder sbDynHTML = (StringBuilder) request.getAttribute("dyn_table");
+                out.println("<div style='margin: 0 auto !important;'>");
+                out.println(sbDynHTML);
+                out.println("</div>");
+            }
+
         %>
         <!--</div>-->
         <br/>
@@ -279,11 +279,11 @@
         <script src="js/jquery-ui.js"></script> 
         <script src="js/dynamisch_mitglieder.js"></script>
         <script src="js/datepicker-de.js"></script>
+        <script src="js/tablesort.js"></script>
 
         <script>
                         $(function () {
-            <%
-                for (int i = 1; i <= intZaehler; i++)
+            <%                for (int i = 1; i <= intZaehler; i++)
                 {
             %>
 
@@ -342,15 +342,21 @@
             <%
                 if (request.getParameter("hidden_element_data_" + i) != null)
                 {
-                    out.println("strLastFilter= '"+request.getParameter("hidden_element_data_" + i).split(";")[4]+"';");
-                    out.println("strLastOperator= '"+request.getParameter("hidden_element_data_" + i).split(";")[3]+"';");
+                    out.println("strLastFilter= '" + request.getParameter("hidden_element_data_" + i).split(";")[4] + "';");
+                    out.println("strLastOperator= '" + request.getParameter("hidden_element_data_" + i).split(";")[3] + "';");
                 }
 
-            %>              
-                            onTypChanged(document.getElementById("select_typ_<%=i%>"), strLastFilter,strLastOperator);
-            <%   }
             %>
-
+                            onTypChanged(document.getElementById("select_typ_<%=i%>"), strLastFilter, strLastOperator);
+            <%   }
+                if (request.getAttribute("dyn_table") != null)
+                {
+            %>
+                            $('.sortable.table').tablesort();
+                            $('th').popup();
+            <%
+                }
+            %>
                         });
         </script>
 
@@ -365,15 +371,15 @@
      * Generiert den Inhalt eines Dropdowns und setzt, falls vorhanden, zuletzt
      * gewähltes Item auf "selected"
      */
-    public String generiereSelect(int intIndex, String[] strFeld, HttpServletRequest request,int intAktI)
+    public String generiereSelect(int intIndex, String[] strFeld, HttpServletRequest request, int intAktI)
     {
         try
         {
             String strAusgabe = "";
             String strLetzteAuswahl = "";
-            if (request.getParameter("hidden_element_data_"+intAktI) != null)
+            if (request.getParameter("hidden_element_data_" + intAktI) != null)
             {
-                strLetzteAuswahl = request.getParameter("hidden_element_data_"+intAktI).split(";")[intIndex];
+                strLetzteAuswahl = request.getParameter("hidden_element_data_" + intAktI).split(";")[intIndex];
             }
             for (String strElement : strFeld)
             {
