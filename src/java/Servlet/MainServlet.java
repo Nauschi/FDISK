@@ -325,14 +325,14 @@ public class MainServlet extends HttpServlet
             }else if (strBericht.equals(liRohberichte.get(6).getStrBerichtname()))//Tätigkeitsbericht leer
             {
                 
-                request.setAttribute("liste", access.getLeerberichtMitglied());
+                //request.setAttribute("liste", access.getLeerberichtMitglied());
             }else if (strBericht.equals(liRohberichte.get(7).getStrBerichtname()))//Einsatzbericht leer
             {
                 //request.setAttribute("liste", );
             }
             else if (strBericht.equals(liRohberichte.get(8).getStrBerichtname()))//Übungsbericht leer
             {
-                request.setAttribute("liste", access.getLeerberichtMitglied());
+                //request.setAttribute("liste", access.getLeerberichtMitglied());
             } else if (strBericht.equals(liRohberichte.get(9).getStrBerichtname()))//Liste aller Einsatzberichte
             {
                 String strVonDatum = request.getParameter("input_von_datum");
