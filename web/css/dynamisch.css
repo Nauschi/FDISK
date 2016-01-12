@@ -8,21 +8,6 @@ and open the template in the editor.
     Author     : user
 */
 
-table
-{
-    border: 0px !important;
-}
-
-tr
-{
-    border: 0px !important;
-}
-
-td
-{
-    border: 0px !important;
-}
-
 #div_dyn_headers
 {
     width: 90%;

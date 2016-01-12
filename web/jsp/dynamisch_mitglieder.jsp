@@ -107,6 +107,7 @@
 
             }
         %>
+       
         <h1>Dynamisch - Mitglieder</h1>
         <!--<div class="ui grid" id="div_mitte">-->
 
@@ -262,11 +263,13 @@
             </div> 
         </form>
         <br/>
+        
+        
         <%
             if (request.getAttribute("dyn_table") != null)
             {
                 StringBuilder sbDynHTML = (StringBuilder) request.getAttribute("dyn_table");
-                out.println("<div style='margin: 0 auto !important;'>");
+                out.println("<div class='ui segment' style='width:90%; margin: 0 auto !important;'>");
                 out.println(sbDynHTML);
                 out.println("</div>");
             }
@@ -274,12 +277,13 @@
         %>
         <!--</div>-->
         <br/>
-        <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+        <script src="js/jquery-2.1.1.min.js"></script>
         <script src="semantic/dist/semantic.min.js"></script>
         <script src="js/jquery-ui.js"></script> 
+        <script src="js/tablesort.js"></script>
         <script src="js/dynamisch_mitglieder.js"></script>
         <script src="js/datepicker-de.js"></script>
-        <script src="js/tablesort.js"></script>
+        
 
         <script>
                         $(function () {

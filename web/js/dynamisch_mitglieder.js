@@ -69,7 +69,7 @@ function onTypChanged(select_typ, strLastFilter, strLastOperator)
  */
 function aktualisiereOperator(strID, operatorFeld, strLastOperator)
 {
-    alert("aktualisiereOperator: " + strLastOperator);
+    //alert("aktualisiereOperator: " + strLastOperator);
     var div_operator = document.getElementById("div_operator_" + strID);
     div_operator.innerHTML = '<select name="select_operator_' + strID + '" class="ui fluid dropdown" id="select_operator_' + strID + '">';
     var select_operator = document.getElementById("select_operator_" + strID);
@@ -79,7 +79,7 @@ function aktualisiereOperator(strID, operatorFeld, strLastOperator)
         var opt = document.createElement('option');
         if (strLastOperator == operatorFeld[i])
         {
-            alert("Beide gleich");
+            //alert("Beide gleich");
             opt.setAttribute('selected', 'selected');
         }
         opt.value = operatorFeld[i];
@@ -92,7 +92,7 @@ function aktualisiereOperator(strID, operatorFeld, strLastOperator)
 
 function initialisiereCBFilter(strTyp, strID, strLastFilter)
 {
-    alert("initialisiereCBFilter");
+    //alert("initialisiereCBFilter");
     if (map[strTyp.toUpperCase()] != undefined)
     {
         var div_filter = document.getElementById("div_filter_cb_" + strID);
@@ -157,7 +157,7 @@ function onErstellen(intZahler)
     {
         
         document.form_plus_minus_erstellen.submit();
-        alert("Weiter zum Erstellen");
+        //alert("Weiter zum Erstellen");
     }
     
     
@@ -192,7 +192,7 @@ function onPlusMinusZeile_Erstellen(intZaehler, strButton)
         var strVerknuefung_value = document.getElementById("select_verknuepfung_" + i).value;
 
         var strHTML = '<input type="hidden" name="hidden_element_data_' + i + '" value="' + strKlammerAuf_value + ";" + strTyp_value + ";" + strOperator_value + ";" + strFilter_value + ";"+strKlammerZu_value+";"+strVerknuefung_value+ '">';
-        alert(strHTML);
+        //alert(strHTML);
 
         div_element.innerHTML = div_element.innerHTML + strHTML;
     }
