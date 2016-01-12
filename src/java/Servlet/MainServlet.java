@@ -401,6 +401,7 @@ public class MainServlet extends HttpServlet
         try
         {
             StringBuilder sbDynHTML = access.getDynamischerBericht(strDaten);
+            System.out.println("MainServlet.erstelleDynamischenBericht: sbDynHTML: "+sbDynHTML);
             request.setAttribute("dyn_table", sbDynHTML);
         } catch (Exception ex)
         {
