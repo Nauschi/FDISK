@@ -2614,7 +2614,7 @@ public class DB_Access
             }
 
             //d.h. User gibt eine WHERE clause ein
-            if (!(strColSymbol.equals("")) && !strColWhere.equals("Alter") && !strColWhere.equals("Status"))
+            if (!(strColSymbol.equals("N/A")) && !strColWhere.equals("Alter") && !strColWhere.equals("Status"))
             {
                 switch (strColWhereType)
                 {
@@ -2676,15 +2676,15 @@ public class DB_Access
 
         ResultSet rs = stat.executeQuery(sqlString);
 
-        sbHtml.append("<html><table class='ui sortable celled table' id='dyn_table'><tr>");
+        sbHtml.append("<html><table class='ui sortable celled table' id='dyn_table'><thead><tr>");
         
         for (String str : liSpaltenUeberschriften)
         {
-            sbHtml.append("<td>");
+            sbHtml.append("<th data-content='nach ").append(str).append(" sortieren'>");
             sbHtml.append(str);
-            sbHtml.append("</td>");
+            sbHtml.append("</th>");
         }
-        sbHtml.append("</tr>");
+        sbHtml.append("</tr></thead><body>");
 
         while (rs.next())
         {
@@ -2792,7 +2792,7 @@ public class DB_Access
         connPool.releaseConnection(conn);
 
 //        sbHtml = new StringBuilder(sbHtml.toString().replace("<tr></tr>",""));
-        sbHtml.append("</table></html>");
+        sbHtml.append("</body></table></html>");
         return sbHtml;
     }
 
