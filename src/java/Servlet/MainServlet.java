@@ -339,13 +339,13 @@ public class MainServlet extends HttpServlet
                 String strBisDatum = request.getParameter("input_bis_datum");
                 System.out.println("MainServler.generiereVorschau: "+strVonDatum+" bis "+strBisDatum);
                 //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
-                request.setAttribute("liste", access.getEinsatzbericht(strVonDatum,strBisDatum));
+                //request.setAttribute("liste", access.getEinsatzbericht(strVonDatum,strBisDatum));
             } else if (strBericht.equals(liRohberichte.get(10).getStrBerichtname()))//Liste aller Tätigkeitsberichte
             {
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
                 //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
-                request.setAttribute("liste", access.getTaetigkeitsbericht(strVonDatum,strBisDatum));
+                //request.setAttribute("liste", access.getTaetigkeitsbericht(strVonDatum,strBisDatum));
             } else if (strBericht.equals(liRohberichte.get(11).getStrBerichtname()))//Liste aller Übungsberichte
             {
                 String strVonDatum = request.getParameter("input_von_datum");

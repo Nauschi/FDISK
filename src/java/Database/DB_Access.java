@@ -1462,7 +1462,7 @@ public class DB_Access {
      * @return
      * @throws Exception
      */
-    public LinkedList<Einsatzbericht> getEinsatzbericht(String strVon, String strBis) throws Exception {
+    public LinkedList<Einsatzbericht> getEinsatzbericht(String strVon, String strBis, int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
         LinkedList<Einsatzbericht> liEinsatzbericht = new LinkedList<>();
 
         Connection conn = connPool.getConnection();
@@ -1470,24 +1470,47 @@ public class DB_Access {
 
         String sqlString = "";
 
-        sqlString = "SELECT DISTINCT TOP 1000 id_berichte \"ID\""
-                + " ,instanznummer \"Instanznummer\""
-                + " ,name \"Name\""
-                + " ,einsatzart \"Art\""
-                + " ,nummer \"Nr\""
-                + " ,uhrzeit_alarmierung \"Uhrzeit_Alarmierung\""
-                + " ,uhrzeit_rueckkehr \"Uhrzeit_Rueckkehr\""
-                + " ,strasse \"Strasse\""
-                + " ,nummeradr \"Nummeradr\""
-                + " ,stiege \"Stiege\""
-                + " ,plz \"PLZ\""
-                + " ,ort \"Ort\""
-                + " ,standesbuchnummer \"SBN\""
-                + " ,vorname \"Vorname\""
-                + " ,zuname \"Zuname\""
-                + " ,meldung \"Meldung\""
-                + " ,Fehlalarm \"Fehlalarm\""
-                + " FROM FDISK.dbo.stmkeinsatzberichte";
+        if (strFubwehr.equals("-1")) {
+            sqlString = "SELECT DISTINCT id_berichte \"ID\""
+                    + " ,eb.nstanznummer \"Instanznummer\""
+                    + " ,name \"Name\""
+                    + " ,einsatzart \"Art\""
+                    + " ,nummer \"Nr\""
+                    + " ,uhrzeit_alarmierung \"Uhrzeit_Alarmierung\""
+                    + " ,uhrzeit_rueckkehr \"Uhrzeit_Rueckkehr\""
+                    + " ,strasse \"Strasse\""
+                    + " ,nummeradr \"Nummeradr\""
+                    + " ,stiege \"Stiege\""
+                    + " ,plz \"PLZ\""
+                    + " ,ort \"Ort\""
+                    + " ,standesbuchnummer \"SBN\""
+                    + " ,vorname \"Vorname\""
+                    + " ,zuname \"Zuname\""
+                    + " ,meldung \"Meldung\""
+                    + " ,Fehlalarm \"Fehlalarm\""
+                    + " FROM FDISK.dbo.stmkeinsatzberichte eb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(eb.instanznummer = f.instanznummer) "
+                    + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
+        } else {
+            sqlString = "SELECT DISTINCT id_berichte \"ID\""
+                    + " ,instanznummer \"Instanznummer\""
+                    + " ,name \"Name\""
+                    + " ,einsatzart \"Art\""
+                    + " ,nummer \"Nr\""
+                    + " ,uhrzeit_alarmierung \"Uhrzeit_Alarmierung\""
+                    + " ,uhrzeit_rueckkehr \"Uhrzeit_Rueckkehr\""
+                    + " ,strasse \"Strasse\""
+                    + " ,nummeradr \"Nummeradr\""
+                    + " ,stiege \"Stiege\""
+                    + " ,plz \"PLZ\""
+                    + " ,ort \"Ort\""
+                    + " ,standesbuchnummer \"SBN\""
+                    + " ,vorname \"Vorname\""
+                    + " ,zuname \"Zuname\""
+                    + " ,meldung \"Meldung\""
+                    + " ,Fehlalarm \"Fehlalarm\""
+                    + " FROM FDISK.dbo.stmkeinsatzberichte"
+                    + " WHERE instanznummer = '" + strFubwehr + "'";
+        }
 
         sqlString += getSqlDateString(strVon, strBis, 1, true);
 
