@@ -1573,7 +1573,7 @@ public class DB_Access {
      * @return
      * @throws Exception
      */
-    public LinkedList<Uebungsbericht> getUebungsbericht(String strVon, String strBis) throws Exception {
+    public LinkedList<Uebungsbericht> getUebungsbericht(String strVon, String strBis, int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
         LinkedList<Uebungsbericht> liUebungsbericht = new LinkedList<>();
 
         Connection conn = connPool.getConnection();
@@ -1581,23 +1581,45 @@ public class DB_Access {
 
         String sqlString = "";
 
-        sqlString = "SELECT DISTINCT TOP 1000 id_berichte \"ID\""
-                + " ,instanznummer \"Instanznummer\""
-                + " ,name \"Instanzname\""
-                + " ,uebungsart \"Uebungsart\""
-                + " ,uebungsunterart \"Uebungsunterart\""
-                + " ,nummer \"Nummer\""
-                + " ,beginn \"Beginn\""
-                + " ,ende \"Ende\""
-                + " ,strasse \"Strasse\""
-                + " ,nummeradr \"NummerAdr\""
-                + " ,stiege \"Stiege\""
-                + " ,plz \"PLZ\""
-                + " ,ort \"Ort\""
-                + " ,meldung \"Meldung\""
-                + " ,Fehlalarm \"Fehlalarm\""
-                + " FROM FDISK.dbo.stmkuebungsberichte"
-                + " WHERE uebungsart <> 'Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN'";
+        if (strFubwehr.equals("-1")) {
+            sqlString = "SELECT DISTINCT id_berichte \"ID\""
+                    + " ,ub.instanznummer \"Instanznummer\""
+                    + " ,name \"Instanzname\""
+                    + " ,uebungsart \"Uebungsart\""
+                    + " ,uebungsunterart \"Uebungsunterart\""
+                    + " ,nummer \"Nummer\""
+                    + " ,beginn \"Beginn\""
+                    + " ,ende \"Ende\""
+                    + " ,strasse \"Strasse\""
+                    + " ,nummeradr \"NummerAdr\""
+                    + " ,stiege \"Stiege\""
+                    + " ,plz \"PLZ\""
+                    + " ,ort \"Ort\""
+                    + " ,meldung \"Meldung\""
+                    + " ,Fehlalarm \"Fehlalarm\""
+                    + " FROM FDISK.dbo.stmkuebungsberichte ub INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(ub.instanznummer = f.instanznummer)"
+                    + " WHERE uebungsart <> 'Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN'"
+                    + " AND f.abschnitt_instanznummer = " + intAbschnittnr;
+        } else {
+            sqlString = "SELECT DISTINCT id_berichte \"ID\""
+                    + " ,instanznummer \"Instanznummer\""
+                    + " ,name \"Instanzname\""
+                    + " ,uebungsart \"Uebungsart\""
+                    + " ,uebungsunterart \"Uebungsunterart\""
+                    + " ,nummer \"Nummer\""
+                    + " ,beginn \"Beginn\""
+                    + " ,ende \"Ende\""
+                    + " ,strasse \"Strasse\""
+                    + " ,nummeradr \"NummerAdr\""
+                    + " ,stiege \"Stiege\""
+                    + " ,plz \"PLZ\""
+                    + " ,ort \"Ort\""
+                    + " ,meldung \"Meldung\""
+                    + " ,Fehlalarm \"Fehlalarm\""
+                    + " FROM FDISK.dbo.stmkuebungsberichte "
+                    + " WHERE uebungsart <> 'Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN'"
+                    + " AND instanznummer = '" + strFubwehr + "'";
+        }
 
         sqlString += getSqlDateString(strVon, strBis, 3, false);
 

@@ -351,7 +351,7 @@ public class MainServlet extends HttpServlet
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
                 //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
-                 request.setAttribute("liste", access.getUebungsbericht(strVonDatum,strBisDatum));
+                 //request.setAttribute("liste", access.getUebungsbericht(strVonDatum,strBisDatum));
             } else if (strBericht.equals(liRohberichte.get(12).getStrBerichtname()))//Liste aller Berichte
             {
                 String strVonDatum = request.getParameter("input_von_datum");
