@@ -325,33 +325,33 @@ public class MainServlet extends HttpServlet
             }else if (strBericht.equals(liRohberichte.get(6).getStrBerichtname()))//Tätigkeitsbericht leer
             {
                 
-                //request.setAttribute("liste", access.getLeerberichtMitglied());
+                request.setAttribute("liste", access.getLeerberichtMitglied(intBereichNr, intAbschnittNr, strFeuerwehr));
             }else if (strBericht.equals(liRohberichte.get(7).getStrBerichtname()))//Einsatzbericht leer
             {
                 //request.setAttribute("liste", );
             }
             else if (strBericht.equals(liRohberichte.get(8).getStrBerichtname()))//Übungsbericht leer
             {
-                //request.setAttribute("liste", access.getLeerberichtMitglied());
+                request.setAttribute("liste", access.getLeerberichtMitglied(intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals(liRohberichte.get(9).getStrBerichtname()))//Liste aller Einsatzberichte
             {
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
                 System.out.println("MainServler.generiereVorschau: "+strVonDatum+" bis "+strBisDatum);
                 //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
-                //request.setAttribute("liste", access.getEinsatzbericht(strVonDatum,strBisDatum));
+                request.setAttribute("liste", access.getEinsatzbericht(strVonDatum,strBisDatum, intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals(liRohberichte.get(10).getStrBerichtname()))//Liste aller Tätigkeitsberichte
             {
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
                 //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
-                //request.setAttribute("liste", access.getTaetigkeitsbericht(strVonDatum,strBisDatum));
+                request.setAttribute("liste", access.getTaetigkeitsbericht(strVonDatum,strBisDatum, intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals(liRohberichte.get(11).getStrBerichtname()))//Liste aller Übungsberichte
             {
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
                 //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
-                 //request.setAttribute("liste", access.getUebungsbericht(strVonDatum,strBisDatum));
+                 request.setAttribute("liste", access.getUebungsbericht(strVonDatum,strBisDatum, intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals(liRohberichte.get(12).getStrBerichtname()))//Liste aller Berichte
             {
                 String strVonDatum = request.getParameter("input_von_datum");

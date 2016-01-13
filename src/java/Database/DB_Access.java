@@ -1340,7 +1340,7 @@ public class DB_Access {
                     + " ,ort \"Ort\""
                     + " ,meldung \"Meldung\""
                     + " ,Fehlalarm \"Fehlalarm\""
-                    + " FROM FDISK.dbo.stmktaetigkeitsberichte tb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(tb.instanznummer = f.instanznummer) "
+                    + " FROM FDISK.dbo.stmktaetigkeitsberichte tb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(tb.instanznummer = f.instanznummer)"
                     + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
         } else {
             sqlString = "SELECT DISTINCT id_berichte \"ID\""
@@ -1358,8 +1358,8 @@ public class DB_Access {
                     + " ,ort \"Ort\""
                     + " ,meldung \"Meldung\""
                     + " ,Fehlalarm \"Fehlalarm\""
-                    + " FROM FDISK.dbo.stmktaetigkeitsberichte "
-                    + "WHERE instanznummer = '" + strFubwehr + "'";
+                    + " FROM FDISK.dbo.stmktaetigkeitsberichte"
+                    + " WHERE instanznummer = '" + strFubwehr + "'";
         }
 
         sqlString += getSqlDateString(strVon, strBis, 2, true);
@@ -1381,7 +1381,7 @@ public class DB_Access {
                     + " ,ort"
                     + " ,meldung"
                     + " ,Fehlalarm"
-                    + " FROM FDISK.dbo.stmkuebungsberichte ub INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(ub.instanznummer = f.instanznummer) "
+                    + " FROM FDISK.dbo.stmkuebungsberichte ub INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(ub.instanznummer = f.instanznummer)"
                     + " WHERE uebungsart = 'Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN'"
                     + " AND f.abschnitt_instanznummer = " + intAbschnittnr;
         } else {
@@ -1403,7 +1403,7 @@ public class DB_Access {
                     + " ,Fehlalarm"
                     + " FROM FDISK.dbo.stmkuebungsberichte"
                     + " WHERE uebungsart = 'Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN'"
-                    + " instanznummer = '" + strFubwehr + "'";
+                    + " AND instanznummer = '" + strFubwehr + "'";
         }
 
         sqlString += getSqlDateString(strVon, strBis, 3, false);
