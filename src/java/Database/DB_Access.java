@@ -1677,69 +1677,136 @@ public class DB_Access {
      * @return
      * @throws Exception
      */
-    public LinkedList<Bericht> getAlleBerichte(String strVon, String strBis) throws Exception {
+    public LinkedList<Bericht> getAlleBerichte(String strVon, String strBis, int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
         LinkedList<Bericht> liBericht = new LinkedList<>();
 
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 
         StringBuilder sqlString = new StringBuilder();
-       // String sqlString = "";
 
+        // String sqlString = "";
         //Übungsbericht UNION Einsatzbericht UNION Tätigkeitsbericht 
-        sqlString.append(" SELECT DISTINCT TOP 1000 id_berichte \"ID\""
-                + " ,instanznummer \"Instanznummer\""
-                + " ,name \"Instanzname\""
-                + " ,uebungsart \"Art\""
-                + " ,nummer \"Nummer\""
-                + " ,beginn \"Beginn\""
-                + " ,ende \"Ende\""
-                + " ,strasse \"Strasse\""
-                + " ,nummeradr \"NummerAdr\""
-                + " ,stiege \"Stiege\""
-                + " ,plz \"PLZ\""
-                + " ,ort \"Ort\""
-                + " ,meldung \"Meldung\""
-                + " ,Fehlalarm \"Fehlalarm\""
-                + " FROM FDISK.dbo.stmkuebungsberichte");
+        if (strFubwehr.equals("-1")) {
+            sqlString.append(" SELECT DISTINCT id_berichte \"ID\""
+                    + " ,ub.instanznummer \"Instanznummer\""
+                    + " ,name \"Instanzname\""
+                    + " ,uebungsart \"Art\""
+                    + " ,nummer \"Nummer\""
+                    + " ,beginn \"Beginn\""
+                    + " ,ende \"Ende\""
+                    + " ,strasse \"Strasse\""
+                    + " ,nummeradr \"NummerAdr\""
+                    + " ,stiege \"Stiege\""
+                    + " ,plz \"PLZ\""
+                    + " ,ort \"Ort\""
+                    + " ,meldung \"Meldung\""
+                    + " ,Fehlalarm \"Fehlalarm\""
+                    + " FROM FDISK.dbo.stmkuebungsberichte ub INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(ub.instanznummer = f.instanznummer)"
+                    + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr);
+        } else {
+            sqlString.append(" SELECT DISTINCT id_berichte \"ID\""
+                    + " ,instanznummer \"Instanznummer\""
+                    + " ,name \"Instanzname\""
+                    + " ,uebungsart \"Art\""
+                    + " ,nummer \"Nummer\""
+                    + " ,beginn \"Beginn\""
+                    + " ,ende \"Ende\""
+                    + " ,strasse \"Strasse\""
+                    + " ,nummeradr \"NummerAdr\""
+                    + " ,stiege \"Stiege\""
+                    + " ,plz \"PLZ\""
+                    + " ,ort \"Ort\""
+                    + " ,meldung \"Meldung\""
+                    + " ,Fehlalarm \"Fehlalarm\""
+                    + " FROM FDISK.dbo.stmkuebungsberichte"
+                    + " WHERE instanznummer = '" + strFubwehr + "'");
+        }
 
         sqlString.append(getSqlDateString(strVon, strBis, 3, true));
 
-        sqlString.append(" UNION" //Start Einsatzbericht
-                + " SELECT DISTINCT TOP 1000 id_berichte"
-                + " ,instanznummer"
-                + " ,name"
-                + " ,einsatzart"
-                + " ,nummer"
-                + " ,uhrzeit_alarmierung"
-                + " ,uhrzeit_rueckkehr"
-                + " ,strasse"
-                + " ,nummeradr"
-                + " ,stiege"
-                + " ,plz"
-                + " ,ort"
-                + " ,meldung"
-                + " ,Fehlalarm"
-                + " FROM FDISK.dbo.stmkeinsatzberichte");
+        if (strFubwehr.equals("-1")) {
+            sqlString.append(" SELECT DISTINCT id_berichte \"ID\""
+                    + " ,eb.nstanznummer \"Instanznummer\""
+                    + " ,name \"Name\""
+                    + " ,einsatzart \"Art\""
+                    + " ,nummer \"Nr\""
+                    + " ,uhrzeit_alarmierung \"Uhrzeit_Alarmierung\""
+                    + " ,uhrzeit_rueckkehr \"Uhrzeit_Rueckkehr\""
+                    + " ,strasse \"Strasse\""
+                    + " ,nummeradr \"Nummeradr\""
+                    + " ,stiege \"Stiege\""
+                    + " ,plz \"PLZ\""
+                    + " ,ort \"Ort\""
+                    + " ,standesbuchnummer \"SBN\""
+                    + " ,vorname \"Vorname\""
+                    + " ,zuname \"Zuname\""
+                    + " ,meldung \"Meldung\""
+                    + " ,Fehlalarm \"Fehlalarm\""
+                    + " FROM FDISK.dbo.stmkeinsatzberichte eb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(eb.instanznummer = f.instanznummer) "
+                    + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr);
+        } else {
+            sqlString.append(" SELECT DISTINCT id_berichte \"ID\""
+                    + " ,instanznummer \"Instanznummer\""
+                    + " ,name \"Name\""
+                    + " ,einsatzart \"Art\""
+                    + " ,nummer \"Nr\""
+                    + " ,uhrzeit_alarmierung \"Uhrzeit_Alarmierung\""
+                    + " ,uhrzeit_rueckkehr \"Uhrzeit_Rueckkehr\""
+                    + " ,strasse \"Strasse\""
+                    + " ,nummeradr \"Nummeradr\""
+                    + " ,stiege \"Stiege\""
+                    + " ,plz \"PLZ\""
+                    + " ,ort \"Ort\""
+                    + " ,standesbuchnummer \"SBN\""
+                    + " ,vorname \"Vorname\""
+                    + " ,zuname \"Zuname\""
+                    + " ,meldung \"Meldung\""
+                    + " ,Fehlalarm \"Fehlalarm\""
+                    + " FROM FDISK.dbo.stmkeinsatzberichte"
+                    + " WHERE instanznummer = '" + strFubwehr + "'");
+        }
 
         sqlString.append(getSqlDateString(strVon, strBis, 1, true));
 
-        sqlString.append(" UNION" //Start Tätigkeitsbericht + UNION Übungsberichte Jungend
-                + " SELECT DISTINCT TOP 1000 id_berichte "
-                + " ,instanznummer"
-                + " ,instanzname"
-                + " ,taetigkeitsart"
-                + " ,nummer"
-                + " ,beginn"
-                + " ,ende"
-                + " ,strasse"
-                + " ,nummeradr"
-                + " ,stiege"
-                + " ,plz"
-                + " ,ort"
-                + " ,meldung"
-                + " ,Fehlalarm"
-                + " FROM FDISK.dbo.stmktaetigkeitsberichte");
+        //Start Tätigkeitsbericht + UNION Übungsberichte Jungend
+        if (strFubwehr.equals("-1")) {
+            sqlString.append(" SELECT DISTINCT id_berichte \"ID\""
+                    + " ,tb.instanznummer \"Instanznummer\""
+                    + " ,tb.instanzname \"Instanzname\""
+                    + " ,taetigkeitsart \"Taetigkeitsart\""
+                    + " ,taetigkeitsunterart \"Taetigkeitsunterart\""
+                    + " ,nummer \"Nummer\""
+                    + " ,beginn \"Beginn\""
+                    + " ,ende \"Ende\""
+                    + " ,strasse \"Strasse\""
+                    + " ,nummeradr \"NummerAdr\""
+                    + " ,stiege \"Stiege\""
+                    + " ,plz \"PLZ\""
+                    + " ,ort \"Ort\""
+                    + " ,meldung \"Meldung\""
+                    + " ,Fehlalarm \"Fehlalarm\""
+                    + " FROM FDISK.dbo.stmktaetigkeitsberichte tb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(tb.instanznummer = f.instanznummer)"
+                    + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr);
+        } else {
+            sqlString.append(" SELECT DISTINCT id_berichte \"ID\""
+                    + " ,instanznummer \"Instanznummer\""
+                    + " ,instanzname \"Instanzname\""
+                    + " ,taetigkeitsart \"Taetigkeitsart\""
+                    + " ,taetigkeitsunterart \"Taetigkeitsunterart\""
+                    + " ,nummer \"Nummer\""
+                    + " ,beginn \"Beginn\""
+                    + " ,ende \"Ende\""
+                    + " ,strasse \"Strasse\""
+                    + " ,nummeradr \"NummerAdr\""
+                    + " ,stiege \"Stiege\""
+                    + " ,plz \"PLZ\""
+                    + " ,ort \"Ort\""
+                    + " ,meldung \"Meldung\""
+                    + " ,Fehlalarm \"Fehlalarm\""
+                    + " FROM FDISK.dbo.stmktaetigkeitsberichte"
+                    + " WHERE instanznummer = '" + strFubwehr + "'");
+        }
 
         sqlString.append(getSqlDateString(strVon, strBis, 2, true));
 
