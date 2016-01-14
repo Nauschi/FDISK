@@ -6,7 +6,6 @@
 package Database;
 
 import static Database.DB_Config.DB_DRIVER;
-import static Database.DB_Config.DB_NAME;
 import static Database.DB_Config.DB_PASSWD;
 import static Database.DB_Config.DB_URL;
 import static Database.DB_Config.DB_USER;
