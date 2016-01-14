@@ -8,12 +8,12 @@ package Database;
 /**
  *
  * @author philipp
- */public interface DB_Config {
-    public static final String DB_USER = "application_fw_db";
-    public static final String DB_PASSWD = "";
-    public static final String DB_URL = "jdbc:sqlserver://prometheus;databaseName=FDISK";
+ */
+public interface DB_Config {
+
+    public static final String DB_USER = "sa";
+    public static final String DB_PASSWD = "53411@lfv";
+    public static final String DB_URL = "jdbc:sqlserver://172.16.1.18;instanceName=prometheus;databaseName=FDISK";
     //public static final String DB_URL = "PROMETHEUS\\PROMETHEUS;databaseName=FDISK";
-    //public static final String DB_URL = "jdbc:sqlserver://TestServer\\SQLEXPRESS;databaseName=FDISK";
     public static final String DB_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 }
-

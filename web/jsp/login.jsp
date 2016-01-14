@@ -90,6 +90,7 @@
                 <%
                     if (request.getAttribute("login_error") != null)
                     {
+                        out.println("<p>"+request.getAttribute("db_error")+"</p>");
                 %>
                 <div>
                     <p style="color: red">Benutzername oder Kennwort ist falsch!</p>

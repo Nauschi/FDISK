@@ -91,7 +91,7 @@ public class MainServlet extends HttpServlet {
         }
         String strLastPage = (String) session.getAttribute("lastPage");
         request.getRequestDispatcher("jsp/" + strLastPage + ".jsp").forward(request, response);
-        processRequest(request, response);
+        return;
     }
 
     /**
@@ -108,16 +108,19 @@ public class MainServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         if (request.getParameter("button_login") != null) {
             loginUser(request, response);
+            return;
         }
 
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("loggedIn") == null) {
             System.out.println("MainServlet.doPost: session = null");
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
+            return;
         } else {
             if (request.getParameter("select_berechtigung") != null) {
                 try {
                     getBerechtigungsinformationen(request, response, session);
+                    return;
                 } catch (Exception ex) {
                     System.out.println(ex.toString());
                 }
@@ -126,6 +129,7 @@ public class MainServlet extends HttpServlet {
                 try {
                     session.setAttribute("hashMap_typ", access.getMethodeFuerTyp());
                     request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
+                    return;
                 } catch (Exception ex) {
                     Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -133,19 +137,23 @@ public class MainServlet extends HttpServlet {
             } else if (request.getParameter("vordefiniert") != null) {
                 System.out.println("MainServlet.doPost: vordefiniert");
                 request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
+                return;
             } else if (request.getParameter("button_vorschau") != null) {
                 generiereVorschau(request, response);
+                return;
             } else if (request.getParameter("hidden_action") != null) {
 
                 System.out.println("MainServlet.doPost: hidden_action: " + request.getParameter("hidden_action"));
                 if (request.getParameter("hidden_action").equals("erstellen")) {
                     System.out.println("MainServlet.doPost: hidden_action: in Erstellen");
                     erstelleDynamischenBericht(request, response, session);
+                    return;
                 } else {
                     System.out.println("MainServlet.doPost: hidden_action: in plus-minus");
 
                 }
                 request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
+                return;
             } else if (request.getParameter("logout") != null) {
                 System.out.println("MainServlet.doPost: logout");
 
@@ -153,6 +161,7 @@ public class MainServlet extends HttpServlet {
                     System.out.println("session deleted");
                 }
                 request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
+                return;
             }
         }
 
@@ -172,6 +181,7 @@ public class MainServlet extends HttpServlet {
             intIDUser = access.getUserID(strBenutzername, strKennwort);
         } catch (Exception ex) {
             System.out.println("MainServlet.doPost: login:" + ex.toString());
+            request.setAttribute("db_error", ex.toString());
         }
         if (intIDUser != -1) //if (true)
         {
@@ -186,9 +196,11 @@ public class MainServlet extends HttpServlet {
             }
 
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
+            return;
         } else {
             request.setAttribute("login_error", true);
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
+            return;
         }
     }
 
@@ -237,6 +249,7 @@ public class MainServlet extends HttpServlet {
 
         System.out.println("MainServlet.doPost: bestaetigen");
         request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
+        return;
     }
 
     private void generiereVorschau(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -333,6 +346,7 @@ public class MainServlet extends HttpServlet {
             Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
+        return;
     }
 
     private void erstelleDynamischenBericht(HttpServletRequest request, HttpServletResponse response, HttpSession session) {

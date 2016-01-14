@@ -149,7 +149,7 @@ public class PDFServlet extends HttpServlet
         String[] strSplitData = strData.split("###");
         String strBerichtname = strSplitData[0];
         String strTable = strSplitData[1];
-
+        //<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         String strAusgabe = "Es ist ein unerwartetes Problem aufgetreten";
         boolean boolLeerbericht = true;
 
@@ -165,7 +165,8 @@ public class PDFServlet extends HttpServlet
                 strAusgabe = generiereAusgabeTaetigkeitsberichtLeer(strTable);
                 break;
             default:
-                strAusgabe = "<h1>" + strBerichtname + "</h1>" + strTable;
+                strAusgabe = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body><h1>" 
+                        + strBerichtname + "</h1>" + strTable+"</body></html>";
                 boolLeerbericht = false;
         }
 
