@@ -149,7 +149,7 @@ public class PDFServlet extends HttpServlet
         String[] strSplitData = strData.split("###");
         String strBerichtname = strSplitData[0];
         String strTable = strSplitData[1];
-        //<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
         String strAusgabe = "Es ist ein unerwartetes Problem aufgetreten";
         boolean boolLeerbericht = true;
 
@@ -165,8 +165,7 @@ public class PDFServlet extends HttpServlet
                 strAusgabe = generiereAusgabeTaetigkeitsberichtLeer(strTable);
                 break;
             default:
-                strAusgabe = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body><h1>" 
-                        + strBerichtname + "</h1>" + strTable+"</body></html>";
+                strAusgabe = "<h1>" + strBerichtname + "</h1>" + strTable;
                 boolLeerbericht = false;
         }
 
@@ -206,11 +205,11 @@ public class PDFServlet extends HttpServlet
             CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(false);
 
             //hier das (falls benötigt) CSS File einbinden für die .pdf Datei
-            cssResolver.addCssFile(strCSSPath1, true);
-            if (!boolLeerbericht)
-            {
-                cssResolver.addCssFile(strCSSPath1.replace("Simpel", "Erweitert"), true);
-            }
+//            cssResolver.addCssFile(strCSSPath1, true);
+//            if (!boolLeerbericht)
+//            {
+//                cssResolver.addCssFile(strCSSPath1.replace("Simpel", "Erweitert"), true);
+//            }
             Pipeline<?> pipeline = new CssResolverPipeline(cssResolver, new HtmlPipeline(htmlContext, new PdfWriterPipeline(document, writer)));
 
             XMLWorker worker = new XMLWorker(pipeline, true);
@@ -238,9 +237,6 @@ public class PDFServlet extends HttpServlet
         } catch (DocumentException de)
         {
             throw new IOException(de.getMessage());
-        } catch (CssResolverException ex)
-        {
-            Logger.getLogger(PDFServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
