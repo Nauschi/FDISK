@@ -152,16 +152,16 @@ public class PDFServlet extends HttpServlet
 
         String strAusgabe = "Es ist ein unerwartetes Problem aufgetreten";
         boolean boolLeerbericht = true;
-
+        strBerichtname=strBerichtname.replaceAll(" ", "_");
         switch (strBerichtname)
         {
-            case "Einsatzbericht leer":
+            case "Einsatzbericht_leer":
                 
                 break;
-            case "Übungsbericht leer":
+            case "Übungsbericht_leer":
                 strAusgabe = generiereAusgabeUebungsberichtLeer(strTable);
                 break;
-            case "Tätigkeitsbericht leer":
+            case "Tätigkeitsbericht_leer":
                 strAusgabe = generiereAusgabeTaetigkeitsberichtLeer(strTable);
                 break;
             default:
