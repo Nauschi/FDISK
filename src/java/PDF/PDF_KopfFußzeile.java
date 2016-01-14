@@ -21,9 +21,11 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,6 +39,7 @@ public class PDF_KopfFußzeile extends PdfPageEventHelper
     int pagenumber;
     Font fontCambria;
     Image img;
+    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
     public PDF_KopfFußzeile(String strFontPath)
     {
@@ -69,8 +72,8 @@ public class PDF_KopfFußzeile extends PdfPageEventHelper
                 Element.ALIGN_CENTER, new Phrase(String.format("Seite %d", pagenumber), fontCambria),
                 (rect.getLeft() + rect.getRight()) / 2, rect.getBottom() - 20, 0);
         
-        LocalDate ld = LocalDate.now();
-        String strTime = ld.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        Date date = new Date();
+        String strTime = sdf.format(date);
         Phrase phraseDate = new Phrase(String.format("erstellt am %s", strTime), fontCambria);
         ColumnText.showTextAligned(writer.getDirectContent(),
                 Element.ALIGN_RIGHT, phraseDate, rect.getRight(), rect.getBottom() - 20, 0);
