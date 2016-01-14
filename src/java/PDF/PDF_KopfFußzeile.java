@@ -66,17 +66,17 @@ public class PDF_KopfFußzeile extends PdfPageEventHelper
         
         Rectangle rect = writer.getBoxSize("pageRect");
         ColumnText.showTextAligned(writer.getDirectContent(),
-                Element.ALIGN_CENTER, new Phrase(String.format("Seite %d", pagenumber), fontCambria),
+                Element.ALIGN_CENTER, new Phrase(String.format("Seite %d", pagenumber)),
                 (rect.getLeft() + rect.getRight()) / 2, rect.getBottom() - 20, 0);
         
         Date date = new Date();
         String strTime = sdf.format(date);
-        Phrase phraseDate = new Phrase(String.format("erstellt am %s", strTime), fontCambria);
+        Phrase phraseDate = new Phrase(String.format("erstellt am %s", strTime));
         ColumnText.showTextAligned(writer.getDirectContent(),
                 Element.ALIGN_RIGHT, phraseDate, rect.getRight(), rect.getBottom() - 20, 0);
         
         ColumnText.showTextAligned(writer.getDirectContent(),
-                Element.ALIGN_LEFT, new Phrase("Landesfeuerwehrverband Steiermark", fontCambria), rect.getLeft(), rect.getBottom() - 20, 0);
+                Element.ALIGN_LEFT, new Phrase("Landesfeuerwehrverband Steiermark"), rect.getLeft(), rect.getBottom() - 20, 0);
         
         
         img.scaleAbsolute(120, 40);
