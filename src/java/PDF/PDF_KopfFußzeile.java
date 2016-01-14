@@ -37,11 +37,13 @@ public class PDF_KopfFußzeile extends PdfPageEventHelper
     Font fontCambria;
     Image img;
     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+    PdfWriter pdfWriter;
 
-    public PDF_KopfFußzeile(String strFontPath)
+    public PDF_KopfFußzeile(String strFontPath,PdfWriter pdfWriter)
     {
         try
         {
+            this.pdfWriter=pdfWriter;
             img = Image.getInstance(strFontPath.replace("Cambria.ttf", "logo_oben.png"));
             fontCambria = new Font(BaseFont.createFont(strFontPath, "", BaseFont.NOT_EMBEDDED));
             fontCambria.setSize(10);
@@ -63,20 +65,24 @@ public class PDF_KopfFußzeile extends PdfPageEventHelper
     @Override
     public void onEndPage(PdfWriter writer, Document document)
     {
+        if(writer==null)
+        {
+            writer=pdfWriter;
+        }
         
         Rectangle rect = writer.getBoxSize("pageRect");
         ColumnText.showTextAligned(writer.getDirectContent(),
-                Element.ALIGN_CENTER, new Phrase(String.format("Seite %d", pagenumber)),
+                Element.ALIGN_CENTER, new Phrase(String.format("Seite %d", pagenumber), fontCambria),
                 (rect.getLeft() + rect.getRight()) / 2, rect.getBottom() - 20, 0);
         
         Date date = new Date();
         String strTime = sdf.format(date);
-        Phrase phraseDate = new Phrase(String.format("erstellt am %s", strTime));
+        Phrase phraseDate = new Phrase(String.format("erstellt am %s", strTime), fontCambria);
         ColumnText.showTextAligned(writer.getDirectContent(),
                 Element.ALIGN_RIGHT, phraseDate, rect.getRight(), rect.getBottom() - 20, 0);
         
         ColumnText.showTextAligned(writer.getDirectContent(),
-                Element.ALIGN_LEFT, new Phrase("Landesfeuerwehrverband Steiermark"), rect.getLeft(), rect.getBottom() - 20, 0);
+                Element.ALIGN_LEFT, new Phrase("Landesfeuerwehrverband Steiermark", fontCambria), rect.getLeft(), rect.getBottom() - 20, 0);
         
         
         img.scaleAbsolute(120, 40);

@@ -195,7 +195,7 @@ public class PDFServlet extends HttpServlet
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PdfWriter writer = PdfWriter.getInstance(document, baos);
             
-            PDF_KopfFußzeile event = new PDF_KopfFußzeile(strFontPath);
+            PDF_KopfFußzeile event = new PDF_KopfFußzeile(strFontPath,writer);
             writer.setBoxSize("pageRect", rect);
             writer.setPageEvent(event);
 
@@ -205,11 +205,11 @@ public class PDFServlet extends HttpServlet
             CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(false);
 
             //hier das (falls benötigt) CSS File einbinden für die .pdf Datei
-//            cssResolver.addCssFile(strCSSPath1, true);
-//            if (!boolLeerbericht)
-//            {
-//                cssResolver.addCssFile(strCSSPath1.replace("Simpel", "Erweitert"), true);
-//            }
+            cssResolver.addCssFile(strCSSPath1, true);
+            if (!boolLeerbericht)
+            {
+                cssResolver.addCssFile(strCSSPath1.replace("Simpel", "Erweitert"), true);
+            }
             Pipeline<?> pipeline = new CssResolverPipeline(cssResolver, new HtmlPipeline(htmlContext, new PdfWriterPipeline(document, writer)));
 
             XMLWorker worker = new XMLWorker(pipeline, true);
@@ -237,6 +237,9 @@ public class PDFServlet extends HttpServlet
         } catch (DocumentException de)
         {
             throw new IOException(de.getMessage());
+        } catch (CssResolverException ex)
+        {
+            Logger.getLogger(PDFServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
