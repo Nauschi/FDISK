@@ -91,6 +91,7 @@ public class CSVServlet extends HttpServlet
         String strBerichtname = strSplitData[0];
         String strTable = strSplitData[1];
 
+        strBerichtname=strBerichtname.replaceAll(" ", "_");
         response.setContentType("text/csv");
         response.setHeader("Content-Disposition", "attachment; filename=" + strBerichtname + ".csv");
         String [] strRows = erstelleCSVString(strTable);

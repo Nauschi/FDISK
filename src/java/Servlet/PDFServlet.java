@@ -152,7 +152,7 @@ public class PDFServlet extends HttpServlet
 
         String strAusgabe = "Es ist ein unerwartetes Problem aufgetreten";
         boolean boolLeerbericht = true;
-        strBerichtname=strBerichtname.replaceAll(" ", "_");
+        
         switch (strBerichtname)
         {
             case "Einsatzbericht_leer":
@@ -225,7 +225,7 @@ public class PDFServlet extends HttpServlet
 //            response.setHeader("Cache-Control",
 //                    "must-revalidate, post-check=0, pre-check=0");
 //            response.setHeader("Pragma", "public");
-            
+            strBerichtname=strBerichtname.replaceAll(" ", "_");
             response.setContentType("application/pdf");
             response.setHeader("Content-Disposition", "filename=" + strBerichtname + ".pdf");
             response.setContentLength(baos.size());

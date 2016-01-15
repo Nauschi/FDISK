@@ -103,6 +103,9 @@
                     {
                         intZaehler = 1;
                     }
+                }else if(strAction.equals("erstellen"))
+                {
+                    intZaehler = Integer.parseInt(request.getParameter("hidden_zaehler"));
                 }
 
             }
