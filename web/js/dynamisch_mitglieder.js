@@ -208,3 +208,26 @@ function onPlusMinusZeile_Erstellen(intZaehler, strButton)
     
 }
 
+
+/*
+ * Leitet zum PDFServlet weiter um eine PDF zu erstellen, anzuzeigen und herunterzuladen
+ */
+function saveDataForPDF()
+{
+    alert("dynamisch.js:saveDataForPDF");
+    var strTable = document.getElementById("div_table").innerHTML;
+    document.getElementById("hidden_pdfData").value = strTable;
+    document.formPDF.submit();
+}
+
+/*
+ * Leitet zum CSVServlet weiter um eine CSV zu erstellen und herunterzuladen
+ */
+function saveDataForCSV()
+{
+    alert("dynamisch.js:saveDataForCSV");
+    var strTable = document.getElementById("div_table").innerHTML;
+    document.getElementById("hidden_CSVData").value = strTable;
+    document.formCSV.submit();
+}
+

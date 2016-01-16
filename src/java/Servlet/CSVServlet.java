@@ -88,27 +88,40 @@ public class CSVServlet extends HttpServlet
         request.setCharacterEncoding("UTF-8");
         String strData = request.getParameter("hidden_CSVData");
         String[] strSplitData = strData.split("###");
-        String strBerichtname = strSplitData[0];
-        String strTable = strSplitData[1];
+        String strBerichtname;
+        String strTable;
+        if (strSplitData.length < 2)
+        {
+            strBerichtname = "Dynamisch";
+            strTable = strData;
+        } else
+        {
+            strBerichtname = strSplitData[0];
+            strTable = strSplitData[1];
+        }
 
-        strBerichtname=strBerichtname.replaceAll(" ", "_");
+        strBerichtname = strBerichtname.replaceAll(" ", "_");
         response.setContentType("text/csv");
         response.setHeader("Content-Disposition", "attachment; filename=" + strBerichtname + ".csv");
-        String [] strRows = erstelleCSVString(strTable);
+        String[] strRows = erstelleCSVString(strTable);
         writeCsv(strRows, response.getOutputStream());
     }
 
     /**
      * Zerlegt den HTML String damit es möglich ist ein CSV File zu erstellen
-     * Zurückgegeben wird ein Sting Feld an Zeilen mit Informationen geteilt durch einen Strichpunkt
+     * Zurückgegeben wird ein Sting Feld an Zeilen mit Informationen geteilt
+     * durch einen Strichpunkt
+     *
      * @param strTable
-     * @return 
+     * @return
      */
-    public String [] erstelleCSVString(String strTable)
+    public String[] erstelleCSVString(String strTable)
     {
-        String strCSV = strTable.replace("<table id=\"table\" class=\"ui sortable celled table\"> <thead>     ", "");
-        strCSV = strCSV.replace("</tbody></table>", "");
+        String strCSV = strTable;
+        strCSV = strCSV.replace("<table id=\"table\" class=\"ui sortable celled table\"> <thead>     ", "");
+        strCSV = strCSV.replace("<table class=\"ui sortable celled table\" id=\"dyn_table\"><thead>", "");
         strCSV = strCSV.replace("</thead><tbody>", "");
+        strCSV = strCSV.replace("</tbody></table>", "");
         strCSV = strCSV.replaceAll("\\<th[^>]*>", ""); //Wie funktioniert das??
         strCSV = strCSV.replaceAll("</th>", ";");
         strCSV = strCSV.replaceAll("<td>", "");
@@ -116,18 +129,19 @@ public class CSVServlet extends HttpServlet
         strCSV = strCSV.replaceAll("<tr>", "");
         strCSV = strCSV.replaceAll("<b>", "");
         strCSV = strCSV.replaceAll("</b>", "");
+        strCSV = strCSV.trim();
         String[] strRows = strCSV.split("</tr>");
-        
         return strRows;
     }
 
     /**
-     * Schreibt die Informationen von strRows in den BufferedWriter
-     * strRows sind die Zeilen die in das Dokument geschrieben werden
-     * output ist der von der Response bekommene OutputStream
+     * Schreibt die Informationen von strRows in den BufferedWriter strRows sind
+     * die Zeilen die in das Dokument geschrieben werden output ist der von der
+     * Response bekommene OutputStream
+     *
      * @param strRows
      * @param output
-     * @throws IOException 
+     * @throws IOException
      */
     public void writeCsv(String[] strRows, OutputStream output) throws IOException
     {

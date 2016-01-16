@@ -8,14 +8,7 @@ and open the template in the editor.
     Author     : user
 */
 
-#div_abbrechen_bestaetigen
-{
-    position: fixed;
-    bottom: 0px;
-    right: 5%;
-    width: 30%;
-    float: bottom;
-}
+
 
 #div_loader
 {

@@ -147,7 +147,6 @@ public class MainServlet extends HttpServlet {
                 if (request.getParameter("hidden_action").equals("erstellen")) {
                     System.out.println("MainServlet.doPost: hidden_action: in Erstellen");
                     erstelleDynamischenBericht(request, response, session);
-                    return;
                 } else {
                     System.out.println("MainServlet.doPost: hidden_action: in plus-minus");
 

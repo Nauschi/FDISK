@@ -103,14 +103,14 @@
                     {
                         intZaehler = 1;
                     }
-                }else if(strAction.equals("erstellen"))
+                } else if (strAction.equals("erstellen"))
                 {
                     intZaehler = Integer.parseInt(request.getParameter("hidden_zaehler"));
                 }
 
             }
         %>
-       
+
         <h1>Dynamisch - Mitglieder</h1>
         <!--<div class="ui grid" id="div_mitte">-->
 
@@ -266,18 +266,39 @@
             </div> 
         </form>
         <br/>
-        
-        
+
+
         <%
             if (request.getAttribute("dyn_table") != null)
             {
                 StringBuilder sbDynHTML = (StringBuilder) request.getAttribute("dyn_table");
-                out.println("<div class='ui segment' style='width:90%; margin: 0 auto !important;'>");
+                out.println("<div class='ui segment' id='div_table'>");
                 out.println(sbDynHTML);
                 out.println("</div>");
+        %>
+        <form id="formPDF" name="formPDF" action="PDFServlet" method="POST" target="_blank">
+            <input type="hidden" name="hidden_pdfData" id="hidden_pdfData"/>
+        </form>
+        <form id="formCSV" name="formCSV" action="CSVServlet" method="POST">
+            <input type="hidden" name="hidden_CSVData" id="hidden_CSVData"/>
+        </form>
+
+        <div id="div_abbrechen_bestaetigen" style="display:none" class="ui segment">
+            <div class="ui equal width grid">
+                <div class="column">
+                    <button type="button" class="ui button styleRot" onClick="saveDataForPDF()" style="background-color: #C00518; width: 100%; color: white;">PDF</button>
+                </div>
+                <div class="column">
+                    <button type="button" class="ui button styleGruen" onClick="saveDataForCSV()"  style="background-color: #007336; width: 100%; color: white;">CSV</button>
+                </div>
+            </div>
+        </div>
+        <%
             }
 
         %>
+
+
         <!--</div>-->
         <br/>
         <script src="js/jquery-2.1.1.min.js"></script>
@@ -286,7 +307,7 @@
         <script src="js/tablesort.js"></script>
         <script src="js/dynamisch_mitglieder.js"></script>
         <script src="js/datepicker-de.js"></script>
-        
+
 
         <script>
                         $(function () {
@@ -361,6 +382,7 @@
             %>
                             $('.sortable.table').tablesort();
                             $('th').popup();
+                            document.getElementById("div_abbrechen_bestaetigen").style.display = "block";
             <%
                 }
             %>

@@ -16,9 +16,17 @@ and open the template in the editor.
     color: white;
 }
 
+
+#div_table
+{
+    width:90%; 
+    margin: 0 auto !important;
+}
+
 .dyn_element
 {
     width: 90%;
     margin: 0 auto !important;
     background-color: white;
 }
+

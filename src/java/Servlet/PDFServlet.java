@@ -147,8 +147,17 @@ public class PDFServlet extends HttpServlet
         request.setCharacterEncoding("UTF-8");
         String strData = request.getParameter("hidden_pdfData");
         String[] strSplitData = strData.split("###");
-        String strBerichtname = strSplitData[0];
-        String strTable = strSplitData[1];
+        String strBerichtname;
+        String strTable;
+        if(strSplitData.length<2)
+        {
+            strBerichtname = "Dynamisch";
+            strTable = strData;
+        }else
+        {
+            strBerichtname = strSplitData[0];
+            strTable = strSplitData[1];
+        }
 
         String strAusgabe = "Es ist ein unerwartetes Problem aufgetreten";
         boolean boolLeerbericht = true;
@@ -163,6 +172,10 @@ public class PDFServlet extends HttpServlet
                 break;
             case "Tätigkeitsbericht_leer":
                 strAusgabe = generiereAusgabeTaetigkeitsberichtLeer(strTable);
+                break;
+            case "Dynamisch":
+                strAusgabe=strTable;
+                boolLeerbericht=false;
                 break;
             default:
                 strAusgabe = "<h1>" + strBerichtname + "</h1>" + strTable;
