@@ -137,7 +137,7 @@ function getStyle(el, styleProp)
     return document.defaultView.getComputedStyle(el, null)[styleProp];
 }
 
-//Wir aufgerufen wenn der Button erstellen gecklickt wird.
+//Wir aufgerufen wenn der Button vorschau gecklickt wird.
 /**
  * Überprüft ob die letzte Verknüpfung leer ist, 
  * falls sie leer ist wird das div rot eingefärbt,
@@ -145,7 +145,7 @@ function getStyle(el, styleProp)
  * @param {type} intZahler
  * @returns {undefined}
  */
-function onErstellen(intZahler)
+function onVorschau(intZahler)
 {
     var strWertVonLetztemSelect = document.getElementById("select_verknuepfung_" + intZahler).value;
     if (strWertVonLetztemSelect != "N/A")
@@ -156,14 +156,14 @@ function onErstellen(intZahler)
     }else
     {
         
-        document.form_plus_minus_erstellen.submit();
-        //alert("Weiter zum Erstellen");
+        document.form_plus_minus_vorschau.submit();
+        //alert("Weiter zur Vorschau");
     }
     
     
 }
 
-function onPlusMinusZeile_Erstellen(intZaehler, strButton)
+function onPlusMinusZeile_Vorschau(intZaehler, strButton)
 {
     if(strButton =="minus")
     {
@@ -198,12 +198,12 @@ function onPlusMinusZeile_Erstellen(intZaehler, strButton)
     }
     strHTML = '<input type="hidden" name="hidden_action" value="' + strButton + '">';
     div_element.innerHTML = div_element.innerHTML + strHTML;
-    if(strButton =="erstellen")
+    if(strButton =="vorschau")
     {
-        onErstellen(intZaehler);
+        onVorschau(intZaehler);
     }else
     {
-        document.form_plus_minus_erstellen.submit();
+        document.form_plus_minus_vorschau.submit();
     }
     
 }
@@ -214,7 +214,6 @@ function onPlusMinusZeile_Erstellen(intZaehler, strButton)
  */
 function saveDataForPDF()
 {
-    alert("dynamisch.js:saveDataForPDF");
     var strTable = document.getElementById("div_table").innerHTML;
     document.getElementById("hidden_pdfData").value = strTable;
     document.formPDF.submit();
@@ -225,7 +224,6 @@ function saveDataForPDF()
  */
 function saveDataForCSV()
 {
-    alert("dynamisch.js:saveDataForCSV");
     var strTable = document.getElementById("div_table").innerHTML;
     document.getElementById("hidden_CSVData").value = strTable;
     document.formCSV.submit();

@@ -103,7 +103,7 @@
                     {
                         intZaehler = 1;
                     }
-                } else if (strAction.equals("erstellen"))
+                } else if (strAction.equals("vorschau"))
                 {
                     intZaehler = Integer.parseInt(request.getParameter("hidden_zaehler"));
                 }
@@ -136,7 +136,7 @@
                 <b>Verknüpfung</b>
             </div>
         </div>
-        <form action="MainServlet" method="POST" name="form_plus_minus_erstellen">
+        <form action="MainServlet" method="POST" name="form_plus_minus_vorschau">
             <input type="hidden" name="hidden_zaehler" value="<%=intZaehler%>">
             <%
                 for (int i = 1; i <= intZaehler; i++)
@@ -250,18 +250,18 @@
                 <div class="ui equal width grid" >
 
                     <div class="column">
-                        <button name="button_minus" type="button" onclick="onPlusMinusZeile_Erstellen(<%=intZaehler%>, 'minus')" class="ui button styleRot" style="text-align: center; padding: 10%; background-color: #C00518; float: left; width: 100%; color: white;">-</button>
+                        <button name="button_minus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'minus')" class="ui button styleRot" style="text-align: center; padding: 10%; background-color: #C00518; float: left; width: 100%; color: white;">-</button>
                     </div>
 
                     <div class="column">
-                        <button name="button_plus" type="button" onclick="onPlusMinusZeile_Erstellen(<%=intZaehler%>, 'plus')" class="ui button styleGruen" style="text-align: center; padding: 10%; background-color: #007336; float: right; width: 100%; color: white; ">+</button>
+                        <button name="button_plus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'plus')" class="ui button styleGruen" style="text-align: center; padding: 10%; background-color: #007336; float: right; width: 100%; color: white; ">+</button>
                     </div>
                 </div>
             </div>
             </br>
-            <div id="div_erstellen" class="ui segment" style="width: 8%; margin: auto;">
+            <div id="div_vorschau" class="ui segment" style="width: 8%; margin: auto;">
                 <div class="column" >
-                    <button name="button_erstellen" type="button" onclick="onPlusMinusZeile_Erstellen(<%=intZaehler%>, 'erstellen')" class="ui button styleGrau" style="text-align: center; padding: 10%; background-color: #707173; width: 100%; color: white;">Erstellen</button>
+                    <button name="button_vorschau" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'vorschau')" class="ui button styleGrau" style="text-align: center; padding: 10%; background-color: #707173; width: 100%; color: white;">Vorschau</button>
                 </div>
             </div> 
         </form>

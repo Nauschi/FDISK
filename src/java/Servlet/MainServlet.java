@@ -144,9 +144,9 @@ public class MainServlet extends HttpServlet {
             } else if (request.getParameter("hidden_action") != null) {
 
                 System.out.println("MainServlet.doPost: hidden_action: " + request.getParameter("hidden_action"));
-                if (request.getParameter("hidden_action").equals("erstellen")) {
-                    System.out.println("MainServlet.doPost: hidden_action: in Erstellen");
-                    erstelleDynamischenBericht(request, response, session);
+                if (request.getParameter("hidden_action").equals("vorschau")) {
+                    System.out.println("MainServlet.doPost: hidden_action: in vorschau");
+                    generiereDynamischeVorschau(request, response, session);
                 } else {
                     System.out.println("MainServlet.doPost: hidden_action: in plus-minus");
 
@@ -348,16 +348,16 @@ public class MainServlet extends HttpServlet {
         return;
     }
 
-    private void erstelleDynamischenBericht(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+    private void generiereDynamischeVorschau(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 
         int intZaehler = Integer.parseInt(request.getParameter("hidden_zaehler"));
         System.out.println("MainServlet.doPost: hidden_action: zaehler: " + intZaehler);
         String[][] strDaten = new String[intZaehler][6];
         for (int i = 0; i < intZaehler; i++) {
             String strZeile = request.getParameter("hidden_element_data_" + (i + 1));
-            System.out.println("MainServlet.erstelleDynamischenBericht: zeile: " + strZeile);
+            System.out.println("MainServlet.generiereDynamischeVorschau: zeile: " + strZeile);
             String[] splitString = strZeile.split(";");
-            System.out.println("MainServlet.erstelleDynamischenBericht: splitString size: " + splitString.length);
+            System.out.println("MainServlet.generiereDynamischeVorschau: splitString size: " + splitString.length);
             strDaten[i][0] = splitString[0];
             strDaten[i][1] = splitString[1];
             strDaten[i][2] = splitString[3];
