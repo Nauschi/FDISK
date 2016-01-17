@@ -74,10 +74,10 @@ public class Rohbericht
             String strSpalte = liBerichtSpalten.get(i);
             if(strSpalte.equals("Bemerkung")||strSpalte.equals("-"))
             {
-                strHTML += "<th class='disabled'>" + strSpalte + "</th>";
+                strHTML += "<th>" + strSpalte + "</th>";
             }else
             {
-                strHTML += "<th data-content='nach "+strSpalte+" sortieren'>" + strSpalte + "</th>";
+                strHTML += "<th data-content='nach "+strSpalte+" sortieren' class='sort' >" + strSpalte + "</th>";
             }
             
         }

@@ -289,7 +289,7 @@ aaaaasdfsdf
                                                 document.getElementById("div_abbrechen_bestaetigen").style.display = "block";
                                                 document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
                                                 $('.sortable.table').tablesort();
-                                                $('th').popup();
+                                                $('.sort').popup();
             <%
                     }
                 }

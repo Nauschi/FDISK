@@ -230,16 +230,8 @@ public class PDFServlet extends HttpServlet
             XMLWorker worker = new XMLWorker(pipeline, true);
             XMLParser p = new XMLParser(worker);
             p.parse(new StringReader(strAusgabe));
-
-//            document.add(new Paragraph(table));
-//            document.add(new Paragraph(new Date().toString()));
             document.close();
             writer.close();
-
-//            response.setHeader("Expires", "0");
-//            response.setHeader("Cache-Control",
-//                    "must-revalidate, post-check=0, pre-check=0");
-//            response.setHeader("Pragma", "public");
             strBerichtname=strBerichtname.replaceAll(" ", "_");
             response.setContentType("application/pdf");
             response.setHeader("Content-Disposition", "filename=" + strBerichtname + ".pdf");
@@ -288,7 +280,6 @@ public class PDFServlet extends HttpServlet
         return strHTMLOutput;
     }
     
-
 
     @Override
     public void init(ServletConfig config) throws ServletException

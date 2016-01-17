@@ -22,7 +22,7 @@ $(function () {
     });
     $("#input_bis_datum").datepicker({
         onSelect: function (selected) {
-            
+
             var dt = new Date(dateUmwandeln(selected));
             dt.setDate(dt.getDate() - 1);
             $("#input_von_datum").datepicker("option", "maxDate", dt);
@@ -40,9 +40,10 @@ $(function () {
  */
 function dateUmwandeln(selected)
 {
-    var strSplitDate= selected.split(".");
-    return strSplitDate[2]+"-"+strSplitDate[1]+"-"+strSplitDate[0];
+    var strSplitDate = selected.split(".");
+    return strSplitDate[2] + "-" + strSplitDate[1] + "-" + strSplitDate[0];
 }
+
 
 //Wird von onListItemClicked aufgerufen
 /*
