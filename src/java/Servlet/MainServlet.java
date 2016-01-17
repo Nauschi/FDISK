@@ -337,7 +337,8 @@ public class MainServlet extends HttpServlet {
             {
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
-                request.setAttribute("liste", access.getFahrtenbuch(strVonDatum, strBisDatum));
+                String strKennzeichen = "GU331FF"; 
+                request.setAttribute("liste", access.getFahrtenbuch(strVonDatum, strBisDatum, strKennzeichen));
             } else {
                 System.out.println("MainServlet.generiereVorschau: last else");
             }
