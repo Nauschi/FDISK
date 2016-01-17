@@ -32,7 +32,7 @@
                 <img class="ui small image" src="res/logo_oben.png">
                 <br/>
             </div>
-            <div class="ui menu" style="background-color: #C00518; width: 100%"></div>
+            <div class="ui menu" id="div_menu"></div>
         </div>
         <h1>Login</h1>
 
@@ -59,21 +59,12 @@
             </div>
 
             <div class="actions">
-
-                <!--<button type="button" name="button_abbrechen" class="ui button styleRot" style="background-color: #C00518; width: 20%; color: white;">Abbrechen </button>-->
-                <button type="button" onClick="document.form_submit.submit();" name="button_bestaetigen" class="ui button styleGruen"  style="background-color: #007336; width: 20%; color: white;">Bestätigen</button>
-
+                <button type="button" onClick="document.form_submit.submit();" name="button_bestaetigen" class="ui button styleGruen"  style="width: 20%;">Bestätigen</button>
             </div>
-
         </div>
-
         <%
             }
         %>
-
-
-
-
 
         <form action="MainServlet" method="POST">
             <div class="ui grid" id="div_mitte">
@@ -90,7 +81,6 @@
                 <%
                     if (request.getAttribute("login_error") != null)
                     {
-                        out.println("<p>"+request.getAttribute("db_error")+"</p>");
                 %>
                 <div>
                     <p style="color: red">Benutzername oder Kennwort ist falsch!</p>
@@ -99,13 +89,10 @@
                     }
                 %>
                 <div class="sixteen wide column">
-                    <button type="submit" name="button_login" class="ui button styleGruen" style="background-color: #007336; width: 100%; color: white;">Bestätigen</button>
+                    <button type="submit" name="button_login" class="ui button styleGruen" style="width: 100%;">Bestätigen</button>
                 </div>
             </div>
         </form>
-
-
-
 
         <script src="js/jquery-2.1.1.min.js"></script>
         <script src="semantic/dist/semantic.min.js"></script>
@@ -127,7 +114,6 @@
         </script>
     </body>
 </html>
-
 
 <%!    public String generiereBerechtigungen()
     {

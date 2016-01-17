@@ -36,10 +36,12 @@ import javax.servlet.http.HttpSession;
  * @author user
  */
 @WebServlet(name = "MainServlet", urlPatterns
-        = {
+        =
+        {
             "/MainServlet"
         })
-public class MainServlet extends HttpServlet {
+public class MainServlet extends HttpServlet
+{
 
     private DB_Access access;
     private SimpleDateFormat sdf;
@@ -55,9 +57,11 @@ public class MainServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException
+    {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter())
+        {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -82,9 +86,11 @@ public class MainServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException
+    {
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("lastPage") == null) {
+        if (session == null || session.getAttribute("lastPage") == null)
+        {
             System.out.println("MainServlet.doPost: session = null");
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
             return;
@@ -104,59 +110,76 @@ public class MainServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException
+    {
         request.setCharacterEncoding("UTF-8");
-        if (request.getParameter("button_login") != null) {
+        if (request.getParameter("button_login") != null)
+        {
             loginUser(request, response);
             return;
         }
 
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("loggedIn") == null) {
+        if (session == null || session.getAttribute("loggedIn") == null)
+        {
             System.out.println("MainServlet.doPost: session = null");
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
             return;
-        } else {
-            if (request.getParameter("select_berechtigung") != null) {
-                try {
+        } else
+        {
+            if (request.getParameter("select_berechtigung") != null)
+            {
+                try
+                {
                     getBerechtigungsinformationen(request, response, session);
                     return;
-                } catch (Exception ex) {
+                } catch (Exception ex)
+                {
                     System.out.println(ex.toString());
                 }
-            } else if (request.getParameter("dynamisch") != null) {
+            } else if (request.getParameter("dynamisch") != null)
+            {
                 System.out.println("MainServlet.doPost: dynamisch");
-                try {
+                try
+                {
                     session.setAttribute("hashMap_typ", access.getMethodeFuerTyp());
                     request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
                     return;
-                } catch (Exception ex) {
+                } catch (Exception ex)
+                {
                     Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-            } else if (request.getParameter("vordefiniert") != null) {
+            } else if (request.getParameter("vordefiniert") != null)
+            {
                 System.out.println("MainServlet.doPost: vordefiniert");
                 request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
                 return;
-            } else if (request.getParameter("button_vorschau") != null) {
+            } else if (request.getParameter("button_vorschau") != null)
+            {
                 generiereVorschau(request, response);
                 return;
-            } else if (request.getParameter("hidden_action") != null) {
+            } else if (request.getParameter("hidden_action") != null)
+            {
 
                 System.out.println("MainServlet.doPost: hidden_action: " + request.getParameter("hidden_action"));
-                if (request.getParameter("hidden_action").equals("vorschau")) {
+                if (request.getParameter("hidden_action").equals("vorschau"))
+                {
                     System.out.println("MainServlet.doPost: hidden_action: in vorschau");
                     generiereDynamischeVorschau(request, response, session);
-                } else {
+                } else
+                {
                     System.out.println("MainServlet.doPost: hidden_action: in plus-minus");
 
                 }
                 request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
                 return;
-            } else if (request.getParameter("logout") != null) {
+            } else if (request.getParameter("logout") != null)
+            {
                 System.out.println("MainServlet.doPost: logout");
 
-                if (request.getSession(false) == null) {
+                if (request.getSession(false) == null)
+                {
                     System.out.println("session deleted");
                 }
                 request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
@@ -167,7 +190,8 @@ public class MainServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-    private void loginUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void loginUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
         System.out.println("MainServlet.loginUser: button_Login");
         String strBenutzername = request.getParameter("input_benutzername");
         String strKennwort = request.getParameter("input_kennwort");
@@ -176,102 +200,108 @@ public class MainServlet extends HttpServlet {
 
         //UserID zu login Daten bekommen
         int intIDUser = -1;
-        try {
+        try
+        {
             intIDUser = access.getUserID(strBenutzername, strKennwort);
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
             System.out.println("MainServlet.doPost: login:" + ex.toString());
             request.setAttribute("db_error", ex.toString());
         }
         if (intIDUser != -1) //if (true)
         {
             HttpSession session = request.getSession(true);
-            try {
+            try
+            {
+
                 session.setAttribute("loggedIn", true);
                 session.setAttribute("intUserID", intIDUser);
-                request.setAttribute("berechtigungen", access.getBerechtigungen(intIDUser));
+                LinkedList<Berechtigung> liBerechtigung = access.getBerechtigungen(intIDUser);
+                request.setAttribute("berechtigungen", liBerechtigung);
+                if (liBerechtigung.size() == 1)
+                {
+                    generiereBerechtigungVorschau(request, response, session, liBerechtigung.get(0));
+                    return;
+                }
                 System.out.println("Berechtigungen gesetzt");
-            } catch (Exception ex) {
+            } catch (Exception ex)
+            {
                 Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
             return;
-        } else {
+        } else
+        {
             request.setAttribute("login_error", true);
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
             return;
         }
     }
 
-    private void getBerechtigungsinformationen(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
+    private void getBerechtigungsinformationen(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception
+    {
         int intIDUser = (int) session.getAttribute("intUserID");
         LinkedList<Berechtigung> liBerechtigungen = access.getBerechtigungen(intIDUser);
         String strBerechtigung = request.getParameter("select_berechtigung");
         Berechtigung aktBerechtigung = null;
-        for (Berechtigung berechtigung : liBerechtigungen) {
+        for (Berechtigung berechtigung : liBerechtigungen)
+        {
             System.out.println(berechtigung.getStrBerechtigung() + " equals " + strBerechtigung);
-            if (strBerechtigung.equals(berechtigung.getStrBerechtigung())) {
+            if (strBerechtigung.equals(berechtigung.getStrBerechtigung()))
+            {
                 aktBerechtigung = berechtigung;
             }
         }
+        generiereBerechtigungVorschau(request, response, session, aktBerechtigung);
+    }
 
-        if (aktBerechtigung.getIntIDGruppe() == 5) {
-            System.out.println("MainServlet.getBerechtigungsinformationen: id=5");
-            System.out.println("MainServlet.getBerechtigungsinformationen: userID: " + intIDUser);
+    private void generiereBerechtigungVorschau(HttpServletRequest request, HttpServletResponse response, HttpSession session, Berechtigung aktBerechtigung) throws Exception
+    {
+        if (aktBerechtigung.getIntIDGruppe() == 5)
+        {
+            System.out.println("MainServlet.generiereBerechtigungVorschau: id=5");
             session.setAttribute("bezirk", access.getBezrik(aktBerechtigung.getIntBereich()));
-            System.out.println("MainServlet.getBerechtigungsinformationen: " + access.getBezrik(intIDUser));
             session.setAttribute("bezirkName", null);
             session.setAttribute("abschnitt", null);
             session.setAttribute("abschnittName", null);
             session.setAttribute("feuerwehr", null);
-        } else if (aktBerechtigung.getIntIDGruppe() == 15) {
-            System.out.println("MainServlet.getBerechtigungsinformationen: id=15");
+        } else if (aktBerechtigung.getIntIDGruppe() == 15)
+        {
+            System.out.println("MainServlet.generiereBerechtigungVorschau: id=15");
             session.setAttribute("bezirk", null);
             session.setAttribute("bezirkName", access.getBereichsnameFuerBereichnnummer(aktBerechtigung.getIntBereich()));
             session.setAttribute("abschnitt", access.getAbschnitt(aktBerechtigung.getIntAbschnitt()));
             session.setAttribute("abschnittName", null);
             session.setAttribute("feuerwehr", null);
-        } else if (aktBerechtigung.getIntIDGruppe() == 9 || aktBerechtigung.getIntIDGruppe() == 0) {
-            System.out.println("MainServlet.getBerechtigungsinformationen: id=9/0");
+        } else if (aktBerechtigung.getIntIDGruppe() == 9 || aktBerechtigung.getIntIDGruppe() == 0)
+        {
+            System.out.println("MainServlet.generiereBerechtigungVorschau: id=9/0");
             session.setAttribute("bezirk", null);
             session.setAttribute("bezirkName", access.getBereichsnameFuerBereichnnummer(aktBerechtigung.getIntBereich()));
             session.setAttribute("abschnitt", null);
             session.setAttribute("abschnittName", access.getAbschnittsnameFuerAbschnittsnummer(aktBerechtigung.getIntAbschnitt()));
             session.setAttribute("feuerwehr", access.getFeuerwehr(aktBerechtigung.getStrFubwehr()));
-        } else {
+        } else
+        {
             session.setAttribute("bezirk", null);
             session.setAttribute("bezirkName", null);
             session.setAttribute("abschnitt", null);
             session.setAttribute("abschnittName", null);
             session.setAttribute("feuerwehr", null);
         }
-
-        System.out.println("MainServlet.doPost: bestaetigen");
         request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
-        return;
     }
 
-    private void generiereVorschau(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void generiereVorschau(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
         System.out.println("MainServlet.generiereVorschau: button_vorschau");
-        try {
+        try
+        {
 
             LinkedList<Rohbericht> liRohberichte = (LinkedList<Rohbericht>) this.getServletContext().getAttribute("rohberichte");
             String strBericht = request.getParameter("input_aktbericht");
-//            HttpSession session = request.getSession(false);
-
-            //int intIDGruppe = Integer.parseInt(request.getParameter("select_berechtigung"));
-//            try
-//            {
-//                Date dateVon = sdf.parse(request.getParameter("input_von_datum"));
-//                Date dateBis = sdf.parse(request.getParameter("input_bis_datum"));
-//
-//                //System.out.println("GruppeID: " + intIDGruppe);
-//                System.out.println("Date von: " + sdf.format(dateVon));
-//                System.out.println("Date bis: " + sdf.format(dateBis));
-//            } catch (Exception ex)
-//            {
-//                System.out.println(ex.toString());
-//            }
+            
             int intBereichNr = Integer.parseInt(request.getParameter("select_bezirk"));
             int intAbschnittNr = Integer.parseInt(request.getParameter("select_abschnitt"));
             String strFeuerwehr = request.getParameter("select_feuerwehr");
@@ -297,14 +327,15 @@ public class MainServlet extends HttpServlet {
                 //request.setAttribute("liste", );
             } else if (strBericht.equals(liRohberichte.get(6).getStrBerichtname()))//Tätigkeitsbericht leer
             {
-
                 request.setAttribute("liste", access.getLeerberichtMitglied(intBereichNr, intAbschnittNr, strFeuerwehr));
+                request.setAttribute("zusatz_liste", access.getLeerberichtFahrzeug(intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals(liRohberichte.get(7).getStrBerichtname()))//Einsatzbericht leer
             {
                 //request.setAttribute("liste", );
             } else if (strBericht.equals(liRohberichte.get(8).getStrBerichtname()))//Übungsbericht leer
             {
                 request.setAttribute("liste", access.getLeerberichtMitglied(intBereichNr, intAbschnittNr, strFeuerwehr));
+                request.setAttribute("zusatz_liste", access.getLeerberichtFahrzeug(intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals(liRohberichte.get(9).getStrBerichtname()))//Liste aller Einsatzberichte
             {
                 String strVonDatum = request.getParameter("input_von_datum");
@@ -337,24 +368,28 @@ public class MainServlet extends HttpServlet {
             {
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
-                String strKennzeichen = "GU331FF"; 
+                String strKennzeichen = "GU331FF";
                 request.setAttribute("liste", access.getFahrtenbuch(strVonDatum, strBisDatum, strKennzeichen));
-            } else {
+            } else
+            {
                 System.out.println("MainServlet.generiereVorschau: last else");
             }
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
             Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
         return;
     }
 
-    private void generiereDynamischeVorschau(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+    private void generiereDynamischeVorschau(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+    {
 
         int intZaehler = Integer.parseInt(request.getParameter("hidden_zaehler"));
         System.out.println("MainServlet.doPost: hidden_action: zaehler: " + intZaehler);
         String[][] strDaten = new String[intZaehler][6];
-        for (int i = 0; i < intZaehler; i++) {
+        for (int i = 0; i < intZaehler; i++)
+        {
             String strZeile = request.getParameter("hidden_element_data_" + (i + 1));
             System.out.println("MainServlet.generiereDynamischeVorschau: zeile: " + strZeile);
             String[] splitString = strZeile.split(";");
@@ -367,11 +402,13 @@ public class MainServlet extends HttpServlet {
             strDaten[i][5] = splitString[6];
         }
 
-        try {
+        try
+        {
             StringBuilder sbDynHTML = access.getDynamischerBericht(strDaten);
             System.out.println("MainServlet.erstelleDynamischenBericht: sbDynHTML: " + sbDynHTML);
             request.setAttribute("dyn_table", sbDynHTML);
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
             Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -382,30 +419,36 @@ public class MainServlet extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-    public String getServletInfo() {
+    public String getServletInfo()
+    {
         return "Short description";
     }// </editor-fold>
 
     @Override
-    public void init(ServletConfig config) throws ServletException {
+    public void init(ServletConfig config) throws ServletException
+    {
         super.init(config); //To change body of generated methods, choose Tools | Templates.
         sdf = new SimpleDateFormat("dd.MM.yyyy");
         pdf = new PDFCreator();
-        try {
+        try
+        {
             access = DB_Access.getInstance();
 
-        } catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException ex)
+        {
             Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         String strPath = "";
-        try {
+        try
+        {
             String strContextPath = this.getServletContext().getRealPath("/");
             strPath = strContextPath
                     + File.separator + "res";
 
             leseRohberichte(strPath + File.separator + "Rohberichte.csv");
             leseTypenDynamisch(strPath + File.separator + "TypenDynamisch.csv");
-        } catch (IOException ex) {
+        } catch (IOException ex)
+        {
 //            try
 //            {
 //                strPath = System.getProperty("user.dir")
@@ -428,7 +471,8 @@ public class MainServlet extends HttpServlet {
      * @throws UnsupportedEncodingException
      * @throws IOException
      */
-    public void leseRohberichte(String strPfad) throws UnsupportedEncodingException, IOException {
+    public void leseRohberichte(String strPfad) throws UnsupportedEncodingException, IOException
+    {
         ServletContext servletContext = this.getServletContext();
 
         File file = new File(strPfad);
@@ -439,14 +483,16 @@ public class MainServlet extends HttpServlet {
         BufferedReader br = new BufferedReader(isr);
         String strReihe;
 
-        while ((strReihe = br.readLine()) != null) {
+        while ((strReihe = br.readLine()) != null)
+        {
             String strBerichtname;
             LinkedList<String> liBerichtSpalten = new LinkedList<>();
             int intTypeOfDateUI;
             String[] strElemente = strReihe.split(";");
             strBerichtname = strElemente[0];
             intTypeOfDateUI = Integer.parseInt(strElemente[strElemente.length - 1]);
-            for (int i = 1; i < strElemente.length - 1; i++) {
+            for (int i = 1; i < strElemente.length - 1; i++)
+            {
                 liBerichtSpalten.add(strElemente[i]);
             }
 
@@ -457,7 +503,8 @@ public class MainServlet extends HttpServlet {
         servletContext.setAttribute("rohberichte", liRohberichte);
     }
 
-    public void leseTypenDynamisch(String strPfad) throws FileNotFoundException, UnsupportedEncodingException, IOException {
+    public void leseTypenDynamisch(String strPfad) throws FileNotFoundException, UnsupportedEncodingException, IOException
+    {
         File file = new File(strPfad);
         LinkedList<String> liTypen = new LinkedList<>();
 
@@ -466,7 +513,8 @@ public class MainServlet extends HttpServlet {
         BufferedReader br = new BufferedReader(isr);
         String strReihe;
 
-        while ((strReihe = br.readLine()) != null) {
+        while ((strReihe = br.readLine()) != null)
+        {
             liTypen.add(strReihe);
         }
         br.close();

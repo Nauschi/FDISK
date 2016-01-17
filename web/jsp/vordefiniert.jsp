@@ -42,8 +42,7 @@ aaaaasdfsdf
                 </br>
             </div>
 
-            <div class="ui menu" style="background-color: #C00518; width: 100%">
-
+            <div class="ui menu" id="div_menu">
                 <a class="item active linkMenu">
                     Vordefiniert
                 </a>
@@ -89,7 +88,6 @@ aaaaasdfsdf
                     <form action="MainServlet" method="POST">
                         <h2 id="h2_bericht"></h2>
                         <input type="hidden" name="input_aktbericht" id="input_hidden"/>
-
                         <div class="ui equal width grid">
 
                             <div class="column" id="div_bezirk">
@@ -129,17 +127,6 @@ aaaaasdfsdf
                                     </select>
                                 </fieldset>
                             </div>
-                            <!--<div class="column">
-
-                                <select name="select_berechtigung" class="ui fluid dropdown" id="select_feuerwehr">
-                            <%                                //LinkedList<Berechtigung> liBerechtigung = (LinkedList<Berechtigung>) session.getAttribute("berechtigungen");
-                                //for (Berechtigung be : liBerechtigung)
-                                //{
-                                //   out.println("<option value=" + be.getIntIDGruppe() + ">" + be.getStrBerechtigung() + "</option>");
-                                //}
-                            %>
-                        </select>
-                    </div>-->
                         </div>
                         <div class="ui equal width grid">
                             <div class="column" id="div_input_von_datum" style="display: none">
@@ -175,9 +162,6 @@ aaaaasdfsdf
                                         <%
                                             }
                                         %>
-                                        <!--<0option value="2015">2015</option>
-                                        <option value="2014">2014</option>
-                                        <option value="2013">2013</option> -->
                                     </select>
                                 </fieldset>
                             </div>
@@ -185,7 +169,7 @@ aaaaasdfsdf
                             <div class="column">
                                 <fieldset id="fieldset_button">
                                     <legend>&nbsp;</legend>
-                                    <button type="submit" name="button_vorschau" class="ui button styleGrau" onclick="document.getElementById('div_loader').className = 'ui active inverted dimmer';" style="background-color: #707173; width: 100%; color: white;">Vorschau</button>
+                                    <button type="submit" name="button_vorschau" class="ui button styleGrau" onclick="document.getElementById('div_loader').className = 'ui active inverted dimmer';" style="width: 100%;">Vorschau</button>
                                 </fieldset>
                             </div>
                         </div>
@@ -202,10 +186,10 @@ aaaaasdfsdf
                     <div id="div_abbrechen_bestaetigen" style="display:none" class="ui segment">
                         <div class="ui equal width grid">
                             <div class="column">
-                                <button type="button" class="ui button styleRot" onClick="saveDataForPDF()" style="background-color: #C00518; width: 100%; color: white;">PDF</button>
+                                <button type="button" class="ui button styleRot" onClick="saveDataForPDF()" style="width: 100%;">PDF</button>
                             </div>
                             <div class="column">
-                                <button type="button" class="ui button styleGruen" onClick="saveDataForCSV()"  style="background-color: #007336; width: 100%; color: white;">CSV</button>
+                                <button type="button" class="ui button styleGruen" onClick="saveDataForCSV()"  style="width: 100%;">CSV</button>
                             </div>
                         </div>
                     </div>  
@@ -249,7 +233,6 @@ aaaaasdfsdf
                 if (request.getAttribute("liste") != null)
                 {
                     LinkedList<Object> liBerichtDaten = (LinkedList<Object>) request.getAttribute("liste");
-                    System.out.println("Vordefiniert: Liste.size: " + liBerichtDaten.size());
                     String strHTML = "";
                     int i = 0;
                     while (i < liBerichtDaten.size() - 1)
@@ -277,9 +260,28 @@ aaaaasdfsdf
             <%
                 if (request.getParameter("input_aktbericht") != null && request.getParameter("input_aktbericht").contains(" leer"))
                 {
+                    LinkedList<Object> liFahrzeug = (LinkedList<Object>)request.getAttribute("zusatz_liste");
+                    String strZusatzHTML = "";
+                    i = 0;
+                    while (i < liFahrzeug.size() - 1)
+                    {
+                        strZusatzHTML += "<tr>";
+                        Object zeile = liFahrzeug.get(i);
+                        strZusatzHTML += zeile.toString();
+                        i++;
+                        if (i % 3 == 0)
+                        {
+                            strZusatzHTML += "</tr>";
+                        }
+                    }
+                    if (i % 3 != 0)
+                    {
+                        strZusatzHTML += "</tr>";
+                    }
+                    
             %>
 
-                                        document.getElementById("hidden_pdfData").value = "<%=request.getParameter("input_aktbericht")%>###<%=strHTML%>";
+                                        document.getElementById("hidden_pdfData").value = "<%=request.getParameter("input_aktbericht")%>###<%=strHTML%>###<%=strZusatzHTML%>";
                                                 document.formPDF.submit();
             <%
             } else

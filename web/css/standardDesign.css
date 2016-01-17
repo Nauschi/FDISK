@@ -56,6 +56,12 @@ body
     float: bottom;
 }
 
+#div_menu
+{
+    background-color: #C00518; 
+    width: 100%;
+}
+
 h1
 {
     text-align: center;
@@ -63,16 +69,30 @@ h1
 
 button
 {
-    color: white;
+    color: white !important;
 }
 
+.styleGruen
+{
+    background-color: #007336 !important;
+}
 
 .styleGruen:hover {
     background: #338F5E !important;
 }
 
+.styleGrau
+{
+    background-color: #707173 !important;
+}
+
 .styleGrau:hover {
     background: #8D8D8F !important;
+}
+
+.styleRot
+{
+    background-color: #C00518 !important;
 }
 
 .styleRot:hover {

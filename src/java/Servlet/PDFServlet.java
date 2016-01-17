@@ -74,8 +74,9 @@ public class PDFServlet extends HttpServlet
             + "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ "
             + "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </p>"
             + "<b><p><u>Eingesetzte Fahrzeuge</u></p></b>"
-            + "<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&Omicron;&nbsp;Mannschaftstransportfahrzeug &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&Omicron;&nbsp;Tanklöschfahrzeug TLF-A 500 TS</p>"
-            + "<b><p><u>Eingesetzte Mitglieder</u></p></b>";
+            + "<table border='0'><tbody>##FahrzeugData##</tbody></table>"
+            + "<b><p><u>Eingesetzte Mitglieder</u></p></b>"
+            + "<table border='0'><tbody>##MitgliedData##</tbody></table>";
 
     private String strTaetigkeitsbericht = "<h1>Tätigkeitsbericht</h1>"
             + "<b><p><u>Allgemein</u></p></b>"
@@ -90,8 +91,9 @@ public class PDFServlet extends HttpServlet
             + "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ "
             + "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </p>"
             + "<b><p><u>Eingesetzte Fahrzeuge</u></p></b>"
-            + "<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&Omicron;&nbsp;Mannschaftstransportfahrzeug &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&Omicron;&nbsp;Tanklöschfahrzeug TLF-A 500 TS</p>"
-            + "<b><p><u>Eingesetzte Mitglieder</u></p></b>";
+            + "<table border='0'><tbody>##FahrzeugData##</tbody></table>"
+            + "<b><p><u>Eingesetzte Mitglieder</u></p></b>"
+            + "<table border='0'><tbody>##MitgliedData##</tbody></table>";
 
     private String strEinsatzbericht = "";
     
@@ -168,10 +170,10 @@ public class PDFServlet extends HttpServlet
                 
                 break;
             case "Übungsbericht_leer":
-                strAusgabe = generiereAusgabeUebungsberichtLeer(strTable);
+                strAusgabe = generiereAusgabeUebungsberichtLeer(strTable,strSplitData[2]);
                 break;
             case "Tätigkeitsbericht_leer":
-                strAusgabe = generiereAusgabeTaetigkeitsberichtLeer(strTable);
+                strAusgabe = generiereAusgabeTaetigkeitsberichtLeer(strTable,strSplitData[2]);
                 break;
             case "Dynamisch":
                 strAusgabe=strTable;
@@ -263,11 +265,12 @@ public class PDFServlet extends HttpServlet
      * @param strTable
      * @return 
      */
-    public String generiereAusgabeTaetigkeitsberichtLeer(String strTable)
+    public String generiereAusgabeTaetigkeitsberichtLeer(String strTableMitglieder,String strTableFahrzeuge)
     {
         String strHTMLOutput = strTaetigkeitsbericht;
-        strHTMLOutput += "<table border='0'><tbody>" + strTable + "</tbody></table>";
-
+        strHTMLOutput = strHTMLOutput.replace("##FahrzeugData##", strTableFahrzeuge);
+        strHTMLOutput = strHTMLOutput.replace("##MitgliedData##", strTableMitglieder);
+        
         return strHTMLOutput;
     }
     /**
@@ -276,21 +279,15 @@ public class PDFServlet extends HttpServlet
      * @param strTable
      * @return 
      */
-    public String generiereAusgabeUebungsberichtLeer(String strTable)
+    public String generiereAusgabeUebungsberichtLeer(String strTableMitglieder,String strTableFahrzeuge)
     {
         String strHTMLOutput = strUebungsbericht;
-        strHTMLOutput += "<table border='0'><tbody>" + strTable + "</tbody></table>";
+        strHTMLOutput = strHTMLOutput.replace("##FahrzeugData##", strTableFahrzeuge);
+        strHTMLOutput = strHTMLOutput.replace("##MitgliedData##", strTableMitglieder);
 
         return strHTMLOutput;
     }
     
-    public String generiereAusgabeEinsatzbericht(String strTable)
-    {
-        String strHTMLOutput = strEinsatzbericht;
-        strHTMLOutput += "<table border='0'><tbody>" + strTable + "</tbody></table>";
-
-        return strHTMLOutput;
-    }
 
 
     @Override

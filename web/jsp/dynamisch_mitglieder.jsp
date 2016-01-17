@@ -58,7 +58,7 @@
                 <img class="ui small image" src="res/logo_oben.png">
                 </br>
             </div>
-            <div class="ui menu" style="background-color: #C00518; width: 100%">
+            <div class="ui menu" id="div_menu">
                 <form action="MainServlet" method="POST" name="form_vordefiniert">
                     <input type="hidden" name="vordefiniert">
                     <a href="#" onclick="document.form_vordefiniert.submit();" class="item linkMenu">
@@ -239,13 +239,13 @@
                
                 <div style="width: 30%; margin: 0 auto" class="ui equal width grid">
                         <div class="column">
-                            <button name="button_minus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'minus')" class="ui button styleRot" style="text-align: center; background-color: #C00518; float: right; width: 50%; color: white;">-</button>
+                            <button name="button_minus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'minus')" class="ui button styleRot" style="float: right; width: 50%;">-</button>
                         </div>
                         <div class="column" >
-                            <button name="button_vorschau" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'vorschau')" class="ui button styleGrau" style="text-align: center; padding: 10%; background-color: #707173; width: 100%; color: white;">Vorschau</button>
+                            <button name="button_vorschau" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'vorschau')" class="ui button styleGrau" style="width: 100%;">Vorschau</button>
                         </div>
                         <div class="column">
-                            <button name="button_plus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'plus')" class="ui button styleGruen" style="text-align: center; background-color: #007336; float: left; width: 50%; color: white; ">+</button>
+                            <button name="button_plus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'plus')" class="ui button styleGruen" style="float: left; width: 50%;">+</button>
                         </div>
                 </div>
 
