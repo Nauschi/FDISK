@@ -15,6 +15,11 @@ and open the template in the editor.
     
 }
 
+fieldset
+{
+    width:100%;
+    border: 0px;
+}
 
 body
 {

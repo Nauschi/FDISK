@@ -93,7 +93,7 @@ aaaaasdfsdf
                         <div class="ui equal width grid">
 
                             <div class="column" id="div_bezirk">
-                                <fieldset style="width:100%;border: 0px;" id="fieldset_bezirk">
+                                <fieldset id="fieldset_bezirk">
                                     <legend><b>Bezirk</b></legend>
                                     <select name="select_bezirk" class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
                                         <%=generiereBezirk(session)%>
@@ -107,7 +107,7 @@ aaaaasdfsdf
                                 }
                             %>
                             <div class="column" id="div_abschnitt">
-                                <fieldset style="width:100%;border: 0px;" id="fieldset_abschnitt">
+                                <fieldset id="fieldset_abschnitt">
                                     <legend><b>Abschnitt</b></legend>
                                     <select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)">
                                         <%=generiereAbschnitt(session)%>
@@ -122,11 +122,12 @@ aaaaasdfsdf
                                 }
                             %>
                             <div class="column" id="div_feuerwehr">
-                                <fieldset style="width:100%;border: 0px;" id="fieldset_feuerwehr">
+                                <fieldset id="fieldset_feuerwehr">
                                     <legend><b>Feuerwehr</b></legend>
-                                <select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr">
-                                    <%=generiereFeuerwehr(session)%>
-                                </select>
+                                    <select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr">
+                                        <%=generiereFeuerwehr(session)%>
+                                    </select>
+                                </fieldset>
                             </div>
                             <!--<div class="column">
 
@@ -142,39 +143,50 @@ aaaaasdfsdf
                         </div>
                         <div class="ui equal width grid">
                             <div class="column" id="div_input_von_datum" style="display: none">
-                                <div class="ui input" style="width: 100%">
-                                    <input name="input_von_datum" id="input_von_datum" placeholder="von..." autocomplete="off" readonly="true" type="text">
-                                </div>
+                                <fieldset id="fieldset_datum_von">
+                                    <legend><b>Datum von</b></legend>
+                                    <div class="ui input" style="width: 100%">
+                                        <input name="input_von_datum" id="input_von_datum" placeholder="von..." autocomplete="off" readonly="true" type="text">
+                                    </div>
+                                </fieldset>
                             </div>
                             <div class="column" id="div_input_bis_datum" style="display: none">
-                                <div class="ui input" style="width: 100%">
-                                    <input name="input_bis_datum" id="input_bis_datum" placeholder="bis..." autocomplete="off" readonly="true" type="text">
-                                </div>
+                                <fieldset id="fieldset_datum_bis">
+                                    <legend><b>Datum bis</b></legend>
+                                    <div class="ui input" style="width: 100%">
+                                        <input name="input_bis_datum" id="input_bis_datum" placeholder="bis..." autocomplete="off" readonly="true" type="text">
+                                    </div>
+                                </fieldset>
                             </div >
                             <div class="column" id="div_kein_datum_1" style="display: none">
                             </div>
                             <div class="column" id="div_kein_datum_2" style="display: none">
                             </div>
                             <div class="column" id="div_select_jahr" style="display: none">
-                                <select name="select_jahr" class="ui fluid dropdown" id="select_jahr" style="display: none">
-                                    <option value="">Jahr</option>
-                                    <%
-                                        int intYear = LocalDate.now().getYear();
-                                        for(int i = intYear; i >= 1950; i--)
-                                        {
-                                            %>
-                                            <option value="<%=i%>"><%=i%></option>
-                                            <%
-                                        }
-                                    %>
-                                    <!--<0option value="2015">2015</option>
-                                    <option value="2014">2014</option>
-                                    <option value="2013">2013</option> -->
-                                </select>
+                                <fieldset id="fieldset_jahr">
+                                    <legend><b>Jahr</b></legend>
+                                    <select name="select_jahr" class="ui fluid dropdown" id="select_jahr" style="display: none">
+                                        <%
+                                            int intYear = LocalDate.now().getYear();
+                                            for (int i = -1; i < 2; i++)
+                                            {
+                                        %>
+                                        <option value="<%=(intYear + i)%>" <%=(i == 0) ? "selected" : ""%>><%=(intYear + i)%></option>
+                                        <%
+                                            }
+                                        %>
+                                        <!--<0option value="2015">2015</option>
+                                        <option value="2014">2014</option>
+                                        <option value="2013">2013</option> -->
+                                    </select>
+                                </fieldset>
                             </div>
 
                             <div class="column">
-                                <button type="submit" name="button_vorschau" class="ui button styleGrau" onclick="document.getElementById('div_loader').className = 'ui active inverted dimmer';" style="background-color: #707173; width: 100%; color: white;">Vorschau</button>
+                                <fieldset id="fieldset_button">
+                                    <legend>&nbsp;</legend>
+                                    <button type="submit" name="button_vorschau" class="ui button styleGrau" onclick="document.getElementById('div_loader').className = 'ui active inverted dimmer';" style="background-color: #707173; width: 100%; color: white;">Vorschau</button>
+                                </fieldset>
                             </div>
                         </div>
                     </form>

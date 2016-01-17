@@ -12,7 +12,7 @@ $(function () {
     $("#input_von_datum").datepicker({
         onSelect: function (selected)
         {
-            var dt = new Date(selected);
+            var dt = new Date(dateUmwandeln(selected));
             dt.setDate(dt.getDate() + 1);
             $("#input_bis_datum").datepicker("option", "minDate", dt);
             $("#input_von_datum").datepicker("option", "showAnim", "slideDown");
@@ -22,7 +22,8 @@ $(function () {
     });
     $("#input_bis_datum").datepicker({
         onSelect: function (selected) {
-            var dt = new Date(selected);
+            
+            var dt = new Date(dateUmwandeln(selected));
             dt.setDate(dt.getDate() - 1);
             $("#input_von_datum").datepicker("option", "maxDate", dt);
             $("#input_bis_datum").datepicker("option", "showAnim", "slideDown");
@@ -32,6 +33,16 @@ $(function () {
     });
 });
 
+/**
+ * Wandelt den Date String in das Format "yyyy-MM-dd" um
+ * @param {type} selected
+ * @returns {String}
+ */
+function dateUmwandeln(selected)
+{
+    var strSplitDate= selected.split(".");
+    return strSplitDate[2]+"-"+strSplitDate[1]+"-"+strSplitDate[0];
+}
 
 //Wird von onListItemClicked aufgerufen
 /*
