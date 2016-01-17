@@ -115,157 +115,162 @@
         <!--<div class="ui grid" id="div_mitte">-->
 
         <br/>
-
-        <div class="ui grid" id="div_dyn_headers">
-            <div class="two wide column" style="width: 100%;">
-                <b>Klammer auf</b>
-            </div>
-            <div class="three wide column" style="width: 100%;">
-                <b>Typ</b>
-            </div>
-            <div class="two wide column" style="width: 100%;">
-                <b>Operator</b>
-            </div>
-            <div class="four wide column" style="width: 100%;">
-                <b>Filter</b>
-            </div>
-            <div class="two wide column" style="width: 100%;">
-                <b>Klammer zu</b>
-            </div>
-            <div class="three wide column" style="width: 100%;">
-                <b>Verknüpfung</b>
-            </div>
-        </div>
-        <form action="MainServlet" method="POST" name="form_plus_minus_vorschau">
-            <input type="hidden" name="hidden_zaehler" value="<%=intZaehler%>">
-            <%
-                for (int i = 1; i <= intZaehler; i++)
-                {
-            %>
-
-            <div class="ui grid dyn_element" id="div_element_<%=i%>">
-
-                <div class="two wide column" id="div_klammerAuf_<%=i%>" style="width: 100%;">
-                    <select class="ui fluid dropdown" id="select_klammer_<%=i%>">
-                        <!--<option value=""></option>-->
-                        <%=generiereSelect(0, strFeldKlammerAuf, request, i)%>
-                    </select>
+        <div id="dyn_main_div" >
+            <div class="ui grid" id="div_dyn_headers">
+                <div class="two wide column" style="width: 100%;">
+                    <b>Klammer auf</b>
                 </div>
+                <div class="three wide column" style="width: 100%;">
+                    <b>Typ</b>
+                </div>
+                <div class="two wide column" style="width: 100%;">
+                    <b>Operator</b>
+                </div>
+                <div class="four wide column" style="width: 100%;">
+                    <b>Filter</b>
+                </div>
+                <div class="two wide column" style="width: 100%;">
+                    <b>Klammer zu</b>
+                </div>
+                <div class="three wide column" style="width: 100%;">
+                    <b>Verknüpfung</b>
+                </div>
+            </div>
+            <form action="MainServlet" method="POST" name="form_plus_minus_vorschau">
+                <input type="hidden" name="hidden_zaehler" value="<%=intZaehler%>">
 
-                <div class="three wide column" id="div_typ_<%=i%>" style="width: 100%;">
-                    <select class="ui fluid dropdown" onchange="onTypChanged(this, null, null)" id="select_typ_<%=i%>">
-                        <%
-                            String strAktTypMitBoxArt = "";
-                            if (request.getParameter("hidden_element_data_" + i) != null)
-                            {
-                                String strTyp = request.getParameter("hidden_element_data_" + i).split(";")[1];
-                                String strBoxArt = request.getParameter("hidden_element_data_" + i).split(";")[2];
-                                strAktTypMitBoxArt = strTyp + ";" + strBoxArt;
-                            }
-                        %>
+                <%
+                    for (int i = 1; i <= intZaehler; i++)
+                    {
+                %>
 
-                        <!--<option value="">Typ</option>-->
-                        <%
-                            LinkedList<String> liTypen = (LinkedList<String>) application.getAttribute("Typen");
-                            for (String strTypMitBoxArt : liTypen)
-                            {
-                                String[] strSplitTyp = strTypMitBoxArt.split(";");
-                                String strTyp = strSplitTyp[0];
-                                String strBoxArt = strSplitTyp[1];
-                                if (strAktTypMitBoxArt.equals(strTypMitBoxArt))
+                <div class="ui grid dyn_element" id="div_element_<%=i%>">
+
+                    <div class="two wide column" id="div_klammerAuf_<%=i%>" style="width: 100%;">
+                        <select class="ui fluid dropdown" id="select_klammer_<%=i%>">
+                            <!--<option value=""></option>-->
+                            <%=generiereSelect(0, strFeldKlammerAuf, request, i)%>
+                        </select>
+                    </div>
+
+                    <div class="three wide column" id="div_typ_<%=i%>" style="width: 100%;">
+                        <select class="ui fluid dropdown" onchange="onTypChanged(this, null, null)" id="select_typ_<%=i%>">
+                            <%
+                                String strAktTypMitBoxArt = "";
+                                if (request.getParameter("hidden_element_data_" + i) != null)
                                 {
-                                    strAktBoxArt = strBoxArt;
-                        %>
-                        <option value="<%=strTypMitBoxArt%>" selected><%=strTyp%></option>
-                        <%
-                        } else
-                        {
-                        %>
-                        <option value="<%=strTypMitBoxArt%>"><%=strTyp%></option>
-                        <%
+                                    String strTyp = request.getParameter("hidden_element_data_" + i).split(";")[1];
+                                    String strBoxArt = request.getParameter("hidden_element_data_" + i).split(";")[2];
+                                    strAktTypMitBoxArt = strTyp + ";" + strBoxArt;
                                 }
-                            }
-                            if (strAktBoxArt.isEmpty())
+                            %>
+
+                            <!--<option value="">Typ</option>-->
+                            <%
+                                LinkedList<String> liTypen = (LinkedList<String>) application.getAttribute("Typen");
+                                for (String strTypMitBoxArt : liTypen)
+                                {
+                                    String[] strSplitTyp = strTypMitBoxArt.split(";");
+                                    String strTyp = strSplitTyp[0];
+                                    String strBoxArt = strSplitTyp[1];
+                                    if (strAktTypMitBoxArt.equals(strTypMitBoxArt))
+                                    {
+                                        strAktBoxArt = strBoxArt;
+                            %>
+                            <option value="<%=strTypMitBoxArt%>" selected><%=strTyp%></option>
+                            <%
+                            } else
                             {
-                                strAktBoxArt = liTypen.get(0).split(";")[1];
-                            }
-                        %>
-                    </select>
+                            %>
+                            <option value="<%=strTypMitBoxArt%>"><%=strTyp%></option>
+                            <%
+                                    }
+                                }
+                                if (strAktBoxArt.isEmpty())
+                                {
+                                    strAktBoxArt = liTypen.get(0).split(";")[1];
+                                }
+                            %>
+                        </select>
 
-                </div>
-                <div class="two wide column" id="div_operator_<%=i%>" style="width: 100%;">
-                    <select class="ui fluid dropdown" id="select_operator_<%=i%>">
-                        <!--<option value="">Operator</option>-->
-                        <%--<%=generiereSelect("select_operator_" + i, strFeldOperator, request)%>--%>
-                    </select>
-                </div>
-
-
-
-
-                <div class="four wide column" id="div_filter_cb_<%=i%>" style="width: 100%; display: none;">
-                    <select class="ui fluid dropdown" id="select_filter_cb_<%=i%>">
-                        <!--<option value="">Filter</option>-->
-                        <%--<%=generiereSelect("select_filter_" + i, strFeldFilter, request)%>--%>
-                    </select>
-                </div>
-                <div class="four wide column" id="div_filter_txt_<%=i%>" style="width: 100%; display: none;">
-                    <div class="ui input" style="width: 100%">
-                        <input id="input_filter_<%=i%>" placeholder="Filter" autocomplete="off" type="text">
                     </div>
-                </div>
-                <div class="four wide column" id="div_filter_datepicker_<%=i%>" style="width: 100%; display: none;">
-                    <div class="ui input" style="width: 100%">
-                        <input id="input_filter_datepicker_<%=i%>" placeholder="Filter" autocomplete="off" readonly="true" type="text">
-                    </div>
-                </div>
-
-
-
-
-
-                <div class="two wide column" id="div_klammerZu" style="width: 100%;">
-                    <select class="ui fluid dropdown" id="select_klammer_zu_<%=i%>">
-                        <!--<option value=""></option>-->
-                        <%=generiereSelect(5, strFeldKlammerZu, request, i)%>
-                    </select>
-                </div>
-                <div class="three wide column" id="div_verknuepfung_<%=i%>" style="width: 100%;">
-                    <select class="ui fluid dropdown" onchange="onChangeVerknuepfung(<%=i%>)" id="select_verknuepfung_<%=i%>">
-                        <!--<option value="">Verknüpfung</option>-->
-                        <%=generiereSelect(6, strFeldVerknuepfung, request, i)%>
-                    </select>
-                </div>
-            </div>
-
-            <%
-
-                }
-            %>
-
-
-
-            </br>
-            <div id="div_plusminus" class="ui segment" style="width: 10%; margin: auto;">
-                <div class="ui equal width grid" >
-
-                    <div class="column">
-                        <button name="button_minus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'minus')" class="ui button styleRot" style="text-align: center; padding: 10%; background-color: #C00518; float: left; width: 100%; color: white;">-</button>
+                    <div class="two wide column" id="div_operator_<%=i%>" style="width: 100%;">
+                        <select class="ui fluid dropdown" id="select_operator_<%=i%>">
+                            <!--<option value="">Operator</option>-->
+                            <%--<%=generiereSelect("select_operator_" + i, strFeldOperator, request)%>--%>
+                        </select>
                     </div>
 
-                    <div class="column">
-                        <button name="button_plus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'plus')" class="ui button styleGruen" style="text-align: center; padding: 10%; background-color: #007336; float: right; width: 100%; color: white; ">+</button>
+                    <div class="four wide column" id="div_filter_cb_<%=i%>" style="width: 100%; display: none;">
+                        <select class="ui fluid dropdown" id="select_filter_cb_<%=i%>">
+                            <!--<option value="">Filter</option>-->
+                            <%--<%=generiereSelect("select_filter_" + i, strFeldFilter, request)%>--%>
+                        </select>
+                    </div>
+                    <div class="four wide column" id="div_filter_txt_<%=i%>" style="width: 100%; display: none;">
+                        <div class="ui input" style="width: 100%">
+                            <input id="input_filter_<%=i%>" placeholder="Filter" autocomplete="off" type="text">
+                        </div>
+                    </div>
+                    <div class="four wide column" id="div_filter_datepicker_<%=i%>" style="width: 100%; display: none;">
+                        <div class="ui input" style="width: 100%">
+                            <input id="input_filter_datepicker_<%=i%>" placeholder="Filter" autocomplete="off" readonly="true" type="text">
+                        </div>
+                    </div>
+
+                    <div class="two wide column" id="div_klammerZu" style="width: 100%;">
+                        <select class="ui fluid dropdown" id="select_klammer_zu_<%=i%>">
+                            <!--<option value=""></option>-->
+                            <%=generiereSelect(5, strFeldKlammerZu, request, i)%>
+                        </select>
+                    </div>
+                    <div class="three wide column" id="div_verknuepfung_<%=i%>" style="width: 100%;">
+                        <select class="ui fluid dropdown" onchange="onChangeVerknuepfung(<%=i%>)" id="select_verknuepfung_<%=i%>">
+                            <!--<option value="">Verknüpfung</option>-->
+                            <%=generiereSelect(6, strFeldVerknuepfung, request, i)%>
+                        </select>
                     </div>
                 </div>
-            </div>
-            </br>
-            <div id="div_vorschau" class="ui segment" style="width: 8%; margin: auto;">
-                <div class="column" >
-                    <button name="button_vorschau" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'vorschau')" class="ui button styleGrau" style="text-align: center; padding: 10%; background-color: #707173; width: 100%; color: white;">Vorschau</button>
+                <%
+
+                    }
+                %>
+
+               
+                <div style="width: 30%; margin: 0 auto" class="ui equal width grid">
+                        <div class="column">
+                            <button name="button_minus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'minus')" class="ui button styleRot" style="text-align: center; background-color: #C00518; float: right; width: 50%; color: white;">-</button>
+                        </div>
+                        <div class="column" >
+                            <button name="button_vorschau" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'vorschau')" class="ui button styleGrau" style="text-align: center; padding: 10%; background-color: #707173; width: 100%; color: white;">Vorschau</button>
+                        </div>
+                        <div class="column">
+                            <button name="button_plus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'plus')" class="ui button styleGruen" style="text-align: center; background-color: #007336; float: left; width: 50%; color: white; ">+</button>
+                        </div>
                 </div>
-            </div> 
-        </form>
-        <br/>
+
+<!--                <div id="div_plusminus" class="ui segment" style="width: 10%; margin: auto;">
+                    <div class="ui equal width grid" >
+
+                        <div class="column">
+                            <button name="button_minus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'minus')" class="ui button styleRot" style="text-align: center; padding: 10%; background-color: #C00518; float: left; width: 100%; color: white;">-</button>
+                        </div>
+
+                        <div class="column">
+                            <button name="button_plus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'plus')" class="ui button styleGruen" style="text-align: center; padding: 10%; background-color: #007336; float: right; width: 100%; color: white; ">+</button>
+                        </div>
+                    </div>
+                </div>
+                </br>
+                <div id="div_vorschau" class="ui segment" style="width: 8%; margin: auto;">
+                    <div class="column" >
+                        <button name="button_vorschau" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'vorschau')" class="ui button styleGrau" style="text-align: center; padding: 10%; background-color: #707173; width: 100%; color: white;">Vorschau</button>
+                    </div>
+                </div>-->
+
+            </form>
+        </div>
+        <br/><br/>
 
 
         <%
