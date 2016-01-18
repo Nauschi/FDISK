@@ -18,15 +18,15 @@ public class MitgliedsDienstzeit extends Mitglied
 {
 
     private Date dateGeburtsdatum;
-    private int intDienstalter;
+    private double doubleDienstalter;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
     private DB_Access theInstance;
 
-    public MitgliedsDienstzeit(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, Date dateGeburtsdatum, int intDienstalter) throws ClassNotFoundException
+    public MitgliedsDienstzeit(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, Date dateGeburtsdatum, double doubleDienstalter) throws ClassNotFoundException
     {
         super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
         this.dateGeburtsdatum = dateGeburtsdatum;
-        this.intDienstalter = intDienstalter;
+        this.doubleDienstalter = doubleDienstalter;
 
         theInstance = DB_Access.getInstance();
     }
@@ -41,14 +41,14 @@ public class MitgliedsDienstzeit extends Mitglied
         this.dateGeburtsdatum = dateGeburtsdatum;
     }
 
-    public int getIntDienstalter()
+    public double getDoublleDienstalter()
     {
-        return intDienstalter;
+        return doubleDienstalter;
     }
 
-    public void setIntDienstalter(int intDienstalter)
+    public void setDoubleDienstalter(double doubleDienstalter)
     {
-        this.intDienstalter = intDienstalter;
+        this.doubleDienstalter = doubleDienstalter;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class MitgliedsDienstzeit extends Mitglied
         {
             return false;
         }
-        if (this.intDienstalter != other.intDienstalter)
+        if (this.doubleDienstalter != other.doubleDienstalter)
         {
             return false;
         }
@@ -123,7 +123,7 @@ public class MitgliedsDienstzeit extends Mitglied
                 + strVorname + "</td><td>"
                 + strZuname + "</td><td>"
                 + sdf.format(dateGeburtsdatum) + "</td><td>"
-                + intDienstalter + "</td></tr>";
+                + doubleDienstalter + "</td></tr>";
 
         return strHtml;
     }

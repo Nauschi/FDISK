@@ -33,7 +33,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Level;
@@ -2790,10 +2789,10 @@ public class DB_Access
                     strColLink = "OR";
                     break;
                 case "UND NICHT":
-                    //ja das ist die große frage
+                    strColLink = "AND NOT";
                     break;
                 case "ODER NICHT":
-                    //ja das ist die große frage
+                    strColLink = "OR NOT";
                     break;
             }
 
@@ -2817,8 +2816,6 @@ public class DB_Access
             {
                 switch (strColWhereType)
                 {
-                    //Datumsformat: dd/MM/yyyy
-                    //TO_DATE gibt's bei Microsoft SQL nicht, CAST ist äquivalent
                     case "datetime":
                         sqlString += strColWhere + " " + strColSymbol + " CAST('" + strColValue + "' AS datetime) " + strColLink + " ";
                         break;
@@ -3185,7 +3182,10 @@ public class DB_Access
                     =
                     {
                         {
-                            "(", "Anrede", "=", "Frau", ")", "UND"
+                            "(", "Anrede", "=", "Frau", ")", "UND NICHT"
+                        },
+                        {
+                            "(", "Vorname", "=", "Paula", ")", "UND NICHT"
                         }
                     };
 
