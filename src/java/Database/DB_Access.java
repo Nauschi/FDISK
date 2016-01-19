@@ -33,6 +33,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Level;
@@ -936,7 +937,7 @@ public class DB_Access
      */
     public LinkedList<Fahrzeug> getFahrtenbuch(String strVon, String strBis, String strEingabeKennzeichen) throws Exception
     {
-            //!!!! Noch nicht fertig
+        //!!!! Noch nicht fertig
         LinkedList<Fahrzeug> liFahrzeuge = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
@@ -1395,7 +1396,7 @@ public class DB_Access
             {
                 dateString += " (beginn >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND ende < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1))";
             }
-        } 
+        }
 
         return dateString;
     }
@@ -1986,15 +1987,12 @@ public class DB_Access
     /**
      * Ruft die richtige Methode für einen Typ auf
      *
-     * @param typ
+     * @return 
      * @throws Exception
      */
     public HashMap<String, LinkedList<String>> getMethodeFuerTyp() throws Exception
     {
         HashMap<String, LinkedList<String>> hmAlleTypenUndFilter = new HashMap<>();
-
-        String strKey1 = getFilterFuerGruppe("GRUPPE").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey1, getFilterFuerGruppe("GRUPPE").get(strKey1));
 
         String strKey2 = getFilterFuerKurs("KURSBEZEICHNUNG").keySet().iterator().next();
         hmAlleTypenUndFilter.put(strKey2, getFilterFuerKurs("KURSBEZEICHNUNG").get(strKey2));
@@ -2058,11 +2056,11 @@ public class DB_Access
         String strKey19 = getFilterFuerTyp("DIENSTGRAD").keySet().iterator().next();
         hmAlleTypenUndFilter.put(strKey19, getFilterFuerTyp("DIENSTGRAD").get(strKey19));
 
-//        String strKey20 = getFilterFuerTyp("führerscheinklasse").keySet().iterator().next();
-//        hmAlleTypenUndFilter.put(strKey20, getFilterFuerTyp("BERUF").get(strKey20));
-//        
-//        String strKey21 = getFilterFuerTyp("untersuchungsart").keySet().iterator().next();
-//        hmAlleTypenUndFilter.put(strKey21, getFilterFuerTyp("BERUF").get(strKey21));
+        String strKey20 = getFilterFuerFuehrerscheinklassen("FÜHRERSCHEINKLASSE").keySet().iterator().next();
+        hmAlleTypenUndFilter.put(strKey20, getFilterFuerFuehrerscheinklassen("FÜHRERSCHEINKLASSE").get(strKey20));
+        
+        String strKey21 = getFilterFuerUntersuchungen("UNTERSUCHUNGSART").keySet().iterator().next();
+        hmAlleTypenUndFilter.put(strKey21, getFilterFuerUntersuchungen("UNTERSUCHUNGSART").get(strKey21));
         return hmAlleTypenUndFilter;
 
     }
@@ -2130,43 +2128,7 @@ public class DB_Access
         return hmFilter;
     }
 
-    /**
-     * Sucht den passenden Filter für den Typ "Gruppe"
-     *
-     * @param typ
-     * @return
-     * @throws Exception
-     */
-    public HashMap<String, LinkedList<String>> getFilterFuerGruppe(String typ) throws Exception
-    {
-        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
-        LinkedList<String> liFilter = new LinkedList<>();
-        Connection conn = connPool.getConnection();
-        Statement stat = conn.createStatement();
-
-        String sqlString = "SELECT DISTINCT Bezeichnung"
-                + " FROM FDISK.dbo.tbl_login_gruppe";
-
-        ResultSet rs = stat.executeQuery(sqlString);
-
-        while (rs.next())
-        {
-            String strFilter = rs.getString("Bezeichnung");
-
-            if (strFilter == null || strFilter.equals("") || strFilter.equals(" "))
-            {
-                continue;
-            }
-
-            liFilter.add(strFilter);
-        }
-
-        hmFilter.put(typ, liFilter);
-        connPool.releaseConnection(conn);
-
-        return hmFilter;
-    }
-
+ 
     /**
      * Sucht den passenden Filter für Kurse
      *
@@ -2395,7 +2357,66 @@ public class DB_Access
 
         return hmFilter;
     }
+    
+    public HashMap<String, LinkedList<String>> getFilterFuerFuehrerscheinklassen(String typ) throws Exception
+    {
+        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
+        LinkedList<String> liFilter = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+        
 
+        String sqlString = "SELECT DISTINCT fahrgenehmigungsklasse \"Typ\""
+                + " FROM FDISK.dbo.stmkgesetzl_fahrgenehmigungen ";
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        while (rs.next())
+        {
+            String strFilter;
+            if (rs.getString("Typ") == null || rs.getString("Typ").equals("") || rs.getString("Typ").equals(" "))
+            {
+                continue;
+            }
+            strFilter = rs.getString("Typ");
+            liFilter.add(strFilter);
+        }
+
+        hmFilter.put(typ, liFilter);
+        connPool.releaseConnection(conn);
+
+        return hmFilter;
+    }
+    
+      public HashMap<String, LinkedList<String>> getFilterFuerUntersuchungen(String typ) throws Exception
+    {
+        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
+        LinkedList<String> liFilter = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT DISTINCT Expr1 \"Typ\""
+                + " FROM FDISK.dbo.stmkuntersuchungenmitglieder ";
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        while (rs.next())
+        {
+            String strFilter;
+            if (rs.getString("Typ") == null || rs.getString("Typ").equals("") || rs.getString("Typ").equals(" "))
+            {
+                continue;
+            }
+            strFilter = rs.getString("Typ");
+            liFilter.add(strFilter);
+        }
+
+        hmFilter.put(typ, liFilter);
+        connPool.releaseConnection(conn);
+
+        return hmFilter;
+    }
+
+   
+    
     public StringBuilder getDynamischerBericht(String strEingabe[][]) throws Exception
     {
         LinkedList<String> liSpaltenUeberschriften = new LinkedList<>();
@@ -2770,10 +2791,19 @@ public class DB_Access
             String strColWhere = strEingabe[i][1];
             String strColSymbol = strEingabe[i][2];
             String strColValue = strEingabe[i][3];
-
             strColLink = strEingabe[i][5];
+            
+            //if(!strColSymbol.contains("N/A") && !strColValue.contains("N/A"))
+            //{
+                
+//            if(strColWhere.contains("N/A") || strColValue.contains("N/A"))
+//            {
+//                strColWhere = "";
+//                strColValue = "";
+//                strColSymbol = "";
+//            }
+            
             String strColWhereType = getDBTypeForValue(strColWhere);
-            System.out.println(strColWhere + " - " + strColWhereType);
 
             if (strColSymbol.equals("<>"))
             {
@@ -2812,7 +2842,7 @@ public class DB_Access
             }
 
             //d.h. User gibt eine WHERE clause ein
-            if ((!strColSymbol.equals("N/A")) && !strColWhere.equals("Alter") && !strColWhere.equals("Status"))
+            if (!strColWhere.equals("Alter") && !strColWhere.equals("Status") && ((strColSymbol.contains("N/A")) || strColWhere.contains("N/A") || strColValue.contains("N/A")))
             {
                 switch (strColWhereType)
                 {
@@ -2829,19 +2859,13 @@ public class DB_Access
                 }
             } else if (strColWhere.equals("Alter"))
             {
-                if (!strColSymbol.equals("N/A"))
-                {
                     sqlString += "(DATEDIFF(YY, geburtsdatum, GETDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum) > GETDATE() THEN 1 ELSE 0 END )" + " " + strColSymbol + " '" + strColValue + "' " + strColLink + " ";
-                }
             } else if (strColWhere.equals("Status"))
             {
-                if (!strColSymbol.equals(""))
-                {
                     sqlString += strColValue + " " + strColSymbol + " '1' ";
-                }
             }
+        
         }
-
         int intIndex = -1;
 
         if (!strColLink.isEmpty())
@@ -2866,6 +2890,10 @@ public class DB_Access
         {
             sqlString = sqlString.replace("OR", " ");
         }
+        if (sqlString.endsWith("NOT ") || sqlString.endsWith("NOT"))
+        {
+            sqlString = sqlString.replace("NOT", " ");
+        }
 
         System.out.println("SQL: " + sqlString);
         StringBuilder sbHtml = createDynamicReportGeneratorOutput(sqlString, liSpaltenUeberschriften);
@@ -2885,7 +2913,13 @@ public class DB_Access
         for (String str : liSpaltenUeberschriften)
         {
             sbHtml.append("<th data-content='nach ").append(str).append(" sortieren'>");
-            sbHtml.append(str);
+            if (boAnrede == true && str.equals("Geschlecht"))
+            {
+                sbHtml.append("Anrede");
+            } else
+            {
+                sbHtml.append(str);
+            }
             sbHtml.append("</th>");
         }
         sbHtml.append("</tr></thead><tbody>");
@@ -2947,7 +2981,6 @@ public class DB_Access
                                 {
                                     if (strString.equals("w"))
                                     {
-
                                         sbHtml.append("<td>");
                                         sbHtml.append("Frau");
                                         sbHtml.append("</td>");
@@ -3177,18 +3210,15 @@ public class DB_Access
 //                            "", "Status", "<>", "Reserve", "", "UND"
 //                        }
 //
-//                    };
+////                    };
             String[][] dynamisch
                     =
                     {
                         {
-                            "(", "Anrede", "=", "Frau", ")", "UND NICHT"
-                        },
-                        {
                             "(", "Vorname", "=", "Paula", ")", "UND NICHT"
                         }
                     };
-
+//
             StringBuilder html = theInstance.getDynamischerBericht(dynamisch);
             System.out.println(html);
 // !!!!!!!!!!!!! SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!

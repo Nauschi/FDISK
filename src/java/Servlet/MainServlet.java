@@ -19,7 +19,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletConfig;
@@ -143,6 +146,13 @@ public class MainServlet extends HttpServlet
                 try
                 {
                     session.setAttribute("hashMap_typ", access.getMethodeFuerTyp());
+                    HashMap hm = access.getMethodeFuerTyp();
+                     Iterator it = hm.entrySet().iterator();
+    while (it.hasNext()) {
+        Map.Entry pair = (Map.Entry)it.next();
+        System.out.println(pair.getKey() + " = " + pair.getValue());
+        it.remove(); // avoids a ConcurrentModificationException
+    }
                     request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
                     return;
                 } catch (Exception ex)
