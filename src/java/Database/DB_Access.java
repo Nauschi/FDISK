@@ -682,20 +682,21 @@ public class DB_Access
         LinkedList<MitgliedsDienstzeit> liMitgliedsDienstzeiten = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
-        String sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
-                + " FROM FDISK.dbo.stmkmitglieder ";
+        String sqlString = "SELECT m.id_personen \"PersID\", m.standesbuchnummer \"STB\", m.dienstgrad \"DGR\", m.titel \"Titel\", m.vorname \"Vorname\", m.zuname \"Zuname\", m.geburtsdatum \"Geburtsdatum\",  m.datum_abgemeldet \"Datum_abgemeldet\", m.eintrittsdatum \"Eintrittsdatum\", m.vordienstzeit \"Vordienstzeit\", z.VD_ZEIT \"VD_ZEIT\""
+                + " FROM FDISK.dbo.stmkmitglieder m INNER JOIN FDISK.dbo.FDISK_MAPPING_VD_ZEIT z ON(m.id_personen = z.id_personen) ";
 
-        if (strFubwehr.equals("-1"))
-        {
-            sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
-                    + " FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer)"
-                    + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
-        } else
-        {
-            sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
-                    + " FROM FDISK.dbo.stmkmitglieder"
-                    + " WHERE instanznummer = '" + strFubwehr + "'";
-        }
+        //NAUSCHI I HAB KEINE AHNUNG WAS DES MACHT DES STATEMENT DA ÜBERHALB IS DES NEUE
+//        if (strFubwehr.equals("-1"))
+//        {
+//            sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
+//                    + " FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer)"
+//                    + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
+//        } else
+//        {
+//            sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
+//                    + " FROM FDISK.dbo.stmkmitglieder"
+//                    + " WHERE instanznummer = '" + strFubwehr + "'";
+//        }
 
 //WICHTIG NICHT LÖSCHEN!
 //sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
@@ -724,8 +725,9 @@ public class DB_Access
                 strVorname = rs.getString("Vorname");
                 strZuname = rs.getString("Zuname");
                 dateGeburtsdatum = new Date(rs.getDate("Geburtsdatum").getTime());
-                dateEintrittsdatum = new Date(rs.getDate("Eintrittsdatum").getTime());
-                intVordienstzeit = rs.getInt("Vordienstzeit");
+                //dateEintrittsdatum = new Date(rs.getDate("Eintrittsdatum").getTime());
+                dateEintrittsdatum = new Date();
+                intVordienstzeit = rs.getInt("VD_ZEIT");
                 Calendar calEintrittsdatum = Calendar.getInstance();
                 calEintrittsdatum.setTime(dateEintrittsdatum);
 
@@ -2484,7 +2486,6 @@ public class DB_Access
                     case "FÜHRERSCHEINKLASSE - GÜLTIG BIS":
                         strEingabe[i][j] = "Gueltig_bis";
                         break;
-                    //Passt das so??
                     case "FUNKTIONSINSTANZ":
                         strEingabe[i][j] = "id_instanztypen";
                         break;
@@ -2731,7 +2732,6 @@ public class DB_Access
                     case "Abgemeldet":
                     case "Ehrenmitglied":
                         sqlString += "m." + titel.toUpperCase() + ", ";
-
                 }
             }
         }
@@ -2793,16 +2793,6 @@ public class DB_Access
             String strColValue = strEingabe[i][3];
             strColLink = strEingabe[i][5];
             
-            //if(!strColSymbol.contains("N/A") && !strColValue.contains("N/A"))
-            //{
-                
-//            if(strColWhere.contains("N/A") || strColValue.contains("N/A"))
-//            {
-//                strColWhere = "";
-//                strColValue = "";
-//                strColSymbol = "";
-//            }
-            
             String strColWhereType = getDBTypeForValue(strColWhere);
 
             if (strColSymbol.equals("<>"))
@@ -2846,7 +2836,6 @@ public class DB_Access
             {
                 System.out.println(strColWhere);
                 System.out.println(strColSymbol);
-                sqlString = sqlString;
             }
             else if (!strColWhere.equals("Alter") && !strColWhere.equals("Status"))
             {
