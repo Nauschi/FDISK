@@ -2842,7 +2842,13 @@ public class DB_Access
             }
 
             //d.h. User gibt eine WHERE clause ein
-            if (!strColWhere.equals("Alter") && !strColWhere.equals("Status") && ((strColSymbol.contains("N/A")) || strColWhere.contains("N/A") || strColValue.contains("N/A")))
+            if(strColWhere.contains("N/A") || strColSymbol.contains("N/A") || strColValue.contains("N/A"))
+            {
+                System.out.println(strColWhere);
+                System.out.println(strColSymbol);
+                sqlString = sqlString;
+            }
+            else if (!strColWhere.equals("Alter") && !strColWhere.equals("Status"))
             {
                 switch (strColWhereType)
                 {
@@ -2857,12 +2863,14 @@ public class DB_Access
                         sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' " + strColLink + " ";
                         break;
                 }
-            } else if (strColWhere.equals("Alter"))
+            } 
+            else if (strColWhere.equals("Alter"))
             {
-                    sqlString += "(DATEDIFF(YY, geburtsdatum, GETDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum) > GETDATE() THEN 1 ELSE 0 END )" + " " + strColSymbol + " '" + strColValue + "' " + strColLink + " ";
-            } else if (strColWhere.equals("Status"))
+                sqlString += "(DATEDIFF(YY, geburtsdatum, GETDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum) > GETDATE() THEN 1 ELSE 0 END )" + " " + strColSymbol + " '" + strColValue + "' " + strColLink + " ";
+            } 
+            else if (strColWhere.equals("Status"))
             {
-                    sqlString += strColValue + " " + strColSymbol + " '1' ";
+                sqlString += strColValue + " " + strColSymbol + " '1' ";
             }
         
         }
@@ -3215,7 +3223,7 @@ public class DB_Access
                     =
                     {
                         {
-                            "(", "Vorname", "=", "Paula", ")", "UND NICHT"
+                            "(", "Vorname", "=", "N/A", ")", "UND NICHT"
                         }
                     };
 //
