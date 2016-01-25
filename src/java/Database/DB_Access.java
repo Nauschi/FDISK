@@ -1269,19 +1269,21 @@ public class DB_Access
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 
-        String sqlString = "SELECT "
-                + "kennzeichen \"Kennzeichen\" "
-                + ",id_fahrzeuge \"Id_Fahrzeuge\" "
-                + ",fahrzeugtyp \"Fahrzeugtyp\" "
-                + ",taktischebezeichnung \"Taktische Bezeichnung\" "
-                + ",bezeichnung \"Bezeichnung\" "
-                + ",status \"Status\" "
-                + ",baujahr \"Baujahr\" "
-                + ",fahrzeugmarke \"Fahrzeugmarke\" "
-                + ",aufbaufirma \"Aufbaufirma\""
-                + ",fzg.instanznummer \"Instanzummer\" "
-                + "FROM FDISK.dbo.stmkfahrzeuge fzg INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(fzg.instanznummer = f.instanznummer) "
-                + "WHERE status = 'aktiv'";
+        
+        String sqlString;
+//        String sqlString = "SELECT "
+//                + "kennzeichen \"Kennzeichen\" "
+//                + ",id_fahrzeuge \"Id_Fahrzeuge\" "
+//                + ",fahrzeugtyp \"Fahrzeugtyp\" "
+//                + ",taktischebezeichnung \"Taktische Bezeichnung\" "
+//                + ",bezeichnung \"Bezeichnung\" "
+//                + ",status \"Status\" "
+//                + ",baujahr \"Baujahr\" "
+//                + ",fahrzeugmarke \"Fahrzeugmarke\" "
+//                + ",aufbaufirma \"Aufbaufirma\""
+//                + ",fzg.instanznummer \"Instanzummer\" "
+//                + "FROM FDISK.dbo.stmkfahrzeuge fzg INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(fzg.instanznummer = f.instanznummer) "
+//                + "WHERE status = 'aktiv'";
 
         if (strFubwehr.equals("-1"))
         {
@@ -1311,7 +1313,7 @@ public class DB_Access
                     + ",baujahr \"Baujahr\" "
                     + ",fahrzeugmarke \"Fahrzeugmarke\" "
                     + ",aufbaufirma \"Aufbaufirma\""
-                    + ",fzg.instanznummer \"Instanzummer\" "
+                    + ",instanznummer \"Instanzummer\" "
                     + "FROM FDISK.dbo.stmkfahrzeuge "
                     + "WHERE status = 'aktiv' "
                     + "AND instanznummer = '" + strFubwehr + "'";
