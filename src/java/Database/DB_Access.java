@@ -24,6 +24,7 @@ import Beans.MitgliedsGeburtstag;
 import Beans.LeerberichtMitglied;
 import Beans.Taetigkeitsbericht;
 import Beans.Uebungsbericht;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -725,9 +726,9 @@ public class DB_Access
                 strVorname = rs.getString("Vorname");
                 strZuname = rs.getString("Zuname");
                 dateGeburtsdatum = new Date(rs.getDate("Geburtsdatum").getTime());
-                
+
                 dateEintrittsdatum = new Date();
-                
+
                 Timestamp helper = rs.getTimestamp("Eintrittsdatum");
                 if (helper != null)
                 {
@@ -777,7 +778,7 @@ public class DB_Access
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 
-        String sqlString = "SELECT TOP 1000 adressen.id_adressen \"AdressID\", adressen.strasse \"Strasse\", adressen.nummer \"Nummer\", "
+        String sqlString = "SELECT adressen.id_adressen \"AdressID\", adressen.strasse \"Strasse\", adressen.nummer \"Nummer\", "
                 + "adressen.stiege \"Stiege\", adressen.plz \"PLZ\", adressen.ort \"Ort\", mitglied.id_personen \"PersID\", "
                 + "mitglied.standesbuchnummer \"STB\", mitglied.dienstgrad \"DGR\", "
                 + "mitglied.titel \"Titel\", mitglied.vorname \"Vorname\", mitglied.zuname \"Zuname\", "
@@ -1239,8 +1240,8 @@ public class DB_Access
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 
-        String sqlString = "SELECT TOP 1000 convert(char, einsatzzeit_bis - einsatzzeit_von, 114) \"Einsatzzeit\""
-                + " FROM [FDISK].[dbo].[stmkeinsatzberichtemitglieder] WHERE id_mitgliedschaften = 219782"; //WHERE id_mitgliedschaften = "+mitglied.getIntIdMitgliedschaften();
+        String sqlString = "SELECT convert(char, einsatzzeit_bis - einsatzzeit_von, 114) \"Einsatzzeit\""
+                + " FROM FDISK.dbo.stmkeinsatzberichtemitglieder WHERE id_mitgliedschaften = 219782"; //WHERE id_mitgliedschaften = "+mitglied.getIntIdMitgliedschaften();
 
         ResultSet rs = stat.executeQuery(sqlString);
 
@@ -2435,6 +2436,7 @@ public class DB_Access
         boolean boFunktionen = false;
         boolean boUntersuchungen = false;
         boAnrede = false;
+        boolean boVordienstzeit = false;
 
         int intRows = strEingabe.length % 6;
 
@@ -2673,6 +2675,18 @@ public class DB_Access
                 }
             }
         }
+
+        if (liSpaltenUeberschriften.contains("Vordienstzeit"))
+        {
+            boVordienstzeit = true;
+            for (String titel : liSpaltenUeberschriften)
+            {
+                if (titel.equals("Vordienstzeit"))
+                {
+                    sqlString += "z.VD_ZEIT, ";
+                }
+            }
+        }
         //keine Joins notwendig -  funktioniert
         if (liSpaltenUeberschriften.contains("Anrede") || liSpaltenUeberschriften.contains("Geschlecht")
                 || liSpaltenUeberschriften.contains("Titel") || liSpaltenUeberschriften.contains("Amtstitel")
@@ -2684,7 +2698,7 @@ public class DB_Access
                 || liSpaltenUeberschriften.contains("Blutgruppe") || liSpaltenUeberschriften.contains("Standesbuchnummer")
                 || liSpaltenUeberschriften.contains("Eintrittsdatum") || liSpaltenUeberschriften.contains("Dienstalter")
                 || liSpaltenUeberschriften.contains("Angelobungsdatum") || liSpaltenUeberschriften.contains("Status")
-                || liSpaltenUeberschriften.contains("Vordienstzeit") || liSpaltenUeberschriften.contains("Dienstgrad"))
+                || liSpaltenUeberschriften.contains("Dienstgrad"))
         {
             for (String titel : liSpaltenUeberschriften)
             {
@@ -2785,6 +2799,11 @@ public class DB_Access
             sqlString += " INNER JOIN FDISK.dbo.stmkuntersuchungenmitglieder u ON(m.id_personen = u.id_mitgliedschaften) ";
         }
 
+        if (boVordienstzeit == true)
+        {
+            sqlString += " INNER JOIN FDISK.dbo.FDISK_MAPPING_VD_ZEIT z ON(m.id_personen = z.id_personen) ";
+        }
+
         sqlString += " WHERE ";
 
         String strColLink = "";
@@ -2839,6 +2858,9 @@ public class DB_Access
             {
                 System.out.println(strColWhere);
                 System.out.println(strColSymbol);
+            } else if (strColWhere.equals("Vordienstzeit"))
+            {
+                sqlString += "ROUND(VD_ZEIT, 0, 1)" + " " + strColSymbol + strColValue + " ";
             } else if (!strColWhere.equals("Alter") && !strColWhere.equals("Status"))
             {
                 switch (strColWhereType)
@@ -2929,6 +2951,7 @@ public class DB_Access
             Long loLong;
             Byte byByte;
             int intInt;
+            BigDecimal bdBigDecimal;
 
             sbHtml.append("<tr>");
 
@@ -3018,6 +3041,19 @@ public class DB_Access
                                 sbHtml.append(intInt);
                                 sbHtml.append("</td>");
                                 break;
+                            case "big decimal":
+                                if (str.equals("Vordienstzeit"))
+                                {
+                                    bdBigDecimal = rs.getBigDecimal("vd_zeit");
+
+                                } else
+                                {
+                                    bdBigDecimal = rs.getBigDecimal(str);
+                                }
+                                sbHtml.append("<td>");
+                                sbHtml.append(bdBigDecimal);
+                                sbHtml.append("</td>");
+                                break;
                             case "default-alter":
                                 int intAlter = -1;
                                 try
@@ -3078,6 +3114,7 @@ public class DB_Access
         haNamesTypes.put("reserve", "bit");
         haNamesTypes.put("abgemeldet", "bit");
         haNamesTypes.put("ehrenmitglied", "bit");
+        haNamesTypes.put("vordienstzeit", "big decimal");
 
         //Tabelle stmkadressen
         haNamesTypes.put("ort", "varchar");
@@ -3212,7 +3249,7 @@ public class DB_Access
                     =
                     {
                         {
-                            "(", "Vorname", "=", "N/A", ")", "UND NICHT"
+                            "(", "Vordienstzeit in Jahren", "<>", "4", ")", "UND NICHT"
                         }
                     };
 //
