@@ -682,7 +682,7 @@ public class DB_Access
         LinkedList<MitgliedsDienstzeit> liMitgliedsDienstzeiten = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
-        String sqlString = "SELECT m.id_personen \"PersID\", m.standesbuchnummer \"STB\", m.dienstgrad \"DGR\", m.titel \"Titel\", m.vorname \"Vorname\", m.zuname \"Zuname\", m.geburtsdatum \"Geburtsdatum\",  m.datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum, m.vordienstzeit \"Vordienstzeit\", z.VD_ZEIT \"VD_ZEIT\""
+        String sqlString = "SELECT m.id_personen \"PersID\", m.standesbuchnummer \"STB\", m.dienstgrad \"DGR\", m.titel \"Titel\", m.vorname \"Vorname\", m.zuname \"Zuname\", m.geburtsdatum \"Geburtsdatum\",  m.datum_abgemeldet \"Datum_abgemeldet\", m.eintrittsdatum \"Eintrittsdatum\", m.vordienstzeit \"Vordienstzeit\", z.VD_ZEIT \"VD_ZEIT\""
                 + " FROM FDISK.dbo.stmkmitglieder m INNER JOIN FDISK.dbo.FDISK_MAPPING_VD_ZEIT z ON(m.id_personen = z.id_personen) ";
 
         //NAUSCHI I HAB KEINE AHNUNG WAS DES MACHT DES STATEMENT DA ÜBERHALB IS DES NEUE
@@ -738,21 +738,21 @@ public class DB_Access
                 Calendar calEintrittsdatum = Calendar.getInstance();
                 calEintrittsdatum.setTime(dateEintrittsdatum);
 
-                double intDienstzeit = Calendar.getInstance().get(Calendar.YEAR) - calEintrittsdatum.get(Calendar.YEAR);
+                double doubleDienstzeit = Calendar.getInstance().get(Calendar.YEAR) - calEintrittsdatum.get(Calendar.YEAR);
 
                 if (Calendar.getInstance().get(Calendar.MONTH) < calEintrittsdatum.get(Calendar.MONTH))
                 {
-                    intDienstzeit--;
+                    doubleDienstzeit--;
                 }
 
                 if ((Calendar.getInstance().get(Calendar.MONTH) == calEintrittsdatum.get(Calendar.MONTH)) && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) < calEintrittsdatum.get(Calendar.DAY_OF_MONTH))
                 {
-                    intDienstzeit--;
+                    doubleDienstzeit--;
                 }
 
-                intDienstzeit += doubleVordienstzeit;
+                doubleDienstzeit += doubleVordienstzeit;
 
-                MitgliedsDienstzeit mitgliedsDienst = new MitgliedsDienstzeit(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true, dateGeburtsdatum, doubleVordienstzeit);
+                MitgliedsDienstzeit mitgliedsDienst = new MitgliedsDienstzeit(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true, dateGeburtsdatum, doubleDienstzeit);
                 liMitgliedsDienstzeiten.add(mitgliedsDienst);
             }
 
