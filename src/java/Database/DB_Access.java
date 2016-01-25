@@ -28,6 +28,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -672,7 +673,6 @@ public class DB_Access
      * @param strFubwehr
      * @return LinkedList
      * @throws java.lang.Exception
-     * @throws IOException
      * @see Mitglied
      * @see MitgliedsDienstzeit
      * @see LinkedList
@@ -682,7 +682,7 @@ public class DB_Access
         LinkedList<MitgliedsDienstzeit> liMitgliedsDienstzeiten = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
-        String sqlString = "SELECT m.id_personen \"PersID\", m.standesbuchnummer \"STB\", m.dienstgrad \"DGR\", m.titel \"Titel\", m.vorname \"Vorname\", m.zuname \"Zuname\", m.geburtsdatum \"Geburtsdatum\",  m.datum_abgemeldet \"Datum_abgemeldet\", m.eintrittsdatum \"Eintrittsdatum\", m.vordienstzeit \"Vordienstzeit\", z.VD_ZEIT \"VD_ZEIT\""
+        String sqlString = "SELECT m.id_personen \"PersID\", m.standesbuchnummer \"STB\", m.dienstgrad \"DGR\", m.titel \"Titel\", m.vorname \"Vorname\", m.zuname \"Zuname\", m.geburtsdatum \"Geburtsdatum\",  m.datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum, m.vordienstzeit \"Vordienstzeit\", z.VD_ZEIT \"VD_ZEIT\""
                 + " FROM FDISK.dbo.stmkmitglieder m INNER JOIN FDISK.dbo.FDISK_MAPPING_VD_ZEIT z ON(m.id_personen = z.id_personen) ";
 
         //NAUSCHI I HAB KEINE AHNUNG WAS DES MACHT DES STATEMENT DA ÜBERHALB IS DES NEUE
@@ -697,13 +697,13 @@ public class DB_Access
 //                    + " FROM FDISK.dbo.stmkmitglieder"
 //                    + " WHERE instanznummer = '" + strFubwehr + "'";
 //        }
-
 //WICHTIG NICHT LÖSCHEN!
 //sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
 //                + " FROM FDISK.dbo.stmkmitglieder"
 //                + " WHERE SUBSTRING(instanznummer, 0, 3) = '" + intBereichnr + "'";
         ResultSet rs = stat.executeQuery(sqlString);
 
+        System.out.println(sqlString);
         String strSTB;
         String strDGR;
         String strTitel;
@@ -712,7 +712,7 @@ public class DB_Access
         int intPersID;
         Date dateGeburtsdatum;
         Date dateEintrittsdatum;
-        int intVordienstzeit;
+        double doubleVordienstzeit;
 
         while (rs.next())
         {
@@ -725,13 +725,20 @@ public class DB_Access
                 strVorname = rs.getString("Vorname");
                 strZuname = rs.getString("Zuname");
                 dateGeburtsdatum = new Date(rs.getDate("Geburtsdatum").getTime());
-                //dateEintrittsdatum = new Date(rs.getDate("Eintrittsdatum").getTime());
+                
                 dateEintrittsdatum = new Date();
-                intVordienstzeit = rs.getInt("VD_ZEIT");
+                
+                Timestamp helper = rs.getTimestamp("Eintrittsdatum");
+                if (helper != null)
+                {
+                    dateEintrittsdatum = new java.util.Date(helper.getTime());
+                }
+
+                doubleVordienstzeit = rs.getDouble("VD_ZEIT");
                 Calendar calEintrittsdatum = Calendar.getInstance();
                 calEintrittsdatum.setTime(dateEintrittsdatum);
 
-                int intDienstzeit = Calendar.getInstance().get(Calendar.YEAR) - calEintrittsdatum.get(Calendar.YEAR);
+                double intDienstzeit = Calendar.getInstance().get(Calendar.YEAR) - calEintrittsdatum.get(Calendar.YEAR);
 
                 if (Calendar.getInstance().get(Calendar.MONTH) < calEintrittsdatum.get(Calendar.MONTH))
                 {
@@ -743,9 +750,9 @@ public class DB_Access
                     intDienstzeit--;
                 }
 
-                intDienstzeit += intVordienstzeit;
+                intDienstzeit += doubleVordienstzeit;
 
-                MitgliedsDienstzeit mitgliedsDienst = new MitgliedsDienstzeit(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true, dateGeburtsdatum, intDienstzeit);
+                MitgliedsDienstzeit mitgliedsDienst = new MitgliedsDienstzeit(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true, dateGeburtsdatum, doubleVordienstzeit);
                 liMitgliedsDienstzeiten.add(mitgliedsDienst);
             }
 
@@ -1989,7 +1996,7 @@ public class DB_Access
     /**
      * Ruft die richtige Methode für einen Typ auf
      *
-     * @return 
+     * @return
      * @throws Exception
      */
     public HashMap<String, LinkedList<String>> getMethodeFuerTyp() throws Exception
@@ -2060,7 +2067,7 @@ public class DB_Access
 
         String strKey20 = getFilterFuerFuehrerscheinklassen("FÜHRERSCHEINKLASSE").keySet().iterator().next();
         hmAlleTypenUndFilter.put(strKey20, getFilterFuerFuehrerscheinklassen("FÜHRERSCHEINKLASSE").get(strKey20));
-        
+
         String strKey21 = getFilterFuerUntersuchungen("UNTERSUCHUNGSART").keySet().iterator().next();
         hmAlleTypenUndFilter.put(strKey21, getFilterFuerUntersuchungen("UNTERSUCHUNGSART").get(strKey21));
         return hmAlleTypenUndFilter;
@@ -2130,7 +2137,6 @@ public class DB_Access
         return hmFilter;
     }
 
- 
     /**
      * Sucht den passenden Filter für Kurse
      *
@@ -2359,14 +2365,13 @@ public class DB_Access
 
         return hmFilter;
     }
-    
+
     public HashMap<String, LinkedList<String>> getFilterFuerFuehrerscheinklassen(String typ) throws Exception
     {
         HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
         LinkedList<String> liFilter = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
-        
 
         String sqlString = "SELECT DISTINCT fahrgenehmigungsklasse \"Typ\""
                 + " FROM FDISK.dbo.stmkgesetzl_fahrgenehmigungen ";
@@ -2388,8 +2393,8 @@ public class DB_Access
 
         return hmFilter;
     }
-    
-      public HashMap<String, LinkedList<String>> getFilterFuerUntersuchungen(String typ) throws Exception
+
+    public HashMap<String, LinkedList<String>> getFilterFuerUntersuchungen(String typ) throws Exception
     {
         HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
         LinkedList<String> liFilter = new LinkedList<>();
@@ -2417,8 +2422,6 @@ public class DB_Access
         return hmFilter;
     }
 
-   
-    
     public StringBuilder getDynamischerBericht(String strEingabe[][]) throws Exception
     {
         LinkedList<String> liSpaltenUeberschriften = new LinkedList<>();
@@ -2792,7 +2795,7 @@ public class DB_Access
             String strColSymbol = strEingabe[i][2];
             String strColValue = strEingabe[i][3];
             strColLink = strEingabe[i][5];
-            
+
             String strColWhereType = getDBTypeForValue(strColWhere);
 
             if (strColSymbol.equals("<>"))
@@ -2832,12 +2835,11 @@ public class DB_Access
             }
 
             //d.h. User gibt eine WHERE clause ein
-            if(strColWhere.contains("N/A") || strColSymbol.contains("N/A") || strColValue.contains("N/A"))
+            if (strColWhere.contains("N/A") || strColSymbol.contains("N/A") || strColValue.contains("N/A"))
             {
                 System.out.println(strColWhere);
                 System.out.println(strColSymbol);
-            }
-            else if (!strColWhere.equals("Alter") && !strColWhere.equals("Status"))
+            } else if (!strColWhere.equals("Alter") && !strColWhere.equals("Status"))
             {
                 switch (strColWhereType)
                 {
@@ -2852,16 +2854,14 @@ public class DB_Access
                         sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' " + strColLink + " ";
                         break;
                 }
-            } 
-            else if (strColWhere.equals("Alter"))
+            } else if (strColWhere.equals("Alter"))
             {
                 sqlString += "(DATEDIFF(YY, geburtsdatum, GETDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum) > GETDATE() THEN 1 ELSE 0 END )" + " " + strColSymbol + " '" + strColValue + "' " + strColLink + " ";
-            } 
-            else if (strColWhere.equals("Status"))
+            } else if (strColWhere.equals("Status"))
             {
                 sqlString += strColValue + " " + strColSymbol + " '1' ";
             }
-        
+
         }
         int intIndex = -1;
 
