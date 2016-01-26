@@ -47,8 +47,6 @@ public class MainServlet extends HttpServlet
 {
 
     private DB_Access access;
-    private SimpleDateFormat sdf;
-    private PDFCreator pdf;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -438,8 +436,6 @@ public class MainServlet extends HttpServlet
     public void init(ServletConfig config) throws ServletException
     {
         super.init(config); //To change body of generated methods, choose Tools | Templates.
-        sdf = new SimpleDateFormat("dd.MM.yyyy");
-        pdf = new PDFCreator();
         try
         {
             access = DB_Access.getInstance();

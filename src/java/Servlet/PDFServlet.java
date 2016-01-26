@@ -148,7 +148,9 @@ public class PDFServlet extends HttpServlet
     {
         request.setCharacterEncoding("UTF-8");
         String strData = request.getParameter("hidden_pdfData");
+        System.out.println("DataString: "+strData);
         String[] strSplitData = strData.split("###");
+        System.out.println("size: "+strSplitData.length);
         String strBerichtname;
         String strTable;
         if(strSplitData.length<2)
@@ -166,13 +168,13 @@ public class PDFServlet extends HttpServlet
         
         switch (strBerichtname)
         {
-            case "Einsatzbericht_leer":
+            case "Einsatzbericht leer":
                 
                 break;
-            case "Übungsbericht_leer":
+            case "Übungsbericht leer":
                 strAusgabe = generiereAusgabeUebungsberichtLeer(strTable,strSplitData[2]);
                 break;
-            case "Tätigkeitsbericht_leer":
+            case "Tätigkeitsbericht leer":
                 strAusgabe = generiereAusgabeTaetigkeitsberichtLeer(strTable,strSplitData[2]);
                 break;
             case "Dynamisch":
@@ -223,7 +225,10 @@ public class PDFServlet extends HttpServlet
             cssResolver.addCssFile(strCSSPath1, true);
             if (!boolLeerbericht)
             {
-                cssResolver.addCssFile(strCSSPath1.replace("Simpel", "Erweitert"), true);
+                cssResolver.addCssFile(strCSSPath1.replace("Simpel", "StandartBericht"), true);
+            }else
+            {
+                cssResolver.addCssFile(strCSSPath1.replace("Simpel", "Leerbericht"), true);
             }
             Pipeline<?> pipeline = new CssResolverPipeline(cssResolver, new HtmlPipeline(htmlContext, new PdfWriterPipeline(document, writer)));
 
@@ -259,10 +264,11 @@ public class PDFServlet extends HttpServlet
      */
     public String generiereAusgabeTaetigkeitsberichtLeer(String strTableMitglieder,String strTableFahrzeuge)
     {
+        System.out.println("generiereAusgabeTaetigkeitsberichtLeer: "+strTableMitglieder);
         String strHTMLOutput = strTaetigkeitsbericht;
         strHTMLOutput = strHTMLOutput.replace("##FahrzeugData##", strTableFahrzeuge);
         strHTMLOutput = strHTMLOutput.replace("##MitgliedData##", strTableMitglieder);
-        
+        System.out.println("strHTMLOutput: "+strHTMLOutput);
         return strHTMLOutput;
     }
     /**

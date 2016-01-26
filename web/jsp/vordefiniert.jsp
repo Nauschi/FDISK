@@ -235,7 +235,7 @@ aaaaasdfsdf
                     LinkedList<Object> liBerichtDaten = (LinkedList<Object>) request.getAttribute("liste");
                     String strHTML = "";
                     int i = 0;
-                    while (i < liBerichtDaten.size() - 1)
+                    while (i < liBerichtDaten.size())
                     {
                         if (request.getParameter("input_aktbericht").contains(" leer") && i % 3 == 0)
                         {
@@ -263,9 +263,12 @@ aaaaasdfsdf
                     LinkedList<Object> liFahrzeug = (LinkedList<Object>)request.getAttribute("zusatz_liste");
                     String strZusatzHTML = "";
                     i = 0;
-                    while (i < liFahrzeug.size() - 1)
+                    while (i < liFahrzeug.size())
                     {
-                        strZusatzHTML += "<tr>";
+                        if (i % 3 == 0)
+                        {
+                            strZusatzHTML += "<tr>";
+                        }
                         Object zeile = liFahrzeug.get(i);
                         strZusatzHTML += zeile.toString();
                         i++;
