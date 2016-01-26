@@ -236,37 +236,37 @@
                     }
                 %>
 
-               
+
                 <div style="width: 30%; margin: 0 auto" class="ui equal width grid">
-                        <div class="column">
-                            <button name="button_minus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'minus')" class="ui button styleRot" style="float: right; width: 50%;">-</button>
-                        </div>
-                        <div class="column" >
-                            <button name="button_vorschau" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'vorschau')" class="ui button styleGrau" style="width: 100%;">Vorschau</button>
-                        </div>
-                        <div class="column">
-                            <button name="button_plus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'plus')" class="ui button styleGruen" style="float: left; width: 50%;">+</button>
-                        </div>
-                </div>
-
-<!--                <div id="div_plusminus" class="ui segment" style="width: 10%; margin: auto;">
-                    <div class="ui equal width grid" >
-
-                        <div class="column">
-                            <button name="button_minus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'minus')" class="ui button styleRot" style="text-align: center; padding: 10%; background-color: #C00518; float: left; width: 100%; color: white;">-</button>
-                        </div>
-
-                        <div class="column">
-                            <button name="button_plus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'plus')" class="ui button styleGruen" style="text-align: center; padding: 10%; background-color: #007336; float: right; width: 100%; color: white; ">+</button>
-                        </div>
+                    <div class="column">
+                        <button name="button_minus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'minus')" class="ui button styleRot" style="float: right; width: 50%;">-</button>
                     </div>
-                </div>
-                </br>
-                <div id="div_vorschau" class="ui segment" style="width: 8%; margin: auto;">
                     <div class="column" >
-                        <button name="button_vorschau" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'vorschau')" class="ui button styleGrau" style="text-align: center; padding: 10%; background-color: #707173; width: 100%; color: white;">Vorschau</button>
+                        <button name="button_vorschau" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'vorschau')" class="ui button styleGrau" style="width: 100%;">Vorschau</button>
                     </div>
-                </div>-->
+                    <div class="column">
+                        <button name="button_plus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'plus')" class="ui button styleGruen" style="float: left; width: 50%;">+</button>
+                    </div>
+                </div>
+
+                <!--                <div id="div_plusminus" class="ui segment" style="width: 10%; margin: auto;">
+                                    <div class="ui equal width grid" >
+                
+                                        <div class="column">
+                                            <button name="button_minus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'minus')" class="ui button styleRot" style="text-align: center; padding: 10%; background-color: #C00518; float: left; width: 100%; color: white;">-</button>
+                                        </div>
+                
+                                        <div class="column">
+                                            <button name="button_plus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'plus')" class="ui button styleGruen" style="text-align: center; padding: 10%; background-color: #007336; float: right; width: 100%; color: white; ">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                </br>
+                                <div id="div_vorschau" class="ui segment" style="width: 8%; margin: auto;">
+                                    <div class="column" >
+                                        <button name="button_vorschau" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'vorschau')" class="ui button styleGrau" style="text-align: center; padding: 10%; background-color: #707173; width: 100%; color: white;">Vorschau</button>
+                                    </div>
+                                </div>-->
 
             </form>
         </div>
@@ -281,6 +281,7 @@
                 out.println(sbDynHTML);
                 out.println("</div>");
         %>
+        </br>
         <form id="formPDF" name="formPDF" action="PDFServlet" method="POST" target="_blank">
             <input type="hidden" name="hidden_pdfData" id="hidden_pdfData"/>
         </form>
@@ -288,32 +289,30 @@
             <input type="hidden" name="hidden_CSVData" id="hidden_CSVData"/>
         </form>
 
-        <div id="div_abbrechen_bestaetigen" style="display:none" class="ui segment">
-            <div class="ui equal width grid">
-                <div class="column">
-                    <button type="button" class="ui button styleRot" onClick="saveDataForPDF()" style="background-color: #C00518; width: 100%; color: white;">PDF</button>
+        <div>
+            <div id="div_csv_pdf" style="display:none" class="ui segment">
+                <div class="ui equal width grid">
+                    <div class="column">
+                        <button type="button" class="ui button styleRot" onClick="saveDataForPDF()" style="width: 100%;">PDF</button>
+                    </div>
+                    <div class="column">
+                        <button type="button" class="ui button styleGruen" onClick="saveDataForCSV()"  style="width: 100%;">CSV</button>
+                    </div>
                 </div>
-                <div class="column">
-                    <button type="button" class="ui button styleGruen" onClick="saveDataForCSV()"  style="background-color: #007336; width: 100%; color: white;">CSV</button>
-                </div>
-            </div>
+            </div> 
         </div>
+
         <%
             }
 
         %>
 
-
-        <!--</div>-->
-        <br/>
         <script src="js/jquery-2.1.1.min.js"></script>
         <script src="semantic/dist/semantic.min.js"></script>
         <script src="js/jquery-ui.js"></script> 
         <script src="js/tablesort.js"></script>
         <script src="js/dynamisch_mitglieder.js"></script>
         <script src="js/datepicker-de.js"></script>
-
-
         <script>
                         $(function () {
             <%                for (int i = 1; i <= intZaehler; i++)
@@ -387,7 +386,7 @@
             %>
                             $('.sortable.table').tablesort();
                             $('th').popup();
-                            document.getElementById("div_abbrechen_bestaetigen").style.display = "block";
+                            document.getElementById("div_csv_pdf").style.display = "block";
             <%
                 }
             %>

@@ -183,7 +183,7 @@ aaaaasdfsdf
                     </form>
                     <div id="div_table">
                     </div>
-                    <div id="div_abbrechen_bestaetigen" style="display:none" class="ui segment">
+                    <div id="div_csv_pdf" style="display:none" class="ui segment">
                         <div class="ui equal width grid">
                             <div class="column">
                                 <button type="button" class="ui button styleRot" onClick="saveDataForPDF()" style="width: 100%;">PDF</button>
@@ -289,7 +289,7 @@ aaaaasdfsdf
             <%
             } else
             {%>
-                                                document.getElementById("div_abbrechen_bestaetigen").style.display = "block";
+                                                document.getElementById("div_csv_pdf").style.display = "block";
                                                 document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
                                                 $('.sortable.table').tablesort();
                                                 $('.sort').popup();
