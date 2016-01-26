@@ -973,6 +973,10 @@ public class DB_Access
                 + ",f.eigengewicht \"Eigengewicht\" "
                 + ",f.gesamtgewicht \"Gesamtgewicht\" "
                 + ",f.treibstoff \"Treibstoff\" "
+                + ",uf.km \"Km\" "
+                + ",u.uebungsart \"Art\" "
+                + ",u.beginn \"Beginn\" "
+                + ",u.ende \"Ende\" "
                 + " FROM"
                 + " FDISK.dbo.stmkfahrzeuge f INNER JOIN"
                 + " FDISK.dbo.stmkuebungsberichtefahrzeuge uf ON(f.id_fahrzeuge = uf.id_fahrzeuge)"
@@ -986,22 +990,26 @@ public class DB_Access
             sqlString += " AND UPPER(replace(replace(replace(replace(replace(f.kennzeichen,'+',''),'/',''),'.',''),' ',''),'-','')) = '" + strEingabeKennzeichen.toUpperCase() + "'";
         }
 
-        sqlString += " UNION SELECT "
-                + "f.kennzeichen \"Kennzeichen\" "
-                + ",f.id_fahrzeuge \"Id_Fahrzeuge\" "
-                + ",f.fahrzeugtyp \"Fahrzeugtyp\" "
-                + ",f.taktischebezeichnung \"Taktische Bezeichnung\" "
-                + ",f.bezeichnung \"Bezeichnung\" "
-                + ",f.status \"Status\" "
-                + ",f.baujahr \"Baujahr\" "
-                + ",f.fahrzeugmarke \"Fahrzeugmarke\" "
-                + ",f.aufbaufirma \"Aufbaufirma\""
-                + ",f.instanznummer \"Instanzummer\" "
-                + ",f.fahrzeugart \"Fahrzeugart\" "
-                + ",f.leistung \"Leistung\" "
-                + ",f.eigengewicht \"Eigengewicht\" "
-                + ",f.gesamtgewicht \"Gesamtgewicht\" "
-                + ",f.treibstoff \"Treibstoff\" "
+        sqlString += " UNION ALL SELECT "
+                + "f.kennzeichen "
+                + ",f.id_fahrzeuge "
+                + ",f.fahrzeugtyp "
+                + ",f.taktischebezeichnung "
+                + ",f.bezeichnung "
+                + ",f.status "
+                + ",f.baujahr "
+                + ",f.fahrzeugmarke "
+                + ",f.aufbaufirma "
+                + ",f.instanznummer "
+                + ",f.fahrzeugart "
+                + ",f.leistung "
+                + ",f.eigengewicht "
+                + ",f.gesamtgewicht "
+                + ",f.treibstoff "
+                + ",ef.km "
+                + ",e.einsatzart "
+                + ",e.uhrzeit_alarmierung " 
+                + ",e.uhrzeit_rueckkehr "
                 + " FROM"
                 + " FDISK.dbo.stmkfahrzeuge f INNER JOIN"
                 + " FDISK.dbo.stmkeinsatzberichtefahrzeuge ef ON(f.id_fahrzeuge = ef.id_fahrzeuge) "
@@ -1015,22 +1023,26 @@ public class DB_Access
             sqlString += " AND UPPER(replace(replace(replace(replace(replace(f.kennzeichen,'+',''),'/',''),'.',''),' ',''),'-','')) = '" + strEingabeKennzeichen.toUpperCase() + "'";
         }
 
-        sqlString += " UNION SELECT "
-                + "f.kennzeichen \"Kennzeichen\" "
-                + ",f.id_fahrzeuge \"Id_Fahrzeuge\" "
-                + ",f.fahrzeugtyp \"Fahrzeugtyp\" "
-                + ",f.taktischebezeichnung \"Taktische Bezeichnung\" "
-                + ",f.bezeichnung \"Bezeichnung\" "
-                + ",f.status \"Status\" "
-                + ",f.baujahr \"Baujahr\" "
-                + ",f.fahrzeugmarke \"Fahrzeugmarke\" "
-                + ",f.aufbaufirma \"Aufbaufirma\""
-                + ",f.instanznummer \"Instanzummer\" "
-                + ",f.fahrzeugart \"Fahrzeugart\" "
-                + ",f.leistung \"Leistung\" "
-                + ",f.eigengewicht \"Eigengewicht\" "
-                + ",f.gesamtgewicht \"Gesamtgewicht\" "
-                + ",f.treibstoff \"Treibstoff\" "
+        sqlString += " UNION ALL SELECT "
+                + "f.kennzeichen "
+                + ",f.id_fahrzeuge "
+                + ",f.fahrzeugtyp "
+                + ",f.taktischebezeichnung "
+                + ",f.bezeichnung "
+                + ",f.status "
+                + ",f.baujahr "
+                + ",f.fahrzeugmarke "
+                + ",f.aufbaufirma "
+                + ",f.instanznummer "
+                + ",f.fahrzeugart "
+                + ",f.leistung "
+                + ",f.eigengewicht "
+                + ",f.gesamtgewicht "
+                + ",f.treibstoff "
+                + ",tf.km "
+                + ",t.taetigkeitsart "
+                + ",t.beginn "
+                + ",t.ende "
                 + " FROM"
                 + " FDISK.dbo.stmkfahrzeuge f INNER JOIN"
                 + " FDISK.dbo.stmktaetigkeitsberichtefahrzeuge tf ON(f.id_fahrzeuge = tf.id_fahrzeuge)"
@@ -1061,7 +1073,12 @@ public class DB_Access
         int intEigengewicht;
         int intGesamtgewicht;
         String strTreibstoff;
+        double doubleKm;
+        String strArt; 
+        Date dateBeginn;
+        Date dateEnde; 
 
+        
         while (rs.next())
         {
             strFahrzeugTyp = rs.getString("Fahrzeugtyp");
@@ -1078,6 +1095,11 @@ public class DB_Access
             intEigengewicht = rs.getInt("Eigengewicht");
             intGesamtgewicht = rs.getInt("Gesamtgewicht");
             strTreibstoff = rs.getString("Treibstoff");
+            doubleKm = rs.getDouble("Km");
+            strArt = rs.getString("Art"); 
+            dateBeginn = rs.getDate("Beginn");
+            dateEnde = rs.getDate("Ende"); 
+                    
 
             Fahrzeug fahrzeug = new Fahrzeug(strFahrzeugTyp, strKennzeichen,
                     intBaujahr, strAufbaufirma, strTaktischeBezeichnung,
