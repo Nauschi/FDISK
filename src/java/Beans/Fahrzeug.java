@@ -372,11 +372,13 @@ public class Fahrzeug
             strFahrzeugmarke = "";
         }
 
-        strFahrzeugart = theInstance.capitalizeEachWord(strFahrzeugart);
+      
+     // strFahrzeugart = theInstance.capitalizeEachWord(strFahrzeugart);
         strKennzeichen = strKennzeichen.toUpperCase();
-        strAufbaufirma = theInstance.capitalizeEachWord(strAufbaufirma);
-        strFahrzeugmarke = theInstance.capitalizeEachWord(strFahrzeugmarke);
-        strTreibstoff = theInstance.capitalizeEachWord(strTreibstoff);
+//        strAufbaufirma = theInstance.capitalizeEachWord(strAufbaufirma);
+//        strFahrzeugmarke = theInstance.capitalizeEachWord(strFahrzeugmarke);
+//        strTreibstoff = theInstance.capitalizeEachWord(strTreibstoff); 
+       
 
         String strHtml = "<tr><td>"
                 + strFahrzeugart + "</td><td>"

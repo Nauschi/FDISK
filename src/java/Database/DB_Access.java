@@ -69,7 +69,7 @@ public class DB_Access
 
     public String capitalizeEachWord(String strFormat)
     {
-        if (strFormat.equals("") || strFormat.isEmpty() || strFormat == null || strFormat.equals(" "))
+        if (strFormat == null || strFormat.equals("") || strFormat.isEmpty() || strFormat.equals(" "))
         {
             return "";
         }
@@ -947,7 +947,6 @@ public class DB_Access
      */
     public LinkedList<Fahrzeug> getFahrtenbuch(String strVon, String strBis, String strEingabeKennzeichen) throws Exception
     {
-        //!!!! Noch nicht fertig
         LinkedList<Fahrzeug> liFahrzeuge = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
@@ -3296,10 +3295,10 @@ public class DB_Access
 //            {
 //               System.out.println(li1.getDateBeginn()+ " " + li1.getDateEnde());
 //            }
-            LinkedList<Fahrzeug> li = theInstance.getFahrtenbuch("", "","GU331FF");
+            LinkedList<Fahrzeug> li = theInstance.getFahrtenbuch("01.10.2015", "02.02.2016","GU331FF");
             for (Fahrzeug li1 : li)
             {
-                System.out.println(li1.getStrKennzeichen()+ " " + li1.getStrFahrzeugart()+ " " + li1.getDoubleKm());
+                System.out.println(li1.getStrKennzeichen()+ " " + li1.getStrFahrzeugart()+ " " + li1.getDateBeginn()+ " " + li1.getDateEnde());
             }
             theInstance.getMethodeFuerTyp();
 // !!!!!!!!!!!!! Ende SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!

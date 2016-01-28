@@ -374,6 +374,7 @@ public class MainServlet extends HttpServlet
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
                 String strKennzeichen = "GU331FF";
+                System.out.println(access.getFahrtenbuch("", "", strKennzeichen).toString());
                 request.setAttribute("liste", access.getFahrtenbuch(strVonDatum, strBisDatum, strKennzeichen));
             } else
             {
