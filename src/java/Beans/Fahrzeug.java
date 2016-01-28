@@ -6,10 +6,12 @@
 package Beans;
 
 import Database.DB_Access;
+import java.util.Date;
 import java.util.Objects;
+
 /**
- *
- * @author kinco_000
+ * 
+ * @author Yvonne
  */
 public class Fahrzeug
 {
@@ -28,10 +30,18 @@ public class Fahrzeug
     private int intEigengewicht;
     private int intGesamtgewicht;
     private String strTreibstoff;
+    private double doubleKm;
+    private String strArt;
+    private Date dateBeginn;
+    private Date dateEnde;
 
-    private DB_Access theInstance; 
-    
-    public Fahrzeug(String strFahrzeugTyp, String strKennzeichen, int intBaujahr, String strAufbaufirma, String strTaktischeBezeichnung, int intId_fahrzeuge, String strBezeichnung, String strFahrzeugmarke, int intInstanznummer, String strFahrzeugart, int intLeistung, int intEigengewicht, int intGesamtgewicht, String strTreibstoff) throws ClassNotFoundException
+    private DB_Access theInstance;
+
+    public Fahrzeug()
+    {
+    }
+
+    public Fahrzeug(String strFahrzeugTyp, String strKennzeichen, int intBaujahr, String strAufbaufirma, String strTaktischeBezeichnung, int intId_fahrzeuge, String strBezeichnung, String strFahrzeugmarke, int intInstanznummer, String strFahrzeugart, int intLeistung, int intEigengewicht, int intGesamtgewicht, String strTreibstoff, double doubleKm, String strArt, Date dateBeginn, Date dateEnde)
     {
         this.strFahrzeugTyp = strFahrzeugTyp;
         this.strKennzeichen = strKennzeichen;
@@ -47,10 +57,13 @@ public class Fahrzeug
         this.intEigengewicht = intEigengewicht;
         this.intGesamtgewicht = intGesamtgewicht;
         this.strTreibstoff = strTreibstoff;
-        
-        theInstance = DB_Access.getInstance();
+        this.doubleKm = doubleKm;
+        this.strArt = strArt;
+        this.dateBeginn = dateBeginn;
+        this.dateEnde = dateEnde;
     }
 
+    
     public String getStrFahrzeugTyp()
     {
         return strFahrzeugTyp;
@@ -191,10 +204,50 @@ public class Fahrzeug
         this.strTreibstoff = strTreibstoff;
     }
 
+    public double getDoubleKm()
+    {
+        return doubleKm;
+    }
+
+    public void setDoubleKm(double doubleKm)
+    {
+        this.doubleKm = doubleKm;
+    }
+
+    public String getStrArt()
+    {
+        return strArt;
+    }
+
+    public void setStrArt(String strArt)
+    {
+        this.strArt = strArt;
+    }
+
+    public Date getDateBeginn()
+    {
+        return dateBeginn;
+    }
+
+    public void setDateBeginn(Date dateBeginn)
+    {
+        this.dateBeginn = dateBeginn;
+    }
+
+    public Date getDateEnde()
+    {
+        return dateEnde;
+    }
+
+    public void setDateEnde(Date dateEnde)
+    {
+        this.dateEnde = dateEnde;
+    }
+
     @Override
     public int hashCode()
     {
-        int hash = 5;
+        int hash = 7;
         return hash;
     }
 
@@ -266,13 +319,38 @@ public class Fahrzeug
         {
             return false;
         }
+        if (Double.doubleToLongBits(this.doubleKm) != Double.doubleToLongBits(other.doubleKm))
+        {
+            return false;
+        }
+        if (!Objects.equals(this.strArt, other.strArt))
+        {
+            return false;
+        }
+        if (!Objects.equals(this.dateBeginn, other.dateBeginn))
+        {
+            return false;
+        }
+        if (!Objects.equals(this.dateEnde, other.dateEnde))
+        {
+            return false;
+        }
+        if (!Objects.equals(this.theInstance, other.theInstance))
+        {
+            return false;
+        }
         return true;
     }
+
+  
+    
+
+    
 
     @Override
     public String toString()
     {
-        
+
         if (strFahrzeugart == null)
         {
             strFahrzeugart = "";
@@ -294,13 +372,12 @@ public class Fahrzeug
             strFahrzeugmarke = "";
         }
 
-        strFahrzeugart = theInstance.capitalizeEachWord(strFahrzeugart); 
-        strKennzeichen = strKennzeichen.toUpperCase(); 
-        strAufbaufirma = theInstance.capitalizeEachWord(strAufbaufirma); 
-        strFahrzeugmarke = theInstance.capitalizeEachWord(strFahrzeugmarke); 
-        strTreibstoff = theInstance.capitalizeEachWord(strTreibstoff); 
-        
-              
+        strFahrzeugart = theInstance.capitalizeEachWord(strFahrzeugart);
+        strKennzeichen = strKennzeichen.toUpperCase();
+        strAufbaufirma = theInstance.capitalizeEachWord(strAufbaufirma);
+        strFahrzeugmarke = theInstance.capitalizeEachWord(strFahrzeugmarke);
+        strTreibstoff = theInstance.capitalizeEachWord(strTreibstoff);
+
         String strHtml = "<tr><td>"
                 + strFahrzeugart + "</td><td>"
                 + strKennzeichen + "</td><td>"

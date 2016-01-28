@@ -1055,7 +1055,6 @@ public class DB_Access
             sqlString += " AND UPPER(replace(replace(replace(replace(replace(f.kennzeichen,'+',''),'/',''),'.',''),' ',''),'-','')) = '" + strEingabeKennzeichen.toUpperCase() + "'";
         }
 
-        System.out.println(sqlString);
 
         ResultSet rs = stat.executeQuery(sqlString);
 
@@ -1105,7 +1104,8 @@ public class DB_Access
                     intBaujahr, strAufbaufirma, strTaktischeBezeichnung,
                     intId_fahrzeuge, strBezeichnung, strFahrzeugmarke,
                     intInstanznummer, strFahrzeugart, intLeistung,
-                    intEigengewicht, intGesamtgewicht, strTreibstoff);
+                    intEigengewicht, intGesamtgewicht, strTreibstoff, 
+                    doubleKm, strArt, dateBeginn, dateEnde);
             liFahrzeuge.add(fahrzeug);
         }
         connPool.releaseConnection(conn);
@@ -3204,29 +3204,29 @@ public class DB_Access
             Logger.getLogger(DB_Access.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        HashMap<String, LinkedList<String>> hm = new HashMap<>();
-        LinkedList<Berechtigung> liBerechtigung = new LinkedList<>();
-        int userID = theInstance.getUserID("49001021", "feuer122");
-        System.out.println("UserID: " + userID);
-        liBerechtigung = theInstance.getBerechtigungen(3536);
-        for (Berechtigung berechtigung : liBerechtigung)
-        {
-            System.out.println("Berechtigung: " + berechtigung.getStrBerechtigung());
-            int intBereich = berechtigung.getIntBereich();
-            int intAbschnitt = berechtigung.getIntAbschnitt();
-            String strFubwehr = berechtigung.getStrFubwehr();
-            System.out.println("Bereich: " + intBereich);
-            System.out.println("Abschnitt: " + intAbschnitt);
-            System.out.println("Fubwehr: " + strFubwehr);
-            Bezirk bezirk = theInstance.getBezrik(intBereich);
-            System.out.println("Bereichnummer: " + bezirk.getIntBezirksNummer());
-            System.out.println("Bereichname: " + bezirk.getStrName());
-            LinkedList<Abschnitt> liAbschnitte = bezirk.getLiAbschnitte();
-            for (Abschnitt abschnitt : liAbschnitte)
-            {
-                System.out.println("Abschnitt: " + abschnitt.getStrName());
-            }
-        }
+//        HashMap<String, LinkedList<String>> hm = new HashMap<>();
+//        LinkedList<Berechtigung> liBerechtigung = new LinkedList<>();
+//        int userID = theInstance.getUserID("49001021", "feuer122");
+//        System.out.println("UserID: " + userID);
+//        liBerechtigung = theInstance.getBerechtigungen(3536);
+//        for (Berechtigung berechtigung : liBerechtigung)
+//        {
+//            System.out.println("Berechtigung: " + berechtigung.getStrBerechtigung());
+//            int intBereich = berechtigung.getIntBereich();
+//            int intAbschnitt = berechtigung.getIntAbschnitt();
+//            String strFubwehr = berechtigung.getStrFubwehr();
+//            System.out.println("Bereich: " + intBereich);
+//            System.out.println("Abschnitt: " + intAbschnitt);
+//            System.out.println("Fubwehr: " + strFubwehr);
+//            Bezirk bezirk = theInstance.getBezrik(intBereich);
+//            System.out.println("Bereichnummer: " + bezirk.getIntBezirksNummer());
+//            System.out.println("Bereichname: " + bezirk.getStrName());
+//            LinkedList<Abschnitt> liAbschnitte = bezirk.getLiAbschnitte();
+//            for (Abschnitt abschnitt : liAbschnitte)
+//            {
+//                System.out.println("Abschnitt: " + abschnitt.getStrName());
+//            }
+//        }
         try
         {
 //            LinkedList<Berechtigung> lili = theInstance.getBerechtigungen(3566);
@@ -3277,8 +3277,8 @@ public class DB_Access
                         }
                     };
 //
-            StringBuilder html = theInstance.getDynamischerBericht(dynamisch);
-            System.out.println(html);
+//            StringBuilder html = theInstance.getDynamischerBericht(dynamisch);
+//            System.out.println(html);
 // !!!!!!!!!!!!! SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!
 //            LinkedList<Taetigkeitsbericht> li = theInstance.getTaetigkeitsbericht("", "");
 //
@@ -3296,12 +3296,12 @@ public class DB_Access
 //            {
 //               System.out.println(li1.getDateBeginn()+ " " + li1.getDateEnde());
 //            }
-//            LinkedList<Bericht> li = theInstance.getAlleBerichte("", "");
-//            for (Bericht li1 : li)
-//            {
-//                System.out.println(li1.getDateBeginn() + " " + li1.getDateEnde());
-//            }
-            //theInstance.getMethodeFuerTyp();
+            LinkedList<Fahrzeug> li = theInstance.getFahrtenbuch("", "","GU331FF");
+            for (Fahrzeug li1 : li)
+            {
+                System.out.println(li1.getStrKennzeichen()+ " " + li1.getStrFahrzeugart()+ " " + li1.getDoubleKm());
+            }
+            theInstance.getMethodeFuerTyp();
 // !!!!!!!!!!!!! Ende SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!
         } catch (Exception ex)
         {
