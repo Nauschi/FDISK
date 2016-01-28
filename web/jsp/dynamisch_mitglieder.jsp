@@ -76,14 +76,6 @@
                         </a>
                     </form>
                 </div>
-                <!--<div class="ui simple dropdown item">
-                    Dynamisch
-                    <i class="dropdown icon"></i>
-                    <div class="menu">
-                        <div class="item" onclick="location.href='jsp/dynamisch_mitarbeiter.jsp'">Mitglieder</div>
-                        <div class="item" onclick="location.href='jsp/dynamisch_fahrzeuge_geraete.jsp'">Fahrzeuge und Geräte</div>
-                    </div>
-                </div>-->
             </div>
         </div>
         <%
@@ -239,34 +231,15 @@
 
                 <div style="width: 30%; margin: 0 auto" class="ui equal width grid">
                     <div class="column">
-                        <button name="button_minus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'minus')" class="ui button styleRot" style="float: right; width: 50%;">-</button>
+                        <button name="button_minus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'minus')" class="ui button styleRot" title="Letzte Zeile entfernen" style="float: right; width: 50%;">-</button>
                     </div>
                     <div class="column" >
-                        <button name="button_vorschau" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'vorschau')" class="ui button styleGrau" style="width: 100%;">Vorschau</button>
+                        <button name="button_vorschau" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'vorschau')" class="ui button styleGrau" title="Vorschau erstellen" style="width: 100%;">Vorschau</button>
                     </div>
                     <div class="column">
-                        <button name="button_plus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'plus')" class="ui button styleGruen" style="float: left; width: 50%;">+</button>
+                        <button name="button_plus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'plus')" class="ui button styleGruen" title="Neue Zeile einfügen" style="float: left; width: 50%;">+</button>
                     </div>
                 </div>
-
-                <!--                <div id="div_plusminus" class="ui segment" style="width: 10%; margin: auto;">
-                                    <div class="ui equal width grid" >
-                
-                                        <div class="column">
-                                            <button name="button_minus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'minus')" class="ui button styleRot" style="text-align: center; padding: 10%; background-color: #C00518; float: left; width: 100%; color: white;">-</button>
-                                        </div>
-                
-                                        <div class="column">
-                                            <button name="button_plus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'plus')" class="ui button styleGruen" style="text-align: center; padding: 10%; background-color: #007336; float: right; width: 100%; color: white; ">+</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                </br>
-                                <div id="div_vorschau" class="ui segment" style="width: 8%; margin: auto;">
-                                    <div class="column" >
-                                        <button name="button_vorschau" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'vorschau')" class="ui button styleGrau" style="text-align: center; padding: 10%; background-color: #707173; width: 100%; color: white;">Vorschau</button>
-                                    </div>
-                                </div>-->
 
             </form>
         </div>
@@ -293,10 +266,10 @@
             <div id="div_csv_pdf" style="display:none" class="ui segment">
                 <div class="ui equal width grid">
                     <div class="column">
-                        <button type="button" class="ui button styleRot" onClick="saveDataForPDF()" style="width: 100%;">PDF</button>
+                        <button type="button" class="ui button styleRot" onClick="saveDataForPDF()" title="Generiere PDF" style="width: 100%;">PDF</button>
                     </div>
                     <div class="column">
-                        <button type="button" class="ui button styleGruen" onClick="saveDataForCSV()"  style="width: 100%;">CSV</button>
+                        <button type="button" class="ui button styleGruen" onClick="saveDataForCSV()" title="Generiere CSV"  style="width: 100%;">CSV</button>
                     </div>
                 </div>
             </div> 

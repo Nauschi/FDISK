@@ -11,7 +11,6 @@ var map = {'Test': 'anushgjk'};
 $('.ui.dropdown').dropdown();
 
 
-
 function setMap(otherMap)
 {
     map = otherMap;
@@ -151,21 +150,20 @@ function onVorschau(intZahler)
     if (strWertVonLetztemSelect != "N/A")
     {
         alert("Letzte Verknüpfung muss leer sein!");
-        document.getElementById("div_verknuepfung_" + intZahler).style.backgroundColor = "#C00518";
-        return;
-    }else
+        $('.ui.dropdown').dropdown();
+    } else
     {
-        
+
         document.form_plus_minus_vorschau.submit();
         //alert("Weiter zur Vorschau");
     }
-    
-    
+
+
 }
 
 function onPlusMinusZeile_Vorschau(intZaehler, strButton)
 {
-    if(strButton =="minus")
+    if (strButton == "minus")
     {
         intZaehler--;
     }
@@ -191,21 +189,21 @@ function onPlusMinusZeile_Vorschau(intZaehler, strButton)
         var strKlammerZu_value = document.getElementById("select_klammer_zu_" + i).value;
         var strVerknuefung_value = document.getElementById("select_verknuepfung_" + i).value;
 
-        var strHTML = '<input type="hidden" name="hidden_element_data_' + i + '" value="' + strKlammerAuf_value + ";" + strTyp_value + ";" + strOperator_value + ";" + strFilter_value + ";"+strKlammerZu_value+";"+strVerknuefung_value+ '">';
+        var strHTML = '<input type="hidden" name="hidden_element_data_' + i + '" value="' + strKlammerAuf_value + ";" + strTyp_value + ";" + strOperator_value + ";" + strFilter_value + ";" + strKlammerZu_value + ";" + strVerknuefung_value + '">';
         //alert(strHTML);
 
         div_element.innerHTML = div_element.innerHTML + strHTML;
     }
     strHTML = '<input type="hidden" name="hidden_action" value="' + strButton + '">';
     div_element.innerHTML = div_element.innerHTML + strHTML;
-    if(strButton =="vorschau")
+    if (strButton == "vorschau")
     {
         onVorschau(intZaehler);
-    }else
+    } else
     {
         document.form_plus_minus_vorschau.submit();
     }
-    
+
 }
 
 

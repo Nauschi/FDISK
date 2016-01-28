@@ -6,10 +6,8 @@
 package Servlet;
 
 import Beans.Berechtigung;
-import Beans.Bezirk;
 import Beans.Rohbericht;
 import Database.DB_Access;
-import PDF.PDFCreator;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,7 +16,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -89,16 +86,16 @@ public class MainServlet extends HttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("lastPage") == null)
-        {
-            System.out.println("MainServlet.doPost: session = null");
+//        HttpSession session = request.getSession(false);
+//        if (session == null || session.getAttribute("lastPage") == null)
+//        {
+//            System.out.println("MainServlet.doPost: session = null");
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
             return;
-        }
-        String strLastPage = (String) session.getAttribute("lastPage");
-        request.getRequestDispatcher("jsp/" + strLastPage + ".jsp").forward(request, response);
-        return;
+//        }
+//        String strLastPage = (String) session.getAttribute("lastPage");
+//        request.getRequestDispatcher("jsp/" + strLastPage + ".jsp").forward(request, response);
+//        return;
     }
 
     /**

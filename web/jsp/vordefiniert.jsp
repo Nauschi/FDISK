@@ -93,9 +93,20 @@ aaaaasdfsdf
                             <div class="column" id="div_bezirk">
                                 <fieldset id="fieldset_bezirk">
                                     <legend><b>Bezirk</b></legend>
+                                    <%
+                                        if (session.getAttribute("bezirk") != null)
+                                        {
+                                            intIDGruppe = 5;
+                                    %>
                                     <select name="select_bezirk" class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
                                         <%=generiereBezirk(session)%>
                                     </select>
+                                    <%
+                                        } else
+                                        {
+                                            out.println(generiereBezirkInput(session));
+                                        }
+                                    %>
                                 </fieldset>
                             </div>
                             <%
@@ -107,9 +118,19 @@ aaaaasdfsdf
                             <div class="column" id="div_abschnitt">
                                 <fieldset id="fieldset_abschnitt">
                                     <legend><b>Abschnitt</b></legend>
+                                    <%
+                                        if (session.getAttribute("abschnitt") != null)
+                                        {
+                                    %>
                                     <select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)">
                                         <%=generiereAbschnitt(session)%>
                                     </select>
+                                    <%
+                                        } else
+                                        {
+                                            out.println(generiereAbschnittInput(session));
+                                        }
+                                    %>
                                 </fieldset>
                             </div>
 
@@ -122,9 +143,19 @@ aaaaasdfsdf
                             <div class="column" id="div_feuerwehr">
                                 <fieldset id="fieldset_feuerwehr">
                                     <legend><b>Feuerwehr</b></legend>
+                                    <%
+                                        if (session.getAttribute("feuerwehr") != null)
+                                        {
+                                            out.println(generiereFeuerwehrInput(session));
+                                        } else
+                                        {
+                                    %>
                                     <select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr">
                                         <%=generiereFeuerwehr(session)%>
                                     </select>
+                                    <%
+                                        }
+                                    %>
                                 </fieldset>
                             </div>
                         </div>
@@ -153,8 +184,7 @@ aaaaasdfsdf
                                 <fieldset id="fieldset_jahr">
                                     <legend><b>Jahr</b></legend>
                                     <select name="select_jahr" class="ui fluid dropdown" id="select_jahr" style="display: none">
-                                        <%
-                                            int intYear = LocalDate.now().getYear();
+                                        <%                                            int intYear = LocalDate.now().getYear();
                                             for (int i = -1; i < 2; i++)
                                             {
                                         %>
@@ -169,7 +199,7 @@ aaaaasdfsdf
                             <div class="column">
                                 <fieldset id="fieldset_button">
                                     <legend>&nbsp;</legend>
-                                    <button type="submit" name="button_vorschau" class="ui button styleGrau" onclick="document.getElementById('div_loader').className = 'ui active inverted dimmer';" style="width: 100%;">Vorschau</button>
+                                    <button type="submit" name="button_vorschau" class="ui button styleGrau" onclick="document.getElementById('div_loader').className = 'ui active inverted dimmer';" title="Vorschau erstellen" style="width: 100%;">Vorschau</button>
                                 </fieldset>
                             </div>
                         </div>
@@ -186,10 +216,10 @@ aaaaasdfsdf
                     <div id="div_csv_pdf" style="display:none" class="ui segment">
                         <div class="ui equal width grid">
                             <div class="column">
-                                <button type="button" class="ui button styleRot" onClick="saveDataForPDF()" style="width: 100%;">PDF</button>
+                                <button type="button" class="ui button styleRot" onClick="saveDataForPDF()" title="Generiere PDF" style="width: 100%;">PDF</button>
                             </div>
                             <div class="column">
-                                <button type="button" class="ui button styleGruen" onClick="saveDataForCSV()"  style="width: 100%;">CSV</button>
+                                <button type="button" class="ui button styleGruen" onClick="saveDataForCSV()" title="Generiere CSV" style="width: 100%;">CSV</button>
                             </div>
                         </div>
                     </div>  
@@ -260,7 +290,7 @@ aaaaasdfsdf
             <%
                 if (request.getParameter("input_aktbericht") != null && request.getParameter("input_aktbericht").contains(" leer"))
                 {
-                    LinkedList<Object> liFahrzeug = (LinkedList<Object>)request.getAttribute("zusatz_liste");
+                    LinkedList<Object> liFahrzeug = (LinkedList<Object>) request.getAttribute("zusatz_liste");
                     String strZusatzHTML = "";
                     i = 0;
                     while (i < liFahrzeug.size())
@@ -281,7 +311,7 @@ aaaaasdfsdf
                     {
                         strZusatzHTML += "</tr>";
                     }
-                    
+
             %>
 
                                         document.getElementById("hidden_pdfData").value = "<%=request.getParameter("input_aktbericht")%>###<%=strHTML%>###<%=strZusatzHTML%>";
@@ -348,6 +378,12 @@ aaaaasdfsdf
         }
     }
 
+    private String generiereBezirkInput(HttpSession session)
+    {
+        String strName = (String) session.getAttribute("bezirkName");
+        return "<div class='ui input' style='width: 100%'><input name='input_bezirk' id='input_bezirk' autocomplete='off' readonly='true' type='text' value='" + strName + "' disabled></div>";
+    }
+
     private String generiereAbschnitt(HttpSession session)
     {
         if (session.getAttribute("abschnitt") != null)
@@ -365,6 +401,12 @@ aaaaasdfsdf
         }
     }
 
+    private String generiereAbschnittInput(HttpSession session)
+    {
+        String strName = (String) session.getAttribute("abschnittName");
+        return "<div class='ui input' style='width: 100%'><input name='input_abschnitt' id='input_abschnitt' autocomplete='off' readonly='true' type='text' value='" + strName + "' disabled></div>";
+    }
+
     private String generiereFeuerwehr(HttpSession session)
     {
 
@@ -380,4 +422,11 @@ aaaaasdfsdf
             return "";
         }
     }
+
+    private String generiereFeuerwehrInput(HttpSession session)
+    {
+        String strName = ((Feuerwehr) session.getAttribute("feuerwehr")).getStrName();
+        return "<div class='ui input' style='width: 100%'><input name='input_abschnitt' id='input_abschnitt' autocomplete='off' readonly='true' type='text' value='" + strName + "' disabled></div>";
+    }
+
 %>
