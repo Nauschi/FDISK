@@ -93,20 +93,9 @@ aaaaasdfsdf
                             <div class="column" id="div_bezirk">
                                 <fieldset id="fieldset_bezirk">
                                     <legend><b>Bezirk</b></legend>
-                                    <%
-                                        if (session.getAttribute("bezirk") != null)
-                                        {
-                                            intIDGruppe = 5;
-                                    %>
                                     <select name="select_bezirk" class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
                                         <%=generiereBezirk(session)%>
                                     </select>
-                                    <%
-                                        } else
-                                        {
-                                            out.println(generiereBezirkInput(session));
-                                        }
-                                    %>
                                 </fieldset>
                             </div>
                             <%
@@ -118,19 +107,9 @@ aaaaasdfsdf
                             <div class="column" id="div_abschnitt">
                                 <fieldset id="fieldset_abschnitt">
                                     <legend><b>Abschnitt</b></legend>
-                                    <%
-                                        if (session.getAttribute("abschnitt") != null)
-                                        {
-                                    %>
                                     <select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)">
                                         <%=generiereAbschnitt(session)%>
                                     </select>
-                                    <%
-                                        } else
-                                        {
-                                            out.println(generiereAbschnittInput(session));
-                                        }
-                                    %>
                                 </fieldset>
                             </div>
 
@@ -143,19 +122,9 @@ aaaaasdfsdf
                             <div class="column" id="div_feuerwehr">
                                 <fieldset id="fieldset_feuerwehr">
                                     <legend><b>Feuerwehr</b></legend>
-                                    <%
-                                        if (session.getAttribute("feuerwehr") != null)
-                                        {
-                                            out.println(generiereFeuerwehrInput(session));
-                                        } else
-                                        {
-                                    %>
                                     <select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr">
                                         <%=generiereFeuerwehr(session)%>
                                     </select>
-                                    <%
-                                        }
-                                    %>
                                 </fieldset>
                             </div>
                         </div>
@@ -378,12 +347,6 @@ aaaaasdfsdf
         }
     }
 
-    private String generiereBezirkInput(HttpSession session)
-    {
-        String strName = (String) session.getAttribute("bezirkName");
-        return "<div class='ui input' style='width: 100%'><input name='input_bezirk' id='input_bezirk' autocomplete='off' readonly='true' type='text' value='" + strName + "' disabled></div>";
-    }
-
     private String generiereAbschnitt(HttpSession session)
     {
         if (session.getAttribute("abschnitt") != null)
@@ -401,11 +364,6 @@ aaaaasdfsdf
         }
     }
 
-    private String generiereAbschnittInput(HttpSession session)
-    {
-        String strName = (String) session.getAttribute("abschnittName");
-        return "<div class='ui input' style='width: 100%'><input name='input_abschnitt' id='input_abschnitt' autocomplete='off' readonly='true' type='text' value='" + strName + "' disabled></div>";
-    }
 
     private String generiereFeuerwehr(HttpSession session)
     {
@@ -421,12 +379,6 @@ aaaaasdfsdf
             System.out.println("vordefiniert.generiereFeuerwehr: if");
             return "";
         }
-    }
-
-    private String generiereFeuerwehrInput(HttpSession session)
-    {
-        String strName = ((Feuerwehr) session.getAttribute("feuerwehr")).getStrName();
-        return "<div class='ui input' style='width: 100%'><input name='input_abschnitt' id='input_abschnitt' autocomplete='off' readonly='true' type='text' value='" + strName + "' disabled></div>";
     }
 
 %>
