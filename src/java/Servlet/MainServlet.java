@@ -164,7 +164,7 @@ public class MainServlet extends HttpServlet
             {
                 generiereVorschau(request, response);
                 return;
-            } else if (request.getParameter("hidden_action") != null)
+            } else if (request.getParameter("hidden_action") != null) //Dynamisch Vorschau oder plus minus zeile
             {
 
                 System.out.println("MainServlet.doPost: hidden_action: " + request.getParameter("hidden_action"));
@@ -400,6 +400,13 @@ public class MainServlet extends HttpServlet
             System.out.println("MainServlet.generiereDynamischeVorschau: zeile: " + strZeile);
             String[] splitString = strZeile.split(";");
             System.out.println("MainServlet.generiereDynamischeVorschau: splitString size: " + splitString.length);
+            for (int j = 0; j < 7; j++)
+            {
+                if(splitString[j].isEmpty())
+                {
+                    splitString[j]="N/A";
+                }
+            }
             strDaten[i][0] = splitString[0];
             strDaten[i][1] = splitString[1];
             strDaten[i][2] = splitString[3];
