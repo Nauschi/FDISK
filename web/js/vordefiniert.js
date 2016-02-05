@@ -31,6 +31,7 @@ $(function () {
             $("#input_bis_datum").datepicker("option", $.datepicker.regional['de']);
         }
     });
+    
 });
 
 /**
@@ -148,5 +149,14 @@ function bezirkChanged(select_bezirk)
         document.getElementById("select_abschnitt").innerHTML = strAbschnittOptions;
         $('#select_abschnitt').dropdown();
         //alert(strAbschnittOptions);
+    }
+}
+//select_bezirk
+function fixDropdowns(id)
+{
+    var lenght = document.getElementById(id).getElementsByTagName("option").length;
+    if(lenght==1)
+    {
+        $("#"+id).parent("div").addClass("disabled");
     }
 }

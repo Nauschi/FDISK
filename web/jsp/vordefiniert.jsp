@@ -90,12 +90,12 @@ aaaaasdfsdf
                         <input type="hidden" name="input_aktbericht" id="input_hidden"/>
                         <div class="ui equal width grid">
 
-                            <div class="column" id="div_bezirk">
+                            <div class="column" id="div_bezirk" disabled>
                                 <fieldset id="fieldset_bezirk">
                                     <legend><b>Bezirk</b></legend>
-                                    <select name="select_bezirk" class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
-                                        <%=generiereBezirk(session)%>
-                                    </select>
+                                        <select  name="select_bezirk" class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
+                                            <%=generiereBezirk(session)%>
+                                        </select>
                                 </fieldset>
                             </div>
                             <%
@@ -122,7 +122,7 @@ aaaaasdfsdf
                             <div class="column" id="div_feuerwehr">
                                 <fieldset id="fieldset_feuerwehr">
                                     <legend><b>Feuerwehr</b></legend>
-                                    <select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr">
+                                    <select name="select_feuerwehr" class="ui fluid disabled dropdown" id="select_feuerwehr">
                                         <%=generiereFeuerwehr(session)%>
                                     </select>
                                 </fieldset>
@@ -297,7 +297,9 @@ aaaaasdfsdf
                 }
             %>
                                                 document.getElementById("div_loader").className = "ui disabled loader";
-
+                                                fixDropdowns("select_bezirk");
+                                                fixDropdowns("select_abschnitt");
+                                                fixDropdowns("select_feuerwehr");
                                             });
 
 
@@ -363,7 +365,6 @@ aaaaasdfsdf
             return "<option value='-1'>" + strName + "</option>";
         }
     }
-
 
     private String generiereFeuerwehr(HttpSession session)
     {
