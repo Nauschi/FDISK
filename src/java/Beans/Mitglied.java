@@ -170,12 +170,19 @@ public class Mitglied
         strZuname = theInstance.capitalizeEachWord(strZuname);
         strVorname = theInstance.capitalizeEachWord(strVorname);
 
-        String strHtml = "<tr><td>"
+//        String strHtml = "<tr><td>"
+//                + strStammblattnummer + "</td><td>"
+//                + strDienstgrad + "</td><td>"
+//                + strTitel + "</td><td>"
+//                + strVorname + "</td><td>"
+//                + strZuname + "</td><td></td></tr>";
+        
+         String strHtml = "<tr><td>"
                 + strStammblattnummer + "</td><td>"
                 + strDienstgrad + "</td><td>"
                 + strTitel + "</td><td>"
                 + strVorname + "</td><td>"
-                + strZuname + "</td><td></td></tr>";
+                + "" + "</td><td></td></tr>";
 
         return strHtml;
     }
