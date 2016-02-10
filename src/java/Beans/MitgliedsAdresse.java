@@ -196,10 +196,10 @@ public class MitgliedsAdresse extends Mitglied
         }
 
         strDienstgrad = strDienstgrad.toUpperCase();
-        strZuname = theInstance.capitalizeEachWord(strZuname);
-        strVorname = theInstance.capitalizeEachWord(strVorname);
-        strStrasse = theInstance.capitalizeEachWord(strStrasse);
-        strOrt = theInstance.capitalizeEachWord(strOrt);
+        strZuname = theInstance.formatiereAusgabe(strZuname);
+        strVorname = theInstance.formatiereAusgabe(strVorname);
+        strStrasse = theInstance.formatiereAusgabe(strStrasse);
+        strOrt = theInstance.formatiereAusgabe(strOrt);
 
         String strHtml = "<tr><td>"
                 + strStammblattnummer + "</td><td>"

@@ -325,10 +325,10 @@ public class Taetigkeitsbericht
             strOrt = "";
         }
 
-        strTaetigkeitsunterart = theInstance.capitalizeEachWord(strTaetigkeitsunterart);
-        strTaetigkeitsart = theInstance.capitalizeEachWord(strTaetigkeitsart);
-        strStrasse = theInstance.capitalizeEachWord(strStrasse);
-        strOrt = theInstance.capitalizeEachWord(strOrt);
+        strTaetigkeitsunterart = theInstance.formatiereAusgabe(strTaetigkeitsunterart);
+        strTaetigkeitsart = theInstance.formatiereAusgabe(strTaetigkeitsart);
+        strStrasse = theInstance.formatiereAusgabe(strStrasse);
+        strOrt = theInstance.formatiereAusgabe(strOrt);
 
         String strHtml = "<tr><td>"
                 + strTaetigkeitsart + "</td><td>"

@@ -373,11 +373,11 @@ public class Fahrzeug
             strArt = "";
         }
 
-        strArt = theInstance.capitalizeEachWord(strArt);
-        strFahrzeugart = theInstance.capitalizeEachWord(strFahrzeugart);
+        strArt = theInstance.formatiereAusgabe(strArt);
+        strFahrzeugart = theInstance.formatiereAusgabe(strFahrzeugart);
         strKennzeichen = strKennzeichen.toUpperCase();
-        strFahrzeugmarke = theInstance.capitalizeEachWord(strFahrzeugmarke);
-        strTreibstoff = theInstance.capitalizeEachWord(strTreibstoff);
+        strFahrzeugmarke = theInstance.formatiereAusgabe(strFahrzeugmarke);
+        strTreibstoff = theInstance.formatiereAusgabe(strTreibstoff);
 
         String strHtml = "<tr><td>"
                 + strArt + "</td><td>"

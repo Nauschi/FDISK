@@ -167,8 +167,8 @@ public class Mitglied
         }
 
         strDienstgrad = strDienstgrad.toUpperCase();
-        strZuname = theInstance.capitalizeEachWord(strZuname);
-        strVorname = theInstance.capitalizeEachWord(strVorname);
+        strZuname = theInstance.formatiereAusgabe(strZuname);
+        strVorname = theInstance.formatiereAusgabe(strVorname);
 
         String strHtml = "<tr><td>"
                 + strStammblattnummer + "</td><td>"

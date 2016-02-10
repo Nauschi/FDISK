@@ -163,7 +163,7 @@ public class LeerberichtMitglied
             strZuname = "";
         }
 
-        strVorname = theInstance.capitalizeEachWord(strVorname);
+        strVorname = theInstance.formatiereAusgabe(strVorname);
 
 
         if (strTitel != null && !strTitel.isEmpty())

@@ -67,26 +67,22 @@ public class DB_Access
         connPool = DB_ConnectionPool.getInstance();
     }
 
-    public String capitalizeEachWord(String strFormat)
+    public String formatiereAusgabe(String strFormat)
     {
-        System.out.println("seas");
         if (strFormat == null || strFormat.equals("") || strFormat.isEmpty() || strFormat.equals(" "))
         {
             return "";
         }
-        System.out.println("0---");
-        String[] strFormatTeile = strFormat.split(" ");
+        String[] strFormatTeile = strFormat.split("(?<= )|(?<=\\/)|(?<=-)|(?<=,)");
         StringBuilder strNeuesFormat = new StringBuilder("");
-        System.out.println("00---");
+
         if (strFormatTeile.length > 1)
         {
-            System.out.println("1----");
             for (String word : strFormatTeile)
             {
 
                 if (word.length() > 1)
                 {
-                    System.out.println("2----");
                     if (word.equals("bis") || word.equals("zum") || word.equals("von")
                             || word.equals("bei") || word.equals("und")
                             || word.equals("bis") || word.equals("zum")
@@ -96,23 +92,18 @@ public class DB_Access
                         strNeuesFormat.append(word.toLowerCase());
                     } else
                     {
-                        System.out.println("3----");
                         strNeuesFormat.append(word.substring(0, 1).toUpperCase());
                         strNeuesFormat.append(word.substring(1).toLowerCase());
                     }
 
                 } else
                 {
-                    System.out.println("4----");
                     strNeuesFormat.append(word);
                 }
 
-                strNeuesFormat.append(" ");
             }
         } else if (strFormatTeile.length == 1)
         {
-            System.out.println("5----");
-            System.out.println(strFormatTeile[0]);
             if (strFormat.length() > 1)
             {
                 strNeuesFormat.append(strFormat.substring(0, 1).toUpperCase());
@@ -3465,10 +3456,10 @@ public class DB_Access
         int i = 0;
         for (Mitglied mitglied : liMitglied)
         {
-            System.out.println(mitglied.toString());
+         //   System.out.println(mitglied.toString());
             i++;
         }
-        System.out.println("COUNT: " + i);
+       // System.out.println("COUNT: " + i);
 
 //        HashMap<String, LinkedList<String>> hm = new HashMap<>();
 //        LinkedList<Berechtigung> liBerechtigung = new LinkedList<>();
@@ -3546,28 +3537,9 @@ public class DB_Access
 //            StringBuilder html = theInstance.getDynamischerBericht(dynamisch);
 //            System.out.println(html);
 // !!!!!!!!!!!!! SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!
-//            LinkedList<Taetigkeitsbericht> li = theInstance.getTaetigkeitsbericht("", "");
-//
-//            for (Taetigkeitsbericht li1 : li)
-//            {
-//                System.out.println(li1.getDateBeginn() + " " + li1.getDateEnde());
-//            }
-//             LinkedList<Einsatzbericht> li = theInstance.getEinsatzbericht("", "");
-//            for (Einsatzbericht li1 : li)
-//            {
-//               System.out.println(li1.getDateUhrzeit_Alarmierung()+ " " + li1.getDateUhrzeit_Rueckkehr());
-//            }
-//             LinkedList<Uebungsbericht> li = theInstance.getUebungsbericht("01.01.2015", "02.02.2015");
-//            for (Uebungsbericht li1 : li)
-//            {
-//               System.out.println(li1.getDateBeginn()+ " " + li1.getDateEnde());
-//            }
-            LinkedList<Fahrzeug> li = theInstance.getFahrtenbuch("01.10.2015", "02.02.2016", "GU331FF");
-            for (Fahrzeug li1 : li)
-            {
-                System.out.println(li1.getStrKennzeichen() + " " + li1.getStrFahrzeugart() + " " + li1.getDateBeginn() + " " + li1.getDateEnde());
-            }
-            theInstance.getMethodeFuerTyp();
+
+            String str = theInstance.formatiereAusgabe("hahah hihi/muhs-fghjgh,xcvxcv, fgfg"); 
+            System.out.println("------"+str+"----");
 // !!!!!!!!!!!!! Ende SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!
         } catch (Exception ex)
         {
