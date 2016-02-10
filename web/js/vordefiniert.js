@@ -127,36 +127,67 @@ function saveDataForCSV()
 function abschittChanged(select_abschnitt)
 {
     //alert("Abschnitt_value: "+select_abschnitt.value);
-    if (select_abschnitt.value != -1)
+    if (select_abschnitt.value != -1&& select_abschnitt.value != -2)
     {
-        //alert("IN abschnitt changed");
         var strFeuerwehrOptions = document.getElementById("div_" + select_abschnitt.value).innerHTML;
         document.getElementById("fieldset_feuerwehr").innerHTML = '<legend><b>Feuerwehr</b></legend><select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr"></select>';
-        document.getElementById("select_feuerwehr").innerHTML = strFeuerwehrOptions;
+        if(strFeuerwehrOptions.split('<option').length>1)
+        {
+            document.getElementById("select_feuerwehr").innerHTML = "<option value='-2'>Alle Feuerwehren</option>"+ strFeuerwehrOptions;
+        }else
+        {
+            document.getElementById("select_feuerwehr").innerHTML = strFeuerwehrOptions;
+        }
+        
         $('#select_feuerwehr').dropdown();
         //alert(strFeuerwehrOptions);
+    }else if(select_abschnitt.value == -2)
+    {
+        document.getElementById("fieldset_feuerwehr").innerHTML = '<legend><b>Feuerwehr</b></legend><select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr"></select>';
+        document.getElementById("select_feuerwehr").innerHTML = "<option value='-2'>Alle Feuerwehren</option>"
+        $('#select_feuerwehr').dropdown();
+        fixDropdowns("select_feuerwehr");
+        
     }
 }
 
 function bezirkChanged(select_bezirk)
 {
     //alert("Bezirk_value: "+select_bezirk.value);
-    if (select_bezirk.value != -1)
+    if (select_bezirk.value != -1&& select_bezirk.value!=-2)
     {
         //alert("IN bezirk changed");
         var strAbschnittOptions = document.getElementById("div_" + select_bezirk.value).innerHTML;
         document.getElementById("fieldset_abschnitt").innerHTML = '<legend><b>Abschnitt</b></legend><select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)"></select>';
-        document.getElementById("select_abschnitt").innerHTML = strAbschnittOptions;
+        if(strAbschnittOptions.split('<option').length>1)
+        {
+            document.getElementById("select_abschnitt").innerHTML = "<option value='-2'>Alle Abschnitte</option>"+ strAbschnittOptions;
+        }else
+        {
+            document.getElementById("select_abschnitt").innerHTML = strAbschnittOptions;
+        }
         $('#select_abschnitt').dropdown();
         //alert(strAbschnittOptions);
+    }else if(select_bezirk.value == -2)
+    {
+        document.getElementById("fieldset_abschnitt").innerHTML = '<legend><b>Abschnitt</b></legend><select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)"></select>';
+        document.getElementById("select_abschnitt").innerHTML = "<option value='-2'>Alle Abschnitte</option>"
+        $('#select_abschnitt').dropdown();
+        fixDropdowns("select_feuerwehr");
     }
 }
 //select_bezirk
 function fixDropdowns(id)
 {
+    //alert("Fix: "+id);
     var lenght = document.getElementById(id).getElementsByTagName("option").length;
     if(lenght==1)
     {
+        //alert("Add disabled");
         $("#"+id).parent("div").addClass("disabled");
+    }else
+    {
+        //alert("remove disabled");
+        $("#"+id).parent("div").removeClass("disabled");
     }
 }

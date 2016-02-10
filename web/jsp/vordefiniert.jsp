@@ -2,7 +2,6 @@
     Document   : vordefiniert
     Created on : 02.08.2015, 13:14:24
     Author     : user
-aaaaasdfsdf
 --%>
 
 <%@page import="java.time.LocalDate"%>
