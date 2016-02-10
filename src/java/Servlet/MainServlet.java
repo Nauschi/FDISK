@@ -375,8 +375,10 @@ public class MainServlet extends HttpServlet
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
                 String strKennzeichen = "GU331FF";
-                System.out.println(access.getFahrtenbuch("", "", strKennzeichen).toString());
-                request.setAttribute("liste", access.getFahrtenbuch(strVonDatum, strBisDatum, strKennzeichen));
+                
+                //Login für Farhetnbuch implementiert, also können die Übergabeparameter da dazu gemacht werden lg nauschi
+                //System.out.println(access.getFahrtenbuch("", "", strKennzeichen).toString());
+                //request.setAttribute("liste", access.getFahrtenbuch(strVonDatum, strBisDatum, strKennzeichen));
             } else
             {
                 System.out.println("MainServlet.generiereVorschau: last else");
