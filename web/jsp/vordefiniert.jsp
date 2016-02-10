@@ -92,9 +92,9 @@
                             <div class="column" id="div_bezirk" disabled>
                                 <fieldset id="fieldset_bezirk">
                                     <legend><b>Bezirk</b></legend>
-                                        <select  name="select_bezirk" class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
-                                            <%=generiereBezirk(session)%>
-                                        </select>
+                                    <select  name="select_bezirk" class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
+                                        <%=generiereBezirk(session)%>
+                                    </select>
                                 </fieldset>
                             </div>
                             <%
@@ -132,7 +132,9 @@
                                 <fieldset id="fieldset_datum_von">
                                     <legend><b>Datum von</b></legend>
                                     <div class="ui input" style="width: 100%">
-                                        <input name="input_von_datum" id="input_von_datum" placeholder="von..." autocomplete="off" readonly="true" type="text">
+                                        <input name="input_von_datum" id="input_von_datum" placeholder="von..." autocomplete="off" readonly="true" type="text"
+                                               <%=(request.getParameter("input_von_datum")!=null)? "value='"+request.getParameter("input_von_datum")+"'":""%>
+                                               >
                                     </div>
                                 </fieldset>
                             </div>
@@ -140,7 +142,9 @@
                                 <fieldset id="fieldset_datum_bis">
                                     <legend><b>Datum bis</b></legend>
                                     <div class="ui input" style="width: 100%">
-                                        <input name="input_bis_datum" id="input_bis_datum" placeholder="bis..." autocomplete="off" readonly="true" type="text">
+                                        <input name="input_bis_datum" id="input_bis_datum" placeholder="bis..." autocomplete="off" readonly="true" type="text" 
+                                               <%=(request.getParameter("input_bis_datum")!=null)? "value='"+request.getParameter("input_bis_datum")+"'":""%>
+                                               >
                                     </div>
                                 </fieldset>
                             </div >
@@ -152,12 +156,26 @@
                                 <fieldset id="fieldset_jahr">
                                     <legend><b>Jahr</b></legend>
                                     <select name="select_jahr" class="ui fluid dropdown" id="select_jahr" style="display: none">
-                                        <%                                            int intYear = LocalDate.now().getYear();
+                                        <%
+
+                                            int intYear = LocalDate.now().getYear();
+                                            if (request.getParameter("select_jahr") != null)
+                                            {
+                                                int intLastSelectedYear = Integer.parseInt(request.getParameter("select_jahr"));
+                                                for (int i = -1; i < 2; i++)
+                                                {
+                                        %>
+                                        <option value="<%=(intYear + i)%>" <%=((intYear + i) == intLastSelectedYear) ? "selected" : ""%>><%=(intYear + i)%></option>
+                                        <%
+                                            }
+                                        } else
+                                        {
                                             for (int i = -1; i < 2; i++)
                                             {
                                         %>
                                         <option value="<%=(intYear + i)%>" <%=(i == 0) ? "selected" : ""%>><%=(intYear + i)%></option>
                                         <%
+                                                }
                                             }
                                         %>
                                     </select>
