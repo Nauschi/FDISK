@@ -123,7 +123,7 @@ public class LeerberichtFahrzeug
             return ""; 
         }
         
-//        strBezeichnung = theInstance.capitalizeEachWord(strBezeichnung); 
+        strBezeichnung = theInstance.capitalizeEachWord(strBezeichnung); 
 
         String strHtml = "<td>&Omicron;&nbsp;" + strBezeichnung + "</td>";
         return strHtml;

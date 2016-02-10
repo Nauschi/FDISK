@@ -12,4 +12,4 @@ Liste aller Tätigkeitsberichte;Tätigkeitsart;Tätigkeitsunterart;Nummer;Begin;End
 Liste aller Übungsberichte;Übungsart;Übungsunterart;Nummer;Begin;Ende;Adresse;2;
 Liste aller Berichte;Beginn;Ende;Beschreibung;2;
 Kursstatistik;Anz Teilnehmer;Kursbezeichnnung;Kilometer;Tatigkeitsart;Tatigkeitsunterart;Begin;Ende;2;
-Digitales Fahrtenbuch;Fahrzeugart;Kennzeiche;Baujahr;Aufbaufirma;Fahrzeugmarke;Treibstoff;2;
+Digitales Fahrtenbuch;Art;Beginn;Ende;Fahrzeugart;Baujahr;Aufbaufirma;Fahrzeugmarke;Treibstoff;Km;2;

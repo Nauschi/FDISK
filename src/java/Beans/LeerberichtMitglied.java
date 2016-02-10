@@ -163,20 +163,14 @@ public class LeerberichtMitglied
             strZuname = "";
         }
 
-//        strVorname = theInstance.capitalizeEachWord(strVorname);
+        strVorname = theInstance.capitalizeEachWord(strVorname);
 
-        
+
         if (strTitel != null && !strTitel.isEmpty())
         {
-            return "<td>&Omicron;&nbsp;" + strTitel + " " + "" + " " + strVorname + ", " + strStammblattnummer + "</td>";
+            return "<td>&Omicron;&nbsp;" + strTitel + " " + strZuname.toUpperCase() + " " + strVorname + ", " + strStammblattnummer + "</td>";
         }
-        String strHtml = "<td>&Omicron;&nbsp;" + "" + " " + strVorname + ", " + strStammblattnummer + "</td>";
-
-//        if (strTitel != null && !strTitel.isEmpty())
-//        {
-//            return "<td>&Omicron;&nbsp;" + strTitel + " " + strZuname.toUpperCase() + " " + strVorname + ", " + strStammblattnummer + "</td>";
-//        }
-//        String strHtml = "<td>&Omicron;&nbsp;" + strZuname.toUpperCase() + " " + strVorname + ", " + strStammblattnummer + "</td>";
+        String strHtml = "<td>&Omicron;&nbsp;" + strZuname.toUpperCase() + " " + strVorname + ", " + strStammblattnummer + "</td>";
         return strHtml;
     }
 }

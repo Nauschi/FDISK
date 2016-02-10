@@ -6,11 +6,12 @@
 package Beans;
 
 import Database.DB_Access;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
 /**
- * 
+ *
  * @author Yvonne
  */
 public class Fahrzeug
@@ -36,12 +37,13 @@ public class Fahrzeug
     private Date dateEnde;
 
     private DB_Access theInstance;
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
 
     public Fahrzeug()
     {
     }
 
-    public Fahrzeug(String strFahrzeugTyp, String strKennzeichen, int intBaujahr, String strAufbaufirma, String strTaktischeBezeichnung, int intId_fahrzeuge, String strBezeichnung, String strFahrzeugmarke, int intInstanznummer, String strFahrzeugart, int intLeistung, int intEigengewicht, int intGesamtgewicht, String strTreibstoff, double doubleKm, String strArt, Date dateBeginn, Date dateEnde)
+    public Fahrzeug(String strFahrzeugTyp, String strKennzeichen, int intBaujahr, String strAufbaufirma, String strTaktischeBezeichnung, int intId_fahrzeuge, String strBezeichnung, String strFahrzeugmarke, int intInstanznummer, String strFahrzeugart, int intLeistung, int intEigengewicht, int intGesamtgewicht, String strTreibstoff, double doubleKm, String strArt, Date dateBeginn, Date dateEnde) throws ClassNotFoundException
     {
         this.strFahrzeugTyp = strFahrzeugTyp;
         this.strKennzeichen = strKennzeichen;
@@ -61,9 +63,10 @@ public class Fahrzeug
         this.strArt = strArt;
         this.dateBeginn = dateBeginn;
         this.dateEnde = dateEnde;
+
+        theInstance = DB_Access.getInstance();
     }
 
-    
     public String getStrFahrzeugTyp()
     {
         return strFahrzeugTyp;
@@ -342,15 +345,9 @@ public class Fahrzeug
         return true;
     }
 
-  
-    
-
-    
-
     @Override
     public String toString()
     {
-
         if (strFahrzeugart == null)
         {
             strFahrzeugart = "";
@@ -371,22 +368,27 @@ public class Fahrzeug
         {
             strFahrzeugmarke = "";
         }
+        if (strArt == null)
+        {
+            strArt = "";
+        }
 
-      
-     // strFahrzeugart = theInstance.capitalizeEachWord(strFahrzeugart);
+        strArt = theInstance.capitalizeEachWord(strArt);
+        strFahrzeugart = theInstance.capitalizeEachWord(strFahrzeugart);
         strKennzeichen = strKennzeichen.toUpperCase();
-//        strAufbaufirma = theInstance.capitalizeEachWord(strAufbaufirma);
-//        strFahrzeugmarke = theInstance.capitalizeEachWord(strFahrzeugmarke);
-//        strTreibstoff = theInstance.capitalizeEachWord(strTreibstoff); 
-       
+        strFahrzeugmarke = theInstance.capitalizeEachWord(strFahrzeugmarke);
+        strTreibstoff = theInstance.capitalizeEachWord(strTreibstoff);
 
         String strHtml = "<tr><td>"
+                + strArt + "</td><td>"
+                + sdf.format(dateBeginn) + "</td><td>"
+                + sdf.format(dateEnde) + "</td><td>"
                 + strFahrzeugart + "</td><td>"
-                + strKennzeichen + "</td><td>"
                 + intBaujahr + "</td><td>"
                 + strAufbaufirma + "</td><td>"
                 + strFahrzeugmarke + "</td><td>"
-                + strTreibstoff + "</td><td></td></tr>";
+                + strTreibstoff + "</td><td>"
+                + doubleKm + "</td><td></td></tr>";
 
         return strHtml;
     }
