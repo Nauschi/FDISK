@@ -122,9 +122,15 @@ public class MitgliedsDienstzeit extends Mitglied
                 + strTitel + "</td><td>"
                 + strVorname + "</td><td>"
                 + strZuname + "</td><td>"
-                + sdf.format(dateGeburtsdatum) + "</td><td>"
-                + doubleDienstalter + "</td></tr>";
-
+                + sdf.format(dateGeburtsdatum) + "</td><td>";
+        if(((int)doubleDienstalter)%5==0)
+        {
+            strHtml+="<b>"+(int)doubleDienstalter+"</b>";
+        }else
+        {
+            strHtml+= (int)doubleDienstalter;
+        }
+        strHtml+= "</td></tr>";
         return strHtml;
     }
 

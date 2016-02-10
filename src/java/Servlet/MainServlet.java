@@ -90,8 +90,8 @@ public class MainServlet extends HttpServlet
 //        if (session == null || session.getAttribute("lastPage") == null)
 //        {
 //            System.out.println("MainServlet.doPost: session = null");
-            request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
-            return;
+        request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
+        return;
 //        }
 //        String strLastPage = (String) session.getAttribute("lastPage");
 //        request.getRequestDispatcher("jsp/" + strLastPage + ".jsp").forward(request, response);
@@ -142,12 +142,13 @@ public class MainServlet extends HttpServlet
                 {
                     session.setAttribute("hashMap_typ", access.getMethodeFuerTyp());
                     HashMap hm = access.getMethodeFuerTyp();
-                     Iterator it = hm.entrySet().iterator();
-    while (it.hasNext()) {
-        Map.Entry pair = (Map.Entry)it.next();
-        System.out.println(pair.getKey() + " = " + pair.getValue());
-        it.remove(); // avoids a ConcurrentModificationException
-    }
+                    Iterator it = hm.entrySet().iterator();
+                    while (it.hasNext())
+                    {
+                        Map.Entry pair = (Map.Entry) it.next();
+                        System.out.println(pair.getKey() + " = " + pair.getValue());
+                        it.remove(); // avoids a ConcurrentModificationException
+                    }
                     request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
                     return;
                 } catch (Exception ex)
@@ -306,7 +307,7 @@ public class MainServlet extends HttpServlet
 
             LinkedList<Rohbericht> liRohberichte = (LinkedList<Rohbericht>) this.getServletContext().getAttribute("rohberichte");
             String strBericht = request.getParameter("input_aktbericht");
-            
+
             int intBereichNr = Integer.parseInt(request.getParameter("select_bezirk"));
             int intAbschnittNr = Integer.parseInt(request.getParameter("select_abschnitt"));
             String strFeuerwehr = request.getParameter("select_feuerwehr");
@@ -402,9 +403,9 @@ public class MainServlet extends HttpServlet
             System.out.println("MainServlet.generiereDynamischeVorschau: splitString size: " + splitString.length);
             for (int j = 0; j < 7; j++)
             {
-                if(splitString[j].isEmpty())
+                if (splitString[j].isEmpty())
                 {
-                    splitString[j]="N/A";
+                    splitString[j] = "N/A";
                 }
             }
             strDaten[i][0] = splitString[0];
