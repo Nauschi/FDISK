@@ -23,6 +23,7 @@ import com.itextpdf.tool.xml.pipeline.end.PdfWriterPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
@@ -187,8 +188,9 @@ public class PDFServlet extends HttpServlet
         }
 
         String strContextPath = this.getServletContext().getRealPath("/");
-        String strCSSPath1 = strContextPath.replace("web", "web\\css\\pdfSimpel.css");
-        String strFontPath = strContextPath.replace("web", "web\\res\\Cambria.ttf");
+        String strCSSPath1 = strContextPath +File.separator + "css"+File.separator+"pdfSimpel.css";
+        String strFontPath = strContextPath +File.separator + "res"+File.separator+"Cambria.ttf";
+        
         
 //        String strCSSPath1 = strContextPath.replace("build\\web", "web\\css\\pdfSimpel.css");
 //        String strFontPath = strContextPath.replace("build\\web", "web\\res\\Cambria.ttf");
