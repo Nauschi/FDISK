@@ -187,8 +187,11 @@ public class PDFServlet extends HttpServlet
         }
 
         String strContextPath = this.getServletContext().getRealPath("/");
-        String strCSSPath1 = strContextPath.replace("build\\web", "web\\css\\pdfSimpel.css");
-        String strFontPath = strContextPath.replace("build\\web", "web\\res\\Cambria.ttf");
+        String strCSSPath1 = strContextPath.replace("web", "web\\css\\pdfSimpel.css");
+        String strFontPath = strContextPath.replace("web", "web\\res\\Cambria.ttf");
+        
+//        String strCSSPath1 = strContextPath.replace("build\\web", "web\\css\\pdfSimpel.css");
+//        String strFontPath = strContextPath.replace("build\\web", "web\\res\\Cambria.ttf");
         
         System.out.println("PDFServlet.doPost: CSSPath:" + strCSSPath1);
         Rectangle rect;

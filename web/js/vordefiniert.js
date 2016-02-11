@@ -13,6 +13,10 @@ $(function () {
         onSelect: function (selected)
         {
             var dt = new Date(dateUmwandeln(selected));
+            if(selected!=null)
+            {
+                document.getElementById("div_remove_von_datum").style.display="block";
+            }
             dt.setDate(dt.getDate() + 1);
             $("#input_bis_datum").datepicker("option", "minDate", dt);
             $("#input_von_datum").datepicker("option", "showAnim", "slideDown");
@@ -22,8 +26,12 @@ $(function () {
     });
     $("#input_bis_datum").datepicker({
         onSelect: function (selected) {
-
+            
             var dt = new Date(dateUmwandeln(selected));
+            if(selected!=null)
+            {
+                document.getElementById("div_remove_bis_datum").style.display="block";
+            }
             dt.setDate(dt.getDate() - 1);
             $("#input_von_datum").datepicker("option", "maxDate", dt);
             $("#input_bis_datum").datepicker("option", "showAnim", "slideDown");
@@ -189,5 +197,19 @@ function fixDropdowns(id)
     {
         //alert("remove disabled");
         $("#"+id).parent("div").removeClass("disabled");
+    }
+}
+
+
+function removeDateAndSetDivHidden(idDiv,idDatepicker)
+{
+    document.getElementById(idDiv).style.display="none";
+    document.getElementById(idDatepicker).value="";
+    if(idDatepicker.contains("von"))
+    {
+        $("#input_bis_datum").datepicker("option", "minDate", null);
+    }else
+    {
+        $("#input_von_datum").datepicker("option", "maxDate", null);
     }
 }

@@ -132,9 +132,13 @@
                                 <fieldset id="fieldset_datum_von">
                                     <legend><b>Datum von</b></legend>
                                     <div class="ui input" style="width: 100%">
+                                        <%String str_input_von_datum = request.getParameter("input_von_datum");%>
                                         <input name="input_von_datum" id="input_von_datum" placeholder="von..." autocomplete="off" readonly="true" type="text"
-                                               <%=(request.getParameter("input_von_datum")!=null)? "value='"+request.getParameter("input_von_datum")+"'":""%>
+                                               <%=(str_input_von_datum != null) ? "value='" + str_input_von_datum + "'" : ""%>
                                                >
+                                        <div id="div_remove_von_datum" style="display:  <%=(str_input_von_datum != null && !str_input_von_datum.isEmpty()) ? "block" : "none"%>;">
+                                            <button type="button" class="ui button styleRot" onclick="removeDateAndSetDivHidden('div_remove_von_datum','input_von_datum')" title="Lösche 'Datum von'">X</button>
+                                        </div>
                                     </div>
                                 </fieldset>
                             </div>
@@ -142,9 +146,13 @@
                                 <fieldset id="fieldset_datum_bis">
                                     <legend><b>Datum bis</b></legend>
                                     <div class="ui input" style="width: 100%">
+                                        <%String str_input_bis_datum = request.getParameter("input_bis_datum");%>
                                         <input name="input_bis_datum" id="input_bis_datum" placeholder="bis..." autocomplete="off" readonly="true" type="text" 
-                                               <%=(request.getParameter("input_bis_datum")!=null)? "value='"+request.getParameter("input_bis_datum")+"'":""%>
+                                               <%=(str_input_bis_datum != null) ? "value='" + str_input_bis_datum + "'" : ""%>
                                                >
+                                        <div id="div_remove_bis_datum" style="display: <%=(str_input_bis_datum != null && !str_input_bis_datum.isEmpty()) ? "block" : "none"%>;">
+                                            <button type="button" class="ui button styleRot" onclick="removeDateAndSetDivHidden('div_remove_bis_datum','input_bis_datum')" title="Lösche 'Datum bis'">X</button>
+                                        </div>
                                     </div>
                                 </fieldset>
                             </div >
