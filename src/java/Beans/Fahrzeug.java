@@ -348,26 +348,6 @@ public class Fahrzeug
     @Override
     public String toString()
     {
-        if (strFahrzeugart == null)
-        {
-            strFahrzeugart = "";
-        }
-        if (strKennzeichen == null)
-        {
-            strKennzeichen = "";
-        }
-        if (strAufbaufirma == null)
-        {
-            strAufbaufirma = "";
-        }
-        if (strTreibstoff == null)
-        {
-            strTreibstoff = "";
-        }
-        if (strFahrzeugmarke == null)
-        {
-            strFahrzeugmarke = "";
-        }
         if (strArt == null)
         {
             strArt = "";
@@ -375,19 +355,11 @@ public class Fahrzeug
 
         strArt = theInstance.formatiereAusgabe(strArt);
         strFahrzeugart = theInstance.formatiereAusgabe(strFahrzeugart);
-        strKennzeichen = strKennzeichen.toUpperCase();
-        strFahrzeugmarke = theInstance.formatiereAusgabe(strFahrzeugmarke);
-        strTreibstoff = theInstance.formatiereAusgabe(strTreibstoff);
-
+        
         String strHtml = "<tr><td>"
                 + strArt + "</td><td>"
                 + sdf.format(dateBeginn) + "</td><td>"
                 + sdf.format(dateEnde) + "</td><td>"
-                + strFahrzeugart + "</td><td>"
-                + intBaujahr + "</td><td>"
-                + strAufbaufirma + "</td><td>"
-                + strFahrzeugmarke + "</td><td>"
-                + strTreibstoff + "</td><td>"
                 + doubleKm + "</td><td></td></tr>";
 
         return strHtml;
