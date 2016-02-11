@@ -1,8 +1,8 @@
 package Beans;
 
 import Database.DB_Access;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Objects;
 
 /**
  *
@@ -11,144 +11,121 @@ import java.util.Objects;
 public class Kurs
 {
 
-    private int intIdBerichte;
-    private int intTeilnehmer;
-    private String strBezeichnung;
-    private int intKm;
-    private int intInstanznummer;
-    private String strInstanzname;
-    private String strTaetigkeitsart;
-    private String strTaetigkeitsunterart;
-    private String strNummer;
-    private Date dateBegin;
-    private Date dateEnde;
-
+    private int intIdKurse;
+    private int intIdKursart;
+    private int intLehrgangsnummer;
+    private String strKursbezeichnung;
+    private String strKurskurzbezeichnung;
+    private Date dateDatum;
+    private int intIdInstanzenVeranstalter;
+    private int intIdInstanzenDurchfuehrend;
+    private String strKursstatus;
+    
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
     private DB_Access theInstance;
 
-    public Kurs(int intIdBerichte, int intTeilnehmer, String strBezeichnung, int intKm, int intInstanznummer, String strInstanzname, String strTaetigkeitsart, String strTaetigkeitsunterart, String strNummer, Date dateBeginn, Date dateEnde) throws ClassNotFoundException
+    public Kurs(int intIdKurse, int intIdKursart, int intLehrgangsnummer, String strKursbezeichnung, String strKurskurzbezeichnung, Date dateDatum, int intIdInstanzenVeranstalter, int intIdInstanzenDurchfuehrend, String strKursstatus) throws ClassNotFoundException
     {
-        this.intIdBerichte = intIdBerichte;
-        this.intTeilnehmer = intTeilnehmer;
-        this.strBezeichnung = strBezeichnung;
-        this.intKm = intKm;
-        this.intInstanznummer = intInstanznummer;
-        this.strInstanzname = strInstanzname;
-        this.strTaetigkeitsart = strTaetigkeitsart;
-        this.strTaetigkeitsunterart = strTaetigkeitsunterart;
-        this.strNummer = strNummer;
-        this.dateBegin = dateBeginn;
-        this.dateEnde = dateEnde;
+        this.intIdKurse = intIdKurse;
+        this.intIdKursart = intIdKursart;
+        this.intLehrgangsnummer = intLehrgangsnummer;
+        this.strKursbezeichnung = strKursbezeichnung;
+        this.strKurskurzbezeichnung = strKurskurzbezeichnung;
+        this.dateDatum = dateDatum;
+        this.intIdInstanzenVeranstalter = intIdInstanzenVeranstalter;
+        this.intIdInstanzenDurchfuehrend = intIdInstanzenDurchfuehrend;
+        this.strKursstatus = strKursstatus;
         theInstance = DB_Access.getInstance();
     }
 
-    public int getIntIdBerichte()
+    public int getIntIdKurse()
     {
-        return intIdBerichte;
+        return intIdKurse;
     }
 
-    public void setIntIdBerichte(int intIdBerichte)
+    public void setIntIdKurse(int intIdKurse)
     {
-        this.intIdBerichte = intIdBerichte;
+        this.intIdKurse = intIdKurse;
     }
 
-    public int getIntTeilnehmer()
+    public int getIntIdKursart()
     {
-        return intTeilnehmer;
+        return intIdKursart;
     }
 
-    public void setIntTeilnehmer(int intTeilnehmer)
+    public void setIntIdKursart(int intIdKursart)
     {
-        this.intTeilnehmer = intTeilnehmer;
+        this.intIdKursart = intIdKursart;
     }
 
-    public String getStrBezeichnung()
+    public int getIntLehrgangsnummer()
     {
-        return strBezeichnung;
+        return intLehrgangsnummer;
     }
 
-    public void setStrBezeichnung(String strBezeichnung)
+    public void setIntLehrgangsnummer(int intLehrgangsnummer)
     {
-        this.strBezeichnung = strBezeichnung;
+        this.intLehrgangsnummer = intLehrgangsnummer;
     }
 
-    public int getIntKm()
+    public String getStrKursbezeichnung()
     {
-        return intKm;
+        return strKursbezeichnung;
     }
 
-    public void setIntKm(int intKm)
+    public void setStrKursbezeichnung(String strKursbezeichnung)
     {
-        this.intKm = intKm;
+        this.strKursbezeichnung = strKursbezeichnung;
     }
 
-    public int getIntInstanznummer()
+    public String getStrKurskurzbezeichnung()
     {
-        return intInstanznummer;
+        return strKurskurzbezeichnung;
     }
 
-    public void setIntInstanznummer(int intInstanznummer)
+    public void setStrKurskurzbezeichnung(String strKurskurzbezeichnung)
     {
-        this.intInstanznummer = intInstanznummer;
+        this.strKurskurzbezeichnung = strKurskurzbezeichnung;
     }
 
-    public String getStrInstanzname()
+    public Date getDateDatum()
     {
-        return strInstanzname;
+        return dateDatum;
     }
 
-    public void setStrInstanzname(String strInstanzname)
+    public void setDateDatum(Date dateDatum)
     {
-        this.strInstanzname = strInstanzname;
+        this.dateDatum = dateDatum;
     }
 
-    public String getStrTaetigkeitsart()
+    public int getIntIdInstanzenVeranstalter()
     {
-        return strTaetigkeitsart;
+        return intIdInstanzenVeranstalter;
     }
 
-    public void setStrTaetigkeitsart(String strTaetigkeitsart)
+    public void setIntIdInstanzenVeranstalter(int intIdInstanzenVeranstalter)
     {
-        this.strTaetigkeitsart = strTaetigkeitsart;
+        this.intIdInstanzenVeranstalter = intIdInstanzenVeranstalter;
     }
 
-    public String getStrTaetigkeitsunterart()
+    public int getIntIdInstanzenDurchfuehrend()
     {
-        return strTaetigkeitsunterart;
+        return intIdInstanzenDurchfuehrend;
     }
 
-    public void setStrTaetigkeitsunterart(String strTaetigkeitsunterart)
+    public void setIntIdInstanzenDurchfuehrend(int intIdInstanzenDurchfuehrend)
     {
-        this.strTaetigkeitsunterart = strTaetigkeitsunterart;
+        this.intIdInstanzenDurchfuehrend = intIdInstanzenDurchfuehrend;
     }
 
-    public String getStrNummer()
+    public String getStrKursstatus()
     {
-        return strNummer;
+        return strKursstatus;
     }
 
-    public void setStrNummer(String intNummer)
+    public void setStrKursstatus(String strKursstatus)
     {
-        this.strNummer = intNummer;
-    }
-
-    public Date getDateBegin()
-    {
-        return dateBegin;
-    }
-
-    public void setDateBegin(Date dateBegin)
-    {
-        this.dateBegin = dateBegin;
-    }
-
-    public Date getDateEnde()
-    {
-        return dateEnde;
-    }
-
-    public void setDateEnde(Date dateEnde)
-    {
-        this.dateEnde = dateEnde;
+        this.strKursstatus = strKursstatus;
     }
 
     @Override
@@ -170,47 +147,7 @@ public class Kurs
             return false;
         }
         final Kurs other = (Kurs) obj;
-        if (this.intIdBerichte != other.intIdBerichte)
-        {
-            return false;
-        }
-        if (this.intTeilnehmer != other.intTeilnehmer)
-        {
-            return false;
-        }
-        if (!Objects.equals(this.strBezeichnung, other.strBezeichnung))
-        {
-            return false;
-        }
-        if (this.intKm != other.intKm)
-        {
-            return false;
-        }
-        if (this.intInstanznummer != other.intInstanznummer)
-        {
-            return false;
-        }
-        if (!Objects.equals(this.strInstanzname, other.strInstanzname))
-        {
-            return false;
-        }
-        if (!Objects.equals(this.strTaetigkeitsart, other.strTaetigkeitsart))
-        {
-            return false;
-        }
-        if (!Objects.equals(this.strTaetigkeitsunterart, other.strTaetigkeitsunterart))
-        {
-            return false;
-        }
-        if (this.strNummer != other.strNummer)
-        {
-            return false;
-        }
-        if (!Objects.equals(this.dateBegin, other.dateBegin))
-        {
-            return false;
-        }
-        if (!Objects.equals(this.dateEnde, other.dateEnde))
+        if (this.intIdKurse != other.intIdKurse)
         {
             return false;
         }
@@ -220,31 +157,23 @@ public class Kurs
     @Override
     public String toString()
     {
-        if (strBezeichnung == null)
+
+        if (strKursbezeichnung == null)
         {
-            strBezeichnung = "";
+            strKursbezeichnung = "";
         }
-        if (strTaetigkeitsart == null)
+        if (strKursstatus == null)
         {
-            strTaetigkeitsart = "";
-        }
-        if (strTaetigkeitsunterart == null)
-        {
-            strTaetigkeitsunterart = "";
+            strKursstatus = "";
         }
 
-        strBezeichnung = theInstance.formatiereAusgabe(strBezeichnung);
-        strTaetigkeitsart = theInstance.formatiereAusgabe(strTaetigkeitsart);
-        strTaetigkeitsunterart = theInstance.formatiereAusgabe(strTaetigkeitsunterart);
+        strKursbezeichnung = theInstance.formatiereAusgabe(strKursbezeichnung);
+        strKursstatus = theInstance.formatiereAusgabe(strKursstatus);
 
         String strHtml = "<tr><td>"
-                + intTeilnehmer + "</td><td>"
-                + strBezeichnung + "</td><td>"
-                + intKm + "</td><td>"
-                + strTaetigkeitsart + "</td><td>"
-                + strTaetigkeitsunterart + "</td><td>"
-                + dateBegin + "</td><td>"
-                + dateEnde + "</td>"
+                + strKursbezeichnung + "</td><td>"
+                + strKursbezeichnung + "</td><td>"
+                + sdf.format(dateDatum) + "</td><td>"
                 + "<td></td></tr>";
 
         return strHtml;

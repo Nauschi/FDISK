@@ -369,7 +369,8 @@ public class MainServlet extends HttpServlet
                 request.setAttribute("liste", access.getAlleBerichte(strVonDatum, strBisDatum, intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals(liRohberichte.get(13).getStrBerichtname()))//Kursstatistik
             {
-                request.setAttribute("liste", access.getKursstatistik());
+                //Datum von, bis
+               // request.setAttribute("liste", access.getKursstatistiktaetigkeit());
             } else if (strBericht.equals(liRohberichte.get(14).getStrBerichtname()))//Digitales Fahrtenbuch
             {
                 String strVonDatum = request.getParameter("input_von_datum");

@@ -14,6 +14,7 @@ import Beans.Erreichbarkeit;
 import Beans.Fahrzeug;
 import Beans.Feuerwehr;
 import Beans.Kurs;
+import Beans.Kurstaetigkeit;
 import Beans.LeerberichtFahrzeug;
 import Beans.LoginMitglied;
 import Beans.Mitglied;
@@ -916,54 +917,47 @@ public class DB_Access
      * als LinkedList zurück. Diese Informationen sind zum Beispiel Anzahl der
      * Mitarbeiter in einem KursAlt.
      *
-     * Achtung: Im Moment werden Daten aller Kurse zurückgegeben (nicht nur
-     * Kursbesuch an der FWZS)
+     * @param strVon
+     * @param strBis
+     * @return
+     * @throws java.lang.Exception
      */
-    public LinkedList<Kurs> getKursstatistik() throws Exception
+    public LinkedList<Kurstaetigkeit> getKursstatistiktaetigkeit(String strVon, String strBis) throws Exception
     {
-        LinkedList<Kurs> liKurse = new LinkedList<>();
+        LinkedList<Kurstaetigkeit> liKursetaetigkeiten = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
-        //HM zugreifen
-        //    stat = map.get (connection)
-        /**
-         * if( stat==null) stat = conn.createStatement(); map.put
-         *
-         * sqlString zu Instanzvariablen oder in Interface/Enum
-         */
 
-        String sqlString = "SELECT t.id_stmktaetigkeitsberichte \"IdBerichte\","
-                + "COUNT(m.zuname) \"Teilnehmer\","
-                + "f.bezeichnung \"Bezeichnung\","
-                + "f.km \"KM\""
-                + ",t.instanznummer \"Instanznr\""
-                + ",t.instanzname \"Instanzname\""
-                + ",t.taetigkeitsart \"TArt\""
-                + ",t.taetigkeitsunterart \"TUnterArt\""
-                + ",t.nummer \"Nummer\""
-                + ",t.beginn \"Beginn\""
-                + ",t.ende \"Ende\""
-                + " FROM FDISK.dbo.stmktaetigkeitsberichte t INNER JOIN FDISK.dbo.stmktaetigkeitsberichtemitglieder m"
-                + " ON(t.id_stmktaetigkeitsberichte = m.id_berichte) INNER JOIN FDISK.dbo.stmktaetigkeitsberichtefahrzeuge f"
-                + " ON(t.id_stmktaetigkeitsberichte = f.id_berichte)"
-                // + " WHERE taetigkeitsart = 'Kursbesuch an der FWZS'"
-                + " GROUP BY t.id_stmktaetigkeitsberichte,"
-                + " f.bezeichnung,"
-                + "f.km"
-                + ",t.instanznummer"
-                + ",t.instanzname"
-                + ",t.taetigkeitsart"
-                + ",t.taetigkeitsunterart"
-                + ",t.nummer"
-                + ",t.beginn"
-                + ",t.ende";
+        String sqlString = "SELECT COUNT(m.id_mitgliedschaften) \"Teilnahmen\""
+                + " ,SUM(f.km) \"Km\""
+                + " ,t.id_berichte \"BerichtId\""
+                + " ,t.instanznummer \"Instanznr\""
+                + " ,t.instanzname \"Instanzname\""
+                + " ,t.taetigkeitsart \"Taetigkeitsart\""
+                + " ,t.taetigkeitsunterart \"Taetigkeitsunterart\""
+                + " ,t.nummer \"Nr\""
+                + " ,t.beginn \"Beginn\""
+                + " ,t.ende \"Ende\""
+                + " FROM FDISK.dbo.stmktaetigkeitsberichte t"
+                + " INNER JOIN FDISK.dbo.stmktaetigkeitsberichtemitglieder m ON(t.id_berichte = m.id_berichte)"
+                + " INNER JOIN FDISK.dbo.stmktaetigkeitsberichtefahrzeuge f ON (t.id_berichte = f.id_berichte)"
+                + " WHERE t.taetigkeitsart = 'Kursbesuch an der FWZS' ";
 
+        sqlString += getSqlDateString(strVon, strBis, 2, false);
+
+        sqlString += " GROUP BY t.id_berichte"
+                + " ,t.instanznummer"
+                + " ,t.instanzname"
+                + " ,t.taetigkeitsart"
+                + " ,t.taetigkeitsunterart"
+                + " ,t.nummer"
+                + " ,t.beginn"
+                + " ,t.ende";
         ResultSet rs = stat.executeQuery(sqlString);
 
-        int intIdBerichte;
+        double doKm;
         int intTeilnehmer;
-        String strBezeichnung;
-        int intKm;
+        int intIdBerichte;
         int intInstanznummer;
         String strInstanzname;
         String strTaetigkeitsart;
@@ -975,21 +969,69 @@ public class DB_Access
         while (rs.next())
         {
 
-            intIdBerichte = rs.getInt("IdBerichte");
-            intTeilnehmer = rs.getInt("Teilnehmer");
-            strBezeichnung = rs.getString("Bezeichnung");
-            intKm = rs.getInt("KM");
+            intIdBerichte = rs.getInt("BerichtId");
+            intTeilnehmer = rs.getInt("Teilnahmen");
             intInstanznummer = rs.getInt("Instanznr");
             strInstanzname = rs.getString("Instanzname");
-            strTaetigkeitsart = rs.getString("TArt");
-            strTaetigkeitsunterart = rs.getString("TUnterArt");
-            strNummer = rs.getString("Nummer");
+            strTaetigkeitsart = rs.getString("Taetigkeitsart");
+            strTaetigkeitsunterart = rs.getString("Taetigkeitsunterart");
+            strNummer = rs.getString("Nr");
             dateBeginn = rs.getDate("Beginn");
             dateEnde = rs.getDate("Ende");
+            doKm = rs.getDouble("Km");
 
-            Kurs kurs = new Kurs(intIdBerichte, intTeilnehmer, strBezeichnung, intKm, intInstanznummer, strInstanzname, strTaetigkeitsart, strTaetigkeitsunterart, strNummer, dateBeginn, dateEnde);
+            Kurstaetigkeit kurstaetigkeit = new Kurstaetigkeit(intIdBerichte, intTeilnehmer, doKm, intInstanznummer, strInstanzname, strTaetigkeitsart, strTaetigkeitsunterart, strNummer, dateBeginn, dateEnde);
+            liKursetaetigkeiten.add(kurstaetigkeit);
+
+        }
+        connPool.releaseConnection(conn);
+        return liKursetaetigkeiten;
+    }
+
+    public LinkedList<Kurs> getKursstatistikkurse(String strVon, String strBis) throws Exception
+    {
+        LinkedList<Kurs> liKurse = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT id_kurse \"KursId\""
+                + " ,id_kursarten \"KursartId\""
+                + " ,lehrgangsnummer \"Lehrgangsnr\""
+                + " ,kursbezeichnung \"Kursbez\""
+                + " ,kurskurzbezeichnung \"Kurskurzbez\""
+                + " ,datum \"Datum\""
+                + " ,id_instanzen_veranstalter \"Veran\""
+                + " ,id_instanzen_durchfuehrend \"Durchf\""
+                + " ,kursstatus \"Status\""
+                + " FROM FDISK.dbo.stmkkurse ";
+
+        sqlString += getSqlDateString(strVon, strBis, 4, true);
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        int intKursId;
+        int intKursartId;
+        int intLehrgangsnr;
+        String strKursbez;
+        String strKurskurzbez;
+        Date dateDatum;
+        int intIdVer;
+        int intIdDurchf;
+        String strStatus;
+
+        while (rs.next())
+        {
+            intKursId = rs.getInt("KursId");
+            intKursartId = rs.getInt("KursartId");
+            intLehrgangsnr = rs.getInt("Lehrgangsnr");
+            strKursbez = rs.getString("Kursbez");
+            strKurskurzbez = rs.getString("Kurskurzbez");
+            dateDatum = rs.getDate("Datum");
+            intIdVer = rs.getInt("Veran");
+            intIdDurchf = rs.getInt("Durchf");
+            strStatus = rs.getString("Status");
+
+            Kurs kurs = new Kurs(intKursId, intKursartId, intLehrgangsnr, strKursbez, strKurskurzbez, dateDatum, intIdVer, intIdDurchf, strStatus);
             liKurse.add(kurs);
-
         }
         connPool.releaseConnection(conn);
         return liKurse;
@@ -997,36 +1039,35 @@ public class DB_Access
 
     public String getDetailsFuerFahrtenbuchFahrzeug(LinkedList<Fahrzeug> liFahrzeuge)
     {
-        if(liFahrzeuge == null)
+        if (liFahrzeuge == null)
         {
-            return ""; 
+            return "";
         }
-        Fahrzeug f = liFahrzeuge.get(0); 
+        Fahrzeug f = liFahrzeuge.get(0);
         String htmlString = "<table>"
-                    + "<thead>"
-                        + "<tr>"
-                            + "<th>Art</th>"
-                            + "<th>Baujahr</th>"
-                            + "<th>Aufbaufirma</th>"
-                            + "<th>Marke</th>"
-                            + "<th>Leistung</th>"
-                            + "<th>Treibstoff</th>"
-                        + "</tr>"
-                    + "</thead>"
-                    + "<tbody>"
-                        + "<tr>"
-                            + "<td>"+f.getStrFahrzeugart()+"</td>"
-                            + "<td>"+f.getIntBaujahr()+"</td>"
-                            + "<td>"+f.getStrAufbaufirma()+"</td>"
-                            + "<td>"+f.getStrFahrzeugmarke()+"</td>"
-                            + "<td>"+f.getIntLeistung()+"</td>"
-                            + "<td>"+f.getStrTreibstoff()+"</td>"
-                        + "</tr>"
-                    + "</tbody>"
+                + "<thead>"
+                + "<tr>"
+                + "<th>Art</th>"
+                + "<th>Baujahr</th>"
+                + "<th>Aufbaufirma</th>"
+                + "<th>Marke</th>"
+                + "<th>Leistung</th>"
+                + "<th>Treibstoff</th>"
+                + "</tr>"
+                + "</thead>"
+                + "<tbody>"
+                + "<tr>"
+                + "<td>" + f.getStrFahrzeugart() + "</td>"
+                + "<td>" + f.getIntBaujahr() + "</td>"
+                + "<td>" + f.getStrAufbaufirma() + "</td>"
+                + "<td>" + f.getStrFahrzeugmarke() + "</td>"
+                + "<td>" + f.getIntLeistung() + "</td>"
+                + "<td>" + f.getStrTreibstoff() + "</td>"
+                + "</tr>"
+                + "</tbody>"
                 + "</table>";
 
-      
-        return htmlString; 
+        return htmlString;
     }
 
     /**
@@ -1550,7 +1591,7 @@ public class DB_Access
      * wird, zurück
      *
      * intBericht = 1 => Einsatzbericht intBericht = 2 => Taetigkeitsbericht
-     * intBericht = 3 => Uebungsbericht
+     * intBericht = 3 => Uebungsbericht intBericht = 4 => Kursstatistik
      *
      * @param strVon
      * @param strBis
@@ -1602,6 +1643,19 @@ public class DB_Access
             } else if (!strBis.isEmpty() && !strBis.equals("") && !strVon.isEmpty() && !strVon.equals(""))
             {
                 dateString += " (beginn >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND ende < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1))";
+            }
+        } else if (intBericht == 4)
+        {
+            if ((strVon.isEmpty() || strVon.equals("")) && (!strBis.isEmpty() || !strBis.equals("")))
+            {
+                dateString += " (datum < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1))";
+
+            } else if (strBis.isEmpty() || strBis.equals("") && (!strVon.isEmpty() || !strVon.equals("")))
+            {
+                dateString += " (datum >= CAST('" + strVon + " 00:00.000' AS DATETIME))";
+            } else if (!strBis.isEmpty() && !strBis.equals("") && !strVon.isEmpty() && !strVon.equals(""))
+            {
+                dateString += " (datum >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND datum < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1))";
             }
         }
 
@@ -3623,8 +3677,13 @@ public class DB_Access
 //            System.out.println(html);
 // !!!!!!!!!!!!! SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!
 
-            String str = theInstance.formatiereAusgabe("hahah hihi/muhs-fghjgh,xcvxcv, fgfg");
-            System.out.println("------" + str + "----");
+            LinkedList<Kurs> li = theInstance.getKursstatistikkurse("01.01.2056", "10.11.2058");
+
+            for (Kurs k : li)
+            {
+                System.out.println(k.toString());
+            }
+
 // !!!!!!!!!!!!! Ende SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!
         } catch (Exception ex)
         {
