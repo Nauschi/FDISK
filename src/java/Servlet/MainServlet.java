@@ -6,6 +6,7 @@
 package Servlet;
 
 import Beans.Berechtigung;
+import Beans.Fahrzeug;
 import Beans.Rohbericht;
 import Database.DB_Access;
 import java.io.BufferedReader;
@@ -116,7 +117,7 @@ public class MainServlet extends HttpServlet
             loginUser(request, response);
             return;
         }
-
+        
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("loggedIn") == null)
         {
@@ -379,7 +380,10 @@ public class MainServlet extends HttpServlet
                 
                 //Login für Farhetnbuch implementiert, also können die Übergabeparameter da dazu gemacht werden lg nauschi
                 //System.out.println(access.getFahrtenbuch("", "", strKennzeichen).toString());
-                //request.setAttribute("liste", access.getFahrtenbuch(strVonDatum, strBisDatum, strKennzeichen));
+                LinkedList<Fahrzeug> liFahrzeuge = access.getFahrtenbuch(intBereichNr, intAbschnittNr, strFeuerwehr,strVonDatum, strBisDatum, strKennzeichen);
+                String strDetails = access.getDetailsFuerFahrtenbuchFahrzeug(liFahrzeuge);
+                request.setAttribute("zusatz_informationen", strDetails);
+                request.setAttribute("liste", liFahrzeuge);
             } else
             {
                 System.out.println("MainServlet.generiereVorschau: last else");

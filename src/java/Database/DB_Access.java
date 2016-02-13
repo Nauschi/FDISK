@@ -1000,11 +1000,13 @@ public class DB_Access {
     }
 
     public String getDetailsFuerFahrtenbuchFahrzeug(LinkedList<Fahrzeug> liFahrzeuge) {
-        if (liFahrzeuge == null) {
+        if (liFahrzeuge == null||liFahrzeuge.size()==0) {
             return "";
         }
         Fahrzeug f = liFahrzeuge.get(0);
-        String htmlString = "<table>"
+        String htmlString = "<fieldset>" 
+                +"<legend><b>Fahrzeugdaten</b></legend>"
+                + "<table class='ui celled table'>"
                 + "<thead>"
                 + "<tr>"
                 + "<th>Art</th>"
@@ -1025,7 +1027,8 @@ public class DB_Access {
                 + "<td>" + f.getStrTreibstoff() + "</td>"
                 + "</tr>"
                 + "</tbody>"
-                + "</table>";
+                + "</table>"
+                + "</fieldset>";
 
         return htmlString;
     }

@@ -137,7 +137,7 @@
                                                <%=(str_input_von_datum != null) ? "value='" + str_input_von_datum + "'" : ""%>
                                                >
                                         <div id="div_remove_von_datum" style="display:  <%=(str_input_von_datum != null && !str_input_von_datum.isEmpty()) ? "block" : "none"%>;">
-                                            <button type="button" class="ui button styleRot" onclick="removeDateAndSetDivHidden('div_remove_von_datum','input_von_datum')" title="Lösche 'Datum von'">X</button>
+                                            <button type="button" class="ui button styleRot" onclick="removeDateAndSetDivHidden('div_remove_von_datum', 'input_von_datum')" title="Lösche 'Datum von'">X</button>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -151,7 +151,7 @@
                                                <%=(str_input_bis_datum != null) ? "value='" + str_input_bis_datum + "'" : ""%>
                                                >
                                         <div id="div_remove_bis_datum" style="display: <%=(str_input_bis_datum != null && !str_input_bis_datum.isEmpty()) ? "block" : "none"%>;">
-                                            <button type="button" class="ui button styleRot" onclick="removeDateAndSetDivHidden('div_remove_bis_datum','input_bis_datum')" title="Lösche 'Datum bis'">X</button>
+                                            <button type="button" class="ui button styleRot" onclick="removeDateAndSetDivHidden('div_remove_bis_datum', 'input_bis_datum')" title="Lösche 'Datum bis'">X</button>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -205,6 +205,17 @@
                     <form id="formCSV" name="formCSV" action="CSVServlet" method="POST">
                         <input type="hidden" name="hidden_CSVData" id="hidden_CSVData"/>
                     </form>
+
+                    <%
+                        if (request.getAttribute("zusatz_informationen") != null)
+                        {
+                    %>
+                    <div id="div_zusatzDaten">
+                        <%=request.getAttribute("zusatz_informationen")%>
+                    </div>
+                    <%
+                        }
+                    %>
                     <div id="div_table">
                     </div>
                     <div id="div_csv_pdf" style="display:none" class="ui segment">
@@ -312,7 +323,8 @@
                                                 document.formPDF.submit();
             <%
             } else
-            {%>
+            {
+            %>
                                                 document.getElementById("div_csv_pdf").style.display = "block";
                                                 document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
                                                 $('.sortable.table').tablesort();
