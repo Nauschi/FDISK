@@ -67,6 +67,7 @@ function onChangeTypeOfDateUI(intTypeOfDateUI)
         document.getElementById("div_kein_datum_1").style.display = "block";
         document.getElementById("div_kein_datum_2").style.display = "block";
         document.getElementById("div_select_jahr").style.display = "none";
+        document.getElementById("div_kennzeichen").style.display = "none";
     } else if (intTypeOfDateUI == 1)
     {
         document.getElementById("div_input_von_datum").style.display = "none";
@@ -74,6 +75,7 @@ function onChangeTypeOfDateUI(intTypeOfDateUI)
         document.getElementById("div_kein_datum_1").style.display = "block";
         document.getElementById("div_kein_datum_2").style.display = "none";
         document.getElementById("div_select_jahr").style.display = "block";
+        document.getElementById("div_kennzeichen").style.display = "none";
     } else if (intTypeOfDateUI == 2)
     {
         document.getElementById("div_input_von_datum").style.display = "block";
@@ -81,6 +83,15 @@ function onChangeTypeOfDateUI(intTypeOfDateUI)
         document.getElementById("div_kein_datum_1").style.display = "none";
         document.getElementById("div_kein_datum_2").style.display = "none";
         document.getElementById("div_select_jahr").style.display = "none";
+        document.getElementById("div_kennzeichen").style.display = "none";
+    } else if (intTypeOfDateUI == 3)
+    {
+        document.getElementById("div_input_von_datum").style.display = "block";
+        document.getElementById("div_input_bis_datum").style.display = "block";
+        document.getElementById("div_kein_datum_1").style.display = "none";
+        document.getElementById("div_kein_datum_2").style.display = "none";
+        document.getElementById("div_select_jahr").style.display = "none";
+        document.getElementById("div_kennzeichen").style.display = "block";
     }
 }
 

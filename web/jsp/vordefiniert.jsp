@@ -160,6 +160,7 @@
                             </div>
                             <div class="column" id="div_kein_datum_2" style="display: none">
                             </div>
+
                             <div class="column" id="div_select_jahr" style="display: none">
                                 <fieldset id="fieldset_jahr">
                                     <legend><b>Jahr</b></legend>
@@ -187,6 +188,14 @@
                                             }
                                         %>
                                     </select>
+                                </fieldset>
+                            </div>
+                            <div class="column" id="div_kennzeichen" style="display: none;">
+                                <fieldset id="fieldset_kennzeichen">
+                                    <legend><b>Kennzeichen</b></legend>
+                                    <div class="ui input">
+                                        <input id="input_kennzeichen" name="input_kennzeichen" placeholder="Kennzeichen" type="text">
+                                    </div>
                                 </fieldset>
                             </div>
 

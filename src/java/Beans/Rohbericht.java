@@ -17,7 +17,7 @@ public class Rohbericht
     private String strBerichtname;
     private LinkedList<String> liBerichtSpalten;
     //Was wird im Vordefiniert bei dem User Interface benötigt
-    //0 kein Datum, 1 nur Jahr, 2 von-bis
+    //0 kein Datum, 1 nur Jahr, 2 von-bis, 3 von-bis-kennzeichen
     private int intTypeOfDateUI;
 
     public Rohbericht(String strBerichtname, LinkedList<String> liBerichtSpalten, int intTypeOfDateUI)
