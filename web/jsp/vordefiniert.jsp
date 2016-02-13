@@ -245,12 +245,14 @@
         <script src="js/jquery-2.1.1.min.js"></script>
         <script src="semantic/dist/semantic.min.js"></script>
         <script src="js/jquery-ui.js"></script> 
-        <script src="js/tablesort.js"></script>
+        <!-- <script src="js/tablesort.js"></script>-->
         <script src="js/vordefiniert.js"></script>
         <script src="js/datepicker-de.js"></script>
+        <script src="tablesorter/jquery.tablesorter.js"></script> 
+        <!--  <script src="tablesorter/jquery.tablesorter.min.js"></script>  -->
         <script>
-
                                     $(document).ready(function () {
+
             <%                if (request.getParameter("input_aktbericht") == null)
                 {
             %>
@@ -272,7 +274,6 @@
                                         document.getElementById("div_table").innerHTML = strTable;
                                         var intTypeOfDateUI = item.getElementsByTagName("div")[1].innerHTML;
                                         onChangeTypeOfDateUI(intTypeOfDateUI);
-
             <%
                 if (request.getAttribute("liste") != null)
                 {
@@ -336,8 +337,28 @@
             %>
                                                 document.getElementById("div_csv_pdf").style.display = "block";
                                                 document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
-                                                $('.sortable.table').tablesort();
+                                                //     $('.sortable.table').tablesort();
+
+
+                                                $('table').addClass('tablesorter');
+
+                                                <% if (request.getParameter("input_aktbericht") != null 
+                                                        && (request.getParameter("input_aktbericht").equals("Geburtstagsliste") 
+                                                        || request.getParameter("input_aktbericht").equals("Dienstzeitliste")))
+                                                { %>
+                                                    $('table').tablesorter({
+                                                        headers: {5: {sorter: 'germandate'}}
+                                                    });
+                                                <%} else
+                                                {%>
+                                                    $('table').tablesorter();
+                                                <%}%>
+
+
                                                 $('.sort').popup();
+
+
+
             <%
                     }
                 }

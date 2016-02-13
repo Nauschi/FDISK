@@ -64,9 +64,11 @@ public class Rohbericht
     public String toHTMLString()
     {
         String strHTML = "<a class='item' onclick='onListItemClicked(this)' id='"+strBerichtname+"'>"
-                + "<span>" + strBerichtname + "</span>"
+           
+         + "<span>" + strBerichtname + "</span>"
                 + "<div style='display:none'>"
-                + "<table id='table' class='ui sortable celled table'>"
+               // + "<table id='table' class='ui sortable celled table'>"
+                + "<table id='table' class='tablesorter ui celled striped table'>"
                 + " <thead>"
                 + "     <tr>";
         for (int i = 0; i < liBerichtSpalten.size(); i++)
@@ -75,7 +77,8 @@ public class Rohbericht
             if(strSpalte.equals("Bemerkung")||strSpalte.equals("-"))
             {
                 strHTML += "<th>" + strSpalte + "</th>";
-            }else
+            }
+            else
             {
                 strHTML += "<th data-content='nach "+strSpalte+" sortieren' class='sort' >" + strSpalte + "</th>";
             }
