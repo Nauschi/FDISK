@@ -376,6 +376,7 @@ public class MainServlet extends HttpServlet
             {
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
+//                String strKennzeichen = request.getParameter("input_kennzeichen");
                 String strKennzeichen = "GU331FF";
                 
                 //Login für Farhetnbuch implementiert, also können die Übergabeparameter da dazu gemacht werden lg nauschi
