@@ -370,8 +370,12 @@ public class MainServlet extends HttpServlet
                 request.setAttribute("liste", access.getAlleBerichte(strVonDatum, strBisDatum, intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals(liRohberichte.get(13).getStrBerichtname()))//Kursstatistik
             {
-                //Datum von, bis
-               // request.setAttribute("liste", access.getKursstatistiktaetigkeit());
+                String strVonDatum = request.getParameter("input_von_datum");
+                String strBisDatum = request.getParameter("input_bis_datum");
+               request.setAttribute("liste", access.getKursstatistiktaetigkeit(intBereichNr, intAbschnittNr, strFeuerwehr, strVonDatum, strBisDatum));
+               //Zweite methode noch aufrufen..
+               //access.getKursstatistikkurse(strVonDatum, strBisDatum);
+               
             } else if (strBericht.equals(liRohberichte.get(14).getStrBerichtname()))//Digitales Fahrtenbuch
             {
                 String strVonDatum = request.getParameter("input_von_datum");

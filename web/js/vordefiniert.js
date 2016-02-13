@@ -103,6 +103,11 @@ function onListItemClicked(item)
 {
     var liItems = document.getElementById("div_liste").getElementsByTagName("a");
     var index;
+    
+    if(document.getElementById("div_zusatzDaten")!=null)
+    {
+        document.getElementById("div_zusatzDaten").remove();
+    }
     for (index = 0; index < liItems.length; ++index) {
         liItems[index].className = "item";
     }
