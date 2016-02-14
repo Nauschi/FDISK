@@ -914,7 +914,7 @@
 
     ts.addParser({
         id: "ipAddress",
-        is: function (s) {
+        is: function (s) { 
             return /^\d{2,3}[\.]\d{2,3}[\.]\d{2,3}[\.]\d{2,3}$/.test(s);
         }, format: function (s) {
             var a = s.split("."),
@@ -1138,11 +1138,11 @@
             },
             format: function(s) { 
               var a = s.split('.');
-              a[1] = a[1].replace(/^[0]+/g,"");
+              var x = a[1] + a[0] + a[2]; 
               
-              return new Date(a.reverse().join("/")).getTime();
+              return x;//new Date(a.reverse().join("/")).getTime();
             },
-            type: 'numeric'
+            type: 'text'
           });
           
     ts.addParser({

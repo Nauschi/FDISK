@@ -116,21 +116,28 @@ public class MitgliedsDienstzeit extends Mitglied
         strVorname = theInstance.formatiereAusgabe(strVorname);
         
 
-        String strHtml = "<tr><td>"
+        String strHtml = ""; 
+        if(((int)doubleDienstalter)%10==0)
+        {
+             strHtml = "<tr><td><b>"
+                + strStammblattnummer + "</b></td><td><b>"
+                + strDienstgrad + "</b></td><td><b>"
+                + strTitel + "</b></td><td><b>"
+                + strVorname + "</b></td><td><b>"
+                + strZuname + "</b></td><td><b>"
+                + sdf.format(dateGeburtsdatum) + "</b></td><td><b>"
+                +(int)doubleDienstalter+"</b></td></tr>";
+        }else
+        {
+             strHtml = "<tr><td>"
                 + strStammblattnummer + "</td><td>"
                 + strDienstgrad + "</td><td>"
                 + strTitel + "</td><td>"
                 + strVorname + "</td><td>"
                 + strZuname + "</td><td>"
-                + sdf.format(dateGeburtsdatum) + "</td><td>";
-        if(((int)doubleDienstalter)%5==0)
-        {
-            strHtml+="<b>"+(int)doubleDienstalter+"</b>";
-        }else
-        {
-            strHtml+= (int)doubleDienstalter;
+                + sdf.format(dateGeburtsdatum) + "</td><td>"
+                +(int)doubleDienstalter +"</td></tr>";
         }
-        strHtml+= "</td></tr>";
         return strHtml;
     }
 

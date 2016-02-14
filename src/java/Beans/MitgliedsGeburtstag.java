@@ -112,15 +112,30 @@ public class MitgliedsGeburtstag extends Mitglied
         strZuname = theInstance.formatiereAusgabe(strZuname);
         strVorname = theInstance.formatiereAusgabe(strVorname);
 
-        
-        String strHtml = "<tr><td>"
+        String strHtml = ""; 
+        if(intZielalter%10 == 0)
+        {
+            strHtml = "<tr><td><b>"
+                + strStammblattnummer + "</b></td><td><b>"
+                + strDienstgrad + "</b></td><td><b>"
+                + strTitel + "</b></td><td><b>"
+                + strVorname + "</b></td><td><b>"
+                + strZuname + "</b></td><td><b>"
+                + sdf.format(dateGeburtsdatum) + "</b></td><td><b>"
+                + intZielalter + "</b></td></tr>";
+        }
+        else
+        {
+            strHtml = "<tr><td>"
                 + strStammblattnummer + "</td><td>"
                 + strDienstgrad + "</td><td>"
                 + strTitel + "</td><td>"
                 + strVorname + "</td><td>"
                 + strZuname + "</td><td>"
                 + sdf.format(dateGeburtsdatum) + "</td><td>"
-                + (intZielalter % 10 == 0 ? "<b>" + intZielalter + "</b>" : intZielalter) + "</td></tr>";
+                + intZielalter + "</td></tr>";
+        }
+        
 
         return strHtml;
     }
