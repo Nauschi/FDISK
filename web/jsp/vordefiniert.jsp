@@ -345,14 +345,23 @@
                                                 <% if (request.getParameter("input_aktbericht") != null 
                                                         && (request.getParameter("input_aktbericht").equals("Geburtstagsliste") 
                                                         || request.getParameter("input_aktbericht").equals("Dienstzeitliste")))
-                                                { %>
+                                                { %> 
                                                     $('table').tablesorter({
-                                                        headers: {5: {sorter: 'germandate'}}
+                                                        headers: {
+                                                             1: {sorter:'levels' },
+                                                             5: {sorter: 'germandate'}
+                                                                 }
                                                     });
-                                                <%} else
+                                                <%} 
+                                                else
                                                 {%>
                                                     $('table').tablesorter();
                                                 <%}%>
+                                                    
+                                                   
+                                                     
+                                                 
+                                                     
 
 
                                                 $('.sort').popup();

@@ -68,7 +68,7 @@ public class Rohbericht
          + "<span>" + strBerichtname + "</span>"
                 + "<div style='display:none'>"
                // + "<table id='table' class='ui sortable celled table'>"
-                + "<table id='table' class='tablesorter ui celled striped table'>"
+                + "<table id='table' class='tablesorter ui celled table'>"
                 + " <thead>"
                 + "     <tr>";
         for (int i = 0; i < liBerichtSpalten.size(); i++)

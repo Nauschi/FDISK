@@ -79,7 +79,8 @@ public class DB_Access {
                             || word.equals("bei") || word.equals("und")
                             || word.equals("bis") || word.equals("zum")
                             || word.equals("beim") || word.equals("bei")
-                            || word.equals("und")) {
+                            || word.equals("und") || word.equals("an")
+                             || word.equals("der")) {
                         strNeuesFormat.append(word.toLowerCase());
                     } else {
                         strNeuesFormat.append(word.substring(0, 1).toUpperCase());

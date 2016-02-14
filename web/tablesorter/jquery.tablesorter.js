@@ -102,6 +102,7 @@
  */
 
 (function ($) {
+    
     $.extend({
         tablesorter: new
         function () {
@@ -889,6 +890,8 @@
             return $.trim(s.toLocaleLowerCase());
         }, type: "text"
     });
+    
+    
 
     ts.addParser({
         id: "digit",
@@ -987,14 +990,38 @@
         }, type: "numeric"
     });
    
+   //-------------------------------------------------------------------------------
+    
+            ts.addParser({ 
+                 
+            // set a unique id 
+            id: 'levels', 
+            is: function(s) { 
+                // return false so this parser is not auto detected 
+                return false; 
+            }, 
+            format: function(s) {  
+                // format your data for normalization 
+                return s.toLowerCase()
+                    .replace(/HFM/i, 0)
+                    .replace(/ELM/i, 1)
+                    .replace(/BI/i, 2); 
+            }, 
+            // set type, either numeric or text 
+            type: 'text' 
+        }); 
+    
+
           ts.addParser({
+              
             id: 'germandate',
             is: function(s) {
                     return false;
             },
-            format: function(s) {
+            format: function(s) { 
               var a = s.split('.');
               a[1] = a[1].replace(/^[0]+/g,"");
+              
               return new Date(a.reverse().join("/")).getTime();
             },
             type: 'numeric'
