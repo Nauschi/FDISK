@@ -339,29 +339,42 @@
                                                 document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
                                                 //     $('.sortable.table').tablesort();
 
-
                                                 $('table').addClass('tablesorter');
 
-                                                <% if (request.getParameter("input_aktbericht") != null 
-                                                        && (request.getParameter("input_aktbericht").equals("Geburtstagsliste") 
-                                                        || request.getParameter("input_aktbericht").equals("Dienstzeitliste")))
-                                                { %> 
-                                                    $('table').tablesorter({
-                                                        headers: {
-                                                             1: {sorter:'levels' },
-                                                             5: {sorter: 'germandate'}
-                                                                 }
-                                                    });
-                                                <%} 
-                                                else
-                                                {%>
-                                                    $('table').tablesorter();
-                                                <%}%>
-                                                    
-                                                   
-                                                     
-                                                 
-                                                     
+            <% if (request.getParameter("input_aktbericht") != null
+                        && (request.getParameter("input_aktbericht").equals("Geburtstagsliste")
+                        || request.getParameter("input_aktbericht").equals("Dienstzeitliste")
+                        || request.getParameter("input_aktbericht").equals("Einfache Mitgliederliste")
+                        || request.getParameter("input_aktbericht").equals("Erreichbarkeitsliste")
+                        || request.getParameter("input_aktbericht").equals("Adressliste")))
+                {
+                    if (request.getParameter("input_aktbericht").equals("Geburtstagsliste")
+                            || request.getParameter("input_aktbericht").equals("Dienstzeitliste"))
+                    {%>
+                                                $('table').tablesorter({
+                                                    headers: {
+                                                        1: {sorter: 'levels'},
+                                                        5: {sorter: 'germandate'}
+                                                    }
+                                                });
+            <%} else
+                                        {%>
+                                                $('table').tablesorter({
+                                                    headers: {
+                                                        1: {sorter: 'levels'}
+                                                    }
+                                                });
+            <%}%>
+
+            <%} else
+            {%>
+                                                $('table').tablesorter();
+            <%}%>
+
+
+
+
+
 
 
                                                 $('.sort').popup();
