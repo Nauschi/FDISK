@@ -214,43 +214,51 @@
                     <form id="formCSV" name="formCSV" action="CSVServlet" method="POST">
                         <input type="hidden" name="hidden_CSVData" id="hidden_CSVData"/>
                     </form>
-
+                    <div id="div_kursstatistik" style="display: none;">
+                        </br>
+                        <table class="ui celled table">
+                            <thead>
+                                <tr>
+                                    <th>Kursbezeichnung</th>
+                                    <th>Kursstatus</th>
+                                    <th>Kursdatum</th>
+                                    <th>-</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        </br>
+                    </div>
+                    <div id="div_fahrtenbuch" style="display: none;">
+                        </br>
+                        <fieldset>
+                            <legend><b>Fahrzeugdaten</b></legend>
+                            <table class="ui celled table">
+                                <thead>
+                                    <tr>
+                                        <th>Art</th>
+                                        <th>Baujahr</th>
+                                        <th>Kursdatum</th>
+                                        <th>Marke</th>
+                                        <th>Leistung</th>
+                                        <th>Treibstoff</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </fieldset>
+                        </br>
+                    </div>
                     <%
                         if (request.getAttribute("zusatz_informationen") != null)
                         {
                     %>
+
                     <div id="div_zusatzDaten">
+                        </br>
                         <%=request.getAttribute("zusatz_informationen")%>
                     </div>
                     <%
                         }
                     %>
-                    <div>
-                        <table class="ui celled table">
-                            <thead>
-                                <tr>
-                                    <th>asdasd</th>
-                                    <th>asdasd</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>a</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>b</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>c</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
-                    
                     <div id="div_table">
                     </div>
                     <div id="div_csv_pdf" style="display:none" class="ui segment">
@@ -277,9 +285,10 @@
         <script src="tablesorter/jquery.tablesorter.js"></script> 
         <!--  <script src="tablesorter/jquery.tablesorter.min.js"></script>  -->
         <script>
-                                    $(document).ready(function () {
-
-            <%                if (request.getParameter("input_aktbericht") == null)
+                                    $(document).ready(function ()
+                                    {
+            <%
+                if (request.getParameter("input_aktbericht") == null)
                 {
             %>
                                         var item = document.getElementById("div_liste").getElementsByTagName("a")[0];
@@ -363,10 +372,7 @@
             %>
                                                 document.getElementById("div_csv_pdf").style.display = "block";
                                                 document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
-                                                //     $('.sortable.table').tablesort();
-
-                                                //$('#table').addClass('tablesorter');
-                                                <%=setzeTablesort(request)%>
+            <%=setzeTablesort(request)%>
                                                 $('.sort').popup();
             <%
                     }
@@ -415,7 +421,8 @@
         } else if (request.getParameter("input_aktbericht") != null
                 && request.getParameter("input_aktbericht").equals("Kursstatistik"))
         {
-            return "$('.tablesorter').tablesorter({headers: {4: {sorter: 'berichtdate'},5: {sorter: 'berichtdate'}}});";
+            return "$('.tablesorter2').tablesorter({headers: {2: {sorter: 'berichtdate'}}});"
+                    + "$('.tablesorter').tablesorter({headers: {4: {sorter: 'berichtdate'},5: {sorter: 'berichtdate'}}});";
         } else if (request.getParameter("input_aktbericht") != null
                 && request.getParameter("input_aktbericht").equals("Digitales Fahrtenbuch"))
         {

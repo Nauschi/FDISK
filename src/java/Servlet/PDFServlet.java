@@ -97,9 +97,9 @@ public class PDFServlet extends HttpServlet
             + "<table border='0'><tbody>##MitgliedData##</tbody></table>";
 
     private String strEinsatzbericht = "";
-    
+
     private LinkedList<String> liBerHochformat;
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
@@ -149,16 +149,16 @@ public class PDFServlet extends HttpServlet
     {
         request.setCharacterEncoding("UTF-8");
         String strData = request.getParameter("hidden_pdfData");
-        System.out.println("DataString: "+strData);
+        System.out.println("DataString: " + strData);
         String[] strSplitData = strData.split("###");
-        System.out.println("size: "+strSplitData.length);
+        System.out.println("size: " + strSplitData.length);
         String strBerichtname;
         String strTable;
-        if(strSplitData.length<2)
+        if (strSplitData.length < 2)
         {
             strBerichtname = "Dynamisch";
             strTable = strData;
-        }else
+        } else
         {
             strBerichtname = strSplitData[0];
             strTable = strSplitData[1];
@@ -166,21 +166,44 @@ public class PDFServlet extends HttpServlet
 
         String strAusgabe = "Es ist ein unerwartetes Problem aufgetreten";
         boolean boolLeerbericht = true;
-        
+
         switch (strBerichtname)
         {
             case "Einsatzbericht leer":
-                
+
                 break;
             case "Übungsbericht leer":
-                strAusgabe = generiereAusgabeUebungsberichtLeer(strTable,strSplitData[2]);
+                strAusgabe = generiereAusgabeUebungsberichtLeer(strTable, strSplitData[2]);
                 break;
             case "Tätigkeitsbericht leer":
-                strAusgabe = generiereAusgabeTaetigkeitsberichtLeer(strTable,strSplitData[2]);
+                strAusgabe = generiereAusgabeTaetigkeitsberichtLeer(strTable, strSplitData[2]);
                 break;
             case "Dynamisch":
-                strAusgabe=strTable;
-                boolLeerbericht=false;
+                strAusgabe = strTable;
+                boolLeerbericht = false;
+                break;
+            case "Kursstatistik":
+                if (strTable.split("<td>").length > 1 && strSplitData[2].split("<td>").length > 1)
+                {
+                    strAusgabe = "<h1>" + strBerichtname + "</h1>" + strSplitData[2].replace("</br>", "") + "<p>&nbsp;</p>" + strTable;
+                } else if (strTable.split("<td>").length < 2)
+                {
+                    strAusgabe = "<h1>" + strBerichtname + "</h1>" + strSplitData[2].replace("</br>", "");
+                } else if (strSplitData[2].split("<td>").length < 2)
+                {
+                    strAusgabe = "<h1>" + strBerichtname + "</h1>" + strTable;
+                }
+                boolLeerbericht = false;
+                break;
+            case "Digitales Fahrtenbuch":
+                if(strSplitData.length>2)
+                {
+                    strAusgabe = "<h1>" + strBerichtname + "</h1>" + strSplitData[2] + "<p>&nbsp;</p>" + strTable;
+                }else
+                {
+                    strAusgabe = "<h1>" + strBerichtname + "</h1>" + strTable;
+                }
+                boolLeerbericht = false;
                 break;
             default:
                 strAusgabe = "<h1>" + strBerichtname + "</h1>" + strTable;
@@ -188,13 +211,11 @@ public class PDFServlet extends HttpServlet
         }
 
         String strContextPath = this.getServletContext().getRealPath("/");
-        String strCSSPath1 = strContextPath +File.separator + "css"+File.separator+"pdfSimpel.css";
-        String strFontPath = strContextPath +File.separator + "res"+File.separator+"Cambria.ttf";
-        
-        
+        String strCSSPath1 = strContextPath + File.separator + "css" + File.separator + "pdfSimpel.css";
+        String strFontPath = strContextPath + File.separator + "res" + File.separator + "Cambria.ttf";
+
 //        String strCSSPath1 = strContextPath.replace("build\\web", "web\\css\\pdfSimpel.css");
 //        String strFontPath = strContextPath.replace("build\\web", "web\\res\\Cambria.ttf");
-        
         System.out.println("PDFServlet.doPost: CSSPath:" + strCSSPath1);
         Rectangle rect;
 
@@ -202,22 +223,20 @@ public class PDFServlet extends HttpServlet
         {
             Document document;
 //            document = new Document(PageSize.A4, 36, 36, 54, 54);
-            if(liBerHochformat.contains(strBerichtname))
+            if (liBerHochformat.contains(strBerichtname))
             {
-                 document = new Document(PageSize.A4, 36, 36, 100, 54);
-                 rect = new Rectangle(36, 54, 559, 788);
-            }else
+                document = new Document(PageSize.A4, 36, 36, 100, 54);
+                rect = new Rectangle(36, 54, 559, 788);
+            } else
             {
                 document = new Document(PageSize.A4.rotate(), 36, 36, 70, 54);
                 rect = new Rectangle(36, 54, 805, 559);
             }
-            
-            
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PdfWriter writer = PdfWriter.getInstance(document, baos);
-            
-            PDF_KopfFußzeile event = new PDF_KopfFußzeile(strFontPath,writer);
+
+            PDF_KopfFußzeile event = new PDF_KopfFußzeile(strFontPath, writer);
             writer.setBoxSize("pageRect", rect);
             writer.setPageEvent(event);
 
@@ -231,7 +250,7 @@ public class PDFServlet extends HttpServlet
             if (!boolLeerbericht)
             {
                 cssResolver.addCssFile(strCSSPath1.replace("Simpel", "StandartBericht"), true);
-            }else
+            } else
             {
                 cssResolver.addCssFile(strCSSPath1.replace("Simpel", "Leerbericht"), true);
             }
@@ -242,7 +261,7 @@ public class PDFServlet extends HttpServlet
             p.parse(new StringReader(strAusgabe));
             document.close();
             writer.close();
-            strBerichtname=strBerichtname.replaceAll(" ", "_");
+            strBerichtname = strBerichtname.replaceAll(" ", "_");
             response.setContentType("application/pdf");
             response.setHeader("Content-Disposition", "filename=" + strBerichtname + ".pdf");
             response.setContentLength(baos.size());
@@ -263,26 +282,31 @@ public class PDFServlet extends HttpServlet
 
     /**
      * Generiert einen Tätigkeitsbericht mit Hilfe des übergebenen Strings
-     * strTable ist der HTML String der Zeilen des Tables (<tr>...</tr><tr>...</tr><tr>...</tr>....)
+     * strTable ist der HTML String der Zeilen des Tables
+     * (<tr>...</tr><tr>...</tr><tr>...</tr>....)
+     *
      * @param strTable
-     * @return 
+     * @return
      */
-    public String generiereAusgabeTaetigkeitsberichtLeer(String strTableMitglieder,String strTableFahrzeuge)
+    public String generiereAusgabeTaetigkeitsberichtLeer(String strTableMitglieder, String strTableFahrzeuge)
     {
-        System.out.println("generiereAusgabeTaetigkeitsberichtLeer: "+strTableMitglieder);
+        System.out.println("generiereAusgabeTaetigkeitsberichtLeer: " + strTableMitglieder);
         String strHTMLOutput = strTaetigkeitsbericht;
         strHTMLOutput = strHTMLOutput.replace("##FahrzeugData##", strTableFahrzeuge);
         strHTMLOutput = strHTMLOutput.replace("##MitgliedData##", strTableMitglieder);
-        System.out.println("strHTMLOutput: "+strHTMLOutput);
+        System.out.println("strHTMLOutput: " + strHTMLOutput);
         return strHTMLOutput;
     }
+
     /**
-     * Generiert einen Uebungsbericht mit Hilfe des übergebenen Strings
-     * strTable ist der HTML String der Zeilen des Tables (<tr>...</tr><tr>...</tr><tr>...</tr>....)
+     * Generiert einen Uebungsbericht mit Hilfe des übergebenen Strings strTable
+     * ist der HTML String der Zeilen des Tables
+     * (<tr>...</tr><tr>...</tr><tr>...</tr>....)
+     *
      * @param strTable
-     * @return 
+     * @return
      */
-    public String generiereAusgabeUebungsberichtLeer(String strTableMitglieder,String strTableFahrzeuge)
+    public String generiereAusgabeUebungsberichtLeer(String strTableMitglieder, String strTableFahrzeuge)
     {
         String strHTMLOutput = strUebungsbericht;
         strHTMLOutput = strHTMLOutput.replace("##FahrzeugData##", strTableFahrzeuge);
@@ -290,7 +314,6 @@ public class PDFServlet extends HttpServlet
 
         return strHTMLOutput;
     }
-    
 
     @Override
     public void init(ServletConfig config) throws ServletException
@@ -300,6 +323,7 @@ public class PDFServlet extends HttpServlet
         liBerHochformat.add("Tätigkeitsbericht leer");
         liBerHochformat.add("Übungsbericht leer");
     }
+
     /**
      * Returns a short description of the servlet.
      *

@@ -7,6 +7,7 @@ package Servlet;
 
 import Beans.Berechtigung;
 import Beans.Fahrzeug;
+import Beans.Kurs;
 import Beans.Rohbericht;
 import Database.DB_Access;
 import java.io.BufferedReader;
@@ -117,7 +118,7 @@ public class MainServlet extends HttpServlet
             loginUser(request, response);
             return;
         }
-        
+
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("loggedIn") == null)
         {
@@ -372,20 +373,19 @@ public class MainServlet extends HttpServlet
             {
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
-               request.setAttribute("liste", access.getKursstatistiktaetigkeit(intBereichNr, intAbschnittNr, strFeuerwehr, strVonDatum, strBisDatum));
-               //Zweite methode noch aufrufen..
-               //access.getKursstatistikkurse(strVonDatum, strBisDatum);
-               
+                request.setAttribute("liste", access.getKursstatistiktaetigkeit(intBereichNr, intAbschnittNr, strFeuerwehr, strVonDatum, strBisDatum));
+                //Zweite methode noch aufrufen..
+                request.setAttribute("zusatz_informationen", generiereKurstatistikZusatzTable(strVonDatum, strBisDatum));
             } else if (strBericht.equals(liRohberichte.get(14).getStrBerichtname()))//Digitales Fahrtenbuch
             {
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
 //                String strKennzeichen = request.getParameter("input_kennzeichen");
                 String strKennzeichen = "GU331FF";
-                
+
                 //Login für Farhetnbuch implementiert, also können die Übergabeparameter da dazu gemacht werden lg nauschi
                 //System.out.println(access.getFahrtenbuch("", "", strKennzeichen).toString());
-                LinkedList<Fahrzeug> liFahrzeuge = access.getFahrtenbuch(intBereichNr, intAbschnittNr, strFeuerwehr,strVonDatum, strBisDatum, strKennzeichen);
+                LinkedList<Fahrzeug> liFahrzeuge = access.getFahrtenbuch(intBereichNr, intAbschnittNr, strFeuerwehr, strVonDatum, strBisDatum, strKennzeichen);
                 String strDetails = access.getDetailsFuerFahrtenbuchFahrzeug(liFahrzeuge);
                 request.setAttribute("zusatz_informationen", strDetails);
                 request.setAttribute("liste", liFahrzeuge);
@@ -399,6 +399,25 @@ public class MainServlet extends HttpServlet
         }
         request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
         return;
+    }
+
+    private String generiereKurstatistikZusatzTable(String strVonDatum, String strBisDatum) throws Exception
+    {
+        LinkedList<Kurs> liKurse = access.getKursstatistikkurse(strVonDatum, strBisDatum);
+        String strZusatzInfo = "<table class='tablesorter2 ui celled table'><thead>";
+        strZusatzInfo+="<tr>"
+                + "<th data-content='nach Kursbezeichnung sortieren' class='sort'>Kursbezeichnung</th>"
+                + "<th data-content='nach Kursstatus sortieren' class='sort'>Kursstatus</th>"
+                + "<th data-content='nach Kursdatum sortieren' class='sort'>Kursdatum</th>"
+                + "<th>-</th>"
+                + "</tr>";
+        strZusatzInfo+="</thead><tbody>";
+        for (Kurs kurs : liKurse)
+        {
+            strZusatzInfo+=kurs.toString();
+        }
+        strZusatzInfo+="</tbody></table>";
+        return strZusatzInfo;
     }
 
     private void generiereDynamischeVorschau(HttpServletRequest request, HttpServletResponse response, HttpSession session)

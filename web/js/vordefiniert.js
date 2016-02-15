@@ -120,6 +120,21 @@ function onListItemClicked(item)
     document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = strBerichtname;
     document.getElementById("input_hidden").value = strBerichtname;
     document.getElementById("div_table").innerHTML = strTable;
+    if(document.getElementById("div_zusatzDaten")==null&&strBerichtname=='Kursstatistik')
+    {
+        document.getElementById("div_kursstatistik").style.display="block";
+    }else
+    {
+        document.getElementById("div_kursstatistik").style.display="none";
+    }
+    
+    if(document.getElementById("div_zusatzDaten")==null&&strBerichtname=='Digitales Fahrtenbuch')
+    {
+        document.getElementById("div_fahrtenbuch").style.display="block";
+    }else
+    {
+        document.getElementById("div_fahrtenbuch").style.display="none";
+    }
 }
 
 
@@ -132,7 +147,15 @@ function saveDataForPDF()
 {
     var strTable = document.getElementById("div_table").innerHTML;
     var strName = document.getElementById("h2_bericht").innerHTML;
-    document.getElementById("hidden_pdfData").value = strName + "###" + strTable;
+    if(document.getElementById("div_zusatzDaten")!=null)
+    {
+        var strZusatzDaten = document.getElementById("div_zusatzDaten").innerHTML;
+        document.getElementById("hidden_pdfData").value = strName + "###" + strTable + "###" + strZusatzDaten;
+    }else
+    {
+        document.getElementById("hidden_pdfData").value = strName + "###" + strTable;
+    }
+    
     document.formPDF.submit();
 }
 

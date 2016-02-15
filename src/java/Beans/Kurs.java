@@ -172,9 +172,9 @@ public class Kurs
 
         String strHtml = "<tr><td>"
                 + strKursbezeichnung + "</td><td>"
-                + strKursbezeichnung + "</td><td>"
+                + strKursstatus + "</td><td>"
                 + sdf.format(dateDatum) + "</td><td>"
-                + "<td></td></tr>";
+                + "</td></tr>";
 
         return strHtml;
     }
