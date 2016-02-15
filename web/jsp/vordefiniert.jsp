@@ -225,6 +225,32 @@
                     <%
                         }
                     %>
+                    <div>
+                        <table class="ui celled table">
+                            <thead>
+                                <tr>
+                                    <th>asdasd</th>
+                                    <th>asdasd</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>a</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>b</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>c</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    
                     <div id="div_table">
                     </div>
                     <div id="div_csv_pdf" style="display:none" class="ui segment">
@@ -339,101 +365,9 @@
                                                 document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
                                                 //     $('.sortable.table').tablesort();
 
-                                                $('table').addClass('tablesorter');
-
-            <% if (request.getParameter("input_aktbericht") != null
-                        && (request.getParameter("input_aktbericht").equals("Geburtstagsliste")
-                        || request.getParameter("input_aktbericht").equals("Dienstzeitliste")
-                        || request.getParameter("input_aktbericht").equals("Einfache Mitgliederliste")
-                        || request.getParameter("input_aktbericht").equals("Erreichbarkeitsliste")
-                        || request.getParameter("input_aktbericht").equals("Adressliste")))
-                {
-                    if (request.getParameter("input_aktbericht").equals("Geburtstagsliste")
-                            || request.getParameter("input_aktbericht").equals("Dienstzeitliste"))
-                    {%>
-                                                $('table').tablesorter({
-                                                    headers: {
-                                                        1: {sorter: 'levels'},
-                                                        5: {sorter: 'germandate'}
-                                                    }
-                                                });
-            <%} else
-                                        {%>
-                                                $('table').tablesorter({
-                                                    headers: {
-                                                        1: {sorter: 'levels'}
-                                                    }
-                                                });
-            <%}%>
-
-            <%} 
-            else if(request.getParameter("input_aktbericht") != null
-                        && (request.getParameter("input_aktbericht").equals("Liste aller Tätigkeitsberichte")
-                        || request.getParameter("input_aktbericht").equals("Liste aller Übungsberichte")))
-            {%>
-                          $('table').tablesorter({
-                                                    headers: {
-                                                        3: {sorter: 'berichtdate'},
-                                                        4: {sorter: 'berichtdate'}
-                                                    }
-                                                });                     
-            <%}
-            else if(request.getParameter("input_aktbericht") != null
-                        && request.getParameter("input_aktbericht").equals("Liste aller Einsatzberichte"))
-            {%>
-                 $('table').tablesorter({
-                                                    headers: {
-                                                       2: {sorter: 'berichtdate'},
-                                                       3: {sorter: 'berichtdate'}
-                                                    }
-                                                });      
-            <%}
-            else if(request.getParameter("input_aktbericht") != null
-                        && request.getParameter("input_aktbericht").equals("Liste aller Berichte"))
-            {%>
-                 $('table').tablesorter({
-                                                    headers: {
-                                                       0: {sorter: 'berichtdate'},
-                                                       1: {sorter: 'berichtdate'}
-                                                    }
-                                                });      
-            <%}
-            else if(request.getParameter("input_aktbericht") != null
-                        && request.getParameter("input_aktbericht").equals("Kursstatistik"))
-            {%>
-                 $('table').tablesorter({
-                                                    headers: {
-                                                       4: {sorter: 'berichtdate'},
-                                                       5: {sorter: 'berichtdate'}
-                                                    }
-                                                });      
-            <%}
-            else if(request.getParameter("input_aktbericht") != null
-                        && request.getParameter("input_aktbericht").equals("Digitales Fahrtenbuch"))
-           {%>
-                 $('table').tablesorter({
-                                                    headers: {
-                                                       1: {sorter: 'berichtdate'},
-                                                       2: {sorter: 'berichtdate'}
-                                                    }
-                                                });      
-            <%}
-            
-            else
-            {%>
-                                                $('table').tablesorter();
-            <%}%>
-
-
-
-
-
-
-
+                                                //$('#table').addClass('tablesorter');
+                                                <%=setzeTablesort(request)%>
                                                 $('.sort').popup();
-
-
-
             <%
                     }
                 }
@@ -443,15 +377,55 @@
                                                 fixDropdowns("select_abschnitt");
                                                 fixDropdowns("select_feuerwehr");
                                             });
-
-
-
         </script>        
 
     </body>
 </html>
 
 <%!
+    private String setzeTablesort(HttpServletRequest request)
+    {
+        if (request.getParameter("input_aktbericht") != null
+                && (request.getParameter("input_aktbericht").equals("Geburtstagsliste")
+                || request.getParameter("input_aktbericht").equals("Dienstzeitliste")
+                || request.getParameter("input_aktbericht").equals("Einfache Mitgliederliste")
+                || request.getParameter("input_aktbericht").equals("Erreichbarkeitsliste")
+                || request.getParameter("input_aktbericht").equals("Adressliste")))
+        {
+            if (request.getParameter("input_aktbericht").equals("Geburtstagsliste")
+                    || request.getParameter("input_aktbericht").equals("Dienstzeitliste"))
+            {
+                return "$('.tablesorter').tablesorter({headers: {1: {sorter: 'levels'},5: {sorter: 'germandate'}}});";
+            } else
+            {
+                return "$('.tablesorter').tablesorter({headers: {1: {sorter: 'levels'}}});";
+            }
+        } else if (request.getParameter("input_aktbericht") != null && (request.getParameter("input_aktbericht").equals("Liste aller Tätigkeitsberichte")
+                || request.getParameter("input_aktbericht").equals("Liste aller Übungsberichte")))
+        {
+            return "$('.tablesorter').tablesorter({headers: {3: {sorter: 'berichtdate'},4: {sorter: 'berichtdate'}}});";
+        } else if (request.getParameter("input_aktbericht") != null
+                && request.getParameter("input_aktbericht").equals("Liste aller Einsatzberichte"))
+        {
+            return "$('.tablesorter').tablesorter({headers: {2: {sorter: 'berichtdate'},3: {sorter: 'berichtdate'}}});";
+        } else if (request.getParameter("input_aktbericht") != null
+                && request.getParameter("input_aktbericht").equals("Liste aller Berichte"))
+        {
+            return "$('.tablesorter').tablesorter({headers: {0: {sorter: 'berichtdate'},1: {sorter: 'berichtdate'}}});";
+        } else if (request.getParameter("input_aktbericht") != null
+                && request.getParameter("input_aktbericht").equals("Kursstatistik"))
+        {
+            return "$('.tablesorter').tablesorter({headers: {4: {sorter: 'berichtdate'},5: {sorter: 'berichtdate'}}});";
+        } else if (request.getParameter("input_aktbericht") != null
+                && request.getParameter("input_aktbericht").equals("Digitales Fahrtenbuch"))
+        {
+            return "$('.tablesorter').tablesorter({headers: {1: {sorter: 'berichtdate'},2: {sorter: 'berichtdate'}}});";
+        } else
+        {
+            return "$('.tablesorter').tablesorter();";
+        }
+    }
+
     private String generiereHiddenAbschnittDiv(HttpSession session)
     {
         if (intIDGruppe == 15)
