@@ -995,8 +995,8 @@ public class DB_Access
             strTaetigkeitsart = rs.getString("Taetigkeitsart");
             strTaetigkeitsunterart = rs.getString("Taetigkeitsunterart");
             strNummer = rs.getString("Nr");
-            dateBeginn = rs.getDate("Beginn");
-            dateEnde = rs.getDate("Ende");
+            dateBeginn = rs.getTimestamp("Beginn");
+            dateEnde = rs.getTimestamp("Ende");
             doKm = rs.getDouble("Km");
 
             Kurstaetigkeit kurstaetigkeit = new Kurstaetigkeit(intIdBerichte, intTeilnehmer, doKm, intInstanznummer, strInstanzname, strTaetigkeitsart, strTaetigkeitsunterart, strNummer, dateBeginn, dateEnde);
@@ -1053,7 +1053,7 @@ public class DB_Access
             intLehrgangsnr = rs.getInt("Lehrgangsnr");
             strKursbez = rs.getString("Kursbez");
             strKurskurzbez = rs.getString("Kurskurzbez");
-            dateDatum = rs.getDate("Datum");
+            dateDatum = rs.getTimestamp("Datum");
             intIdVer = rs.getInt("Veran");
             intIdDurchf = rs.getInt("Durchf");
             strStatus = rs.getString("Status");
@@ -1331,8 +1331,8 @@ public class DB_Access
             strTreibstoff = rs.getString("Treibstoff");
             doubleKm = rs.getDouble("Km");
             strArt = rs.getString("Art");
-            dateBeginn = rs.getDate("Beginn");
-            dateEnde = rs.getDate("Ende");
+            dateBeginn = rs.getTimestamp("Beginn");
+            dateEnde = rs.getTimestamp("Ende");
 
             Fahrzeug fahrzeug = new Fahrzeug(strFahrzeugTyp, strKennzeichen,
                     intBaujahr, strAufbaufirma, strTaktischeBezeichnung,

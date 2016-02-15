@@ -1,6 +1,7 @@
 package Beans;
 
 import Database.DB_Access;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -21,7 +22,7 @@ public class Kurstaetigkeit
     private String strNummer;
     private Date dateBegin;
     private Date dateEnde;
-    
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
     private DB_Access theInstance;
 
     public Kurstaetigkeit(int intIdBerichte, int intTeilnehmer, double doKm, int intInstanznummer, String strInstanzname, String strTaetigkeitsart, String strTaetigkeitsunterart, String strNummer, Date dateBeginn, Date dateEnde) throws ClassNotFoundException
@@ -223,8 +224,8 @@ public class Kurstaetigkeit
                 + doKm + "</td><td>"
                 + strTaetigkeitsart + "</td><td>"
                 + strTaetigkeitsunterart + "</td><td>"
-                + dateBegin + "</td><td>"
-                + dateEnde + "</td>"
+                + sdf.format(dateBegin) + "</td><td>"
+                + sdf.format(dateEnde) + "</td>"
                 + "<td></td></tr>";
 
         return strHtml;

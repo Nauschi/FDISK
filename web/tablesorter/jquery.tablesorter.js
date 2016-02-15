@@ -1140,7 +1140,24 @@
               var a = s.split('.');
               var x = a[1] + a[0] + a[2]; 
               
-              return x;//new Date(a.reverse().join("/")).getTime();
+              return x;
+              
+            },
+            type: 'text'
+          });
+          
+        ts.addParser({
+              
+            id: 'berichtdate',
+            is: function(s) {
+                    return false;
+            },
+            format: function(s) { 
+              var datum2teile = s.split(' ');
+              var datumteil1 = datum2teile[0].split('.');
+              var datumteil2 = datum2teile[1].split(':');
+              return datumteil1[2]+datumteil1[1]+ datumteil1[0]+datumteil2[0]+datumteil2[1];
+              
             },
             type: 'text'
           });

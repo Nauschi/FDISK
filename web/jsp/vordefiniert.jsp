@@ -366,7 +366,60 @@
                                                 });
             <%}%>
 
-            <%} else
+            <%} 
+            else if(request.getParameter("input_aktbericht") != null
+                        && (request.getParameter("input_aktbericht").equals("Liste aller Tätigkeitsberichte")
+                        || request.getParameter("input_aktbericht").equals("Liste aller Übungsberichte")))
+            {%>
+                          $('table').tablesorter({
+                                                    headers: {
+                                                        3: {sorter: 'berichtdate'},
+                                                        4: {sorter: 'berichtdate'}
+                                                    }
+                                                });                     
+            <%}
+            else if(request.getParameter("input_aktbericht") != null
+                        && request.getParameter("input_aktbericht").equals("Liste aller Einsatzberichte"))
+            {%>
+                 $('table').tablesorter({
+                                                    headers: {
+                                                       2: {sorter: 'berichtdate'},
+                                                       3: {sorter: 'berichtdate'}
+                                                    }
+                                                });      
+            <%}
+            else if(request.getParameter("input_aktbericht") != null
+                        && request.getParameter("input_aktbericht").equals("Liste aller Berichte"))
+            {%>
+                 $('table').tablesorter({
+                                                    headers: {
+                                                       0: {sorter: 'berichtdate'},
+                                                       1: {sorter: 'berichtdate'}
+                                                    }
+                                                });      
+            <%}
+            else if(request.getParameter("input_aktbericht") != null
+                        && request.getParameter("input_aktbericht").equals("Kursstatistik"))
+            {%>
+                 $('table').tablesorter({
+                                                    headers: {
+                                                       4: {sorter: 'berichtdate'},
+                                                       5: {sorter: 'berichtdate'}
+                                                    }
+                                                });      
+            <%}
+            else if(request.getParameter("input_aktbericht") != null
+                        && request.getParameter("input_aktbericht").equals("Digitales Fahrtenbuch"))
+           {%>
+                 $('table').tablesorter({
+                                                    headers: {
+                                                       1: {sorter: 'berichtdate'},
+                                                       2: {sorter: 'berichtdate'}
+                                                    }
+                                                });      
+            <%}
+            
+            else
             {%>
                                                 $('table').tablesorter();
             <%}%>
