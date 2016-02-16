@@ -97,7 +97,7 @@
                     {
                         intZaehler = 1;
                     }
-                } else if (strAction.equals("vorschau") || strAction.equals("erstelle_vorlage"))
+                } else if (strAction.equals("vorschau") || strAction.equals("erstelle_vorlage") || strAction.equals("erstelle_vorlage_2"))
                 {
                     intZaehler = Integer.parseInt(request.getParameter("hidden_zaehler"));
                 }
@@ -110,11 +110,12 @@
         <br/>
         <div id="div_vorlage" class="ui menu">
             <div class="ui right dropdown item">
-                Vorlage
+                <b>Vorlage</b>
                 <i class="dropdown icon"></i>
                 <div class="menu">
-                    <div class="item" onclick="showErstellenModal();">Erstellen</div>
-                    <div class="item" onclick="showLadenModal();">Laden</div>
+                    <div class="item" onclick="showErstellenModal();"><p style="font-weight: normal;">Erstellen</p></div>
+                    <div class="item" onclick="showLadenModal();"><p style="font-weight: normal;">Laden</p></div>
+                    <div class="item" onclick="showLoeschenModal();"><p style="font-weight: normal;">Löschen</p></div>
                 </div>
             </div>
         </div>
@@ -162,8 +163,8 @@
                                 String strAktTypMitBoxArt = "";
                                 if (request.getAttribute("hidden_element_data_" + i) != null)
                                 {
-                                    String strTyp = ((String)request.getAttribute("hidden_element_data_" + i)).split(";")[1];
-                                    String strBoxArt = ((String)request.getAttribute("hidden_element_data_" + i)).split(";")[2];
+                                    String strTyp = ((String) request.getAttribute("hidden_element_data_" + i)).split(";")[1];
+                                    String strBoxArt = ((String) request.getAttribute("hidden_element_data_" + i)).split(";")[2];
                                     strAktTypMitBoxArt = strTyp + ";" + strBoxArt;
                                 } else if (request.getParameter("hidden_element_data_" + i) != null)
                                 {
@@ -300,16 +301,55 @@
             <div class="header">Neue Vorlage</div>
             <div class="content">
                 <div class="ui input" style="width: 100%">
+                    <%                        if (request.getParameter("hidden_vorlage_name") != null && request.getAttribute("dynamisch_vorlage_vorhanden") != null)
+                        {
+                    %>
+                    <input placeholder="Name" type="text" name="input_neueVorlage" id="input_neueVorlage" value="<%=request.getParameter("hidden_vorlage_name")%>">
+                    <%
+                    } else
+                    {
+                    %>
                     <input placeholder="Name" type="text" name="input_neueVorlage" id="input_neueVorlage">
+                    <%
+                        }
+                    %>
                 </div>
             </div>
             <div class="actions">
                 <button type="button" onClick="onActionSubmit(<%=intZaehler%>, 'erstelle_vorlage')" name="button_bestätigen_erstelleVorlage" class="ui button styleGruen"  style="width: 20%;">Bestätigen</button>
+                <button type="button" onClick="$('#modal_erstelle_vorlage').modal('hide');" name="button_abbrechen_erstelleVorlage" class="ui button styleRot"  style="width: 20%;">Abbrechen</button>
             </div>
         </div>
 
         <%
-            if (application.getAttribute("userid_" + session.getAttribute("intUserID") + "_vorlagen") != null)
+            if (request.getAttribute("dynamisch_vorlage_vorhanden") != null)
+            {
+                System.out.println("Vorlage vorhanden");
+        %>
+        <div class="ui small modal" id="modal_vorhanden">
+            <div class="header">Name bereits vorhanden</div>
+            <div class="content">
+                <p>Der von Ihnen gewählte Name wird bereits bei einer Vorlage verwendet, wollen Sie diese ersetzen?</p>
+            </div>
+            <div class="actions">
+                <button type="button" onClick="onActionSubmit(<%=intZaehler%>, 'erstelle_vorlage_2')"  class="ui button styleGruen"  style="width: 10%;">Ja</button>
+                <button type="button" onClick="$('#modal_vorhanden').modal('hide');" class="ui button styleRot"  style="width: 10%;">Nein</button>
+            </div>
+        </div>
+        <%
+            }
+        %>
+
+        <div class="ui small modal" id="modal_fehler">
+            <div class="header">Fehler</div>
+            <div class="content">
+                <p></p>
+            </div>
+        </div>
+
+        <%
+            HashMap<String, LinkedList<String>> liVorlagen = (HashMap<String, LinkedList<String>>) application.getAttribute("userid_" + session.getAttribute("intUserID") + "_vorlagen");
+            if (liVorlagen != null && liVorlagen.size() > 0)
             {
         %>
         <div class="ui small modal" id="modal_lade_vorlage">
@@ -323,6 +363,22 @@
             </div>
             <div class="actions">
                 <button type="button" onClick="document.form_ladeVorlage.submit();" name="button_bestätigen_ladeVorlage" class="ui button styleGruen"  style="width: 20%;">Bestätigen</button>
+                <button type="button" onClick="$('#modal_lade_vorlage').modal('hide');" name="button_abbrechen_ladeVorlage" class="ui button styleRot"  style="width: 20%;">Abbrechen</button>
+            </div>
+        </div>
+
+        <div class="ui small modal" id="modal_loesche_vorlage">
+            <div class="header">Welche Vorlage wollen Sie löschen</div>
+            <div class="content">
+                <form action="MainServlet" method="POST" name="form_loescheVorlage">
+                    <select name="select_loesche_vorlage" class="ui fluid dropdown" id="select_vorlage">
+                        <%=leseVorhandeneVorlagen(application, session)%>
+                    </select>
+                </form>
+            </div>
+            <div class="actions">
+                <button type="button" onClick="document.form_loescheVorlage.submit();"  class="ui button styleGruen"  style="width: 20%;">Bestätigen</button>
+                <button type="button" onClick="$('#modal_loesche_vorlage').modal('hide');" class="ui button styleRot"  style="width: 20%;">Abbrechen</button>
             </div>
         </div>
         <%
@@ -413,6 +469,13 @@
                         $('.sortable.table').tablesort();
                         $('th').popup();
                         document.getElementById("div_csv_pdf").style.display = "block";
+            <%
+                }
+
+                if (request.getAttribute("dynamisch_vorlage_vorhanden") != null)
+                {
+            %>
+                        $('#modal_vorhanden').modal('show');
             <%
                 }
             %>

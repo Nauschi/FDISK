@@ -55,6 +55,7 @@
 
             <div class="actions">
                 <button type="button" onClick="document.form_submit.submit();" name="button_bestaetigen" class="ui button styleGruen"  style="width: 20%;">Bestätigen</button>
+                <button type="button" onClick="$('.ui.modal').modal('hide');" name="button_abbrechen" class="ui button styleRot"  style="width: 20%;">Abbrechen</button>
             </div>
         </div>
         <%

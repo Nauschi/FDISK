@@ -11,6 +11,8 @@ var map = {'Test': 'anushgjk'};
 $('.ui.dropdown').dropdown();
 
 
+
+
 function setMap(otherMap)
 {
     map = otherMap;
@@ -45,12 +47,20 @@ function onTypChanged(select_typ, strLastFilter, strLastOperator)
         aktualisiereOperator(strID, operatorFeld, strLastOperator);
         document.getElementById("div_filter_cb_" + strID).style.display = "none";
         document.getElementById("div_filter_txt_" + strID).style.display = "block";
+        if (strLastFilter != null)
+        {
+            document.getElementById("input_filter_" + strID).value = strLastFilter;
+        }
         document.getElementById("div_filter_datepicker_" + strID).style.display = "none";
     } else if (strBoxArt == "datepicker")
     {
         document.getElementById("div_filter_cb_" + strID).style.display = "none";
         document.getElementById("div_filter_txt_" + strID).style.display = "none";
         document.getElementById("div_filter_datepicker_" + strID).style.display = "block";
+        if (strLastFilter != null)
+        {
+            document.getElementById("input_filter_datepicker_" + strID).value = strLastFilter;
+        }
     }
 
     if (strBoxArt == "datepicker" || strBoxArt == "cb")
@@ -149,15 +159,13 @@ function onVorschau(intZahler)
     var strWertVonLetztemSelect = document.getElementById("select_verknuepfung_" + intZahler).value;
     if (strWertVonLetztemSelect != "N/A")
     {
-        alert("Letzte Verknüpfung muss leer sein!");
+        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Letzte Verknüpfung muss leer sein";
+        $('#modal_fehler').modal('show');
         $('.ui.dropdown').dropdown();
         return false;
     } else
     {
-
-        //document.form_plus_minus_vorschau.submit();
         return true;
-        //alert("Weiter zur Vorschau");
     }
 
 
@@ -175,7 +183,7 @@ function onActionSubmit(intZaehler, strButton)
         {
             return;
         }
-    } else if (strButton == "erstelle_vorlage")
+    } else if (strButton == "erstelle_vorlage" || strButton == "erstelle_vorlage_2")
     {
         var boolIsCorrect = onErstelleNeueVorlage();
         if (boolIsCorrect == false)
@@ -201,13 +209,9 @@ function onActionSubmit(intZaehler, strButton)
         {
             strFilter_value = document.getElementById("input_filter_datepicker_" + i).value;
         }
-
         var strKlammerZu_value = document.getElementById("select_klammer_zu_" + i).value;
         var strVerknuefung_value = document.getElementById("select_verknuepfung_" + i).value;
-
         var strHTML = '<input type="hidden" name="hidden_element_data_' + i + '" value="' + strKlammerAuf_value + ";" + strTyp_value + ";" + strOperator_value + ";" + strFilter_value + ";" + strKlammerZu_value + ";" + strVerknuefung_value + '">';
-        //alert(strHTML);
-
         div_element.innerHTML = div_element.innerHTML + strHTML;
     }
     strHTML = '<input type="hidden" name="hidden_action" value="' + strButton + '">';
@@ -263,7 +267,20 @@ function showLadenModal()
         $('#modal_lade_vorlage').modal('show');
     } else
     {
-        alert("Keine Vorlagen gefunden");
+        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Keine Vorlagen gefunden";
+        $('#modal_fehler').modal('show');
+    }
+}
+
+function showLoeschenModal()
+{
+    if (document.getElementById("modal_loesche_vorlage") != null)
+    {
+        $('#modal_loesche_vorlage').modal('show');
+    } else
+    {
+        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Keine Vorlagen gefunden";
+        $('#modal_fehler').modal('show');
     }
 }
 

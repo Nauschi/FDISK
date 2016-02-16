@@ -59,6 +59,7 @@ public class MainServlet extends HttpServlet
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
+
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter())
         {
@@ -92,8 +93,10 @@ public class MainServlet extends HttpServlet
 //        if (session == null || session.getAttribute("lastPage") == null)
 //        {
 //            System.out.println("MainServlet.doPost: session = null");
+
         request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
         return;
+
 //        }
 //        String strLastPage = (String) session.getAttribute("lastPage");
 //        request.getRequestDispatcher("jsp/" + strLastPage + ".jsp").forward(request, response);
@@ -175,7 +178,7 @@ public class MainServlet extends HttpServlet
                 {
                     System.out.println("MainServlet.doPost: hidden_action: in vorschau");
                     generiereDynamischeVorschau(request, response, session);
-                } else if (request.getParameter("hidden_action").equals("erstelle_vorlage"))
+                } else if (request.getParameter("hidden_action").equals("erstelle_vorlage") || request.getParameter("hidden_action").equals("erstelle_vorlage_2"))
                 {
                     erstelleDynamischeVorlage(request, response, session);
                 } else
@@ -188,6 +191,11 @@ public class MainServlet extends HttpServlet
             } else if (request.getParameter("select_lade_vorlage") != null)
             {
                 ladeDynamischeVorlage(request, response, session);
+                request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
+                return;
+            } else if (request.getParameter("select_loesche_vorlage") != null)
+            {
+                loescheDynamischeVorlage(request, response, session);
                 request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
                 return;
             } else if (request.getParameter("logout") != null)
@@ -203,7 +211,7 @@ public class MainServlet extends HttpServlet
             }
         }
 
-        processRequest(request, response);
+        request.getRequestDispatcher("jsp/error.jsp").forward(request, response);
     }
 
     private void loginUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
@@ -473,15 +481,20 @@ public class MainServlet extends HttpServlet
         int intUserID = (int) session.getAttribute("intUserID");
         ServletContext sc = this.getServletContext();
         HashMap<String, LinkedList<String>> hsVorlagen = new HashMap<>();
-        if (sc.getAttribute("userid_" + intUserID + "_vorlagen") != null)
+        if (request.getParameter("hidden_action").equals("erstelle_vorlage"))
         {
-            hsVorlagen = (HashMap<String, LinkedList<String>>) sc.getAttribute("userid_" + intUserID + "_vorlagen");
-            if (hsVorlagen.get(strVorlageName) != null)
+            if (sc.getAttribute("userid_" + intUserID + "_vorlagen") != null)
             {
-                //send some error.....
-                System.out.println("///Shit///");
-                return;
-
+                hsVorlagen = (HashMap<String, LinkedList<String>>) sc.getAttribute("userid_" + intUserID + "_vorlagen");
+                if (hsVorlagen.get(strVorlageName) != null && request.getParameter("hidden_action").equals("erstelle_vorlage"))
+                {
+                    request.setAttribute("dynamisch_vorlage_vorhanden", true);
+                    System.out.println("///Shit///");
+                    return;
+                }else if(hsVorlagen.get(strVorlageName) != null &&request.getParameter("hidden_action").equals("erstelle_vorlage_2"))
+                {
+                    hsVorlagen.remove(strVorlageName);
+                }
             }
         }
         LinkedList<String> liDaten = new LinkedList<>();
@@ -509,9 +522,20 @@ public class MainServlet extends HttpServlet
         for (int i = 0; i < liDaten.size(); i++)
         {
             String strZeile = liDaten.get(i);
-            request.setAttribute("hidden_element_data_" + (i+1), strZeile);
+            request.setAttribute("hidden_element_data_" + (i + 1), strZeile);
         }
-        System.out.println("Li.size: "+liDaten.size());
+        System.out.println("Li.size: " + liDaten.size());
+    }
+
+    private void loescheDynamischeVorlage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+    {
+        System.out.println("/////////////MainServlet.loescheDynamischeVorlage///////////////");
+        ServletContext sc = this.getServletContext();
+        String strVorlageName = request.getParameter("select_loesche_vorlage");
+        int intUserID = (int) session.getAttribute("intUserID");
+        HashMap<String, LinkedList<String>> hsVorlagen = (HashMap<String, LinkedList<String>>) sc.getAttribute("userid_" + intUserID + "_vorlagen");
+        hsVorlagen.remove(strVorlageName);
+        sc.setAttribute("userid_" + intUserID + "_vorlagen", hsVorlagen);
     }
 
     /**
