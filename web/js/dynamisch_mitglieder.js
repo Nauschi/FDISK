@@ -151,21 +151,37 @@ function onVorschau(intZahler)
     {
         alert("Letzte Verknüpfung muss leer sein!");
         $('.ui.dropdown').dropdown();
+        return false;
     } else
     {
 
-        document.form_plus_minus_vorschau.submit();
+        //document.form_plus_minus_vorschau.submit();
+        return true;
         //alert("Weiter zur Vorschau");
     }
 
 
 }
 
-function onPlusMinusZeile_Vorschau(intZaehler, strButton)
+function onActionSubmit(intZaehler, strButton)
 {
     if (strButton == "minus")
     {
         intZaehler--;
+    } else if (strButton == "vorschau")
+    {
+        var boolIsCorrect = onVorschau(intZaehler);
+        if (boolIsCorrect == false)
+        {
+            return;
+        }
+    } else if (strButton == "erstelle_vorlage")
+    {
+        var boolIsCorrect = onErstelleNeueVorlage();
+        if (boolIsCorrect == false)
+        {
+            return;
+        }
     }
     for (var i = 1; i <= intZaehler; i++)
     {
@@ -196,14 +212,22 @@ function onPlusMinusZeile_Vorschau(intZaehler, strButton)
     }
     strHTML = '<input type="hidden" name="hidden_action" value="' + strButton + '">';
     div_element.innerHTML = div_element.innerHTML + strHTML;
-    if (strButton == "vorschau")
+    document.form_plus_minus_vorschau.submit();
+}
+
+function onErstelleNeueVorlage()
+{
+    var strVorlageName = document.getElementById("input_neueVorlage").value;
+    if (strVorlageName != "")
     {
-        onVorschau(intZaehler);
+        document.getElementById("hidden_vorlage_name").value = strVorlageName;
+        return true;
     } else
     {
-        document.form_plus_minus_vorschau.submit();
-    }
+        alert("Eingabefeld leer");
+        return false;
 
+    }
 }
 
 
@@ -226,4 +250,22 @@ function saveDataForCSV()
     document.getElementById("hidden_CSVData").value = strTable;
     document.formCSV.submit();
 }
+
+function showErstellenModal()
+{
+    $('#modal_erstelle_vorlage').modal('show');
+}
+
+function showLadenModal()
+{
+    if (document.getElementById("modal_lade_vorlage") != null)
+    {
+        $('#modal_lade_vorlage').modal('show');
+    } else
+    {
+        alert("Keine Vorlagen gefunden");
+    }
+}
+
+
 

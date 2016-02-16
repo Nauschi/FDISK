@@ -80,8 +80,10 @@
         </div>
         <%
             int intZaehler = 1;
-
-            if (request.getParameter("hidden_action") != null)
+            if (request.getAttribute("hidden_zaehler") != null)
+            {
+                intZaehler = (int) request.getAttribute("hidden_zaehler");
+            } else if (request.getParameter("hidden_action") != null)
             {
 
                 String strAction = request.getParameter("hidden_action");
@@ -95,7 +97,7 @@
                     {
                         intZaehler = 1;
                     }
-                } else if (strAction.equals("vorschau"))
+                } else if (strAction.equals("vorschau") || strAction.equals("erstelle_vorlage"))
                 {
                     intZaehler = Integer.parseInt(request.getParameter("hidden_zaehler"));
                 }
@@ -105,8 +107,17 @@
 
         <h1>Dynamisch - Mitglieder</h1>
         <!--<div class="ui grid" id="div_mitte">-->
-
         <br/>
+        <div id="div_vorlage" class="ui menu">
+            <div class="ui right dropdown item">
+                Vorlage
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <div class="item" onclick="showErstellenModal();">Erstellen</div>
+                    <div class="item" onclick="showLadenModal();">Laden</div>
+                </div>
+            </div>
+        </div>
         <div id="dyn_main_div" >
             <div class="ui grid" id="div_dyn_headers">
                 <div class="two wide column" style="width: 100%;">
@@ -130,7 +141,7 @@
             </div>
             <form action="MainServlet" method="POST" name="form_plus_minus_vorschau">
                 <input type="hidden" name="hidden_zaehler" value="<%=intZaehler%>">
-
+                <input type="hidden" name="hidden_vorlage_name" id="hidden_vorlage_name">
                 <%
                     for (int i = 1; i <= intZaehler; i++)
                     {
@@ -149,7 +160,12 @@
                         <select class="ui fluid dropdown" onchange="onTypChanged(this, null, null)" id="select_typ_<%=i%>">
                             <%
                                 String strAktTypMitBoxArt = "";
-                                if (request.getParameter("hidden_element_data_" + i) != null)
+                                if (request.getAttribute("hidden_element_data_" + i) != null)
+                                {
+                                    String strTyp = ((String)request.getAttribute("hidden_element_data_" + i)).split(";")[1];
+                                    String strBoxArt = ((String)request.getAttribute("hidden_element_data_" + i)).split(";")[2];
+                                    strAktTypMitBoxArt = strTyp + ";" + strBoxArt;
+                                } else if (request.getParameter("hidden_element_data_" + i) != null)
                                 {
                                     String strTyp = request.getParameter("hidden_element_data_" + i).split(";")[1];
                                     String strBoxArt = request.getParameter("hidden_element_data_" + i).split(";")[2];
@@ -231,13 +247,13 @@
 
                 <div style="width: 30%; margin: 0 auto" class="ui equal width grid">
                     <div class="column">
-                        <button name="button_minus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'minus')" class="ui button styleRot" title="Letzte Zeile entfernen" style="float: right; width: 50%;">-</button>
+                        <button name="button_minus" type="button" onclick="onActionSubmit(<%=intZaehler%>, 'minus')" class="ui button styleRot" title="Letzte Zeile entfernen" style="float: right; width: 50%;">-</button>
                     </div>
                     <div class="column" >
-                        <button name="button_vorschau" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'vorschau')" class="ui button styleGrau" title="Vorschau erstellen" style="width: 100%;">Vorschau</button>
+                        <button name="button_vorschau" type="button" onclick="onActionSubmit(<%=intZaehler%>, 'vorschau')" class="ui button styleGrau" title="Vorschau erstellen" style="width: 100%;">Vorschau</button>
                     </div>
                     <div class="column">
-                        <button name="button_plus" type="button" onclick="onPlusMinusZeile_Vorschau(<%=intZaehler%>, 'plus')" class="ui button styleGruen" title="Neue Zeile einfügen" style="float: left; width: 50%;">+</button>
+                        <button name="button_plus" type="button" onclick="onActionSubmit(<%=intZaehler%>, 'plus')" class="ui button styleGruen" title="Neue Zeile einfügen" style="float: left; width: 50%;">+</button>
                     </div>
                 </div>
 
@@ -280,6 +296,39 @@
 
         %>
 
+        <div class="ui small modal" id="modal_erstelle_vorlage">
+            <div class="header">Neue Vorlage</div>
+            <div class="content">
+                <div class="ui input" style="width: 100%">
+                    <input placeholder="Name" type="text" name="input_neueVorlage" id="input_neueVorlage">
+                </div>
+            </div>
+            <div class="actions">
+                <button type="button" onClick="onActionSubmit(<%=intZaehler%>, 'erstelle_vorlage')" name="button_bestätigen_erstelleVorlage" class="ui button styleGruen"  style="width: 20%;">Bestätigen</button>
+            </div>
+        </div>
+
+        <%
+            if (application.getAttribute("userid_" + session.getAttribute("intUserID") + "_vorlagen") != null)
+            {
+        %>
+        <div class="ui small modal" id="modal_lade_vorlage">
+            <div class="header">Wählen Sie bitte eine Vorlage aus</div>
+            <div class="content">
+                <form action="MainServlet" method="POST" name="form_ladeVorlage">
+                    <select name="select_lade_vorlage" class="ui fluid dropdown" id="select_vorlage">
+                        <%=leseVorhandeneVorlagen(application, session)%>
+                    </select>
+                </form>
+            </div>
+            <div class="actions">
+                <button type="button" onClick="document.form_ladeVorlage.submit();" name="button_bestätigen_ladeVorlage" class="ui button styleGruen"  style="width: 20%;">Bestätigen</button>
+            </div>
+        </div>
+        <%
+            }
+        %>
+
         <script src="js/jquery-2.1.1.min.js"></script>
         <script src="semantic/dist/semantic.min.js"></script>
         <script src="js/jquery-ui.js"></script> 
@@ -287,26 +336,26 @@
         <script src="js/dynamisch_mitglieder.js"></script>
         <script src="js/datepicker-de.js"></script>
         <script>
-                        $(function () {
+                    $(function () {
             <%                for (int i = 1; i <= intZaehler; i++)
                 {
             %>
 
-                            $("#input_filter_datepicker_<%=i%>").datepicker({
-                                onSelect: function (selected)
-                                {
-                                    $("#input_filter_datepicker_<%=i%>").datepicker("option", "showAnim", "slideDown");
-                                    $("#input_filter_datepicker_<%=i%>").datepicker("option", "dateFormat", "dd.mm.yy");
-                                    $("#input_filter_datepicker_<%=i%>").datepicker("option", $.datepicker.regional['de']);
-                                }
-                            });
+                        $("#input_filter_datepicker_<%=i%>").datepicker({
+                            onSelect: function (selected)
+                            {
+                                $("#input_filter_datepicker_<%=i%>").datepicker("option", "showAnim", "slideDown");
+                                $("#input_filter_datepicker_<%=i%>").datepicker("option", "dateFormat", "dd.mm.yy");
+                                $("#input_filter_datepicker_<%=i%>").datepicker("option", $.datepicker.regional['de']);
+                            }
+                        });
             <%
                 }
                 HashMap<String, LinkedList<String>> hsFilter = (HashMap<String, LinkedList<String>>) session.getAttribute("hashMap_typ");
                 Set<String> set = hsFilter.keySet();
                 Iterator it = set.iterator();
             %>
-                            var mapAlt = {
+                        var mapAlt = {
             <%
                 while (it.hasNext())
                 {
@@ -336,34 +385,38 @@
                 }
 
             %>
-                            };
-                            setMap(mapAlt);
+                        };
+                        setMap(mapAlt);
 
             <%                for (int i = 1; i <= intZaehler; i++)
                 {
             %>
-                            var strLastFilter = null;
-                            var strLastOperator = null;
+                        var strLastFilter = null;
+                        var strLastOperator = null;
             <%
-                if (request.getParameter("hidden_element_data_" + i) != null)
+                if (request.getAttribute("hidden_element_data_" + i) != null)
+                {
+                    out.println("strLastFilter= '" + ((String) request.getAttribute("hidden_element_data_" + i)).split(";")[4] + "';");
+                    out.println("strLastOperator= '" + ((String) request.getAttribute("hidden_element_data_" + i)).split(";")[3] + "';");
+                } else if (request.getParameter("hidden_element_data_" + i) != null)
                 {
                     out.println("strLastFilter= '" + request.getParameter("hidden_element_data_" + i).split(";")[4] + "';");
                     out.println("strLastOperator= '" + request.getParameter("hidden_element_data_" + i).split(";")[3] + "';");
                 }
 
             %>
-                            onTypChanged(document.getElementById("select_typ_<%=i%>"), strLastFilter, strLastOperator);
+                        onTypChanged(document.getElementById("select_typ_<%=i%>"), strLastFilter, strLastOperator);
             <%   }
                 if (request.getAttribute("dyn_table") != null)
                 {
             %>
-                            $('.sortable.table').tablesort();
-                            $('th').popup();
-                            document.getElementById("div_csv_pdf").style.display = "block";
+                        $('.sortable.table').tablesort();
+                        $('th').popup();
+                        document.getElementById("div_csv_pdf").style.display = "block";
             <%
                 }
             %>
-                        });
+                    });
         </script>
 
 
@@ -373,17 +426,32 @@
 
 
 <%!
+    private String leseVorhandeneVorlagen(ServletContext application, HttpSession session)
+    {
+        String strHTML = "";
+        HashMap<String, LinkedList<String>> hsVorlagen = (HashMap<String, LinkedList<String>>) application.getAttribute("userid_" + session.getAttribute("intUserID") + "_vorlagen");
+        Set<String> setName = hsVorlagen.keySet();
+        for (String strName : setName)
+        {
+            strHTML += "<option value='" + strName + "'>" + strName + "</option>";
+        }
+        return strHTML;
+    }
+
     /**
      * Generiert den Inhalt eines Dropdowns und setzt, falls vorhanden, zuletzt
      * gewähltes Item auf "selected"
      */
-    public String generiereSelect(int intIndex, String[] strFeld, HttpServletRequest request, int intAktI)
+    private String generiereSelect(int intIndex, String[] strFeld, HttpServletRequest request, int intAktI)
     {
         try
         {
             String strAusgabe = "";
             String strLetzteAuswahl = "";
-            if (request.getParameter("hidden_element_data_" + intAktI) != null)
+            if (request.getAttribute("hidden_element_data_" + intAktI) != null)
+            {
+                strLetzteAuswahl = ((String) request.getAttribute("hidden_element_data_" + intAktI)).split(";")[intIndex];
+            } else if (request.getParameter("hidden_element_data_" + intAktI) != null)
             {
                 strLetzteAuswahl = request.getParameter("hidden_element_data_" + intAktI).split(";")[intIndex];
             }

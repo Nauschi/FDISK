@@ -369,12 +369,16 @@
             <%
             } else
             {
+                if (strHTML.split("<tr>").length > 1)
+                {
             %>
+
                                                 document.getElementById("div_csv_pdf").style.display = "block";
                                                 document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
             <%=setzeTablesort(request)%>
                                                 $('.sort').popup();
             <%
+                        }
                     }
                 }
             %>

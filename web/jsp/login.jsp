@@ -36,23 +36,18 @@
         </div>
         <h1>Login</h1>
 
-
-
-
-
         <%
             if (liBerechtigungen != null)
             {
         %>
 
         <div class="ui modal">
-
             <div class="header">
                 Wählen Sie bitte eine Instanz aus
             </div>
             <div class="content">
                 <form action="MainServlet" method="POST" name="form_submit">
-                    <select name="select_berechtigung" class="ui fluid dropdown" id="select_verknüpfung">
+                    <select name="select_berechtigung" class="ui fluid dropdown">
                         <%=generiereBerechtigungen()%>
                     </select>
                 </form>

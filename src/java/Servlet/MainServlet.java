@@ -175,11 +175,19 @@ public class MainServlet extends HttpServlet
                 {
                     System.out.println("MainServlet.doPost: hidden_action: in vorschau");
                     generiereDynamischeVorschau(request, response, session);
+                } else if (request.getParameter("hidden_action").equals("erstelle_vorlage"))
+                {
+                    erstelleDynamischeVorlage(request, response, session);
                 } else
                 {
                     System.out.println("MainServlet.doPost: hidden_action: in plus-minus");
 
                 }
+                request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
+                return;
+            } else if (request.getParameter("select_lade_vorlage") != null)
+            {
+                ladeDynamischeVorlage(request, response, session);
                 request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
                 return;
             } else if (request.getParameter("logout") != null)
@@ -203,8 +211,8 @@ public class MainServlet extends HttpServlet
         System.out.println("MainServlet.loginUser: button_Login");
         String strBenutzername = request.getParameter("input_benutzername");
         String strKennwort = request.getParameter("input_kennwort");
-        System.out.println("Benutzername: " + strBenutzername);
-        System.out.println("Kennwort: " + strKennwort);
+//        System.out.println("Benutzername: " + strBenutzername);
+//        System.out.println("Kennwort: " + strKennwort);
 
         //UserID zu login Daten bekommen
         int intIDUser = -1;
@@ -381,7 +389,7 @@ public class MainServlet extends HttpServlet
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
 //                String strKennzeichen = request.getParameter("input_kennzeichen");
-                String strKennzeichen = "GU331FF";
+                String strKennzeichen = "HB-2-FXE";
 
                 //Login für Farhetnbuch implementiert, also können die Übergabeparameter da dazu gemacht werden lg nauschi
                 //System.out.println(access.getFahrtenbuch("", "", strKennzeichen).toString());
@@ -405,18 +413,18 @@ public class MainServlet extends HttpServlet
     {
         LinkedList<Kurs> liKurse = access.getKursstatistikkurse(strVonDatum, strBisDatum);
         String strZusatzInfo = "<table class='tablesorter2 ui celled table'><thead>";
-        strZusatzInfo+="<tr>"
+        strZusatzInfo += "<tr>"
                 + "<th data-content='nach Kursbezeichnung sortieren' class='sort'>Kursbezeichnung</th>"
                 + "<th data-content='nach Kursstatus sortieren' class='sort'>Kursstatus</th>"
                 + "<th data-content='nach Kursdatum sortieren' class='sort'>Kursdatum</th>"
                 + "<th>-</th>"
                 + "</tr>";
-        strZusatzInfo+="</thead><tbody>";
+        strZusatzInfo += "</thead><tbody>";
         for (Kurs kurs : liKurse)
         {
-            strZusatzInfo+=kurs.toString();
+            strZusatzInfo += kurs.toString();
         }
-        strZusatzInfo+="</tbody></table>";
+        strZusatzInfo += "</tbody></table>";
         return strZusatzInfo;
     }
 
@@ -456,6 +464,54 @@ public class MainServlet extends HttpServlet
         {
             Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void erstelleDynamischeVorlage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+    {
+        System.out.println("/////////////MainServlet.erstelleDynamischeVorlage///////////////");
+        String strVorlageName = request.getParameter("hidden_vorlage_name");
+        int intUserID = (int) session.getAttribute("intUserID");
+        ServletContext sc = this.getServletContext();
+        HashMap<String, LinkedList<String>> hsVorlagen = new HashMap<>();
+        if (sc.getAttribute("userid_" + intUserID + "_vorlagen") != null)
+        {
+            hsVorlagen = (HashMap<String, LinkedList<String>>) sc.getAttribute("userid_" + intUserID + "_vorlagen");
+            if (hsVorlagen.get(strVorlageName) != null)
+            {
+                //send some error.....
+                System.out.println("///Shit///");
+                return;
+
+            }
+        }
+        LinkedList<String> liDaten = new LinkedList<>();
+        int intZaehler = Integer.parseInt(request.getParameter("hidden_zaehler"));
+        for (int i = 1; i <= intZaehler; i++)
+        {
+            String strZeile = request.getParameter("hidden_element_data_" + i);
+            liDaten.add(strZeile);
+        }
+        hsVorlagen.put(strVorlageName, liDaten);
+        sc.setAttribute("userid_" + intUserID + "_vorlagen", hsVorlagen);
+
+        System.out.println("HS: " + hsVorlagen.size());
+    }
+
+    private void ladeDynamischeVorlage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+    {
+        System.out.println("/////////////MainServlet.ladeDynamischeVorlage///////////////");
+        ServletContext sc = this.getServletContext();
+        String strVorlageName = request.getParameter("select_lade_vorlage");
+        int intUserID = (int) session.getAttribute("intUserID");
+        HashMap<String, LinkedList<String>> hsVorlagen = (HashMap<String, LinkedList<String>>) sc.getAttribute("userid_" + intUserID + "_vorlagen");
+        LinkedList<String> liDaten = hsVorlagen.get(strVorlageName);
+        request.setAttribute("hidden_zaehler", liDaten.size());
+        for (int i = 0; i < liDaten.size(); i++)
+        {
+            String strZeile = liDaten.get(i);
+            request.setAttribute("hidden_element_data_" + (i+1), strZeile);
+        }
+        System.out.println("Li.size: "+liDaten.size());
     }
 
     /**
