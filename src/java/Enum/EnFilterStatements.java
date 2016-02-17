@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Database;
+package Enum;
 
 /**
  *
  * @author Corinna
  */
-public enum EnFilterStatement
+public enum EnFilterStatements
 {
     getFilterFuerGeschlecht("SELECT DISTINCT Geschlecht FROM FDISK.dbo.stmkmitglieder ORDER BY Geschlecht"),
     getFilterFuerFuehrerscheinklassen("SELECT DISTINCT Fahrgenehmigungsklasse FROM FDISK.dbo.stmkgesetzl_fahrgenehmigungen ORDER BY Fahrgenehmigungsklasse"),
@@ -33,7 +33,7 @@ public enum EnFilterStatement
     
     private final String strStatement;
 
-    private EnFilterStatement(String strStatement)
+    private EnFilterStatements(String strStatement)
     {
         this.strStatement = strStatement;
     }
