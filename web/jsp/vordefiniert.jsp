@@ -447,7 +447,8 @@
                 || request.getParameter("input_aktbericht").equals("Dienstzeitliste")
                 || request.getParameter("input_aktbericht").equals("Einfache Mitgliederliste")
                 || request.getParameter("input_aktbericht").equals("Erreichbarkeitsliste")
-                || request.getParameter("input_aktbericht").equals("Adressliste")))
+                || request.getParameter("input_aktbericht").equals("Adressliste")
+                || request.getParameter("input_aktbericht").equals("Stundenauswertung je Mitglied je Instanz")))
         {
             if (request.getParameter("input_aktbericht").equals("Geburtstagsliste")
                     || request.getParameter("input_aktbericht").equals("Dienstzeitliste"))
@@ -478,7 +479,8 @@
                 && request.getParameter("input_aktbericht").equals("Digitales Fahrtenbuch"))
         {
             return "$('.tablesorter').tablesorter({headers: {1: {sorter: 'berichtdate'},2: {sorter: 'berichtdate'}}});";
-        } else
+        } 
+        else
         {
             return "$('.tablesorter').tablesorter();";
         }
