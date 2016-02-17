@@ -163,7 +163,11 @@ public class MainServlet extends HttpServlet
 
             } else if (request.getParameter("vordefiniert") != null)
             {
-                System.out.println("MainServlet.doPost: vordefiniert");
+                request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
+                return;
+            } else if (request.getParameter("button_ladeKennzeichen") != null)
+            {
+                ladeKennzeichen(request);
                 request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
                 return;
             } else if (request.getParameter("button_vorschau") != null)
@@ -396,14 +400,16 @@ public class MainServlet extends HttpServlet
             {
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
-//                String strKennzeichen = request.getParameter("input_kennzeichen");
+
+                String strKennzeichen1 = request.getParameter("input_kennzeichen");
+                System.out.println("Kennzeichen: " + strKennzeichen1);
                 String strKennzeichen = "HB-2-FXE";
 
                 //Login für Farhetnbuch implementiert, also können die Übergabeparameter da dazu gemacht werden lg nauschi
                 //System.out.println(access.getFahrtenbuch("", "", strKennzeichen).toString());
                 LinkedList<Fahrzeug> liFahrzeuge = access.getFahrtenbuch(intBereichNr, intAbschnittNr, strFeuerwehr, strVonDatum, strBisDatum, strKennzeichen);
                 String strDetails = access.getDetailsFuerFahrtenbuchFahrzeug(liFahrzeuge);
-                request.setAttribute("zusatz_informationen", strDetails);
+                request.setAttribute("zusatz_informationen", strDetails.isEmpty() ? null : strDetails);
                 request.setAttribute("liste", liFahrzeuge);
             } else
             {
@@ -491,7 +497,7 @@ public class MainServlet extends HttpServlet
                     request.setAttribute("dynamisch_vorlage_vorhanden", true);
                     System.out.println("///Shit///");
                     return;
-                }else if(hsVorlagen.get(strVorlageName) != null &&request.getParameter("hidden_action").equals("erstelle_vorlage_2"))
+                } else if (hsVorlagen.get(strVorlageName) != null && request.getParameter("hidden_action").equals("erstelle_vorlage_2"))
                 {
                     hsVorlagen.remove(strVorlageName);
                 }
@@ -536,6 +542,20 @@ public class MainServlet extends HttpServlet
         HashMap<String, LinkedList<String>> hsVorlagen = (HashMap<String, LinkedList<String>>) sc.getAttribute("userid_" + intUserID + "_vorlagen");
         hsVorlagen.remove(strVorlageName);
         sc.setAttribute("userid_" + intUserID + "_vorlagen", hsVorlagen);
+    }
+
+    private void ladeKennzeichen(HttpServletRequest request)
+    {
+        System.out.println("////////////////Lade Kennzeichen/////////////");
+        int intBereichNr = Integer.parseInt(request.getParameter("select_bezirk"));
+        int intAbschnittNr = Integer.parseInt(request.getParameter("select_abschnitt"));
+        String strFeuerwehr = request.getParameter("select_feuerwehr");
+        LinkedList<String> liTest = new LinkedList<>();
+        liTest.add("Kennzeichen 1");
+        liTest.add("Kennzeichen 2");
+        liTest.add("Kennzeichen 3");
+        request.setAttribute("select_kennzeichen_liste", liTest);
+
     }
 
     /**

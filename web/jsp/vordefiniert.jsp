@@ -92,7 +92,7 @@
                             <div class="column" id="div_bezirk" disabled>
                                 <fieldset id="fieldset_bezirk">
                                     <legend><b>Bezirk</b></legend>
-                                    <select  name="select_bezirk" class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
+                                    <select  name="select_bezirk"  class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
                                         <%=generiereBezirk(session)%>
                                     </select>
                                 </fieldset>
@@ -121,7 +121,7 @@
                             <div class="column" id="div_feuerwehr">
                                 <fieldset id="fieldset_feuerwehr">
                                     <legend><b>Feuerwehr</b></legend>
-                                    <select name="select_feuerwehr" class="ui fluid disabled dropdown" id="select_feuerwehr">
+                                    <select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr" onchange="feuerwehrChanged(this)">
                                         <%=generiereFeuerwehr(session)%>
                                     </select>
                                 </fieldset>
@@ -164,7 +164,7 @@
                             <div class="column" id="div_select_jahr" style="display: none">
                                 <fieldset id="fieldset_jahr">
                                     <legend><b>Jahr</b></legend>
-                                    <select name="select_jahr" class="ui fluid dropdown" id="select_jahr" style="display: none">
+                                    <select name="select_jahr" class="ui fluid dropdown" id="select_jahr">
                                         <%
 
                                             int intYear = LocalDate.now().getYear();
@@ -190,12 +190,18 @@
                                     </select>
                                 </fieldset>
                             </div>
-                            <div class="column" id="div_kennzeichen" style="display: none;">
-                                <fieldset id="fieldset_kennzeichen">
+                            <div class="column" id="div_kennzeichen">
+                                <fieldset>
                                     <legend><b>Kennzeichen</b></legend>
-                                    <div class="ui input">
-                                        <input id="input_kennzeichen" name="input_kennzeichen" placeholder="Kennzeichen" type="text">
+                                    <div class="ui search">
+                                        <div class="ui input">
+                                            <input id="input_kennzeichen" class="prompt" style="border-radius: .28571429rem;" name="input_kennzeichen" placeholder="Kennzeichen" type="text" 
+                                                   <%=request.getParameter("input_kennzeichen")!=null? "value='"+request.getParameter("input_kennzeichen")+"'":"" %>>
+                                            <button type="submit" class="ui button styleGruen" name="button_ladeKennzeichen" title="Lade Kennzeichen">+</button>
+                                        </div>
+                                        <div class="results"></div>
                                     </div>
+
                                 </fieldset>
                             </div>
 
@@ -247,8 +253,7 @@
                         </fieldset>
                         </br>
                     </div>
-                    <%
-                        if (request.getAttribute("zusatz_informationen") != null)
+                    <%                        if (request.getAttribute("zusatz_informationen") != null)
                         {
                     %>
 
@@ -381,11 +386,53 @@
                         }
                     }
                 }
+                if (request.getParameter("select_abschnitt") != null && intIDGruppe == 5)
+                {
             %>
+                                                bezirkChanged(document.getElementById("select_bezirk"),<%=request.getParameter("select_abschnitt")%>);
+            <%
+                }
+                if (request.getParameter("select_feuerwehr") != null && (intIDGruppe == 15 || intIDGruppe == 5))
+                {
+            %>
+                                                abschittChanged(document.getElementById("select_abschnitt"),<%=request.getParameter("select_feuerwehr")%>);
+            <%
+                }
+                if (request.getParameter("input_aktbericht") != null && request.getParameter("input_aktbericht").equals("Digitales Fahrtenbuch"))
+                {
+            %>
+                                                if (document.getElementById("div_zusatzDaten") == null)
+                                                {
+                                                    document.getElementById("div_fahrtenbuch").style.display = "block";
+                                                }
+            <%
+                }
+            %>
+
                                                 document.getElementById("div_loader").className = "ui disabled loader";
                                                 fixDropdowns("select_bezirk");
                                                 fixDropdowns("select_abschnitt");
                                                 fixDropdowns("select_feuerwehr");
+
+            <%
+                if (request.getAttribute("select_kennzeichen_liste") != null)
+                {
+            %>
+                                                $('.ui.search').search({minCharacters : 0, searchFullText: false, source: [
+            <%
+                LinkedList<String> liKennzeichen = (LinkedList<String>) request.getAttribute("select_kennzeichen_liste");
+                for (String kennzeichen : liKennzeichen)
+                {
+            %>
+                                                {title: '<%=kennzeichen%>'}<%=kennzeichen.equals(liKennzeichen.getLast()) ? "" : ","%>
+            <%
+                }
+            %>
+                                                ], error : {noResults   : 'Keine Ergebnisse'}});
+                                                setDeleteOnChange();
+            <%
+                }
+            %>
                                             });
         </script>        
 
