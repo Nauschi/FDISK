@@ -28,6 +28,7 @@ import Beans.Taetigkeitsbericht;
 import Beans.Uebungsbericht;
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -731,16 +732,16 @@ public class DB_Access
                     + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(m.instanznummer = f.instanznummer)"
                     + " WHERE f.Bereich_Nr = " + intBereichnr
                     + " AND m.datum_abgemeldet IS NULL "
-                    + " GROUP BY " 
-                    + " m.id_personen, " 
+                    + " GROUP BY "
+                    + " m.id_personen, "
                     + " m.standesbuchnummer, "
-                    + " m.dienstgrad, " 
-                    + " m.titel, " 
-                    + " m.vorname, " 
-                    + " m.zuname, " 
-                    + " m.geburtsdatum, " 
-                    + " m.datum_abgemeldet, " 
-                    + " m.eintrittsdatum," 
+                    + " m.dienstgrad, "
+                    + " m.titel, "
+                    + " m.vorname, "
+                    + " m.zuname, "
+                    + " m.geburtsdatum, "
+                    + " m.datum_abgemeldet, "
+                    + " m.eintrittsdatum,"
                     + " m.vordienstzeit ";
         } else
         {
@@ -751,16 +752,16 @@ public class DB_Access
                         + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(m.instanznummer = f.instanznummer)"
                         + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr
                         + " AND m.datum_abgemeldet IS NULL "
-                        + " GROUP BY " 
-                        + " m.id_personen, " 
+                        + " GROUP BY "
+                        + " m.id_personen, "
                         + " m.standesbuchnummer, "
-                        + " m.dienstgrad, " 
-                        + " m.titel, " 
-                        + " m.vorname, " 
-                        + " m.zuname, " 
-                        + " m.geburtsdatum, " 
-                        + " m.datum_abgemeldet, " 
-                        + " m.eintrittsdatum," 
+                        + " m.dienstgrad, "
+                        + " m.titel, "
+                        + " m.vorname, "
+                        + " m.zuname, "
+                        + " m.geburtsdatum, "
+                        + " m.datum_abgemeldet, "
+                        + " m.eintrittsdatum,"
                         + " m.vordienstzeit ";
             } else
             {
@@ -768,16 +769,16 @@ public class DB_Access
                         + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_VD_ZEIT z ON(m.id_personen = z.id_personen)"
                         + " WHERE m.instanznummer = '" + strFubwehr + "'"
                         + " AND m.datum_abgemeldet IS NULL "
-                        + " GROUP BY " 
-                        + " m.id_personen, " 
+                        + " GROUP BY "
+                        + " m.id_personen, "
                         + " m.standesbuchnummer, "
-                        + " m.dienstgrad, " 
-                        + " m.titel, " 
-                        + " m.vorname, " 
-                        + " m.zuname, " 
-                        + " m.geburtsdatum, " 
-                        + " m.datum_abgemeldet, " 
-                        + " m.eintrittsdatum," 
+                        + " m.dienstgrad, "
+                        + " m.titel, "
+                        + " m.vorname, "
+                        + " m.zuname, "
+                        + " m.geburtsdatum, "
+                        + " m.datum_abgemeldet, "
+                        + " m.eintrittsdatum,"
                         + " m.vordienstzeit ";
             }
         }
@@ -1929,8 +1930,6 @@ public class DB_Access
 
         sqlString += getSqlDateString(strVon, strBis, 2, true);
 
-   
-
         ResultSet rs = stat.executeQuery(sqlString);
 
         int intIdBericht;
@@ -2527,424 +2526,461 @@ public class DB_Access
     public HashMap<String, LinkedList<String>> getMethodeFuerTyp() throws Exception
     {
         HashMap<String, LinkedList<String>> hmAlleTypenUndFilter = new HashMap<>();
-
-        String strKey2 = getFilterFuerKurs("KURSBEZEICHNUNG").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey2, getFilterFuerKurs("KURSBEZEICHNUNG").get(strKey2));
-
-        //FUNKTIONSBEZEICHNUNG
-        String strKey3 = getFilterFuerFunktion("BEZEICHNUNG").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey3, getFilterFuerFunktion("BEZEICHNUNG").get(strKey3));
-
-        //FUNKTIONSINSTANZ
-        String strKey4 = getFilterFuerFunktion("ID_INSTANZTYPEN").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey4, getFilterFuerFunktion("ID_INSTANZTYPEN").get(strKey4));
-
-        String strKey5 = getFilterFuerStatus("STATUS").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey5, getFilterFuerStatus("STATUS").get(strKey5));
-
-        String strKey6 = getFilterFuerErreichbarkeit("ERREICHBARKEITSART").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey6, getFilterFuerErreichbarkeit("ERREICHBARKEITSART").get(strKey6));
-
-        //ERREICHBARKEIT
-//        String strKey7 = getFilterFuerErreichbarkeit("CODE").keySet().iterator().next();
-//        hmAlleTypenUndFilter.put(strKey7, getFilterFuerErreichbarkeit("CODE").get(strKey7));
-        String strKey7 = getFilterFuerTyp("STAATSBUERGERSCHAFT").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey7, getFilterFuerTyp("STAATSBUERGERSCHAFT").get(strKey7));
-
-        String strKey8 = getFilterFuerAnrede("ANREDE").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey8, getFilterFuerAnrede("ANREDE").get(strKey8));
-
-        String strKey9 = getFilterFuerAuszeichnung("AUSZEICHNUNGSART").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey9, getFilterFuerAuszeichnung("AUSZEICHNUNGSART").get(strKey9));
-
-        String strKey10 = getFilterFuerAuszeichnung("AUSZEICHNUNGSSTUFE").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey10, getFilterFuerAuszeichnung("AUSZEICHNUNGSSTUFE").get(strKey10));
-
-        //LEISTUNGSABZEICHENBEZEICHNUNG
-        String strKey11 = getFilterFuerLeistungsabzeichen("BEZEICHNUNG").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey11, getFilterFuerLeistungsabzeichen("BEZEICHNUNG").get(strKey11));
-
-        //LEISTUNGSABZEICHENSTUFE
-        String strKey12 = getFilterFuerLeistungsabzeichen("STUFE").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey12, getFilterFuerLeistungsabzeichen("STUFE").get(strKey12));
-
-        //ISCO-BERUF
-        String strKey13 = getFilterFuerTyp("BERUF").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey13, getFilterFuerTyp("BERUF").get(strKey13));
-
-        String strKey14 = getFilterFuerTyp("GESCHLECHT").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey14, getFilterFuerTyp("GESCHLECHT").get(strKey14));
-
-        String strKey15 = getFilterFuerTyp("TITEL").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey15, getFilterFuerTyp("TITEL").get(strKey15));
-
-        String strKey16 = getFilterFuerTyp("AMTSTITEL").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey16, getFilterFuerTyp("AMTSTITEL").get(strKey16));
-
-        String strKey17 = getFilterFuerTyp("BLUTGRUPPE").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey17, getFilterFuerTyp("BLUTGRUPPE").get(strKey17));
-
-        String strKey18 = getFilterFuerTyp("FAMILIENSTAND").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey18, getFilterFuerTyp("FAMILIENSTAND").get(strKey18));
-
-        String strKey19 = getFilterFuerTyp("DIENSTGRAD").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey19, getFilterFuerTyp("DIENSTGRAD").get(strKey19));
-
-        String strKey20 = getFilterFuerFuehrerscheinklassen("FÜHRERSCHEINKLASSE").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey20, getFilterFuerFuehrerscheinklassen("FÜHRERSCHEINKLASSE").get(strKey20));
-
-        String strKey21 = getFilterFuerUntersuchungen("UNTERSUCHUNGSART").keySet().iterator().next();
-        hmAlleTypenUndFilter.put(strKey21, getFilterFuerUntersuchungen("UNTERSUCHUNGSART").get(strKey21));
+        hmAlleTypenUndFilter.put("KURSBEZEICHNUNG", getFilterFuerKursbezeichnung());
+        hmAlleTypenUndFilter.put("FUNKTIONSBEZEICHNUNG", getFilterFuerFunktionsbezeichnung());
+        hmAlleTypenUndFilter.put("FUNKTIONSINSTANZ", getFilterFuerFunktionsinstanz());
+        hmAlleTypenUndFilter.put("STATUS", getFilterFuerStatus());
+        hmAlleTypenUndFilter.put("ERREICHBARKEITSART", getFilterFuerErreichbarkeitsart());
+        hmAlleTypenUndFilter.put("STAATSBUERGERSCHAFT", getFilterFuerStaatsbuergerschaft());
+        hmAlleTypenUndFilter.put("ANREDE", getFilterFuerAnrede());
+        hmAlleTypenUndFilter.put("AUSZEICHNUNGSSTUFE", getFilterFuerAuszeichnungsstufe());
+        hmAlleTypenUndFilter.put("AUSZEICHNUNGSART", getFilterFuerAuszeichnung());
+        hmAlleTypenUndFilter.put("LEISTUNGSABZEICHENBEZEICHNUNG", getFilterFuerLeistungsabzeichenbezeichnung());
+        hmAlleTypenUndFilter.put("LEISTUNGSABZEICHEN STUFE", getFilterFuerLeistungsabzeichenstufe());
+        hmAlleTypenUndFilter.put("ISCO-BERUF", getFilterFuerBeruf());
+        hmAlleTypenUndFilter.put("GESCHLECHT", getFilterFuerGeschlecht());
+        hmAlleTypenUndFilter.put("TITEL", getFilterFuerTitel());
+        hmAlleTypenUndFilter.put("AMTSTITEL", getFilterFuerAmtstitel());
+        hmAlleTypenUndFilter.put("BLUTGRUPPE", getFilterFuerBlutgruppe());
+        hmAlleTypenUndFilter.put("FAMILIENSTAND", getFilterFuerFamilienstand());
+        hmAlleTypenUndFilter.put("DIENSTGRAD", getFilterFuerDienstgrad());
+        hmAlleTypenUndFilter.put("FÜHRERSCHEINKLASSE", getFilterFuerFuehrerscheinklassen());
+        hmAlleTypenUndFilter.put("UNTERSUCHUNGSART", getFilterFuerUntersuchungsart());
         return hmAlleTypenUndFilter;
-
     }
-
-    /**
-     * Sucht den passenden Filter für einen Typ
-     *
-     * @param typ
-     * @return
-     * @throws Exception
-     */
-    public HashMap<String, LinkedList<String>> getFilterFuerTyp(String typ) throws Exception
+    
+    public LinkedList<String> getFilterFuerGeschlecht() throws Exception
     {
-        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
         LinkedList<String> liFilter = new LinkedList<>();
         Connection conn = connPool.getConnection();
-        Statement stat = conn.createStatement();
+        PreparedStatement prepStat = conn.prepareStatement(EnFilterStatement.getFilterFuerGeschlecht.toString());
 
-        String sqlString = "SELECT DISTINCT " + typ + "\"Typ\""
-                + " FROM FDISK.dbo.stmkmitglieder";
-        ResultSet rs = stat.executeQuery(sqlString);
+        ResultSet rs = prepStat.executeQuery();
 
         while (rs.next())
         {
-            String strFilter;
-            if (rs.getString("Typ") == null || rs.getString("Typ").equals("") || rs.getString("Typ").equals(" "))
+            String strFilter = rs.getString("Geschlecht");
+            if (!strFilter.isEmpty() && !strFilter.equals(" "))
             {
-                continue;
+                liFilter.add(strFilter);
             }
-            strFilter = rs.getString("Typ");
-
-            if (typ.toUpperCase().equals("BERUF"))
-            {
-                typ = "ISCO-BERUF";
-            } else if (typ.toUpperCase().equals("STAATSBUERGERSCHAFT"))
-            {
-                typ = "STAATSBÜRGERSCHAFT";
-            }
-            liFilter.add(strFilter);
         }
-
-        hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
 
-        return hmFilter;
+        return liFilter;
+    }
+
+    public LinkedList<String> getFilterFuerStaatsbuergerschaft() throws Exception
+    {
+        LinkedList<String> liFilter = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        PreparedStatement prepStat = conn.prepareStatement(EnFilterStatement.getFilterFuerStaatsbuergerschaft.toString());
+
+        ResultSet rs = prepStat.executeQuery();
+
+        while (rs.next())
+        {
+            String strFilter = rs.getString("Staatsbuergerschaft");
+            if (!strFilter.isEmpty() && !strFilter.equals(" "))
+            {
+                liFilter.add(strFilter);
+            }
+        }
+        connPool.releaseConnection(conn);
+
+        return liFilter;
+    }
+
+    public LinkedList<String> getFilterFuerBeruf() throws Exception
+    {
+        LinkedList<String> liFilter = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        PreparedStatement prepStat = conn.prepareStatement(EnFilterStatement.getFilterFuerBeruf.toString());
+
+        ResultSet rs = prepStat.executeQuery();
+
+        while (rs.next())
+        {
+            String strFilter = rs.getString("Beruf");
+            if (!strFilter.isEmpty() && !strFilter.equals(" "))
+            {
+                liFilter.add(strFilter);
+            }
+        }
+        connPool.releaseConnection(conn);
+
+        return liFilter;
+    }
+
+    public LinkedList<String> getFilterFuerTitel() throws Exception
+    {
+        LinkedList<String> liFilter = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        PreparedStatement prepStat = conn.prepareStatement(EnFilterStatement.getFilterFuerTitel.toString());
+
+        ResultSet rs = prepStat.executeQuery();
+
+        while (rs.next())
+        {
+            String strFilter = rs.getString("Titel");
+            if (!strFilter.isEmpty() && !strFilter.equals(" "))
+            {
+                liFilter.add(strFilter);
+            }
+        }
+        connPool.releaseConnection(conn);
+
+        return liFilter;
+    }
+
+    public LinkedList<String> getFilterFuerAmtstitel() throws Exception
+    {
+        LinkedList<String> liFilter = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        PreparedStatement prepStat = conn.prepareStatement(EnFilterStatement.getFilterFuerAmtstitel.toString());
+
+        ResultSet rs = prepStat.executeQuery();
+
+        while (rs.next())
+        {
+            String strFilter = rs.getString("Amtstitel");
+            if (!strFilter.isEmpty() && !strFilter.equals(" "))
+            {
+                liFilter.add(strFilter);
+            }
+        }
+        connPool.releaseConnection(conn);
+
+        return liFilter;
+    }
+
+    public LinkedList<String> getFilterFuerBlutgruppe() throws Exception
+    {
+        LinkedList<String> liFilter = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        PreparedStatement prepStat = conn.prepareStatement(EnFilterStatement.getFilterFuerBlutgruppe.toString());
+
+        ResultSet rs = prepStat.executeQuery();
+
+        while (rs.next())
+        {
+            String strFilter = rs.getString("Blutgruppe");
+            if (!strFilter.isEmpty() && !strFilter.equals(" "))
+            {
+                liFilter.add(strFilter);
+            }
+        }
+        connPool.releaseConnection(conn);
+
+        return liFilter;
+    }
+
+    public LinkedList<String> getFilterFuerFamilienstand() throws Exception
+    {
+        LinkedList<String> liFilter = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        PreparedStatement prepStat = conn.prepareStatement(EnFilterStatement.getFilterFuerFamilienstand.toString());
+
+        ResultSet rs = prepStat.executeQuery();
+
+        while (rs.next())
+        {
+            String strFilter = rs.getString("Familienstand");
+            if (!strFilter.isEmpty() && !strFilter.equals(" "))
+            {
+                liFilter.add(strFilter);
+            }
+        }
+        connPool.releaseConnection(conn);
+
+        return liFilter;
+    }
+
+    public LinkedList<String> getFilterFuerDienstgrad() throws Exception
+    {
+        LinkedList<String> liFilter = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        PreparedStatement prepStat = conn.prepareStatement(EnFilterStatement.getFilterFuerDienstgrade.toString());
+
+        ResultSet rs = prepStat.executeQuery();
+
+        while (rs.next())
+        {
+            String strFilter = rs.getString("Dienstgrad");
+            if (!strFilter.isEmpty() && !strFilter.equals(" "))
+            {
+                liFilter.add(strFilter);
+            }
+        }
+        connPool.releaseConnection(conn);
+
+        return liFilter;
     }
 
     /**
      * Sucht den passenden Filter für den Typ "Anrede"
      *
-     * @param typ
      * @return
      * @throws Exception
      */
-    public HashMap<String, LinkedList<String>> getFilterFuerAnrede(String typ) throws Exception
+    public LinkedList<String> getFilterFuerAnrede() throws Exception
     {
-        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
-
         LinkedList<String> liFilter = new LinkedList<>();
         liFilter.add("Frau");
         liFilter.add("Herr");
 
-        hmFilter.put(typ, liFilter);
-
-        return hmFilter;
+        return liFilter;
     }
 
     /**
      * Sucht den passenden Filter für Kurse
      *
-     * @param typ
      * @return
      * @throws Exception
      */
-    public HashMap<String, LinkedList<String>> getFilterFuerKurs(String typ) throws Exception
+    public LinkedList<String> getFilterFuerKursbezeichnung() throws Exception
     {
-        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
         LinkedList<String> liFilter = new LinkedList<>();
         Connection conn = connPool.getConnection();
-        Statement stat = conn.createStatement();
+        PreparedStatement prepStat = conn.prepareStatement(EnFilterStatement.getFilterFuerKursbezeichnung.toString());
 
-        String sqlString = "SELECT DISTINCT " + typ + "\"Typ\""
-                + " FROM FDISK.dbo.stmkkurse";
-        ResultSet rs = stat.executeQuery(sqlString);
+        ResultSet rs = prepStat.executeQuery();
 
         while (rs.next())
         {
-            String strFilter;
-            if (rs.getString("Typ") == null || rs.getString("Typ").equals("") || rs.getString("Typ").equals(" "))
+            String strFilter = rs.getString("Kursbezeichnung");
+            if (!strFilter.isEmpty() && !strFilter.equals(" "))
             {
-                continue;
+                liFilter.add(strFilter);
             }
-            strFilter = rs.getString("Typ");
-
-            liFilter.add(strFilter);
         }
-        hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
 
-        return hmFilter;
+        return liFilter;
     }
 
     /**
      * Sucht den passenden Filter für Funktionen
      *
-     * @param typ
      * @return
      * @throws Exception
      */
-    public HashMap<String, LinkedList<String>> getFilterFuerFunktion(String typ) throws Exception
+    public LinkedList<String> getFilterFuerFunktionsbezeichnung() throws Exception
     {
-        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
         LinkedList<String> liFilter = new LinkedList<>();
         Connection conn = connPool.getConnection();
-        Statement stat = conn.createStatement();
+        PreparedStatement prepStat = conn.prepareStatement(EnFilterStatement.getFilterFuerFunktionsbezeichnung.toString());
 
-        String sqlString = "SELECT DISTINCT " + typ + "\"Typ\""
-                + " FROM FDISK.dbo.stmkfunktionen funktionen INNER JOIN"
-                + " FDISK.dbo.stmkfunktionenmitglieder mitglieder"
-                + " ON(mitglieder.id_funktionen = funktionen.id_funktionen)";
-        ResultSet rs = stat.executeQuery(sqlString);
+        ResultSet rs = prepStat.executeQuery();
 
         while (rs.next())
         {
-            String strFilter;
-            if (rs.getString("Typ") == null || rs.getString("Typ").equals("") || rs.getString("Typ").equals(" "))
+            String strFilter = rs.getString("Bezeichnung");
+            if (!strFilter.isEmpty() && !strFilter.equals(" "))
             {
-                continue;
+                liFilter.add(strFilter);
             }
-            strFilter = rs.getString("Typ");
-
-            liFilter.add(strFilter);
         }
-
-        switch (typ.toUpperCase())
-        {
-            case "BEZEICHNUNG":
-                typ = "FUNKTIONSBEZEICHNUNG";
-                break;
-            case "ID_INSTANZTYPEN":
-                typ = "FUNKTIONSINSTANZ";
-                break;
-        }
-
-        hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
 
-        return hmFilter;
+        return liFilter;
+    }
+
+    public LinkedList<String> getFilterFuerFunktionsinstanz() throws Exception
+    {
+        LinkedList<String> liFilter = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        PreparedStatement prepStat = conn.prepareStatement(EnFilterStatement.getFilterFuerFunktionsinstanz.toString());
+
+        ResultSet rs = prepStat.executeQuery();
+
+        while (rs.next())
+        {
+            String strFilter = rs.getString("Id_Instanztypen");
+            if (!strFilter.isEmpty() && !strFilter.equals(" "))
+            {
+                liFilter.add(strFilter);
+            }
+        }
+        connPool.releaseConnection(conn);
+
+        return liFilter;
     }
 
     /**
      * Gibt die passenden Filter für die Status zurück
      *
-     * @param typ
      * @return
      * @throws Exception
      */
-    public HashMap<String, LinkedList<String>> getFilterFuerStatus(String typ) throws Exception
+    public LinkedList<String> getFilterFuerStatus() throws Exception
     {
-        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
         LinkedList<String> liFilter = new LinkedList<>();
-        liFilter.add("Jugend");
-        liFilter.add("Aktiv");
-        liFilter.add("Reserve");
-        liFilter.add("Ehrenmitglied");
         liFilter.add("Abgemeldet");
+        liFilter.add("Aktiv");
+        liFilter.add("Ehrenmitglied");
+        liFilter.add("Jugend");
+        liFilter.add("Reserve");
 
-        hmFilter.put(typ, liFilter);
-        return hmFilter;
+        return liFilter;
     }
 
     /**
      * Sucht den passenden Filter für Erreichbarkeiten
      *
-     * @param typ
      * @return
      * @throws Exception
      */
-    public HashMap<String, LinkedList<String>> getFilterFuerErreichbarkeit(String typ) throws Exception
+    public LinkedList<String> getFilterFuerErreichbarkeitsart() throws Exception
     {
-        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
         LinkedList<String> liFilter = new LinkedList<>();
         Connection conn = connPool.getConnection();
-        Statement stat = conn.createStatement();
+        PreparedStatement prepStat = conn.prepareStatement(EnFilterStatement.getFilterFuerErreichbarkeitsart.toString());
 
-        String sqlString = "SELECT DISTINCT " + typ + "\"Typ\""
-                + " FROM FDISK.dbo.stmkerreichbarkeiten";
-        ResultSet rs = stat.executeQuery(sqlString);
+        ResultSet rs = prepStat.executeQuery();
 
         while (rs.next())
         {
-            String strFilter;
-            if (rs.getString("Typ") == null || rs.getString("Typ").equals("") || rs.getString("Typ").equals(" ") || rs.getString("Typ").equals("-") || rs.getString("Typ").equals("--"))
+            String strFilter = rs.getString("Erreichbarkeitsart");
+            if (!strFilter.isEmpty() && !strFilter.equals(" "))
             {
-                continue;
+                liFilter.add(strFilter);
             }
-            strFilter = rs.getString("Typ");
-
-            liFilter.add(strFilter.trim());
         }
-
-        if (typ.toUpperCase().equals("ERREICHBARKEIT"))
-        {
-            typ = "CODE";
-        }
-
-        hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
-
-        return hmFilter;
+        return liFilter;
     }
 
     /**
      * Gibt die passenden Filter für Auszeichnungen zurück
      *
-     * @param typ
      * @return
      * @throws Exception
      */
-    public HashMap<String, LinkedList<String>> getFilterFuerAuszeichnung(String typ) throws Exception
+    public LinkedList<String> getFilterFuerAuszeichnung() throws Exception
     {
-        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
         LinkedList<String> liFilter = new LinkedList<>();
         Connection conn = connPool.getConnection();
-        Statement stat = conn.createStatement();
+        PreparedStatement prepStat = conn.prepareStatement(EnFilterStatement.getFilterFuerAuszeichnung.toString());
 
-        String sqlString = "SELECT DISTINCT " + typ + "\"Typ\""
-                + " FROM FDISK.dbo.stmkauszeichnungenmitglieder mitglieder INNER JOIN"
-                + " FDISK.dbo.stmkauszeichnungen auszeichnungen"
-                + " ON(mitglieder.id_auszeichnungen = auszeichnungen.id_auszeichnungen)";
-        ResultSet rs = stat.executeQuery(sqlString);
+        ResultSet rs = prepStat.executeQuery();
 
         while (rs.next())
         {
-            String strFilter;
-            if (rs.getString("Typ") == null || rs.getString("Typ").equals("") || rs.getString("Typ").equals(" "))
+            String strFilter = rs.getString("Auszeichnung");
+            if (!strFilter.isEmpty() && !strFilter.equals(" "))
             {
-                continue;
+                liFilter.add(strFilter);
             }
-            strFilter = rs.getString("Typ");
-
-            liFilter.add(strFilter);
         }
-
-        hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
+        return liFilter;
+    }
 
-        return hmFilter;
+    public LinkedList<String> getFilterFuerAuszeichnungsstufe() throws Exception
+    {
+        LinkedList<String> liFilter = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        PreparedStatement prepStat = conn.prepareStatement(EnFilterStatement.getFilterFuerAuszeichnungsstufe.toString());
+
+        ResultSet rs = prepStat.executeQuery();
+
+        while (rs.next())
+        {
+            String strFilter = rs.getString("Auszeichnungsstufe");
+            if (!strFilter.isEmpty() && !strFilter.equals(" "))
+            {
+                liFilter.add(strFilter);
+            }
+        }
+        connPool.releaseConnection(conn);
+        return liFilter;
     }
 
     /**
      * Gibt die passenden Filter für Leistungsabzeichen zurück.
      *
-     * @param typ
      * @return
      * @throws Exception
      */
-    public HashMap<String, LinkedList<String>> getFilterFuerLeistungsabzeichen(String typ) throws Exception
+    public LinkedList<String> getFilterFuerLeistungsabzeichenstufe() throws Exception
     {
-        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
         LinkedList<String> liFilter = new LinkedList<>();
         Connection conn = connPool.getConnection();
-        Statement stat = conn.createStatement();
+        PreparedStatement prepStat = conn.prepareStatement(EnFilterStatement.getFilterFuerLeistungsabzeichenstufe.toString());
 
-        String sqlString = "SELECT DISTINCT " + typ + "\"Typ\""
-                + " FROM FDISK.dbo.stmkleistungsabzeichen leistungsabzeichen INNER JOIN"
-                + " FDISK.dbo.stmkleistungsabzeichenmitglieder mitglieder"
-                + " ON(mitglieder.id_leistungsabzeichenstufe = leistungsabzeichen.id_leistungsabzeichenstufe)";
-        ResultSet rs = stat.executeQuery(sqlString);
+        ResultSet rs = prepStat.executeQuery();
 
         while (rs.next())
         {
-            String strFilter;
-            if (rs.getString("Typ") == null || rs.getString("Typ").equals("") || rs.getString("Typ").equals(" "))
+            String strFilter = rs.getString("Stufe");
+            if (!strFilter.isEmpty() && !strFilter.equals(" "))
             {
-                continue;
+                liFilter.add(strFilter);
             }
-            strFilter = rs.getString("Typ");
-
-            liFilter.add(strFilter);
         }
-
-        if (typ.toUpperCase().equals("BEZEICHNUNG"))
-        {
-            typ = "LEISTUNGSABZEICHENBEZEICHNUNG";
-        } else if (typ.toUpperCase().equals("STUFE"))
-        {
-            typ = "LEISTUNGSABZEICHEN STUFE";
-        }
-
-        hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
-
-        return hmFilter;
+        return liFilter;
     }
 
-    public HashMap<String, LinkedList<String>> getFilterFuerFuehrerscheinklassen(String typ) throws Exception
+    public LinkedList<String> getFilterFuerLeistungsabzeichenbezeichnung() throws Exception
     {
-        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
         LinkedList<String> liFilter = new LinkedList<>();
         Connection conn = connPool.getConnection();
-        Statement stat = conn.createStatement();
+        PreparedStatement prepStat = conn.prepareStatement(EnFilterStatement.getFilterFuerLeistungsabzeichenbezeichnung.toString());
 
-        String sqlString = "SELECT DISTINCT fahrgenehmigungsklasse \"Typ\""
-                + " FROM FDISK.dbo.stmkgesetzl_fahrgenehmigungen ";
-        ResultSet rs = stat.executeQuery(sqlString);
+        ResultSet rs = prepStat.executeQuery();
 
         while (rs.next())
         {
-            String strFilter;
-            if (rs.getString("Typ") == null || rs.getString("Typ").equals("") || rs.getString("Typ").equals(" "))
+            String strFilter = rs.getString("Bezeichnung");
+            if (!strFilter.isEmpty() && !strFilter.equals(" "))
             {
-                continue;
+                liFilter.add(strFilter);
             }
-            strFilter = rs.getString("Typ");
-            liFilter.add(strFilter);
         }
-
-        hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
-
-        return hmFilter;
+        return liFilter;
     }
 
-    public HashMap<String, LinkedList<String>> getFilterFuerUntersuchungen(String typ) throws Exception
+    public LinkedList<String> getFilterFuerFuehrerscheinklassen() throws Exception
     {
-        HashMap<String, LinkedList<String>> hmFilter = new HashMap<>();
         LinkedList<String> liFilter = new LinkedList<>();
         Connection conn = connPool.getConnection();
-        Statement stat = conn.createStatement();
+        PreparedStatement prepStat = conn.prepareStatement(EnFilterStatement.getFilterFuerFuehrerscheinklassen.toString());
 
-        String sqlString = "SELECT DISTINCT Expr1 \"Typ\""
-                + " FROM FDISK.dbo.stmkuntersuchungenmitglieder ";
-        ResultSet rs = stat.executeQuery(sqlString);
+        ResultSet rs = prepStat.executeQuery();
 
         while (rs.next())
         {
-            String strFilter;
-            if (rs.getString("Typ") == null || rs.getString("Typ").equals("") || rs.getString("Typ").equals(" "))
+            String strFilter = rs.getString("Fahrgenehmigungsklasse");
+            if (!strFilter.isEmpty() && !strFilter.equals(" "))
             {
-                continue;
+                liFilter.add(strFilter);
             }
-            strFilter = rs.getString("Typ");
-            liFilter.add(strFilter);
         }
-
-        hmFilter.put(typ, liFilter);
         connPool.releaseConnection(conn);
+        return liFilter;
+    }
 
-        return hmFilter;
+    public LinkedList<String> getFilterFuerUntersuchungsart() throws Exception
+    {
+        LinkedList<String> liFilter = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        PreparedStatement prepStat = conn.prepareStatement(EnFilterStatement.getFilterFuerUntersuchungsart.toString());
+
+        ResultSet rs = prepStat.executeQuery();
+
+        while (rs.next())
+        {
+            String strFilter = rs.getString("Expr1");
+            if (!strFilter.isEmpty() && !strFilter.equals(" "))
+            {
+                liFilter.add(strFilter);
+            }
+        }
+        connPool.releaseConnection(conn);
+        return liFilter;
     }
 
     public StringBuilder getDynamischerBericht(String strEingabe[][]) throws Exception
