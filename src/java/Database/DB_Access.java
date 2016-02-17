@@ -975,7 +975,7 @@ public class DB_Access {
         return liKurse;
     }
 
-    public LinkedList<MitgliedsStunden> getStundenauswertungProMitgliedProInstanz(int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
+    public LinkedList<MitgliedsStunden> getStundenauswertungProMitgliedProInstanz(String strVon, String strBis, int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
         LinkedList<MitgliedsStunden> liStunden = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
@@ -993,9 +993,11 @@ public class DB_Access {
                 + " ,t.vorname \"Vorname\", t.zuname \"Zuname\", t.instanznummer \"Instanznummer\", m.standesbuchnummer \"STB\", m.dienstgrad \"DGR\", m.titel \"Titel\""
                 + " , SUM(DATEDIFF(mi,einsatzzeit_von,einsatzzeit_bis)) / 60.0 \"Stunden\""
                 + " FROM [FDISK].[dbo].stmktaetigkeitsberichtemitglieder t INNER JOIN FDISK.dbo.stmkmitglieder m ON(t.id_personen = m.id_personen)"
-                + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = t.instanznummer)";
+                + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = t.instanznummer)"
+                + " INNER JOIN [FDISK].[dbo].[stmktaetigkeitsberichte] tb ON(t.id_berichte = tb.id_berichte)"; 
         if (intAbschnittnr == -2) {
             sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
+            
         } else {
             if (strFubwehr.equals("-2")) {
                 sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
@@ -1003,12 +1005,14 @@ public class DB_Access {
                 sqlString += " WHERE t.instanznummer = '" + strFubwehr + "'";
             }
         }
+        sqlString += getSqlDateString(strVon, strBis, 2, false);
         sqlString += " GROUP BY t.id_personen, t.instanznummer, t.vorname, t.zuname, m.standesbuchnummer, m.dienstgrad, m.titel"
                 + " UNION"
                 + " SELECT u.[id_personen] \"PersID\""
                 + " ,u.vorname \"Vorname\", u.zuname \"Zuname\", u.instanznummer \"Instanznummer\", m.standesbuchnummer \"STB\", m.dienstgrad \"DGR\", m.titel \"Titel\""
                 + " , SUM(DATEDIFF(mi,einsatzzeit_von,einsatzzeit_bis)) / 60.0 \"Stunden\""
                 + " FROM [FDISK].[dbo].stmkuebungsberichtemitglieder u INNER JOIN FDISK.dbo.stmkmitglieder m ON(u.id_personen = m.id_personen)"
+                + " INNER JOIN [FDISK].[dbo].stmkuebungsberichte ub ON(u.id_berichte = ub.id_berichte)"
                 + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = u.instanznummer)";
         if (intAbschnittnr == -2) {
             sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
@@ -1019,13 +1023,15 @@ public class DB_Access {
                 sqlString += " WHERE u.instanznummer = '" + strFubwehr + "'";
             }
         }
+        sqlString += getSqlDateString(strVon, strBis, 3, false); 
         sqlString += " GROUP BY u.id_personen, u.instanznummer, u.vorname, u.zuname, m.standesbuchnummer, m.dienstgrad, m.titel"
                 + " UNION"
                 + " SELECT e.[id_personen] \"PersID\""
                 + " ,e.vorname \"Vorname\", e.zuname \"Zuname\", e.instanznummer \"Instanznummer\", m.standesbuchnummer \"STB\", m.dienstgrad \"DGR\", m.titel \"Titel\""
                 + " ,SUM(DATEDIFF(mi,einsatzzeit_von,einsatzzeit_bis)) / 60.0 \"Stunden\""
                 + " FROM [FDISK].[dbo].stmkeinsatzberichtemitglieder e INNER JOIN FDISK.dbo.stmkmitglieder m ON(e.id_personen = m.id_personen)"
-                + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = e.instanznummer)";
+                + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = e.instanznummer)"
+                + " INNER JOIN [FDISK].[dbo].[stmkeinsatzberichte] eb ON(e.id_berichte = eb.id_berichte)"; 
         if (intAbschnittnr == -2) {
             sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
         } else {
@@ -1035,6 +1041,7 @@ public class DB_Access {
                 sqlString += " WHERE e.instanznummer = '" + strFubwehr + "'";
             }
         }
+        sqlString += getSqlDateString(strVon, strBis, 1, false);
         sqlString += " GROUP BY e.id_personen, e.instanznummer, e.vorname, e.zuname, m.standesbuchnummer, m.dienstgrad, m.titel"
                 + " order by \"PersID\";";
 
@@ -1316,6 +1323,38 @@ public class DB_Access {
         return liFahrzeuge;
     }
 
+    
+    
+      public LinkedList<String> getFahrtenbuchKennzeichen(int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
+        LinkedList<String> liKennzeichen = new LinkedList<>();
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+
+        String sqlString = " SELECT DISTINCT kennzeichen 'Kennzeichen'"
+                + " FROM FDISK.dbo.stmkfahrzeuge"; 
+
+       
+
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        String strKennzeichen;
+
+        while (rs.next()) {
+            strKennzeichen = rs.getString("Kennzeichen");
+            
+            if (strKennzeichen != null && !strKennzeichen.trim().isEmpty() && !strKennzeichen.equals(" ") && !strKennzeichen.equals("")) 
+            {
+                strKennzeichen = strKennzeichen.replace("/", "").replace(".", " ").replace(" ", "").replace("+", "").replace("-", "");
+                
+                liKennzeichen.add(strKennzeichen); 
+            }
+        }
+        connPool.releaseConnection(conn);
+        return liKennzeichen;
+    }
+    
+    
     /**
      * Gibt eine Liste der Erreichbarkeiten von jedem Mitarbeiter als LinkedList
      * zurück.

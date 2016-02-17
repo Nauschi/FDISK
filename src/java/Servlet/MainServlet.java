@@ -167,7 +167,13 @@ public class MainServlet extends HttpServlet
                 return;
             } else if (request.getParameter("button_ladeKennzeichen") != null)
             {
-                ladeKennzeichen(request);
+                try
+                {
+                    ladeKennzeichen(request);
+                } catch (Exception ex)
+                {
+                    Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
                 return;
             } else if (request.getParameter("button_vorschau") != null)
@@ -353,6 +359,11 @@ public class MainServlet extends HttpServlet
             } else if (strBericht.equals(liRohberichte.get(5).getStrBerichtname()))//Stundenauswertung je Mitglied je Instanz
             {
                 //request.setAttribute("liste", );
+                String strVonDatum = request.getParameter("input_von_datum");
+                String strBisDatum = request.getParameter("input_bis_datum");
+                request.setAttribute("liste", access.getStundenauswertungProMitgliedProInstanz(strVonDatum, strBisDatum,intBereichNr, intAbschnittNr, strFeuerwehr));
+           
+
             } else if (strBericht.equals(liRohberichte.get(6).getStrBerichtname()))//Tätigkeitsbericht leer
             {
                 request.setAttribute("liste", access.getLeerberichtMitglied(intBereichNr, intAbschnittNr, strFeuerwehr));
@@ -402,12 +413,14 @@ public class MainServlet extends HttpServlet
                 String strBisDatum = request.getParameter("input_bis_datum");
 
                 String strKennzeichen1 = request.getParameter("input_kennzeichen");
-                System.out.println("Kennzeichen: " + strKennzeichen1);
-                String strKennzeichen = "HB-2-FXE";
+//                System.out.println("Kennzeichen: " + strKennzeichen1);
+//                String strKennzeichen = "HB-2-FXE";
 
                 //Login für Farhetnbuch implementiert, also können die Übergabeparameter da dazu gemacht werden lg nauschi
                 //System.out.println(access.getFahrtenbuch("", "", strKennzeichen).toString());
-                LinkedList<Fahrzeug> liFahrzeuge = access.getFahrtenbuch(intBereichNr, intAbschnittNr, strFeuerwehr, strVonDatum, strBisDatum, strKennzeichen);
+                
+                
+                LinkedList<Fahrzeug> liFahrzeuge = access.getFahrtenbuch(intBereichNr, intAbschnittNr, strFeuerwehr, strVonDatum, strBisDatum, strKennzeichen1);
                 String strDetails = access.getDetailsFuerFahrtenbuchFahrzeug(liFahrzeuge);
                 request.setAttribute("zusatz_informationen", strDetails.isEmpty() ? null : strDetails);
                 request.setAttribute("liste", liFahrzeuge);
@@ -550,16 +563,17 @@ public class MainServlet extends HttpServlet
         sc.setAttribute("userid_" + intUserID + "_vorlagen", hsVorlagen);
     }
 
-    private void ladeKennzeichen(HttpServletRequest request)
+    private void ladeKennzeichen(HttpServletRequest request) throws Exception
     {
         System.out.println("////////////////Lade Kennzeichen/////////////");
         int intBereichNr = Integer.parseInt(request.getParameter("select_bezirk"));
         int intAbschnittNr = Integer.parseInt(request.getParameter("select_abschnitt"));
         String strFeuerwehr = request.getParameter("select_feuerwehr");
-        LinkedList<String> liTest = new LinkedList<>();
-        liTest.add("Kennzeichen 1");
-        liTest.add("Kennzeichen 2");
-        liTest.add("Kennzeichen 3");
+        LinkedList<String> liTest = access.getFahrtenbuchKennzeichen(intBereichNr,intAbschnittNr,strFeuerwehr);
+        System.out.println(liTest.size() + "----------------------------");
+//        liTest.add("Kennzeichen 1");
+//        liTest.add("Kennzeichen 2");
+//        liTest.add("Kennzeichen 3");
         request.setAttribute("select_kennzeichen_liste", liTest);
 
     }

@@ -22,6 +22,8 @@ public class MitgliedsStunden extends Mitglied {
         super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
         this.doStunden = doStunden;
         this.strInstanznummer = strInstanznummer;
+        
+        theInstance = DB_Access.getInstance(); 
     }
 
     public double getDoStunden() {
@@ -85,7 +87,7 @@ public class MitgliedsStunden extends Mitglied {
             strZuname = "";
         }
 
-        strDienstgrad = strDienstgrad.toUpperCase();
+       strDienstgrad = strDienstgrad.toUpperCase();
         strZuname = theInstance.formatiereAusgabe(strZuname);
         strVorname = theInstance.formatiereAusgabe(strVorname);
 
