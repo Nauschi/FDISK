@@ -471,7 +471,13 @@ public class MainServlet extends HttpServlet
 
         try
         {
-            StringBuilder sbDynHTML = access.getDynamischerBericht(strDaten);
+            //Login für dynamischen Bericht implementiert. Bereich, Abnschnitt, & Feuerwehr sind neue Übergabeparameter.
+            //Müss ma aber no genau bereden wie ma des machen. Mit Dropdowns oder ohne Dropdowns? Karli hat nix erwähnt
+            //47030 --> Sinnersdorf
+            //4704 --> 4. Abschnitt im Bereich 47
+            //47 --> Bereich 47
+            //-2 --> alles
+            StringBuilder sbDynHTML = access.getDynamischerBericht(strDaten, 47, 4704, "-2");
             System.out.println("MainServlet.erstelleDynamischenBericht: sbDynHTML: " + sbDynHTML);
             request.setAttribute("dyn_table", sbDynHTML);
         } catch (Exception ex)
