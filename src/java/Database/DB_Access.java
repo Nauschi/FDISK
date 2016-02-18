@@ -3662,6 +3662,7 @@ public class DB_Access
         }
         return strType;
     }
+    
 
     /**
      *
@@ -3766,12 +3767,12 @@ public class DB_Access
 //            System.out.println(html);
 // !!!!!!!!!!!!! SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!
 
-            LinkedList<Kurs> li = theInstance.getKursstatistikkurse("01.01.2056", "10.11.2058");
+          //  LinkedList<Kurs> li = theInstance.getKursstatistikkurse("01.01.2056", "10.11.2058");
 
-            for (Kurs k : li)
-            {
-                // System.out.println(k.toString());
-            }
+//            for (Kurs k : li)
+//            {
+//                // System.out.println(k.toString());
+//            }
 
 // !!!!!!!!!!!!! Ende SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!
         } catch (Exception ex)
