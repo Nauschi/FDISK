@@ -1443,9 +1443,14 @@ public class DB_Access
 
             if (strKennzeichen != null && !strKennzeichen.trim().isEmpty() && !strKennzeichen.equals(" ") && !strKennzeichen.equals(""))
             {
-                strKennzeichen = strKennzeichen.replace("/", "").replace(".", " ").replace(" ", "").replace("+", "").replace("-", "");
+                strKennzeichen = strKennzeichen.replace("/", "").replace(".", "").replace(" ", "").replace("+", "").replace("-", "");
 
-                liKennzeichen.add(strKennzeichen);
+                if(!strKennzeichen.trim().isEmpty() && !strKennzeichen.equals(" ") && !strKennzeichen.equals(""))
+                {
+                    liKennzeichen.add(strKennzeichen);
+                }
+
+                
             }
         }
         connPool.releaseConnection(conn);
