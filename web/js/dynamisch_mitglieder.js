@@ -111,6 +111,11 @@ function initialisiereCBFilter(strTyp, strID, strLastFilter)
 
         var strHTMLFilter = map[strTyp.toUpperCase()];
         var strSplitFilter = strHTMLFilter.split(';');
+        var opt1 = document.createElement('option');
+        opt1.value = "N/A";
+        opt1.innerHTML = "N/A";
+        select_filter.appendChild(opt1);
+
         for (var i = 0; i < strSplitFilter.length; i++)
         {
 
@@ -156,16 +161,33 @@ function getStyle(el, styleProp)
  */
 function onVorschau(intZahler)
 {
-    var strWertVonLetztemSelect = document.getElementById("select_verknuepfung_" + intZahler).value;
-    if (strWertVonLetztemSelect != "N/A")
+    var boolCorrect = true;
+    for (var i = 1; i < intZahler; i++)
     {
-        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Letzte Verknüpfung muss leer sein";
-        $('#modal_fehler').modal('show');
-        $('.ui.dropdown').dropdown();
-        return false;
+        var strWertVonVerknupfungSelect = document.getElementById("select_verknuepfung_" + i).value;
+        if (strWertVonVerknupfungSelect == "N/A")
+        {
+            boolCorrect = false;
+        }
+    }
+    if (boolCorrect==true)
+    {
+        var strWertVonLetztemSelect = document.getElementById("select_verknuepfung_" + intZahler).value;
+        if (strWertVonLetztemSelect != "N/A")
+        {
+            document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Letzte Verknüpfung muss leer sein";
+            $('#modal_fehler').modal('show');
+//        $('.ui.dropdown').dropdown();
+            return false;
+        } else
+        {
+            return true;
+        }
     } else
     {
-        return true;
+        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Alle Verknüfungen, außer der Letzten, müssen gesetzt sein";
+        $('#modal_fehler').modal('show');
+        return false;
     }
 
 
@@ -217,9 +239,9 @@ function onActionSubmit(intZaehler, strButton)
     var strBezirk = document.getElementById("select_bezirk").value;
     var strAbschnitt = document.getElementById("select_abschnitt").value;
     var strFeuerwehr = document.getElementById("select_feuerwehr").value;
-    var strBerechtigung = strBezirk+";"+strAbschnitt+";"+strFeuerwehr;
+    var strBerechtigung = strBezirk + ";" + strAbschnitt + ";" + strFeuerwehr;
     document.getElementById("hidden_berechtigungs_info").value = strBerechtigung;
-    
+
     strHTML = '<input type="hidden" name="hidden_action" value="' + strButton + '">';
     div_element.innerHTML = div_element.innerHTML + strHTML;
     document.form_plus_minus_vorschau.submit();
@@ -367,6 +389,16 @@ function fixDropdowns(id)
         //alert("remove disabled");
         $("#" + id).parent("div").removeClass("disabled");
     }
+}
+
+function zuVordefiniertWeiterleiten()
+{
+    var strBezirk = document.getElementById("select_bezirk").value;
+    var strAbschnitt = document.getElementById("select_abschnitt").value;
+    var strFeuerwehr = document.getElementById("select_feuerwehr").value;
+    var strBerechtigung = strBezirk + ";" + strAbschnitt + ";" + strFeuerwehr;
+    document.getElementById("hidden_berechtigungs_info_2").value = strBerechtigung;
+    document.form_vordefiniert.submit();
 }
 
 

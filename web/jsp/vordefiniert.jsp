@@ -46,7 +46,8 @@
                 </a>
                 <form action="MainServlet" method="POST" name="form_dynamisch">
                     <input type="hidden" name="dynamisch">
-                    <a href="#" onclick="document.form_dynamisch.submit();" class="item linkMenu">
+                    <input type="hidden" name="hidden_berechtigungs_info" id="hidden_berechtigungs_info">
+                    <a href="#" onclick="zuDynamischWeiterleiten()" class="item linkMenu">
                         Dynamisch
                     </a>
                 </form>
@@ -155,7 +156,7 @@
                                     </div>
                                 </fieldset>
                             </div >
-                            
+
 
                             <div class="column" id="div_select_jahr" style="display: none">
                                 <fieldset id="fieldset_jahr">
@@ -204,13 +205,13 @@
                             </div>
                             <div class="column" id="div_kein_datum_2" style="display: none">
                             </div>
-                            
+
                         </div>
                         <div class="ui equal width grid">
                             <div class="column"></div>
-                                <div class="column"></div>
+                            <div class="column"></div>
                             <div class="column">
-                                    <button type="submit" name="button_vorschau" class="ui button styleGrau" onclick="document.getElementById('div_loader').className = 'ui active inverted dimmer';" title="Vorschau erstellen" style="width: 100%;">Vorschau</button>
+                                <button type="submit" name="button_vorschau" class="ui button styleGrau" onclick="document.getElementById('div_loader').className = 'ui active inverted dimmer';" title="Vorschau erstellen" style="width: 100%;">Vorschau</button>
                             </div>
                         </div>
                     </form>
@@ -399,7 +400,14 @@
                                         abschittChanged(document.getElementById("select_abschnitt"),<%=request.getParameter("select_feuerwehr")%>);
             <%
                 }
-                if (request.getParameter("input_aktbericht") != null && request.getParameter("input_aktbericht").equals("Digitales Fahrtenbuch"))
+                if (request.getParameter("hidden_berechtigungs_info") != null)
+                {
+            %>
+                                        bezirkChanged(document.getElementById("select_bezirk"),<%=request.getParameter("hidden_berechtigungs_info").split(";")[1]%>);
+                                                abschittChanged(document.getElementById("select_abschnitt"),<%=request.getParameter("hidden_berechtigungs_info").split(";")[2]%>);
+            <%
+                }
+    if (request.getParameter("input_aktbericht") != null && request.getParameter("input_aktbericht").equals("Digitales Fahrtenbuch"))
                 {
             %>
                                         if (document.getElementById("div_zusatzDaten") == null)

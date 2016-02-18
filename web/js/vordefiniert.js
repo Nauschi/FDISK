@@ -286,3 +286,13 @@ function setDeleteOnChange()
 {
     boolDeleteOnChange = true;
 }
+
+function zuDynamischWeiterleiten()
+{
+    var strBezirk = document.getElementById("select_bezirk").value;
+    var strAbschnitt = document.getElementById("select_abschnitt").value;
+    var strFeuerwehr = document.getElementById("select_feuerwehr").value;
+    var strBerechtigung = strBezirk+";"+strAbschnitt+";"+strFeuerwehr;
+    document.getElementById("hidden_berechtigungs_info").value = strBerechtigung;
+    document.form_dynamisch.submit();
+}

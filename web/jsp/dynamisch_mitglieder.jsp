@@ -41,7 +41,7 @@
 
             String[] strFeldOperator =
             {
-                "=", "<>", "<=", ">=", "<", ">"
+                "N/A", "=", "<>", "<=", ">=", "<", ">"
             };
 
             String[] strFeldFilter =
@@ -64,7 +64,8 @@
             <div class="ui menu" id="div_menu">
                 <form action="MainServlet" method="POST" name="form_vordefiniert">
                     <input type="hidden" name="vordefiniert">
-                    <a href="#" onclick="document.form_vordefiniert.submit();" class="item linkMenu">
+                    <input type="hidden" name="hidden_berechtigungs_info" id="hidden_berechtigungs_info_2">
+                    <a href="#" onclick="zuVordefiniertWeiterleiten()" class="item linkMenu">
                         Vordefiniert
                     </a>
                 </form>
@@ -396,6 +397,9 @@
             <div class="content">
                 <p></p>
             </div>
+            <div class="actions">
+                <button type="button" onClick="$('#modal_fehler').modal('hide');" class="ui button styleGrau">OK</button>
+            </div>
         </div>
 
         <%
@@ -529,6 +533,14 @@
                         $('#modal_vorhanden').modal('show');
             <%
                 }
+
+                if (request.getParameter("hidden_berechtigungs_info") != null)
+                {
+            %>
+                    bezirkChanged(document.getElementById("select_bezirk"),<%=request.getParameter("hidden_berechtigungs_info").split(";")[1]%>);
+                    abschittChanged(document.getElementById("select_abschnitt"),<%=request.getParameter("hidden_berechtigungs_info").split(";")[2]%>);
+            <%
+                                }
             %>
                         fixDropdowns("select_bezirk");
                         fixDropdowns("select_abschnitt");
