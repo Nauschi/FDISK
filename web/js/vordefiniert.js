@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var boolDeleteOnChange = false; 
+var boolDeleteOnChange = false;
 
 //Initialisiert die Dropdowns
 $('.ui.dropdown').dropdown();
@@ -66,23 +66,23 @@ function onChangeTypeOfDateUI(intTypeOfDateUI)
     {
         document.getElementById("div_input_von_datum").style.display = "none";
         document.getElementById("div_input_bis_datum").style.display = "none";
-        document.getElementById("div_kein_datum_1").style.display = "block";
-        document.getElementById("div_kein_datum_2").style.display = "block";
         document.getElementById("div_select_jahr").style.display = "none";
         document.getElementById("div_kennzeichen").style.display = "none";
+        document.getElementById("div_kein_datum_1").style.display = "none";
+        document.getElementById("div_kein_datum_2").style.display = "none";
     } else if (intTypeOfDateUI == 1)
     {
         document.getElementById("div_input_von_datum").style.display = "none";
         document.getElementById("div_input_bis_datum").style.display = "none";
-        document.getElementById("div_kein_datum_1").style.display = "block";
-        document.getElementById("div_kein_datum_2").style.display = "none";
         document.getElementById("div_select_jahr").style.display = "block";
         document.getElementById("div_kennzeichen").style.display = "none";
+        document.getElementById("div_kein_datum_1").style.display = "block";
+        document.getElementById("div_kein_datum_2").style.display = "block";
     } else if (intTypeOfDateUI == 2)
     {
         document.getElementById("div_input_von_datum").style.display = "block";
         document.getElementById("div_input_bis_datum").style.display = "block";
-        document.getElementById("div_kein_datum_1").style.display = "none";
+        document.getElementById("div_kein_datum_1").style.display = "block";
         document.getElementById("div_kein_datum_2").style.display = "none";
         document.getElementById("div_select_jahr").style.display = "none";
         document.getElementById("div_kennzeichen").style.display = "none";
@@ -176,7 +176,7 @@ function saveDataForCSV()
 
 function abschittChanged(select_abschnitt, strLetzteFW)
 {
-    if(boolDeleteOnChange==true)
+    if (boolDeleteOnChange == true)
     {
         $('.ui.search').search();
     }
@@ -211,7 +211,7 @@ function abschittChanged(select_abschnitt, strLetzteFW)
 
 function bezirkChanged(select_bezirk, strLetzteAbschnitt)
 {
-    if(boolDeleteOnChange==true)
+    if (boolDeleteOnChange == true)
     {
         $('.ui.search').search();
     }
@@ -247,7 +247,7 @@ function bezirkChanged(select_bezirk, strLetzteAbschnitt)
 
 function feuerwehrChanged(select_feuerwehr)
 {
-    if(boolDeleteOnChange==true)
+    if (boolDeleteOnChange == true)
     {
         $('.ui.search').search();
     }
@@ -284,5 +284,5 @@ function removeDateAndSetDivHidden(idDiv, idDatepicker)
 
 function setDeleteOnChange()
 {
-    boolDeleteOnChange = true; 
+    boolDeleteOnChange = true;
 }

@@ -32,7 +32,6 @@
         %>
         <%
             intIDGruppe = -1;
-            session.setAttribute("lastPage", "vordefiniert");
         %>
 
         <div class="ui segment" id="div_oben">
@@ -89,7 +88,7 @@
                         <input type="hidden" name="input_aktbericht" id="input_hidden"/>
                         <div class="ui equal width grid">
 
-                            <div class="column" id="div_bezirk" disabled>
+                            <div class="column" id="div_bezirk">
                                 <fieldset id="fieldset_bezirk">
                                     <legend><b>Bezirk</b></legend>
                                     <select  name="select_bezirk"  class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
@@ -156,10 +155,7 @@
                                     </div>
                                 </fieldset>
                             </div >
-                            <div class="column" id="div_kein_datum_1" style="display: none">
-                            </div>
-                            <div class="column" id="div_kein_datum_2" style="display: none">
-                            </div>
+                            
 
                             <div class="column" id="div_select_jahr" style="display: none">
                                 <fieldset id="fieldset_jahr">
@@ -195,8 +191,8 @@
                                     <legend><b>Kennzeichen</b></legend>
                                     <div class="ui search">
                                         <div class="ui input">
-                                            <input id="input_kennzeichen" class="prompt" style="border-radius: .28571429rem;" name="input_kennzeichen" placeholder="Kennzeichen" type="text" 
-                                                   <%=request.getParameter("input_kennzeichen")!=null? "value='"+request.getParameter("input_kennzeichen")+"'":"" %>>
+                                            <input id="input_kennzeichen" class="prompt" style="border-radius: .28571429rem;width: 100%" name="input_kennzeichen" placeholder="Kennzeichen" type="text" 
+                                                   <%=request.getParameter("input_kennzeichen") != null ? "value='" + request.getParameter("input_kennzeichen") + "'" : ""%>>
                                             <button type="submit" class="ui button styleGruen" name="button_ladeKennzeichen" title="Lade Kennzeichen">+</button>
                                         </div>
                                         <div class="results"></div>
@@ -204,12 +200,17 @@
 
                                 </fieldset>
                             </div>
-
+                            <div class="column" id="div_kein_datum_1" style="display: none">
+                            </div>
+                            <div class="column" id="div_kein_datum_2" style="display: none">
+                            </div>
+                            
+                        </div>
+                        <div class="ui equal width grid">
+                            <div class="column"></div>
+                                <div class="column"></div>
                             <div class="column">
-                                <fieldset id="fieldset_button">
-                                    <legend>&nbsp;</legend>
                                     <button type="submit" name="button_vorschau" class="ui button styleGrau" onclick="document.getElementById('div_loader').className = 'ui active inverted dimmer';" title="Vorschau erstellen" style="width: 100%;">Vorschau</button>
-                                </fieldset>
                             </div>
                         </div>
                     </form>
@@ -290,30 +291,30 @@
         <script src="tablesorter/jquery.tablesorter.js"></script> 
         <!--  <script src="tablesorter/jquery.tablesorter.min.js"></script>  -->
         <script>
-                                    $(document).ready(function ()
+                                            $(document).ready(function ()
                                     {
             <%
                 if (request.getParameter("input_aktbericht") == null)
                 {
             %>
-                                        var item = document.getElementById("div_liste").getElementsByTagName("a")[0];
+                                    var item = document.getElementById("div_liste").getElementsByTagName("a")[0];
             <%
             } else
             {
             %>
-                                        var item = document.getElementById("<%=request.getParameter("input_aktbericht")%>");
+                                    var item = document.getElementById("<%=request.getParameter("input_aktbericht")%>");
             <%
                 }
             %>
 
-                                        item.className = "item active";
-                                        var strBerichtname = item.getElementsByTagName("span")[0].innerHTML;
-                                        document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = strBerichtname;
-                                        document.getElementById("input_hidden").value = strBerichtname;
-                                        var strTable = item.getElementsByTagName("div")[0].innerHTML;
-                                        document.getElementById("div_table").innerHTML = strTable;
-                                        var intTypeOfDateUI = item.getElementsByTagName("div")[1].innerHTML;
-                                        onChangeTypeOfDateUI(intTypeOfDateUI);
+                                    item.className = "item active";
+                                            var strBerichtname = item.getElementsByTagName("span")[0].innerHTML;
+                                            document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = strBerichtname;
+                                            document.getElementById("input_hidden").value = strBerichtname;
+                                            var strTable = item.getElementsByTagName("div")[0].innerHTML;
+                                            document.getElementById("div_table").innerHTML = strTable;
+                                            var intTypeOfDateUI = item.getElementsByTagName("div")[1].innerHTML;
+                                            onChangeTypeOfDateUI(intTypeOfDateUI);
             <%
                 if (request.getAttribute("liste") != null)
                 {
@@ -369,7 +370,7 @@
 
             %>
 
-                                        document.getElementById("hidden_pdfData").value = "<%=request.getParameter("input_aktbericht")%>###<%=strHTML%>###<%=strZusatzHTML%>";
+                                    document.getElementById("hidden_pdfData").value = "<%=request.getParameter("input_aktbericht")%>###<%=strHTML%>###<%=strZusatzHTML%>";
                                                 document.formPDF.submit();
             <%
             } else
@@ -378,10 +379,10 @@
                 {
             %>
 
-                                                document.getElementById("div_csv_pdf").style.display = "block";
+                                        document.getElementById("div_csv_pdf").style.display = "block";
                                                 document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
             <%=setzeTablesort(request)%>
-                                                $('.sort').popup();
+                                        $('.sort').popup();
             <%
                         }
                     }
@@ -389,51 +390,50 @@
                 if (request.getParameter("select_abschnitt") != null && intIDGruppe == 5)
                 {
             %>
-                                                bezirkChanged(document.getElementById("select_bezirk"),<%=request.getParameter("select_abschnitt")%>);
+                                        bezirkChanged(document.getElementById("select_bezirk"),<%=request.getParameter("select_abschnitt")%>);
             <%
                 }
                 if (request.getParameter("select_feuerwehr") != null && (intIDGruppe == 15 || intIDGruppe == 5))
                 {
             %>
-                                                abschittChanged(document.getElementById("select_abschnitt"),<%=request.getParameter("select_feuerwehr")%>);
+                                        abschittChanged(document.getElementById("select_abschnitt"),<%=request.getParameter("select_feuerwehr")%>);
             <%
                 }
                 if (request.getParameter("input_aktbericht") != null && request.getParameter("input_aktbericht").equals("Digitales Fahrtenbuch"))
                 {
             %>
-                                                if (document.getElementById("div_zusatzDaten") == null)
-                                                {
-                                                    document.getElementById("div_fahrtenbuch").style.display = "block";
-                                                }
+                                        if (document.getElementById("div_zusatzDaten") == null)
+                                        {
+                                        document.getElementById("div_fahrtenbuch").style.display = "block";
+                                        }
             <%
                 }
             %>
 
-                                                document.getElementById("div_loader").className = "ui disabled loader";
+                                        document.getElementById("div_loader").className = "ui disabled loader";
                                                 fixDropdowns("select_bezirk");
                                                 fixDropdowns("select_abschnitt");
                                                 fixDropdowns("select_feuerwehr");
-
             <%
                 if (request.getAttribute("select_kennzeichen_liste") != null)
                 {
             %>
-                                                $('.ui.search').search({minCharacters : 0, searchFullText: false, source: [
+                                        $('.ui.search').search({minCharacters : 0, searchFullText: false, source: [
             <%
                 LinkedList<String> liKennzeichen = (LinkedList<String>) request.getAttribute("select_kennzeichen_liste");
                 for (String kennzeichen : liKennzeichen)
                 {
             %>
-                                                {title: '<%=kennzeichen%>'}<%=kennzeichen.equals(liKennzeichen.getLast()) ? "" : ","%>
+                                        {title: '<%=kennzeichen%>'}<%=kennzeichen.equals(liKennzeichen.getLast()) ? "" : ","%>
             <%
                 }
             %>
-                                                ], error : {noResults   : 'Keine Ergebnisse'}});
+                                        ], error : {noResults   : 'Keine Ergebnisse'}});
                                                 setDeleteOnChange();
             <%
                 }
             %>
-                                            });
+                                        });
         </script>        
 
     </body>
@@ -479,8 +479,7 @@
                 && request.getParameter("input_aktbericht").equals("Digitales Fahrtenbuch"))
         {
             return "$('.tablesorter').tablesorter({headers: {1: {sorter: 'berichtdate'},2: {sorter: 'berichtdate'}}});";
-        } 
-        else
+        } else
         {
             return "$('.tablesorter').tablesorter();";
         }
