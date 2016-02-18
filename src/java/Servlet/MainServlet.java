@@ -348,7 +348,7 @@ public class MainServlet extends HttpServlet
             } else if (strBericht.equals(liRohberichte.get(2).getStrBerichtname()))//Adressliste
             {
 
-                request.setAttribute("liste", access.getAdressListe(intBereichNr, intAbschnittNr, strFeuerwehr));
+                request.setAttribute("liste", access.getAdressliste(intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals(liRohberichte.get(3).getStrBerichtname()))//Geburtstagsliste
             {
                 int intJahr = Integer.parseInt(request.getParameter("select_jahr"));
