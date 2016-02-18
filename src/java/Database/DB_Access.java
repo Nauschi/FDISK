@@ -2447,7 +2447,7 @@ public class DB_Access
         hmAlleTypenUndFilter.put("FUNKTIONSINSTANZ", getFilterFuerFunktionsinstanz());
         hmAlleTypenUndFilter.put("STATUS", getFilterFuerStatus());
         hmAlleTypenUndFilter.put("ERREICHBARKEITSART", getFilterFuerErreichbarkeitsart());
-        hmAlleTypenUndFilter.put("STAATSBUERGERSCHAFT", getFilterFuerStaatsbuergerschaft());
+        hmAlleTypenUndFilter.put("STAATSBÜRGERSCHAFT", getFilterFuerStaatsbuergerschaft());
         hmAlleTypenUndFilter.put("ANREDE", getFilterFuerAnrede());
         hmAlleTypenUndFilter.put("AUSZEICHNUNGSSTUFE", getFilterFuerAuszeichnungsstufe());
         hmAlleTypenUndFilter.put("AUSZEICHNUNGSART", getFilterFuerAuszeichnung());

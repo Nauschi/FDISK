@@ -43,7 +43,7 @@ function onTypChanged(select_typ, strLastFilter, strLastOperator)
 
     } else if (strBoxArt == "txt")
     {
-        var operatorFeld = ["=", "<>"];
+        var operatorFeld = ["N/A","=", "<>"];
         aktualisiereOperator(strID, operatorFeld, strLastOperator);
         document.getElementById("div_filter_cb_" + strID).style.display = "none";
         document.getElementById("div_filter_txt_" + strID).style.display = "block";
@@ -65,7 +65,7 @@ function onTypChanged(select_typ, strLastFilter, strLastOperator)
 
     if (strBoxArt == "datepicker" || strBoxArt == "cb")
     {
-        var operatorFeld = ["=", "<>", "<=", ">=", "<", ">"];
+        var operatorFeld = ["N/A","=", "<>", "<=", ">=", "<", ">"];
         aktualisiereOperator(strID, operatorFeld, strLastOperator);
     }
 
