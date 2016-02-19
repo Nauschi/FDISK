@@ -110,7 +110,6 @@ public class MitgliedsDienstzeit extends Mitglied
 
         }
 
-        strDienstgrad = strDienstgrad.toUpperCase();
 
         strZuname = theInstance.formatiereAusgabe(strZuname);
         strVorname = theInstance.formatiereAusgabe(strVorname);

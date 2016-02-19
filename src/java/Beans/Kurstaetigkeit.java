@@ -226,7 +226,7 @@ public class Kurstaetigkeit
                 + strTaetigkeitsunterart + "</td><td>"
                 + sdf.format(dateBegin) + "</td><td>"
                 + sdf.format(dateEnde) + "</td>"
-                + "<td></td></tr>";
+                + "</tr>";
 
         return strHtml;
     }

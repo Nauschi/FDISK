@@ -195,7 +195,6 @@ public class MitgliedsAdresse extends Mitglied
             strOrt = "";
         }
 
-        strDienstgrad = strDienstgrad.toUpperCase();
         strZuname = theInstance.formatiereAusgabe(strZuname);
         strVorname = theInstance.formatiereAusgabe(strVorname);
         strStrasse = theInstance.formatiereAusgabe(strStrasse);

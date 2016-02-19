@@ -360,7 +360,7 @@ public class Fahrzeug
                 + strArt + "</td><td>"
                 + sdf.format(dateBeginn) + "</td><td>"
                 + sdf.format(dateEnde) + "</td><td>"
-                + doubleKm + "</td><td></td></tr>";
+                + doubleKm + "</td></tr>";
 
         return strHtml;
     }

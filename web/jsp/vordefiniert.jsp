@@ -249,6 +249,7 @@
                                         <th>Marke</th>
                                         <th>Leistung</th>
                                         <th>Treibstoff</th>
+                                        <th>KM Gesamt</th>
                                     </tr>
                                 </thead>
                             </table>
