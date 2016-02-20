@@ -43,7 +43,7 @@ function onTypChanged(select_typ, strLastFilter, strLastOperator)
 
     } else if (strBoxArt == "txt")
     {
-        var operatorFeld = ["=", "<>"];
+        var operatorFeld = ["N/A","=", "<>"];
         aktualisiereOperator(strID, operatorFeld, strLastOperator);
         document.getElementById("div_filter_cb_" + strID).style.display = "none";
         document.getElementById("div_filter_txt_" + strID).style.display = "block";
@@ -65,7 +65,7 @@ function onTypChanged(select_typ, strLastFilter, strLastOperator)
 
     if (strBoxArt == "datepicker" || strBoxArt == "cb")
     {
-        var operatorFeld = ["=", "<>", "<=", ">=", "<", ">"];
+        var operatorFeld = ["N/A","=", "<>", "<=", ">=", "<", ">"];
         aktualisiereOperator(strID, operatorFeld, strLastOperator);
     }
 
@@ -111,6 +111,11 @@ function initialisiereCBFilter(strTyp, strID, strLastFilter)
 
         var strHTMLFilter = map[strTyp.toUpperCase()];
         var strSplitFilter = strHTMLFilter.split(';');
+        var opt1 = document.createElement('option');
+        opt1.value = "N/A";
+        opt1.innerHTML = "N/A";
+        select_filter.appendChild(opt1);
+
         for (var i = 0; i < strSplitFilter.length; i++)
         {
 
@@ -156,16 +161,33 @@ function getStyle(el, styleProp)
  */
 function onVorschau(intZahler)
 {
-    var strWertVonLetztemSelect = document.getElementById("select_verknuepfung_" + intZahler).value;
-    if (strWertVonLetztemSelect != "N/A")
+    var boolCorrect = true;
+    for (var i = 1; i < intZahler; i++)
     {
-        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Letzte Verknüpfung muss leer sein";
-        $('#modal_fehler').modal('show');
-        $('.ui.dropdown').dropdown();
-        return false;
+        var strWertVonVerknupfungSelect = document.getElementById("select_verknuepfung_" + i).value;
+        if (strWertVonVerknupfungSelect == "N/A")
+        {
+            boolCorrect = false;
+        }
+    }
+    if (boolCorrect==true)
+    {
+        var strWertVonLetztemSelect = document.getElementById("select_verknuepfung_" + intZahler).value;
+        if (strWertVonLetztemSelect != "N/A")
+        {
+            document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Letzte Verknüpfung muss leer sein";
+            $('#modal_fehler').modal('show');
+//        $('.ui.dropdown').dropdown();
+            return false;
+        } else
+        {
+            return true;
+        }
     } else
     {
-        return true;
+        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Alle Verknüfungen, außer der Letzten, müssen gesetzt sein";
+        $('#modal_fehler').modal('show');
+        return false;
     }
 
 
@@ -214,6 +236,12 @@ function onActionSubmit(intZaehler, strButton)
         var strHTML = '<input type="hidden" name="hidden_element_data_' + i + '" value="' + strKlammerAuf_value + ";" + strTyp_value + ";" + strOperator_value + ";" + strFilter_value + ";" + strKlammerZu_value + ";" + strVerknuefung_value + '">';
         div_element.innerHTML = div_element.innerHTML + strHTML;
     }
+    var strBezirk = document.getElementById("select_bezirk").value;
+    var strAbschnitt = document.getElementById("select_abschnitt").value;
+    var strFeuerwehr = document.getElementById("select_feuerwehr").value;
+    var strBerechtigung = strBezirk + ";" + strAbschnitt + ";" + strFeuerwehr;
+    document.getElementById("hidden_berechtigungs_info").value = strBerechtigung;
+
     strHTML = '<input type="hidden" name="hidden_action" value="' + strButton + '">';
     div_element.innerHTML = div_element.innerHTML + strHTML;
     document.form_plus_minus_vorschau.submit();
@@ -282,6 +310,95 @@ function showLoeschenModal()
         document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Keine Vorlagen gefunden";
         $('#modal_fehler').modal('show');
     }
+}
+
+
+
+function abschittChanged(select_abschnitt, strLetzteFW)
+{
+    //alert("Abschnitt_value: "+select_abschnitt.value);
+    if (select_abschnitt.value != -1 && select_abschnitt.value != -2)
+    {
+        var strFeuerwehrOptions = document.getElementById("div_" + select_abschnitt.value).innerHTML;
+        if (strLetzteFW != null)
+        {
+            strFeuerwehrOptions = strFeuerwehrOptions.replace('value="' + strLetzteFW + '"', 'value="' + strLetzteFW + '" selected');
+        }
+        document.getElementById("fieldset_feuerwehr").innerHTML = '<legend><b>Feuerwehr</b></legend><select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr"></select>';
+        if (strFeuerwehrOptions.split('<option').length > 1)
+        {
+            document.getElementById("select_feuerwehr").innerHTML = "<option value='-2'>Alle Feuerwehren</option>" + strFeuerwehrOptions;
+        } else
+        {
+            document.getElementById("select_feuerwehr").innerHTML = strFeuerwehrOptions;
+        }
+
+        $('#select_feuerwehr').dropdown();
+        //alert(strFeuerwehrOptions);
+    } else if (select_abschnitt.value == -2)
+    {
+        document.getElementById("fieldset_feuerwehr").innerHTML = '<legend><b>Feuerwehr</b></legend><select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr"></select>';
+        document.getElementById("select_feuerwehr").innerHTML = "<option value='-2'>Alle Feuerwehren</option>"
+        $('#select_feuerwehr').dropdown();
+        fixDropdowns("select_feuerwehr");
+
+    }
+}
+
+function bezirkChanged(select_bezirk, strLetzteAbschnitt)
+{
+    //alert("Bezirk_value: "+select_bezirk.value);
+    if (select_bezirk.value != -1 && select_bezirk.value != -2)
+    {
+        //alert("IN bezirk changed");
+        var strAbschnittOptions = document.getElementById("div_" + select_bezirk.value).innerHTML;
+        if (strLetzteAbschnitt != null)
+        {
+            strAbschnittOptions = strAbschnittOptions.replace('value="' + strLetzteAbschnitt + '"', 'value="' + strLetzteAbschnitt + '" selected');
+        }
+
+        document.getElementById("fieldset_abschnitt").innerHTML = '<legend><b>Abschnitt</b></legend><select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)"></select>';
+        if (strAbschnittOptions.split('<option').length > 1)
+        {
+            document.getElementById("select_abschnitt").innerHTML = "<option value='-2'>Alle Abschnitte</option>" + strAbschnittOptions;
+        } else
+        {
+            document.getElementById("select_abschnitt").innerHTML = strAbschnittOptions;
+        }
+        $('#select_abschnitt').dropdown();
+        //alert(strAbschnittOptions);
+    } else if (select_bezirk.value == -2)
+    {
+        document.getElementById("fieldset_abschnitt").innerHTML = '<legend><b>Abschnitt</b></legend><select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)"></select>';
+        document.getElementById("select_abschnitt").innerHTML = "<option value='-2'>Alle Abschnitte</option>"
+        $('#select_abschnitt').dropdown();
+        fixDropdowns("select_feuerwehr");
+    }
+}
+
+function fixDropdowns(id)
+{
+    //alert("Fix: "+id);
+    var lenght = document.getElementById(id).getElementsByTagName("option").length;
+    if (lenght == 1)
+    {
+        //alert("Add disabled");
+        $("#" + id).parent("div").addClass("disabled");
+    } else
+    {
+        //alert("remove disabled");
+        $("#" + id).parent("div").removeClass("disabled");
+    }
+}
+
+function zuVordefiniertWeiterleiten()
+{
+    var strBezirk = document.getElementById("select_bezirk").value;
+    var strAbschnitt = document.getElementById("select_abschnitt").value;
+    var strFeuerwehr = document.getElementById("select_feuerwehr").value;
+    var strBerechtigung = strBezirk + ";" + strAbschnitt + ";" + strFeuerwehr;
+    document.getElementById("hidden_berechtigungs_info_2").value = strBerechtigung;
+    document.form_vordefiniert.submit();
 }
 
 

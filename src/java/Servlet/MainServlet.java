@@ -176,14 +176,15 @@ public class MainServlet extends HttpServlet
                 }
                 request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
                 return;
-            } else if (request.getParameter("button_vorschau") != null)
+            } else if (request.getParameter("button_vorschau") != null) //Dynamisch Button Vorschau erstellen
             {
                 generiereVorschau(request, response);
                 return;
-            } else if (request.getParameter("hidden_action") != null) //Dynamisch Vorschau oder plus minus zeile
+            } else if (request.getParameter("hidden_action") != null) //Dynamisch bei fast allen aktionen
             {
 
-                System.out.println("MainServlet.doPost: hidden_action: " + request.getParameter("hidden_action"));
+                System.out.println("//////////MainServlet.doPost.hidden_action");
+                System.out.println(""+request.getParameter("hidden_berechtigungs_info"));
                 if (request.getParameter("hidden_action").equals("vorschau"))
                 {
                     System.out.println("MainServlet.doPost: hidden_action: in vorschau");
@@ -484,15 +485,19 @@ public class MainServlet extends HttpServlet
 
         try
         {
+            String []strBerechtigung = request.getParameter("hidden_berechtigungs_info").split(";");
+            int intBezirk = Integer.parseInt(strBerechtigung[0]);
+            int intAbschnitt = Integer.parseInt(strBerechtigung[1]);
+            String strFeuerwehr = strBerechtigung[2];
             //Login für dynamischen Bericht implementiert. Bereich, Abnschnitt, & Feuerwehr sind neue Übergabeparameter.
             //Müss ma aber no genau bereden wie ma des machen. Mit Dropdowns oder ohne Dropdowns? Karli hat nix erwähnt
             //47030 --> Sinnersdorf
             //4704 --> 4. Abschnitt im Bereich 47
             //47 --> Bereich 47
             //-2 --> alles
-            //StringBuilder sbDynHTML = access.getDynamischerBericht(strDaten, 47, 4704, "-2");
-            //System.out.println("MainServlet.erstelleDynamischenBericht: sbDynHTML: " + sbDynHTML);
-            //request.setAttribute("dyn_table", sbDynHTML);
+            StringBuilder sbDynHTML = access.getDynamischerBericht(strDaten, intBezirk, intAbschnitt, strFeuerwehr);
+            System.out.println("MainServlet.erstelleDynamischenBericht: sbDynHTML: " + sbDynHTML);
+            request.setAttribute("dyn_table", sbDynHTML);
         } catch (Exception ex)
         {
             Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);

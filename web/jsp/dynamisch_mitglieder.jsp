@@ -1,4 +1,7 @@
 
+<%@page import="Beans.Bezirk"%>
+<%@page import="Beans.Abschnitt"%>
+<%@page import="Beans.Feuerwehr"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.Set"%>
 <%@page import="java.util.HashMap"%>
@@ -23,10 +26,10 @@
     <body>
         <%!
             private String strAktBoxArt = "";
+            private int intIDGruppe;
         %>
         <%
-            session.setAttribute("lastPage", "dynamisch_mitglieder");
-
+            intIDGruppe = -1;
             String[] strFeldKlammerAuf =
             {
                 "N/A", "(", "[", "{"
@@ -38,7 +41,7 @@
 
             String[] strFeldOperator =
             {
-                "=", "<>", "<=", ">=", "<", ">"
+                "N/A", "=", "<>", "<=", ">=", "<", ">"
             };
 
             String[] strFeldFilter =
@@ -61,7 +64,8 @@
             <div class="ui menu" id="div_menu">
                 <form action="MainServlet" method="POST" name="form_vordefiniert">
                     <input type="hidden" name="vordefiniert">
-                    <a href="#" onclick="document.form_vordefiniert.submit();" class="item linkMenu">
+                    <input type="hidden" name="hidden_berechtigungs_info" id="hidden_berechtigungs_info_2">
+                    <a href="#" onclick="zuVordefiniertWeiterleiten()" class="item linkMenu">
                         Vordefiniert
                     </a>
                 </form>
@@ -106,17 +110,64 @@
         %>
 
         <h1>Dynamisch - Mitglieder</h1>
-        <!--<div class="ui grid" id="div_mitte">-->
         <br/>
-        <div id="div_vorlage" class="ui menu">
-            <div class="ui right dropdown item">
-                <b>Vorlage</b>
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                    <div class="item" onclick="showErstellenModal();"><p style="font-weight: normal;">Erstellen</p></div>
-                    <div class="item" onclick="showLadenModal();"><p style="font-weight: normal;">Laden</p></div>
-                    <div class="item" onclick="showLoeschenModal();"><p style="font-weight: normal;">Löschen</p></div>
-                </div>
+        <div id="div_vorlage" class="ui equal width grid">
+            <div class="column" id="div_bezirk">
+                <fieldset id="fieldset_bezirk">
+                    <legend><b>Bezirk</b></legend>
+                    <select  name="select_bezirk"  class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
+                        <%=generiereBezirk(session)%>
+                    </select>
+                </fieldset>
+            </div>
+            <%
+                if (intIDGruppe == 5)
+                {
+                    out.println(generiereHiddenBezirkDiv(session));
+                }
+            %>
+            <div class="column" id="div_abschnitt">
+                <fieldset id="fieldset_abschnitt">
+                    <legend><b>Abschnitt</b></legend>
+                    <select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)">
+                        <%=generiereAbschnitt(session)%>
+                    </select>
+                </fieldset>
+            </div>
+
+            <%
+                if (intIDGruppe == 15 || intIDGruppe == 5)
+                {
+                    out.println(generiereHiddenAbschnittDiv(session));
+                }
+            %>
+            <div class="column" id="div_feuerwehr">
+                <fieldset id="fieldset_feuerwehr">
+                    <legend><b>Feuerwehr</b></legend>
+                    <select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr">
+                        <%=generiereFeuerwehr(session)%>
+                    </select>
+                </fieldset>
+            </div>
+
+
+
+            <div class="column">
+                <fieldset id="fieldset_vorlage">
+
+                    <legend><b>Vorlage</b></legend>
+                    <div class="ui equal width grid">
+                        <div class="column">
+                            <button type="button" onclick="showErstellenModal();" class="ui button styleGrau" style="width: 100%">Erstellen</button>
+                        </div>
+                        <div class="column">
+                            <button type="button" onclick="showLadenModal();" class="ui button styleGrau" style="width: 100%">Laden</button>
+                        </div>
+                        <div class="column">
+                            <button type="button" onclick="showLoeschenModal();" class="ui button styleGrau" style="width: 100%">Löschen</button>
+                        </div>
+                    </div>
+                </fieldset>
             </div>
         </div>
         <div id="dyn_main_div" >
@@ -143,6 +194,7 @@
             <form action="MainServlet" method="POST" name="form_plus_minus_vorschau">
                 <input type="hidden" name="hidden_zaehler" value="<%=intZaehler%>">
                 <input type="hidden" name="hidden_vorlage_name" id="hidden_vorlage_name">
+                <input type="hidden" name="hidden_berechtigungs_info" id="hidden_berechtigungs_info">
                 <%
                     for (int i = 1; i <= intZaehler; i++)
                     {
@@ -345,6 +397,9 @@
             <div class="content">
                 <p></p>
             </div>
+            <div class="actions">
+                <button type="button" onClick="$('#modal_fehler').modal('hide');" class="ui button styleGrau">OK</button>
+            </div>
         </div>
 
         <%
@@ -478,7 +533,18 @@
                         $('#modal_vorhanden').modal('show');
             <%
                 }
+
+                if (request.getParameter("hidden_berechtigungs_info") != null)
+                {
             %>
+                    bezirkChanged(document.getElementById("select_bezirk"),<%=request.getParameter("hidden_berechtigungs_info").split(";")[1]%>);
+                    abschittChanged(document.getElementById("select_abschnitt"),<%=request.getParameter("hidden_berechtigungs_info").split(";")[2]%>);
+            <%
+                                }
+            %>
+                        fixDropdowns("select_bezirk");
+                        fixDropdowns("select_abschnitt");
+                        fixDropdowns("select_feuerwehr");
                     });
         </script>
 
@@ -534,4 +600,77 @@
             return "";
         }
     }
+
+    private String generiereHiddenAbschnittDiv(HttpSession session)
+    {
+        if (intIDGruppe == 15)
+        {
+            Abschnitt abschnitt = (Abschnitt) session.getAttribute("abschnitt");
+            return abschnitt.generiereHiddenDiv();
+        } else
+        {
+            String strAbschnittDivs = "";
+            Bezirk bezirk = (Bezirk) session.getAttribute("bezirk");
+            LinkedList<Abschnitt> liAbschnitte = bezirk.getLiAbschnitte();
+            for (Abschnitt abschnitt : liAbschnitte)
+            {
+                strAbschnittDivs += abschnitt.generiereHiddenDiv();
+            }
+            return strAbschnittDivs;
+        }
+    }
+
+    private String generiereHiddenBezirkDiv(HttpSession session)
+    {
+        Bezirk bezirk = (Bezirk) session.getAttribute("bezirk");
+        return bezirk.generiereHiddenDiv();
+    }
+
+    private String generiereBezirk(HttpSession session)
+    {
+        if (session.getAttribute("bezirk") != null)
+        {
+            intIDGruppe = 5;
+            Bezirk bezirk = (Bezirk) session.getAttribute("bezirk");
+            return bezirk.toString();
+        } else
+        {
+            String strName = (String) session.getAttribute("bezirkName");
+            return "<option value='-1'>" + strName + "</option>";
+        }
+    }
+
+    private String generiereAbschnitt(HttpSession session)
+    {
+        if (session.getAttribute("abschnitt") != null)
+        {
+            intIDGruppe = 15;
+            Abschnitt abschnitt = (Abschnitt) session.getAttribute("abschnitt");
+            return abschnitt.toString();
+        } else if (intIDGruppe != -1)
+        {
+            return "";
+        } else
+        {
+            String strName = (String) session.getAttribute("abschnittName");
+            return "<option value='-1'>" + strName + "</option>";
+        }
+    }
+
+    private String generiereFeuerwehr(HttpSession session)
+    {
+
+        if (session.getAttribute("feuerwehr") != null)
+        {
+            System.out.println("vordefiniert.generiereFeuerwehr: if");
+            intIDGruppe = 9;
+            Feuerwehr feuerwehr = (Feuerwehr) session.getAttribute("feuerwehr");
+            return feuerwehr.toString();
+        } else
+        {
+            System.out.println("vordefiniert.generiereFeuerwehr: if");
+            return "";
+        }
+    }
+
 %>

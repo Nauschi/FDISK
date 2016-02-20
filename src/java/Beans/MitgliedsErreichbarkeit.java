@@ -117,7 +117,6 @@ public class MitgliedsErreichbarkeit extends Mitglied
             strZuname = "";
         }
         
-        strDienstgrad = strDienstgrad.toUpperCase(); 
         strVorname = theInstance.formatiereAusgabe(strVorname); 
         strZuname = theInstance.formatiereAusgabe(strZuname); 
         

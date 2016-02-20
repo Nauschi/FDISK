@@ -166,7 +166,6 @@ public class Mitglied
             strZuname = "";
         }
 
-        strDienstgrad = strDienstgrad.toUpperCase();
         strZuname = theInstance.formatiereAusgabe(strZuname);
         strVorname = theInstance.formatiereAusgabe(strVorname);
 

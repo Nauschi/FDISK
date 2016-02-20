@@ -83,7 +83,7 @@ public class DB_Access
         {
             return "";
         }
-        String[] strFormatTeile = strFormat.split("(?<= )|(?<=\\/)|(?<=-)|(?<=,)");
+        String[] strFormatTeile = strFormat.split("(?<= )|(?<=\\/)|(?<=-)|(?<=,)|(?<=\")");
         StringBuilder strNeuesFormat = new StringBuilder("");
 
         if (strFormatTeile.length > 1)
@@ -96,10 +96,10 @@ public class DB_Access
 
                     if (word.equals("bis") || word.equals("zum") || word.equals("von")
                             || word.equals("bei") || word.equals("und")
-                            || word.equals("bis") || word.equals("zum")
+                            || word.equals("zum") || word.equals("für")
                             || word.equals("beim") || word.equals("bei")
                             || word.equals("und") || word.equals("an")
-                            || word.equals("der"))
+                            || word.equals("der") || word.equals("die"))
                     {
                         strNeuesFormat.append(word.toLowerCase());
                     } else if (word.equals("FWZS"))
@@ -1171,6 +1171,11 @@ public class DB_Access
         {
             return "";
         }
+        double doKmGesamt = 0; 
+        for (Fahrzeug fahrzeug : liFahrzeuge)
+        {
+            doKmGesamt += fahrzeug.getDoubleKm(); 
+        }
         Fahrzeug f = liFahrzeuge.get(0);
         String htmlString = "<fieldset>"
                 + "<legend><b>Fahrzeugdaten</b></legend>"
@@ -1183,6 +1188,7 @@ public class DB_Access
                 + "<th>Marke</th>"
                 + "<th>Leistung</th>"
                 + "<th>Treibstoff</th>"
+                + "<th>KM Gesamt</th>"
                 + "</tr>"
                 + "</thead>"
                 + "<tbody>"
@@ -1193,6 +1199,7 @@ public class DB_Access
                 + "<td>" + f.getStrFahrzeugmarke() + "</td>"
                 + "<td>" + f.getIntLeistung() + "</td>"
                 + "<td>" + f.getStrTreibstoff() + "</td>"
+                + "<td>" + doKmGesamt + "</td>"
                 + "</tr>"
                 + "</tbody>"
                 + "</table>"
@@ -1443,9 +1450,14 @@ public class DB_Access
 
             if (strKennzeichen != null && !strKennzeichen.trim().isEmpty() && !strKennzeichen.equals(" ") && !strKennzeichen.equals(""))
             {
-                strKennzeichen = strKennzeichen.replace("/", "").replace(".", " ").replace(" ", "").replace("+", "").replace("-", "");
+                strKennzeichen = strKennzeichen.replace("/", "").replace(".", "").replace(" ", "").replace("+", "").replace("-", "");
 
-                liKennzeichen.add(strKennzeichen);
+                if(!strKennzeichen.trim().isEmpty() && !strKennzeichen.equals(" ") && !strKennzeichen.equals(""))
+                {
+                    liKennzeichen.add(strKennzeichen);
+                }
+
+                
             }
         }
         connPool.releaseConnection(conn);
@@ -2442,7 +2454,7 @@ public class DB_Access
         hmAlleTypenUndFilter.put("FUNKTIONSINSTANZ", getFilterFuerFunktionsinstanz());
         hmAlleTypenUndFilter.put("STATUS", getFilterFuerStatus());
         hmAlleTypenUndFilter.put("ERREICHBARKEITSART", getFilterFuerErreichbarkeitsart());
-        hmAlleTypenUndFilter.put("STAATSBUERGERSCHAFT", getFilterFuerStaatsbuergerschaft());
+        hmAlleTypenUndFilter.put("STAATSBÜRGERSCHAFT", getFilterFuerStaatsbuergerschaft());
         hmAlleTypenUndFilter.put("ANREDE", getFilterFuerAnrede());
         hmAlleTypenUndFilter.put("AUSZEICHNUNGSSTUFE", getFilterFuerAuszeichnungsstufe());
         hmAlleTypenUndFilter.put("AUSZEICHNUNGSART", getFilterFuerAuszeichnung());
@@ -3535,6 +3547,7 @@ public class DB_Access
         }
         return strType;
     }
+    
 
     /**
      *
@@ -3645,6 +3658,13 @@ public class DB_Access
 //            {
 //                // System.out.println(k.toString());
 //            }
+          //  LinkedList<Kurs> li = theInstance.getKursstatistikkurse("01.01.2056", "10.11.2058");
+
+//            for (Kurs k : li)
+//            {
+//                // System.out.println(k.toString());
+//            }
+
 // !!!!!!!!!!!!! Ende SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!
         } catch (Exception ex)
         {
