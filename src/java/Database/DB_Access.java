@@ -2894,10 +2894,10 @@ public class DB_Access
         return liFilter;
     }
 
-    public StringBuilder getDynamischerBericht(String strEingabe[][], int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception
+    public StringBuilder getDynamischerBericht(String strEingabe[][], String strSelectedColumns, int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception
     {
+        String[] strSelectedCols = strSelectedColumns.split(";");
         LinkedList<String> liSpaltenUeberschriften = new LinkedList<>();
-        String strSpaltenUeberschrift;
         boolean boAdresse = false;
         boolean boAuszeichnung = false;
         boolean boLeistungsabzeichen = false;
@@ -2908,6 +2908,7 @@ public class DB_Access
         boolean boUntersuchungen = false;
         boAnrede = false;
         boolean boVordienstzeit = false;
+        String strSpaltenUeberschrift;
 
         int intRows = strEingabe.length % 6;
 
@@ -2992,7 +2993,8 @@ public class DB_Access
                 }
             }
         }
-
+        
+        
         for (int i = 0; i < intRows; i++)
         {
             strSpaltenUeberschrift = strEingabe[i][1];
@@ -3007,59 +3009,23 @@ public class DB_Access
                 liSpaltenUeberschriften.add(strSpaltenUeberschrift);
             }
         }
-
-        String sqlString = "SELECT ";
-
+        
         if (liSpaltenUeberschriften.contains("Expr1") || liSpaltenUeberschriften.contains("u.Datum"))
         {
             boUntersuchungen = true;
-            for (String titel : liSpaltenUeberschriften)
-            {
-                switch (titel)
-                {
-                    case "Expr1":
-                        sqlString += "u." + titel.toUpperCase() + ", ";
-                        break;
-                    case "u.Datum":
-                        sqlString += titel.toUpperCase() + " AS 'u.Datum', ";
-                        break;
-                }
-            }
+            
         }
         if (liSpaltenUeberschriften.contains("Bezeichnung")
                 || liSpaltenUeberschriften.contains("Stufe")
                 || liSpaltenUeberschriften.contains("lam.Datum"))
         {
             boLeistungsabzeichen = true;
-            for (String titel : liSpaltenUeberschriften)
-            {
-                switch (titel)
-                {
-                    case "Bezeichnung":
-                    case "Stufe":
-                        sqlString += "la." + titel.toUpperCase() + ", ";
-                        break;
-                    case "lam.Datum":
-                        sqlString += titel.toUpperCase() + " AS 'lam.Datum', ";
-                        break;
-                }
-            }
+            
         }
         if (liSpaltenUeberschriften.contains("Kursbezeichnung") || liSpaltenUeberschriften.contains("k.Datum"))
         {
             boKurse = true;
-            for (String titel : liSpaltenUeberschriften)
-            {
-                switch (titel)
-                {
-                    case "Kursbezeichnung":
-                        sqlString += "k." + titel.toUpperCase() + ", ";
-                        break;
-                    case "k.Datum":
-                        sqlString += titel.toUpperCase() + " AS 'k.Datum', ";
-                        break;
-                }
-            }
+            
         }
         if (liSpaltenUeberschriften.contains("id_instanztypen")
                 || liSpaltenUeberschriften.contains("datum_von")
@@ -3067,152 +3033,59 @@ public class DB_Access
                 || liSpaltenUeberschriften.contains("f.bezeichnung"))
         {
             boFunktionen = true;
-            for (String titel : liSpaltenUeberschriften)
-            {
-                switch (titel)
-                {
-                    case "id_instanztypen":
-                        sqlString += "f." + titel.toUpperCase() + ", ";
-                        break;
-                    case "f.bezeichnung":
-                        sqlString += titel.toUpperCase() + " AS 'f.bezeichnung', ";
-                        break;
-                    case "datum_von":
-                    case "datum_bis":
-                        sqlString += "fm." + titel.toUpperCase() + ", ";
-                        break;
-                }
-            }
+            
         }
         if (liSpaltenUeberschriften.contains("Fahrgenehmigungsklasse") || liSpaltenUeberschriften.contains("Gueltig_bis"))
         {
             boFahrgenehmigungen = true;
-            for (String titel : liSpaltenUeberschriften)
-            {
-                if (titel.equals("Fahrgenehmigungsklasse") || titel.equals("Gueltig_bis"))
-                {
-                    sqlString += "gf." + titel.toUpperCase() + ", ";
-                }
-            }
+            
         }
         if (liSpaltenUeberschriften.contains("Auszeichnungsart")
                 || liSpaltenUeberschriften.contains("Auszeichnungsstufe")
                 || liSpaltenUeberschriften.contains("Verleihungsdatum"))
         {
             boAuszeichnung = true;
-            for (String titel : liSpaltenUeberschriften)
-            {
-                switch (titel)
-                {
-                    case "Auszeichnungsart":
-                    case "Auszeichnungsstufe":
-                        sqlString += "ausz." + titel.toUpperCase() + ", ";
-                        break;
-                    case "Verleihungsdatum":
-                        sqlString += "auszm." + titel.toUpperCase() + ", ";
-                        break;
-                }
-            }
+            
         }
 
         if (liSpaltenUeberschriften.contains("Code") || liSpaltenUeberschriften.contains("Erreichbarkeitsart"))
         {
             boErreichbarkeiten = true;
-            for (String titel : liSpaltenUeberschriften)
-            {
-                if (titel.equals("Code") || titel.equals("Erreichbarkeitsart"))
-                {
-                    sqlString += "e." + titel.toUpperCase() + ", ";
-                }
-            }
+            
         }
         if (liSpaltenUeberschriften.contains("Straße") || liSpaltenUeberschriften.contains("Hausnummer")
                 || liSpaltenUeberschriften.contains("Stiege/Stock/Tür") || liSpaltenUeberschriften.contains("Ort"))
         {
             boAdresse = true;
-            for (String titel : liSpaltenUeberschriften)
-            {
-                if (titel.equals("Straße") || titel.equals("Hausnummer") || titel.equals("Stiege/Stock/Tür") || titel.equals("Ort"))
-                {
-                    sqlString += "a." + titel.toUpperCase() + ", ";
-                }
-            }
+            
         }
 
         if (liSpaltenUeberschriften.contains("Vordienstzeit"))
         {
             boVordienstzeit = true;
-            for (String titel : liSpaltenUeberschriften)
-            {
-                if (titel.equals("Vordienstzeit"))
-                {
-                    sqlString += "z.VD_ZEIT, ";
-                }
-            }
+            
         }
-        if (liSpaltenUeberschriften.contains("Anrede") || liSpaltenUeberschriften.contains("Geschlecht")
-                || liSpaltenUeberschriften.contains("Titel") || liSpaltenUeberschriften.contains("Amtstitel")
-                || liSpaltenUeberschriften.contains("Vorname") || liSpaltenUeberschriften.contains("Zuname")
-                || liSpaltenUeberschriften.contains("Namenszusatz") || liSpaltenUeberschriften.contains("Geburtsdatum")
-                || liSpaltenUeberschriften.contains("Geburtsort") || liSpaltenUeberschriften.contains("Alter")
-                || liSpaltenUeberschriften.contains("SVNR") || liSpaltenUeberschriften.contains("Staatsbuergerschaft")
-                || liSpaltenUeberschriften.contains("Beruf") || liSpaltenUeberschriften.contains("Familienstand")
-                || liSpaltenUeberschriften.contains("Blutgruppe") || liSpaltenUeberschriften.contains("Standesbuchnummer")
-                || liSpaltenUeberschriften.contains("Eintrittsdatum") || liSpaltenUeberschriften.contains("Dienstalter")
-                || liSpaltenUeberschriften.contains("Angelobungsdatum") || liSpaltenUeberschriften.contains("Status")
-                || liSpaltenUeberschriften.contains("Dienstgrad"))
-        {
-            for (String titel : liSpaltenUeberschriften)
-            {
-                switch (titel)
-                {
-                    case "Anrede":
-                    case "Geschlecht":
-                    case "Titel":
-                    case "Amtstitel":
-                    case "Vorname":
-                    case "Zuname":
-                    case "Namenszusatz":
-                    case "Geburtsdatum":
-                    case "Geburtsort":
-                    case "SVNR":
-                    case "Staatsbuergerschaft":
-                    case "Beruf":
-                    case "Familienstand":
-                    case "Blutgruppe":
-                    case "Standesbuchnummer":
-                    case "Eintrittsdatum":
-                    case "Dienstalter":
-                    case "Angelobungsdatum":
-                    case "Status":
-                    case "Vordienstzeit":
-                    case "Dienstgrad":
-                        sqlString += "m." + titel.toUpperCase() + ", ";
-                        break;
-                    case "Alter":
-                        sqlString += "DATEDIFF(YY, geburtsdatum, GETDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum) > GETDATE() THEN 1 ELSE 0 END  AS Lebensalter, ";
-                        break;
-                }
-            }
-        }
+       
 
         if (liSpaltenUeberschriften.contains("Jugend") || liSpaltenUeberschriften.contains("Aktiv")
                 || liSpaltenUeberschriften.contains("Reserve") || liSpaltenUeberschriften.contains("Abgemeldet")
                 || liSpaltenUeberschriften.contains("Ehrenmitglied"))
         {
             boErreichbarkeiten = true;
-            for (String titel : liSpaltenUeberschriften)
-            {
-                switch (titel)
+            
+        }
+
+        
+        String sqlString = "SELECT DISTINCT ";
+
+        for (int i = 0; i < strSelectedCols.length; i++)
+        {
+            sqlString += "m."+strSelectedCols[i] + ",";
+
+             if (!liSpaltenUeberschriften.contains(strSelectedCols[i]))
                 {
-                    case "Jugend":
-                    case "Aktiv":
-                    case "Reserve":
-                    case "Abgemeldet":
-                    case "Ehrenmitglied":
-                        sqlString += "m." + titel.toUpperCase() + ", ";
+                    liSpaltenUeberschriften.add(strSelectedCols[i]);
                 }
-            }
         }
 
         sqlString = sqlString.substring(0, sqlString.lastIndexOf(",")) + " ";
@@ -3410,21 +3283,24 @@ public class DB_Access
             }
         }
 
-        StringBuilder sbHtml = createDynamicReportGeneratorOutput(sqlString, liSpaltenUeberschriften);
+        System.out.println("SQLSTRING: " + sqlString);
+        StringBuilder sbHtml = createDynamicReportGeneratorOutput(sqlString, strSelectedCols);
+        System.out.println(sbHtml.toString());
         return sbHtml;
     }
 
-    public StringBuilder createDynamicReportGeneratorOutput(String sqlString, LinkedList<String> liSpaltenUeberschriften) throws Exception
+    public StringBuilder createDynamicReportGeneratorOutput(String sqlString, String[] strSelectedCols) throws Exception
     {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
         StringBuilder sbHtml = new StringBuilder("");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
         ResultSet rs = stat.executeQuery(sqlString);
 
         sbHtml.append("<table class='ui sortable celled table' id='dyn_table'><thead><tr>");
 
-        for (String str : liSpaltenUeberschriften)
+        for (String str : strSelectedCols)
         {
             sbHtml.append("<th data-content='nach ").append(str).append(" sortieren'>");
             if (boAnrede == true && str.equals("Geschlecht"))
@@ -3450,7 +3326,7 @@ public class DB_Access
 
             sbHtml.append("<tr>");
 
-            for (String str : liSpaltenUeberschriften)
+            for (String str : strSelectedCols)
             {
                 for (Map.Entry pair : haNamesTypes.entrySet())
                 {
@@ -3481,9 +3357,10 @@ public class DB_Access
                                 if (dateDate == null)
                                 {
                                     sbHtml.append("Unbekannt");
-                                } else
+                                } 
+                                else
                                 {
-                                    sbHtml.append(dateDate);
+                                    sbHtml.append(sdf.format(dateDate));
                                 }
                                 sbHtml.append("</td>");
                                 break;
@@ -3538,11 +3415,12 @@ public class DB_Access
                                 sbHtml.append("</td>");
                                 break;
                             case "big decimal":
+                                System.out.println(str);
                                 if (str.equals("Vordienstzeit"))
                                 {
                                     bdBigDecimal = rs.getBigDecimal("vd_zeit");
-
-                                } else
+                                } 
+                                else
                                 {
                                     bdBigDecimal = rs.getBigDecimal(str);
                                 }
@@ -3557,8 +3435,8 @@ public class DB_Access
                                     intAlter = Integer.parseInt(rs.getString("Lebensalter"));
                                 } catch (NumberFormatException e)
                                 {
+                                    
                                 }
-
                                 sbHtml.append("<td>");
                                 if (intAlter < 0)
                                 {
@@ -3753,21 +3631,20 @@ public class DB_Access
                     =
                     {
                         {
-                            "(", "Vordienstzeit in Jahren", "<>", "4", ")", "UND NICHT"
+                            "(", "Kursbezeichnung", "=", "Brandbekämpfung 'Modul 2'", ")", "UND NICHT"
                         }
                     };
 //
-//            StringBuilder html = theInstance.getDynamischerBericht(dynamisch);
+            StringBuilder html = theInstance.getDynamischerBericht(dynamisch, "Vorname;Zuname;Geburtsdatum", 47, 4704, "-2");
 //            System.out.println(html);
 // !!!!!!!!!!!!! SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!
 
-            LinkedList<Kurs> li = theInstance.getKursstatistikkurse("01.01.2056", "10.11.2058");
-
-            for (Kurs k : li)
-            {
-                // System.out.println(k.toString());
-            }
-
+//            LinkedList<Kurs> li = theInstance.getKursstatistikkurse("01.01.2056", "10.11.2058");
+//
+//            for (Kurs k : li)
+//            {
+//                // System.out.println(k.toString());
+//            }
 // !!!!!!!!!!!!! Ende SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!
         } catch (Exception ex)
         {

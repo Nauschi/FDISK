@@ -490,9 +490,9 @@ public class MainServlet extends HttpServlet
             //4704 --> 4. Abschnitt im Bereich 47
             //47 --> Bereich 47
             //-2 --> alles
-            StringBuilder sbDynHTML = access.getDynamischerBericht(strDaten, 47, 4704, "-2");
-            System.out.println("MainServlet.erstelleDynamischenBericht: sbDynHTML: " + sbDynHTML);
-            request.setAttribute("dyn_table", sbDynHTML);
+            //StringBuilder sbDynHTML = access.getDynamischerBericht(strDaten, 47, 4704, "-2");
+            //System.out.println("MainServlet.erstelleDynamischenBericht: sbDynHTML: " + sbDynHTML);
+            //request.setAttribute("dyn_table", sbDynHTML);
         } catch (Exception ex)
         {
             Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
