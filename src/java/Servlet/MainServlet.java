@@ -362,7 +362,7 @@ public class MainServlet extends HttpServlet
                 //request.setAttribute("liste", );
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
-                request.setAttribute("liste", access.getStundenauswertungProMitgliedProInstanz(strVonDatum, strBisDatum,intBereichNr, intAbschnittNr, strFeuerwehr));
+                //request.setAttribute("liste", access.getStundenauswertungProMitgliedProInstanz(strVonDatum, strBisDatum,intBereichNr, intAbschnittNr, strFeuerwehr));
            
 
             } else if (strBericht.equals(liRohberichte.get(6).getStrBerichtname()))//Tätigkeitsbericht leer
@@ -439,7 +439,7 @@ public class MainServlet extends HttpServlet
 
     private String generiereKurstatistikZusatzTable(String strVonDatum, String strBisDatum) throws Exception
     {
-        LinkedList<Kurs> liKurse = access.getKursstatistikkurse(strVonDatum, strBisDatum);
+        //LinkedList<Kurs> liKurse = access.getKursstatistikkurse(strVonDatum, strBisDatum);
         String strZusatzInfo = "<table class='tablesorter2 ui celled table'><thead>";
         strZusatzInfo += "<tr>"
                 + "<th data-content='nach Kursbezeichnung sortieren' class='sort'>Kursbezeichnung</th>"
@@ -448,10 +448,10 @@ public class MainServlet extends HttpServlet
                 + "<th>-</th>"
                 + "</tr>";
         strZusatzInfo += "</thead><tbody>";
-        for (Kurs kurs : liKurse)
-        {
-            strZusatzInfo += kurs.toString();
-        }
+//        for (Kurs kurs : liKurse)
+//        {
+//            strZusatzInfo += kurs.toString();
+//        }
         strZusatzInfo += "</tbody></table>";
         return strZusatzInfo;
     }
@@ -494,10 +494,11 @@ public class MainServlet extends HttpServlet
             //47030 --> Sinnersdorf
             //4704 --> 4. Abschnitt im Bereich 47
             //47 --> Bereich 47
+            //Test
             //-2 --> alles
-            StringBuilder sbDynHTML = access.getDynamischerBericht(strDaten, intBezirk, intAbschnitt, strFeuerwehr);
-            System.out.println("MainServlet.erstelleDynamischenBericht: sbDynHTML: " + sbDynHTML);
-            request.setAttribute("dyn_table", sbDynHTML);
+            //StringBuilder sbDynHTML = access.getDynamischerBericht(strDaten, intBezirk, intAbschnitt, strFeuerwehr);
+            //System.out.println("MainServlet.erstelleDynamischenBericht: sbDynHTML: " + sbDynHTML);
+            //request.setAttribute("dyn_table", sbDynHTML);
         } catch (Exception ex)
         {
             Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
