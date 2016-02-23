@@ -21,6 +21,7 @@ public class Mitglied
     public String strTitel;
     public String strVorname;
     public String strZuname;
+    
     private DB_Access theInstance;
 
     public Mitglied(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname) throws ClassNotFoundException

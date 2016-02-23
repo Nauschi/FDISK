@@ -616,13 +616,15 @@ public class DB_Access {
      * @see MitgliedsDienstzeit
      * @see LinkedList
      */
-    public LinkedList<MitgliedsDienstzeit> getDienstzeitListe(int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
+  public LinkedList<MitgliedsDienstzeit> getDienstzeitListe(int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception
+    {
         LinkedList<MitgliedsDienstzeit> liMitgliedsDienstzeiten = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
         String sqlString = "";
-        if (intAbschnittnr == -2) {
-            sqlString = "SELECT m.id_personen \"PersID\", m.standesbuchnummer \"STB\", m.dienstgrad \"DGR\", m.titel \"Titel\", m.vorname \"Vorname\", m.zuname \"Zuname\", m.geburtsdatum \"Geburtsdatum\",  m.datum_abgemeldet \"Datum_abgemeldet\", m.eintrittsdatum \"Eintrittsdatum\", m.vordienstzeit \"Vordienstzeit\", SUM(z.VD_ZEIT) \"VD_ZEIT\""
+        if (intAbschnittnr == -2)
+        {
+            sqlString = "SELECT m.id_personen \"PersID\", m.standesbuchnummer \"STB\", m.dienstgrad \"DGR\", m.titel \"Titel\", m.vorname \"Vorname\", m.zuname \"Zuname\", m.geburtsdatum \"Geburtsdatum\",  m.datum_abgemeldet \"Datum_abgemeldet\", m.eintrittsdatum \"Eintrittsdatum\", m.vordienstzeit \"Vordienstzeit\", SUM(z.VD_ZEIT) \"VD_ZEIT\", m.id_instanzen \"Instanzen\""
                     + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_VD_ZEIT z ON(m.id_personen = z.id_personen)"
                     + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(m.instanznummer = f.instanznummer)"
                     + " WHERE f.Bereich_Nr = " + intBereichnr
@@ -636,11 +638,14 @@ public class DB_Access {
                     + " m.zuname, "
                     + " m.geburtsdatum, "
                     + " m.datum_abgemeldet, "
-                    + " m.eintrittsdatum,"
-                    + " m.vordienstzeit ";
-        } else {
-            if (strFubwehr.equals("-2")) {
-                sqlString = "SELECT m.id_personen \"PersID\", m.standesbuchnummer \"STB\", m.dienstgrad \"DGR\", m.titel \"Titel\", m.vorname \"Vorname\", m.zuname \"Zuname\", m.geburtsdatum \"Geburtsdatum\",  m.datum_abgemeldet \"Datum_abgemeldet\", m.eintrittsdatum \"Eintrittsdatum\", m.vordienstzeit \"Vordienstzeit\", SUM(z.VD_ZEIT) \"VD_ZEIT\""
+                    + " m.eintrittsdatum, "
+                    + " m.vordienstzeit, "
+                    + " m.id_instanzen";
+        } else
+        {
+            if (strFubwehr.equals("-2"))
+            {
+                sqlString = "SELECT m.id_personen \"PersID\", m.standesbuchnummer \"STB\", m.dienstgrad \"DGR\", m.titel \"Titel\", m.vorname \"Vorname\", m.zuname \"Zuname\", m.geburtsdatum \"Geburtsdatum\",  m.datum_abgemeldet \"Datum_abgemeldet\", m.eintrittsdatum \"Eintrittsdatum\", m.vordienstzeit \"Vordienstzeit\", SUM(z.VD_ZEIT) \"VD_ZEIT\", m.id_instanzen \"Instanzen\""
                         + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_VD_ZEIT z ON(m.id_personen = z.id_personen)"
                         + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(m.instanznummer = f.instanznummer)"
                         + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr
@@ -654,10 +659,12 @@ public class DB_Access {
                         + " m.zuname, "
                         + " m.geburtsdatum, "
                         + " m.datum_abgemeldet, "
-                        + " m.eintrittsdatum,"
-                        + " m.vordienstzeit ";
-            } else {
-                sqlString = "SELECT m.id_personen \"PersID\", m.standesbuchnummer \"STB\", m.dienstgrad \"DGR\", m.titel \"Titel\", m.vorname \"Vorname\", m.zuname \"Zuname\", m.geburtsdatum \"Geburtsdatum\",  m.datum_abgemeldet \"Datum_abgemeldet\", m.eintrittsdatum \"Eintrittsdatum\", m.vordienstzeit \"Vordienstzeit\", SUM(z.VD_ZEIT) \"VD_ZEIT\""
+                        + " m.eintrittsdatum, "
+                        + " m.vordienstzeit, "
+                        + " m.id_instanzen";
+            } else
+            {
+                sqlString = "SELECT m.id_personen \"PersID\", m.standesbuchnummer \"STB\", m.dienstgrad \"DGR\", m.titel \"Titel\", m.vorname \"Vorname\", m.zuname \"Zuname\", m.geburtsdatum \"Geburtsdatum\",  m.datum_abgemeldet \"Datum_abgemeldet\", m.eintrittsdatum \"Eintrittsdatum\", m.vordienstzeit \"Vordienstzeit\", SUM(z.VD_ZEIT) \"VD_ZEIT\", m.id_instanzen \"Instanzen\""
                         + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_VD_ZEIT z ON(m.id_personen = z.id_personen)"
                         + " WHERE m.instanznummer = '" + strFubwehr + "'"
                         + " AND m.datum_abgemeldet IS NULL "
@@ -671,7 +678,8 @@ public class DB_Access {
                         + " m.geburtsdatum, "
                         + " m.datum_abgemeldet, "
                         + " m.eintrittsdatum,"
-                        + " m.vordienstzeit ";
+                        + " m.vordienstzeit, "
+                        + " m.id_instanzen";
             }
         }
 
@@ -686,20 +694,24 @@ public class DB_Access {
         Date dateGeburtsdatum;
         Date dateEintrittsdatum;
         double doubleVordienstzeit;
+        int intInstanznummer;
 
-        while (rs.next()) {
+        while (rs.next())
+        {
             intPersID = rs.getInt("PersID");
             strSTB = rs.getString("STB");
             strDGR = rs.getString("DGR");
             strTitel = rs.getString("Titel");
             strVorname = rs.getString("Vorname");
             strZuname = rs.getString("Zuname");
+            intInstanznummer = rs.getInt("Instanzen");
             dateGeburtsdatum = new Date(rs.getDate("Geburtsdatum").getTime());
 
             dateEintrittsdatum = new Date();
 
             Timestamp helper = rs.getTimestamp("Eintrittsdatum");
-            if (helper != null) {
+            if (helper != null)
+            {
                 dateEintrittsdatum = new java.util.Date(helper.getTime());
             }
 
@@ -709,19 +721,58 @@ public class DB_Access {
 
             double doubleDienstzeit = Calendar.getInstance().get(Calendar.YEAR) - calEintrittsdatum.get(Calendar.YEAR);
 
-            if (Calendar.getInstance().get(Calendar.MONTH) < calEintrittsdatum.get(Calendar.MONTH)) {
+            if (Calendar.getInstance().get(Calendar.MONTH) < calEintrittsdatum.get(Calendar.MONTH))
+            {
                 doubleDienstzeit--;
             }
 
-            if ((Calendar.getInstance().get(Calendar.MONTH) == calEintrittsdatum.get(Calendar.MONTH)) && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) < calEintrittsdatum.get(Calendar.DAY_OF_MONTH)) {
+            if ((Calendar.getInstance().get(Calendar.MONTH) == calEintrittsdatum.get(Calendar.MONTH)) && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) < calEintrittsdatum.get(Calendar.DAY_OF_MONTH))
+            {
                 doubleDienstzeit--;
             }
 
             doubleDienstzeit += doubleVordienstzeit;
 
-            MitgliedsDienstzeit mitgliedsDienst = new MitgliedsDienstzeit(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true, dateGeburtsdatum, doubleDienstzeit);
+            MitgliedsDienstzeit mitgliedsDienst = new MitgliedsDienstzeit(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true, dateGeburtsdatum, doubleDienstzeit, intInstanznummer, calEintrittsdatum, doubleVordienstzeit);
             liMitgliedsDienstzeiten.add(mitgliedsDienst);
 
+        }
+
+        for (int i = 0; i < liMitgliedsDienstzeiten.size(); i++)
+        {
+            MitgliedsDienstzeit md1 = liMitgliedsDienstzeiten.get(i);
+            for (int j = i + 1; j < liMitgliedsDienstzeiten.size(); j++)
+            {
+                MitgliedsDienstzeit md2 = liMitgliedsDienstzeiten.get(j);
+
+                if (md1.getIntId_Personen() == md2.getIntId_Personen() && md1.getIntInstanznummer() == md2.getIntInstanznummer())
+                {
+                    Calendar calMd1 = md1.getCalEntrittsdatum();
+                    Calendar calMd2 = md2.getCalEntrittsdatum();
+
+                    if (calMd1.get(Calendar.YEAR) > calMd2.get(Calendar.YEAR) && calMd1.get(Calendar.MONTH) > calMd2.get(Calendar.MONTH) && calMd1.get(Calendar.DAY_OF_MONTH) > calMd2.get(Calendar.DAY_OF_MONTH))
+                    {
+                        System.out.println("Hallo, ich bin in der Dienstzeitliste");
+                        double doubleDienstzeit = Calendar.getInstance().get(Calendar.YEAR) - calMd2.get(Calendar.YEAR);
+
+                        if (Calendar.getInstance().get(Calendar.MONTH) < calMd2.get(Calendar.MONTH))
+                        {
+                            doubleDienstzeit--;
+                        }
+
+                        if ((Calendar.getInstance().get(Calendar.MONTH) == calMd2.get(Calendar.MONTH)) && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) < calMd2.get(Calendar.DAY_OF_MONTH))
+                        {
+                            doubleDienstzeit--;
+                        }
+
+                        doubleDienstzeit += md2.getDoVordienstzeit();
+                        md2.setDoubleDienstalter(doubleDienstzeit);
+                        liMitgliedsDienstzeiten.remove(i); 
+                        liMitgliedsDienstzeiten.set(j, md2); 
+                        
+                    }
+                }
+            }
         }
         connPool.releaseConnection(conn);
         return liMitgliedsDienstzeiten;

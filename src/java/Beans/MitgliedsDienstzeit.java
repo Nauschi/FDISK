@@ -7,6 +7,7 @@ package Beans;
 
 import Database.DB_Access;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -19,21 +20,59 @@ public class MitgliedsDienstzeit extends Mitglied
 
     private Date dateGeburtsdatum;
     private double doubleDienstalter;
+    private Calendar calEntrittsdatum; 
+    private int intInstanznummer; 
+    private double doVordienstzeit; 
+    
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
     private DB_Access theInstance;
 
-    public MitgliedsDienstzeit(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, Date dateGeburtsdatum, double doubleDienstalter) throws ClassNotFoundException
+    public MitgliedsDienstzeit(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, Date dateGeburtsdatum, double doubleDienstalter, int intInstanznummer, Calendar calEntrittsdatum, double doVordienstzeit) throws ClassNotFoundException
     {
         super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
         this.dateGeburtsdatum = dateGeburtsdatum;
         this.doubleDienstalter = doubleDienstalter;
-
+        this.calEntrittsdatum = calEntrittsdatum; 
+        this.intInstanznummer = intInstanznummer; 
+        this.doVordienstzeit = doVordienstzeit; 
         theInstance = DB_Access.getInstance();
     }
 
+    public double getDoVordienstzeit()
+    {
+        return doVordienstzeit;
+    }
+
+    public void setDoVordienstzeit(double doVordienstzeit)
+    {
+        this.doVordienstzeit = doVordienstzeit;
+    }
+
+    
     public Date getDateGeburtsdatum()
     {
         return dateGeburtsdatum;
+    }
+
+    public int getIntInstanznummer()
+    {
+        return intInstanznummer;
+    }
+
+    public void setIntInstanznummer(int intInstanznummer)
+    {
+        this.intInstanznummer = intInstanznummer;
+    }
+
+    
+    public Calendar getCalEntrittsdatum()
+    {
+        return calEntrittsdatum;
+    }
+
+    public void setCalEntrittsdatum(Calendar calEntrittsdatum)
+    {
+        this.calEntrittsdatum = calEntrittsdatum;
     }
 
     public void setDateGeburtsdatum(Date dateGeburtsdatum)
