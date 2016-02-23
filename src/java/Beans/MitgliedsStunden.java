@@ -97,7 +97,7 @@ public class MitgliedsStunden extends Mitglied {
                 + strVorname + "</td><td>"
                 + strZuname + "</td><td>"
                 + strInstanznummer + "</td><td>"
-                + doStunden / 60 + ":" + doStunden%60 + "</td>"
+                + (doStunden*60) / 60 + ":" + doStunden%60 + "</td>"
                 + "<td></td></tr>";
 
         return strHtml;
