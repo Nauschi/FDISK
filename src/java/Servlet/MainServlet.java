@@ -496,9 +496,9 @@ public class MainServlet extends HttpServlet
             //47 --> Bereich 47
             //Test
             //-2 --> alles
-            //StringBuilder sbDynHTML = access.getDynamischerBericht(strDaten, intBezirk, intAbschnitt, strFeuerwehr);
-            //System.out.println("MainServlet.erstelleDynamischenBericht: sbDynHTML: " + sbDynHTML);
-            //request.setAttribute("dyn_table", sbDynHTML);
+            StringBuilder sbDynHTML = access.getDynamischerBericht(strDaten, "Vorname; Zuname; Geburtsdatum", intBezirk, intAbschnitt, strFeuerwehr);
+            System.out.println("MainServlet.erstelleDynamischenBericht: sbDynHTML: " + sbDynHTML);
+            request.setAttribute("dyn_table", sbDynHTML);
         } catch (Exception ex)
         {
             Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);

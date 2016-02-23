@@ -22,8 +22,8 @@ public class MitgliedsErreichbarkeit extends Mitglied
 
     LinkedList<Erreichbarkeit> liErreichbarkeiten;
     private boolean boBemerkung;
-    
-    private DB_Access theInstance; 
+
+    private DB_Access theInstance;
 
 //    public MitgliedsErreichbarkeit(int intId_Erreichbarkeiten, String strErreichbarkeitsArt, String strSichtbarkeit, String strCode, boolean boBemerkung, int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname) {
 //        super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
@@ -36,9 +36,8 @@ public class MitgliedsErreichbarkeit extends Mitglied
     public MitgliedsErreichbarkeit(boolean boBemerkung, int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname) throws ClassNotFoundException
     {
         super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
-        this.liErreichbarkeiten = liErreichbarkeiten;
         this.boBemerkung = boBemerkung;
-        
+
         theInstance = DB_Access.getInstance();
     }
 
@@ -95,47 +94,53 @@ public class MitgliedsErreichbarkeit extends Mitglied
     @Override
     public String toString()
     {
+        if (liErreichbarkeiten != null)
+        {
+            if (strStammblattnummer == null)
+            {
+                strStammblattnummer = "";
+            }
+            if (strDienstgrad == null)
+            {
+                strDienstgrad = "";
+            }
+            if (strTitel == null)
+            {
+                strTitel = "";
+            }
+            if (strVorname == null)
+            {
+                strVorname = "";
+            }
+            if (strZuname == null)
+            {
+                strZuname = "";
+            }
 
-        if (strStammblattnummer == null)
-        {
-            strStammblattnummer = "";
-        }
-        if (strDienstgrad == null)
-        {
-            strDienstgrad = "";
-        }
-        if (strTitel == null)
-        {
-            strTitel = "";
-        }
-        if (strVorname == null)
-        {
-            strVorname = "";
-        }
-        if (strZuname == null)
-        {
-            strZuname = "";
-        }
-        
-        strVorname = theInstance.formatiereAusgabe(strVorname); 
-        strZuname = theInstance.formatiereAusgabe(strZuname); 
-        
+            strVorname = theInstance.formatiereAusgabe(strVorname);
+            strZuname = theInstance.formatiereAusgabe(strZuname);
 
-        String strHtml = "<tr><td>"
-                + strStammblattnummer + "</td><td>"
-                + strDienstgrad + "</td><td>"
-                + strTitel + "</td><td>"
-                + strVorname + "</td><td>"
-                + strZuname + "</td><td>";
+            String strHtml = "<tr><td>"
+                    + strStammblattnummer + "</td><td>"
+                    + strDienstgrad + "</td><td>"
+                    + strTitel + "</td><td>"
+                    + strVorname + "</td><td>"
+                    + strZuname + "</td><td>";
 
-        for (Erreichbarkeit erreichbarkeit : liErreichbarkeiten)
-        {
-            String str = theInstance.formatiereAusgabe(erreichbarkeit.getStrErreichbarkeitsArt());
-            strHtml+= "<p>"+str+": "+erreichbarkeit.getStrCode()+"</p>";
+            System.out.println("LISTENGROESSSE:" + liErreichbarkeiten.size());
+
+            for (Erreichbarkeit erreichbarkeit : liErreichbarkeiten)
+            {
+                String str = theInstance.formatiereAusgabe(erreichbarkeit.getStrErreichbarkeitsArt());
+                strHtml += "<p>" + str + ": " + erreichbarkeit.getStrCode() + "</p>";
+            }
+            strHtml += "</td><td></td></tr>";
+
+            return strHtml;
         }
-        strHtml += "</td><td></td></tr>";
-
-        return strHtml;
+        return null;
     }
+    
+    
 
 }

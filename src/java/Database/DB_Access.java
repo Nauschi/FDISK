@@ -1466,6 +1466,7 @@ public class DB_Access {
             }
 
         }
+        
 
         connPool.releaseConnection(conn);
         return liMitgliedsErreichbarkeiten;
@@ -3345,7 +3346,7 @@ public class DB_Access {
             String[][] dynamisch
                     = {
                         {
-                            "(", "Kursbezeichnung", "=", "Brandbekämpfung 'Modul 2'", ")", "UND NICHT"
+                            "(", "Kursbezeichnung", "=", "Seminar", ")", "UND NICHT"
                         }
                     };
 //
