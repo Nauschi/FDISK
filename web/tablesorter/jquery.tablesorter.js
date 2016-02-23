@@ -1000,7 +1000,7 @@
                 // return false so this parser is not auto detected 
                 return false; 
             }, 
-            format: function(s) {  alert("sd"); 
+            format: function(s) {
                 // format your data for normalization 
                 
                 if(s == "")
