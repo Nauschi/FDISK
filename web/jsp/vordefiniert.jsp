@@ -55,7 +55,7 @@
                     <form action="MainServlet" method="POST" name="form_logout">
                         <input type="hidden" name="logout">
                         <a href="#" onclick="document.form_logout.submit();" class="ui item linkMenu">
-                            Logout
+                            Logout&nbsp;&nbsp;<i class="sign out icon"></i>
                         </a>
                     </form>
                 </div>

@@ -43,7 +43,7 @@ function onTypChanged(select_typ, strLastFilter, strLastOperator)
 
     } else if (strBoxArt == "txt")
     {
-        var operatorFeld = ["N/A","=", "<>"];
+        var operatorFeld = ["=", "<>"];
         aktualisiereOperator(strID, operatorFeld, strLastOperator);
         document.getElementById("div_filter_cb_" + strID).style.display = "none";
         document.getElementById("div_filter_txt_" + strID).style.display = "block";
@@ -65,7 +65,7 @@ function onTypChanged(select_typ, strLastFilter, strLastOperator)
 
     if (strBoxArt == "datepicker" || strBoxArt == "cb")
     {
-        var operatorFeld = ["N/A","=", "<>", "<=", ">=", "<", ">"];
+        var operatorFeld = ["=", "<>", "<=", ">=", "<", ">"];
         aktualisiereOperator(strID, operatorFeld, strLastOperator);
     }
 
@@ -112,9 +112,6 @@ function initialisiereCBFilter(strTyp, strID, strLastFilter)
         var strHTMLFilter = map[strTyp.toUpperCase()];
         var strSplitFilter = strHTMLFilter.split(';');
         var opt1 = document.createElement('option');
-        opt1.value = "N/A";
-        opt1.innerHTML = "N/A";
-        select_filter.appendChild(opt1);
 
         for (var i = 0; i < strSplitFilter.length; i++)
         {

@@ -76,7 +76,7 @@
                     <form action="MainServlet" method="POST" name="form_logout">
                         <input type="hidden" name="logout">
                         <a href="#" onclick="document.form_logout.submit();" class="ui item linkMenu">
-                            Logout
+                            Logout&nbsp;&nbsp;<i class="sign out icon"></i>
                         </a>
                     </form>
                 </div>
@@ -158,13 +158,13 @@
                     <legend><b>Vorlage</b></legend>
                     <div class="ui equal width grid">
                         <div class="column">
-                            <button type="button" onclick="showLoeschenModal();" class="ui button styleRot" title="Vorlage löschen" style="width: 100%;"><p>-</p></button>
+                            <button type="button" onclick="showLoeschenModal();" class="ui button styleRot" title="Vorlage löschen" style="width: 100%;"><p><i class="remove icon"></i></p></button>
                         </div>                        
                         <div class="column">
                             <button type="button" onclick="showLadenModal();" class="ui button styleGrau" title="Vorlage laden" style="width: 100%"><p><i class="refresh icon"></i></p></button>
                         </div>
                         <div class="column">
-                            <button type="button" onclick="showErstellenModal();" class="ui button styleGruen" title="Vorlage erstellen" style="width: 100%;"><p>+</p></button>
+                            <button type="button" onclick="showErstellenModal();" class="ui button styleGruen" title="Vorlage erstellen" style="width: 100%;"><p><i class="plus icon"></i></p></button>
                         </div>
                     </div>
                 </fieldset>
@@ -300,13 +300,13 @@
 
                 <div style="width: 40%; margin: 0 auto" class="ui equal width grid">
                     <div class="column">
-                        <button name="button_minus" type="button" onclick="onActionSubmit(<%=intZaehler%>, 'minus')" class="ui button styleRot" title="Letzte Zeile entfernen" style="float: right; width: 50%;"><p>-</p></button>
+                        <button name="button_minus" type="button" onclick="onActionSubmit(<%=intZaehler%>, 'minus')" class="ui button styleRot" title="Letzte Zeile entfernen" style="float: right; width: 50%;"><p><i class="remove icon"></i></p></button>
                     </div>
                     <div class="column" >
                         <button name="button_vorschau" type="button" onclick="onActionSubmit(<%=intZaehler%>, 'vorschau')" class="ui button styleGrau" title="Vorschau erstellen" style="width: 100%;"><p>Vorschau</p></button>
                     </div>
                     <div class="column">
-                        <button name="button_plus" type="button" onclick="onActionSubmit(<%=intZaehler%>, 'plus')" class="ui button styleGruen" title="Neue Zeile einfügen" style="float: left; width: 50%;"><p>+</p></button>
+                        <button name="button_plus" type="button" onclick="onActionSubmit(<%=intZaehler%>, 'plus')" class="ui button styleGruen" title="Neue Zeile einfügen" style="float: left; width: 50%;"><p><i class="plus icon"></i></p></button>
                     </div>
                 </div>
 
