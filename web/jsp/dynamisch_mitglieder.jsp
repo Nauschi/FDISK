@@ -158,13 +158,13 @@
                     <legend><b>Vorlage</b></legend>
                     <div class="ui equal width grid">
                         <div class="column">
-                            <button type="button" onclick="showErstellenModal();" class="ui button styleGrau" style="width: 100%">Erstellen</button>
+                            <button type="button" onclick="showLoeschenModal();" class="ui button styleRot" title="Vorlage löschen" style="width: 100%;">-</button>
+                        </div>                        
+                        <div class="column">
+                            <button type="button" onclick="showLadenModal();" class="ui button styleGrau" title="Vorlage laden" style="width: 100%;"><i class="refresh icon"></i></button>
                         </div>
                         <div class="column">
-                            <button type="button" onclick="showLadenModal();" class="ui button styleGrau" style="width: 100%">Laden</button>
-                        </div>
-                        <div class="column">
-                            <button type="button" onclick="showLoeschenModal();" class="ui button styleGrau" style="width: 100%">Löschen</button>
+                            <button type="button" onclick="showErstellenModal();" class="ui button styleGruen" title="Vorlage erstellen" style="width: 100%;">+</button>
                         </div>
                     </div>
                 </fieldset>
@@ -298,7 +298,7 @@
                 %>
 
 
-                <div style="width: 30%; margin: 0 auto" class="ui equal width grid">
+                <div style="width: 40%; margin: 0 auto" class="ui equal width grid">
                     <div class="column">
                         <button name="button_minus" type="button" onclick="onActionSubmit(<%=intZaehler%>, 'minus')" class="ui button styleRot" title="Letzte Zeile entfernen" style="float: right; width: 50%;">-</button>
                     </div>
