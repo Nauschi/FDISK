@@ -5,6 +5,8 @@
  */
 
 var map = {'Test': 'anushgjk'};
+var liTypen = ["Test"];
+var intCountTypen = 0;
 
 
 //Initialisiert die Dropdowns
@@ -18,7 +20,56 @@ function setMap(otherMap)
     map = otherMap;
 }
 
+function setTypen(liTypen2)
+{
+    liTypen2.sort();
+    liTypen = liTypen2;
+}
+//<div class="four wide column displayTypSelection">
+//                    s
+//                </div>
 
+function addTypenAuswahl(lastType)//Für die typen die man ausgeben will
+{
+    var div_typen_auswahl = document.getElementById("div_typen_auswahl");
+    var new_div = document.createElement("div");
+    new_div.className = "four wide column";
+    var new_select = document.createElement("select");
+    new_select.className = "ui fluid dropdown displayType";
+    new_select.id = "select_typ_ausgabe_" + intCountTypen;
+    intCountTypen++;
+    for (var i = 0; i < liTypen.length; i++)
+    {
+        var opt = document.createElement('option');
+        opt.value = liTypen[i];
+        opt.innerHTML = liTypen[i];
+        if (lastType == liTypen[i])
+        {
+            //alert("Beide gleich");
+            opt.setAttribute('selected', 'selected');
+        }
+        new_select.appendChild(opt);
+    }
+    new_div.appendChild(new_select);
+    $('#div_typen_panel').before(new_div);
+
+    //div_typen_auswahl.appendChild(new_div);
+    $('.ui.dropdown.displayType').dropdown();
+
+}
+
+function deleteTypenAuswahl()
+{
+    if (intCountTypen > 1)
+    {
+        intCountTypen--;
+        $('#select_typ_ausgabe_' + intCountTypen).parent().parent().remove();
+    } else
+    {
+        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Es kann kein Element mehr gelöscht werden, mindestens eine Ausgabe muss gewählt sein";
+        $('#modal_fehler').modal('show');
+    }
+}
 //Wird aufgerufen wenn in einem Dropdown wo der Typ bestimmt wird sich etwas ändert
 /**
  * Stellt je nach Typ in der Zeile, den Filter auf ein Dropdown, Textfield oder Datepicker
@@ -167,7 +218,7 @@ function onVorschau(intZahler)
             boolCorrect = false;
         }
     }
-    if (boolCorrect==true)
+    if (boolCorrect == true)
     {
         var strWertVonLetztemSelect = document.getElementById("select_verknuepfung_" + intZahler).value;
         if (strWertVonLetztemSelect != "N/A")
@@ -210,6 +261,12 @@ function onActionSubmit(intZaehler, strButton)
             return;
         }
     }
+    var strTypen = "";
+    for (var i = 0; i < intCountTypen; i++)
+    {
+        strTypen += document.getElementById("select_typ_ausgabe_" + i).value + ";";
+    }
+    document.getElementById("hidden_typen_daten").value = strTypen;
     for (var i = 1; i <= intZaehler; i++)
     {
         var div_element = document.getElementById("div_element_" + i);

@@ -65,6 +65,7 @@
                 <form action="MainServlet" method="POST" name="form_vordefiniert">
                     <input type="hidden" name="vordefiniert">
                     <input type="hidden" name="hidden_berechtigungs_info" id="hidden_berechtigungs_info_2">
+
                     <a href="#" onclick="zuVordefiniertWeiterleiten()" class="item linkMenu">
                         Vordefiniert
                     </a>
@@ -111,6 +112,10 @@
 
         <h1>Dynamisch - Mitglieder</h1>
         <br/>
+        <div style="background-color:#C00518;color:white; margin: 0 auto; width: 90%" class="ui segment">
+            <b>Basis Optionen</b>
+
+        </div>
         <div id="div_vorlage" class="ui equal width grid">
             <div class="column" id="div_bezirk">
                 <fieldset id="fieldset_bezirk">
@@ -195,6 +200,7 @@
                 <input type="hidden" name="hidden_zaehler" value="<%=intZaehler%>">
                 <input type="hidden" name="hidden_vorlage_name" id="hidden_vorlage_name">
                 <input type="hidden" name="hidden_berechtigungs_info" id="hidden_berechtigungs_info">
+                <input type="hidden" name="hidden_typen_daten" id="hidden_typen_daten">
                 <%
                     for (int i = 1; i <= intZaehler; i++)
                     {
@@ -302,52 +308,84 @@
                     <div class="column">
                         <button name="button_minus" type="button" onclick="onActionSubmit(<%=intZaehler%>, 'minus')" class="ui button styleRot" title="Letzte Zeile entfernen" style="float: right; width: 50%;"><p><i class="remove icon"></i></p></button>
                     </div>
-                    <div class="column" >
-                        <button name="button_vorschau" type="button" onclick="onActionSubmit(<%=intZaehler%>, 'vorschau')" class="ui button styleGrau" title="Vorschau erstellen" style="width: 100%;"><p>Vorschau</p></button>
-                    </div>
+
                     <div class="column">
                         <button name="button_plus" type="button" onclick="onActionSubmit(<%=intZaehler%>, 'plus')" class="ui button styleGruen" title="Neue Zeile einfügen" style="float: left; width: 50%;"><p><i class="plus icon"></i></p></button>
                     </div>
                 </div>
 
             </form>
-        </div>
-        <br/><br/>
+            <div style="background-color:#C00518;color:white;" class="ui segment">
+                <b>Ausgabe</b> <i class="help circle link icon" title="Hilfe" onclick="$('#modal_ausgabe_hilfe').modal('show');"></i>
 
+            </div>
+            <div id="div_typen_auswahl"  class="ui grid">
+                <div id="div_typen_panel" class="four wide column">
+                    <button name="button_minus_typ" type="button" class="ui button styleRot" title="Lösche letzten Spalte" onclick="deleteTypenAuswahl()" style="width: 45%;"><p><i class="delete icon"></i></p></button>
+                    <button name="button_plus_typ" type="button" class="ui button styleGruen" title="Neue Spalte einfügen" onclick="addTypenAuswahl(null)" style="width: 45%;float: right"><p><i class="plus icon"></i></p></button>
+                </div>
+            </div>
+            <br/>
+            <div style="width: 30%; margin:0 auto">
+                <div class="column" >
+                    <button name="button_vorschau" type="button" onclick="onActionSubmit(<%=intZaehler%>, 'vorschau')" class="ui button styleGrau" title="Vorschau erstellen" style="width: 100%;"><p>Vorschau</p></button>
+                </div>
+            </div>
 
-        <%
-            if (request.getAttribute("dyn_table") != null)
-            {
-                StringBuilder sbDynHTML = (StringBuilder) request.getAttribute("dyn_table");
-                out.println("<div class='ui segment' id='div_table'>");
+            <%
+                if (request.getAttribute("dyn_table") != null)
+                {
+                    StringBuilder sbDynHTML = (StringBuilder) request.getAttribute("dyn_table");
+            %>
+            <div style="background-color:#C00518;color:white;" class="ui segment">
+                <b>Bericht</b>
+            </div>
+            <%
+                out.println("<div id='div_table'>");
                 out.println(sbDynHTML);
                 out.println("</div>");
-        %>
-        </br>
-        <form id="formPDF" name="formPDF" action="PDFServlet" method="POST" target="_blank">
-            <input type="hidden" name="hidden_pdfData" id="hidden_pdfData"/>
-        </form>
-        <form id="formCSV" name="formCSV" action="CSVServlet" method="POST">
-            <input type="hidden" name="hidden_CSVData" id="hidden_CSVData"/>
-        </form>
+            %>
 
-        <div>
-            <div id="div_csv_pdf" style="display:none" class="ui segment">
-                <div class="ui equal width grid">
-                    <div class="column">
-                        <button type="button" class="ui button styleRot" onClick="saveDataForPDF()" title="Generiere PDF" style="width: 100%;">PDF</button>
+            </br>
+            <form id="formPDF" name="formPDF" action="PDFServlet" method="POST" target="_blank">
+                <input type="hidden" name="hidden_pdfData" id="hidden_pdfData"/>
+            </form>
+            <form id="formCSV" name="formCSV" action="CSVServlet" method="POST">
+                <input type="hidden" name="hidden_CSVData" id="hidden_CSVData"/>
+            </form>
+
+            <div>
+                <div id="div_csv_pdf" style="display:none" class="ui segment">
+                    <div class="ui equal width grid">
+                        <div class="column">
+                            <button type="button" class="ui button styleRot" onClick="saveDataForPDF()" title="Generiere PDF" style="width: 100%;">PDF</button>
+                        </div>
+                        <div class="column">
+                            <button type="button" class="ui button styleGruen" onClick="saveDataForCSV()" title="Generiere CSV"  style="width: 100%;">CSV</button>
+                        </div>
                     </div>
-                    <div class="column">
-                        <button type="button" class="ui button styleGruen" onClick="saveDataForCSV()" title="Generiere CSV"  style="width: 100%;">CSV</button>
-                    </div>
-                </div>
-            </div> 
+                </div> 
+            </div>
+
+            <%
+                } else
+                {
+                    out.println("<br/>");
+                }
+
+            %>
+        </div>
+        </br></br>
+        <div class="ui small modal" id="modal_ausgabe_hilfe">
+            <div class="header">Hilfe: Ausgabe</div>
+            <div class="content">
+                <p>In diesem Bereich können Sie auswählen welche Spalten Sie später in Ihrem Bericht angezeigt haben wollen</p>
+            </div>
+            <div class="actions">
+                <button type="button" onClick="$('#modal_ausgabe_hilfe').modal('hide');" class="ui button styleGrau"  style="width: 20%;">OK</button>
+            </div>
         </div>
 
-        <%
-            }
-
-        %>
 
         <div class="ui small modal" id="modal_erstelle_vorlage">
             <div class="header">Neue Vorlage</div>
@@ -372,6 +410,7 @@
                 <button type="button" onClick="$('#modal_erstelle_vorlage').modal('hide');" name="button_abbrechen_erstelleVorlage" class="ui button styleRot"  style="width: 20%;">Abbrechen</button>
             </div>
         </div>
+
 
         <%
             if (request.getAttribute("dynamisch_vorlage_vorhanden") != null)
@@ -462,10 +501,47 @@
                         });
             <%
                 }
+            %>
+                        var liTypen = [
+            <%
+                LinkedList<String> liTypen = (LinkedList<String>) application.getAttribute("Typen");
+                for (String strTyp : liTypen)
+                {
+                    out.print('"' + strTyp.split(";")[0] + '"');
+                    if (!strTyp.equals(liTypen.getLast()))
+                    {
+                        out.println(",");
+                    }
+                }
+            %>
+                        ];
+                        setTypen(liTypen);
+            <%
+                if (request.getAttribute("hidden_typen_daten") != null || request.getParameter("hidden_typen_daten") != null)
+                {
+                    String[] strTypen;
+                    if (request.getAttribute("hidden_typen_daten") != null)
+                    {
+                        strTypen = ((String) request.getAttribute("hidden_typen_daten")).split(";");
+                    } else
+                    {
+                        strTypen = request.getParameter("hidden_typen_daten").split(";");
+                    }
+                    for (String strLastTyp : strTypen)
+                    {
+                        out.println("addTypenAuswahl('" + strLastTyp + "');");
+                    }
+                } else
+                {
+            %>
+                        addTypenAuswahl(null);
+            <%
+                }
                 HashMap<String, LinkedList<String>> hsFilter = (HashMap<String, LinkedList<String>>) session.getAttribute("hashMap_typ");
                 Set<String> set = hsFilter.keySet();
                 Iterator it = set.iterator();
             %>
+
                         var mapAlt = {
             <%
                 while (it.hasNext())
@@ -537,10 +613,10 @@
                 if (request.getParameter("hidden_berechtigungs_info") != null)
                 {
             %>
-                    bezirkChanged(document.getElementById("select_bezirk"),<%=request.getParameter("hidden_berechtigungs_info").split(";")[1]%>);
-                    abschittChanged(document.getElementById("select_abschnitt"),<%=request.getParameter("hidden_berechtigungs_info").split(";")[2]%>);
+                        bezirkChanged(document.getElementById("select_bezirk"),<%=request.getParameter("hidden_berechtigungs_info").split(";")[1]%>);
+                        abschittChanged(document.getElementById("select_abschnitt"),<%=request.getParameter("hidden_berechtigungs_info").split(";")[2]%>);
             <%
-                                }
+                }
             %>
                         fixDropdowns("select_bezirk");
                         fixDropdowns("select_abschnitt");

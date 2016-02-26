@@ -340,24 +340,24 @@ public class MainServlet extends HttpServlet
             int intBereichNr = Integer.parseInt(request.getParameter("select_bezirk"));
             int intAbschnittNr = Integer.parseInt(request.getParameter("select_abschnitt"));
             String strFeuerwehr = request.getParameter("select_feuerwehr");
-            if (strBericht.equals(liRohberichte.get(0).getStrBerichtname()))//Einfache Mitgliederliste
+            if (strBericht.equals("Einfache Mitgliederliste"))//Einfache Mitgliederliste
             {
                 request.setAttribute("liste", access.getEinfacheMitgliederliste(intBereichNr, intAbschnittNr, strFeuerwehr));
-            } else if (strBericht.equals(liRohberichte.get(1).getStrBerichtname()))//Erreichbarkeitsliste
+            } else if (strBericht.equals("Erreichbarkeitsliste"))//Erreichbarkeitsliste
             {
                 request.setAttribute("liste", access.getErreichbarkeitsliste(intBereichNr, intAbschnittNr, strFeuerwehr));
-            } else if (strBericht.equals(liRohberichte.get(2).getStrBerichtname()))//Adressliste
+            } else if (strBericht.equals("Adressliste"))//Adressliste
             {
 
                 request.setAttribute("liste", access.getAdressliste(intBereichNr, intAbschnittNr, strFeuerwehr));
-            } else if (strBericht.equals(liRohberichte.get(3).getStrBerichtname()))//Geburtstagsliste
+            } else if (strBericht.equals("Geburtstagsliste"))//Geburtstagsliste
             {
                 int intJahr = Integer.parseInt(request.getParameter("select_jahr"));
-                request.setAttribute("liste", access.getGeburtstagsliste(intJahr, intBereichNr, intAbschnittNr, strFeuerwehr)); //welche Zahl??
-            } else if (strBericht.equals(liRohberichte.get(4).getStrBerichtname()))//Dienstzeitliste
+                request.setAttribute("liste", access.getGeburtstagsliste(intJahr, intBereichNr, intAbschnittNr, strFeuerwehr));
+            } else if (strBericht.equals("Dienstzeitliste"))//Dienstzeitliste
             {
                 request.setAttribute("liste", access.getDienstzeitListe(intBereichNr, intAbschnittNr, strFeuerwehr));
-            } else if (strBericht.equals(liRohberichte.get(5).getStrBerichtname()))//Stundenauswertung je Mitglied je Instanz
+            } else if (strBericht.equals("Stundenauswertung je Mitglied je Instanz"))//Stundenauswertung je Mitglied je Instanz
             {
                 //request.setAttribute("liste", );
                 String strVonDatum = request.getParameter("input_von_datum");
@@ -365,50 +365,50 @@ public class MainServlet extends HttpServlet
                 //request.setAttribute("liste", access.getStundenauswertungProMitgliedProInstanz(strVonDatum, strBisDatum,intBereichNr, intAbschnittNr, strFeuerwehr));
            
 
-            } else if (strBericht.equals(liRohberichte.get(6).getStrBerichtname()))//Tätigkeitsbericht leer
+            } else if (strBericht.equals("Tätigkeitsbericht leer"))//Tätigkeitsbericht leer
             {
                 request.setAttribute("liste", access.getLeerberichtMitglied(intBereichNr, intAbschnittNr, strFeuerwehr));
                 request.setAttribute("zusatz_liste", access.getLeerberichtFahrzeug(intBereichNr, intAbschnittNr, strFeuerwehr));
-            } else if (strBericht.equals(liRohberichte.get(7).getStrBerichtname()))//Einsatzbericht leer
+            } else if (strBericht.equals("Einsatzbericht leer"))//Einsatzbericht leer
             {
                 //request.setAttribute("liste", );
-            } else if (strBericht.equals(liRohberichte.get(8).getStrBerichtname()))//Übungsbericht leer
+            } else if (strBericht.equals("Übungsbericht leer"))//Übungsbericht leer
             {
                 request.setAttribute("liste", access.getLeerberichtMitglied(intBereichNr, intAbschnittNr, strFeuerwehr));
                 request.setAttribute("zusatz_liste", access.getLeerberichtFahrzeug(intBereichNr, intAbschnittNr, strFeuerwehr));
-            } else if (strBericht.equals(liRohberichte.get(9).getStrBerichtname()))//Liste aller Einsatzberichte
+            } else if (strBericht.equals("Liste aller Einsatzberichte"))//Liste aller Einsatzberichte
             {
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
                 System.out.println("MainServler.generiereVorschau: " + strVonDatum + " bis " + strBisDatum);
                 //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
                 request.setAttribute("liste", access.getEinsatzbericht(strVonDatum, strBisDatum, intBereichNr, intAbschnittNr, strFeuerwehr));
-            } else if (strBericht.equals(liRohberichte.get(10).getStrBerichtname()))//Liste aller Tätigkeitsberichte
+            } else if (strBericht.equals("Liste aller Tätigkeitsberichte"))//Liste aller Tätigkeitsberichte
             {
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
                 //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
                 request.setAttribute("liste", access.getTaetigkeitsbericht(strVonDatum, strBisDatum, intBereichNr, intAbschnittNr, strFeuerwehr));
-            } else if (strBericht.equals(liRohberichte.get(11).getStrBerichtname()))//Liste aller Übungsberichte
+            } else if (strBericht.equals("Liste aller Übungsberichte"))//Liste aller Übungsberichte
             {
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
                 //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
                 request.setAttribute("liste", access.getUebungsbericht(strVonDatum, strBisDatum, intBereichNr, intAbschnittNr, strFeuerwehr));
-            } else if (strBericht.equals(liRohberichte.get(12).getStrBerichtname()))//Liste aller Berichte
+            } else if (strBericht.equals("Liste aller Berichte"))//Liste aller Berichte
             {
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
                 //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
                 request.setAttribute("liste", access.getAlleBerichte(strVonDatum, strBisDatum, intBereichNr, intAbschnittNr, strFeuerwehr));
-            } else if (strBericht.equals(liRohberichte.get(13).getStrBerichtname()))//Kursstatistik
+            } else if (strBericht.equals("Kursstatistik"))//Kursstatistik
             {
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
                 request.setAttribute("liste", access.getKursstatistiktaetigkeit(intBereichNr, intAbschnittNr, strFeuerwehr, strVonDatum, strBisDatum));
                 //Zweite methode noch aufrufen..
                 request.setAttribute("zusatz_informationen", generiereKurstatistikZusatzTable(strVonDatum, strBisDatum));
-            } else if (strBericht.equals(liRohberichte.get(14).getStrBerichtname()))//Digitales Fahrtenbuch
+            } else if (strBericht.equals("Digitales Fahrtenbuch"))//Digitales Fahrtenbuch
             {
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
@@ -458,7 +458,9 @@ public class MainServlet extends HttpServlet
 
     private void generiereDynamischeVorschau(HttpServletRequest request, HttpServletResponse response, HttpSession session)
     {
-
+        System.out.println("//////////////generiereDynamischeVorschau////////////");
+        String strTypen = request.getParameter("hidden_typen_daten");
+        System.out.println("Typen: "+strTypen);
         int intZaehler = Integer.parseInt(request.getParameter("hidden_zaehler"));
         System.out.println("MainServlet.doPost: hidden_action: zaehler: " + intZaehler);
         String[][] strDaten = new String[intZaehler][6];
@@ -496,7 +498,7 @@ public class MainServlet extends HttpServlet
             //47 --> Bereich 47
             //Test
             //-2 --> alles
-            StringBuilder sbDynHTML = access.getDynamischerBericht(strDaten, "Vorname; Zuname; Geburtsdatum", intBezirk, intAbschnitt, strFeuerwehr);
+            StringBuilder sbDynHTML = access.getDynamischerBericht(strDaten, strTypen, intBezirk, intAbschnitt, strFeuerwehr);
             System.out.println("MainServlet.erstelleDynamischenBericht: sbDynHTML: " + sbDynHTML);
             request.setAttribute("dyn_table", sbDynHTML);
         } catch (Exception ex)
@@ -509,6 +511,7 @@ public class MainServlet extends HttpServlet
     {
         System.out.println("/////////////MainServlet.erstelleDynamischeVorlage///////////////");
         String strVorlageName = request.getParameter("hidden_vorlage_name");
+        String strTypen = request.getParameter("hidden_typen_daten");
         int intUserID = (int) session.getAttribute("intUserID");
         ServletContext sc = this.getServletContext();
         HashMap<String, LinkedList<String>> hsVorlagen = new HashMap<>();
@@ -529,6 +532,7 @@ public class MainServlet extends HttpServlet
             }
         }
         LinkedList<String> liDaten = new LinkedList<>();
+        liDaten.add(strTypen);
         int intZaehler = Integer.parseInt(request.getParameter("hidden_zaehler"));
         for (int i = 1; i <= intZaehler; i++)
         {
@@ -549,8 +553,9 @@ public class MainServlet extends HttpServlet
         int intUserID = (int) session.getAttribute("intUserID");
         HashMap<String, LinkedList<String>> hsVorlagen = (HashMap<String, LinkedList<String>>) sc.getAttribute("userid_" + intUserID + "_vorlagen");
         LinkedList<String> liDaten = hsVorlagen.get(strVorlageName);
-        request.setAttribute("hidden_zaehler", liDaten.size());
-        for (int i = 0; i < liDaten.size(); i++)
+        request.setAttribute("hidden_zaehler", liDaten.size()-1);
+        request.setAttribute("hidden_typen_daten",liDaten.get(0));
+        for (int i = 1; i < liDaten.size(); i++)
         {
             String strZeile = liDaten.get(i);
             request.setAttribute("hidden_element_data_" + (i + 1), strZeile);

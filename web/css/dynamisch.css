@@ -23,10 +23,16 @@ and open the template in the editor.
     color: white;
 }
 
+#div_typen_auswahl
+{
+    background-color: white; 
+    width: 100%;
+    margin: 0 auto !important;
+}
 
 #div_table
 {
-    width:90%; 
+    width: 98%; 
     margin: 0 auto !important;
 }
 
