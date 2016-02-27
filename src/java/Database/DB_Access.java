@@ -3301,11 +3301,36 @@ public class DB_Access
         }
 
         String sqlString = "SELECT DISTINCT ";
-
-        for (int i = 0; i < strSelectedCols.length; i++)
+        
+        for (int i = 0; i<strSelectedCols.length; i++)
         {
-            sqlString += "m." + strSelectedCols[i] + ",";
-
+            switch (strSelectedCols[i].toUpperCase())
+            {
+                case "ANREDE":
+                    strSelectedCols[i] = "Geschlecht";
+                    boAnrede = true;
+                    break;
+                case "GESCHLECHT":
+                    boAnrede = false;
+                    break;
+                case "STAATSBÜRGERSCHAFT":
+                     strSelectedCols[i] = "Staatsbuergerschaft";
+                case "ISCO-BERUF":
+                     strSelectedCols[i] = "Beruf";
+                
+            }
+            switch (strSelectedCols[i])
+            {
+                case "Alter":
+                    sqlString += "DATEDIFF(YY, geburtsdatum, GETDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum) > GETDATE() THEN 1 ELSE 0 END 'Lebensalter', ";
+                    break;
+                case "Status":
+                    sqlString += "Jugend, Aktiv, Reserve, Abgemeldet, Ehrenmitglied, ";
+                    break;
+                default:
+                    sqlString += "m." + strSelectedCols[i] + ",";
+                    break;
+            }
             if (!liSpaltenUeberschriften.contains(strSelectedCols[i]))
             {
                 liSpaltenUeberschriften.add(strSelectedCols[i]);
@@ -3509,7 +3534,6 @@ public class DB_Access
 
         System.out.println("SQLSTRING: " + sqlString);
         StringBuilder sbHtml = createDynamicReportGeneratorOutput(sqlString, strSelectedCols);
-        System.out.println(sbHtml.toString());
         return sbHtml;
     }
 
@@ -3550,27 +3574,47 @@ public class DB_Access
 
             sbHtml.append("<tr>");
 
+            
             for (String str : strSelectedCols)
             {
+                
                 for (Map.Entry pair : haNamesTypes.entrySet())
                 {
                     if (pair.getKey().toString().toUpperCase().equals(str.toUpperCase()))
                     {
                         String strValue = pair.getValue().toString();
+                        System.out.println(pair.getKey()+"-----"+pair.getValue());
 
                         OUTER:
                         switch (strValue)
                         {
                             case "bit":
-                                boBoolean = rs.getBoolean(str);
+                                boolean boJugend = rs.getBoolean("Jugend");
+                                boolean boAktiv = rs.getBoolean("Aktiv");
+                                boolean boReserve = rs.getBoolean("Reserve");
+                                boolean boAbgemeldet = rs.getBoolean("Abgemeldet");
+                                boolean boEhrenmitglied = rs.getBoolean("Ehrenmitglied");
                                 sbHtml.append("<td>");
 
-                                if (boBoolean)
+                                
+                                if (boJugend)
                                 {
-                                    sbHtml.append("Ja");
-                                } else
+                                    sbHtml.append("Jugend");
+                                } else if(boAktiv)
                                 {
-                                    sbHtml.append("Nein");
+                                    sbHtml.append("Aktiv");
+                                }
+                                else if(boReserve)
+                                {
+                                    sbHtml.append("Reserve");
+                                }
+                                else if(boAbgemeldet)
+                                {
+                                    sbHtml.append("Abgemeldet");
+                                }
+                                else if(boEhrenmitglied)
+                                {
+                                    sbHtml.append("Ehrenmitglied");
                                 }
 
                                 sbHtml.append("</td>");
@@ -3702,12 +3746,9 @@ public class DB_Access
         haNamesTypes.put("angelobungsdatum", "datetime");
         haNamesTypes.put("dienstgrad", "varchar");
         haNamesTypes.put("alter", "default-alter");
-        haNamesTypes.put("aktiv", "bit");
-        haNamesTypes.put("jugend", "bit");
-        haNamesTypes.put("reserve", "bit");
-        haNamesTypes.put("abgemeldet", "bit");
-        haNamesTypes.put("ehrenmitglied", "bit");
+        haNamesTypes.put("status", "bit");
         haNamesTypes.put("vordienstzeit", "big decimal");
+        haNamesTypes.put("titel", "varchar");
 
         //Tabelle stmkadressen
         haNamesTypes.put("ort", "varchar");
@@ -3857,7 +3898,7 @@ public class DB_Access
                         }
                     };
 //
-           // StringBuilder html = theInstance.getDynamischerBericht(dynamisch, "Vorname;Zuname;Geburtsdatum", 47, 4704, "-2");
+            StringBuilder html = theInstance.getDynamischerBericht(dynamisch, "Vorname;Zuname;Geburtsdatum", 47, 4704, "-2");
 //            System.out.println(html);
             
             
