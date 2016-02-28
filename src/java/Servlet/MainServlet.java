@@ -367,7 +367,8 @@ public class MainServlet extends HttpServlet
                 request.setAttribute("liste", access.getGeburtstagsliste(intJahr, intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals("Dienstzeitliste"))//Dienstzeitliste
             {
-                request.setAttribute("liste", access.getDienstzeitListe(intBereichNr, intAbschnittNr, strFeuerwehr));
+                int intJahr = Integer.parseInt(request.getParameter("select_jahr"));
+                request.setAttribute("liste", access.getDienstzeitListe(intJahr, intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals("Stundenauswertung je Mitglied je Instanz"))//Stundenauswertung je Mitglied je Instanz
             {
                 //request.setAttribute("liste", );

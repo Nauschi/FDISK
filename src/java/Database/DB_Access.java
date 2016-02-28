@@ -43,6 +43,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -593,13 +595,13 @@ public class DB_Access
      * @param strFubwehr
      * @param intAbschnittnr
      * @return LinkedList
-     * @param jahr
+     * @param intJahr
      * @throws java.lang.Exception
      * @see MitgliedsGeburtstag
      * @see Mitglied
      * @see LinkedList
      */
-    public LinkedList<MitgliedsGeburtstag> getGeburtstagsliste(int jahr, int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception
+    public LinkedList<MitgliedsGeburtstag> getGeburtstagsliste(int intJahr, int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception
     {
         LinkedList<MitgliedsGeburtstag> liMitgliedsGeburtstage = new LinkedList<>();
         Connection conn = connPool.getConnection();
@@ -652,7 +654,7 @@ public class DB_Access
             Calendar current = new GregorianCalendar();
 
             calGeburtsdatum.setTime(dateGeburtsdatum);
-            int intCurrentYear = jahr - 1;
+            int intCurrentYear = intJahr - 1;
             intZielalter = intCurrentYear - calGeburtsdatum.get(Calendar.YEAR);
 
             calGeburtsdatum.set(Calendar.YEAR, intCurrentYear);
@@ -682,7 +684,7 @@ public class DB_Access
      * @see MitgliedsDienstzeit
      * @see LinkedList
      */
-    public LinkedList<MitgliedsDienstzeit> getDienstzeitListe(int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception
+    public LinkedList<MitgliedsDienstzeit> getDienstzeitListe(int intJahr, int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception
     {
         LinkedList<MitgliedsDienstzeit> liMitgliedsDienstzeiten = new LinkedList<>();
         Connection conn = connPool.getConnection();
@@ -778,9 +780,13 @@ public class DB_Access
             long loDifference = new Date().getTime() - dateEintrittsdatum.getTime();
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(loDifference);
-            doubleVordienstzeit+=cal.get(Calendar.YEAR)-1970;
+            double doDienstzeit = doubleVordienstzeit +cal.get(Calendar.YEAR)-1970;
+            
+            int intAktJahr = intJahr - LocalDate.now().getYear(); 
+            doDienstzeit += intAktJahr; 
+            
 
-            MitgliedsDienstzeit mitgliedsDienst = new MitgliedsDienstzeit(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true, dateGeburtsdatum, doubleVordienstzeit, intInstanznummer, dateEintrittsdatum, doubleVordienstzeit);
+            MitgliedsDienstzeit mitgliedsDienst = new MitgliedsDienstzeit(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true, dateGeburtsdatum, doDienstzeit, intInstanznummer, dateEintrittsdatum, doubleVordienstzeit);
             liMitgliedsDienstzeiten.add(mitgliedsDienst);
 
         }

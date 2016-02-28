@@ -32,7 +32,7 @@ public class MitgliedsDienstzeit extends Mitglied
         super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
         this.dateGeburtsdatum = dateGeburtsdatum;
         this.doubleDienstalter = doubleDienstalter;
-        this.dateEintrittsdatum = dateEintrittsdatum; 
+        this.dateEintrittsdatum = dateEntrittsdatum; 
         this.intInstanznummer = intInstanznummer; 
         this.doVordienstzeit = doVordienstzeit; 
         theInstance = DB_Access.getInstance();
