@@ -132,9 +132,11 @@ public class PDFServlet extends HttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        processRequest(request, response);
+        request.getRequestDispatcher("jsp/error.jsp").forward(request, response);
     }
 
+    //style='page-break-after: always'
+    //style="display: none" colspan="?"
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -196,10 +198,10 @@ public class PDFServlet extends HttpServlet
                 boolLeerbericht = false;
                 break;
             case "Digitales Fahrtenbuch":
-                if(strSplitData.length>2)
+                if (strSplitData.length > 2)
                 {
                     strAusgabe = "<h1>" + strBerichtname + "</h1>" + strSplitData[2] + "<p>&nbsp;</p>" + strTable;
-                }else
+                } else
                 {
                     strAusgabe = "<h1>" + strBerichtname + "</h1>" + strTable;
                 }

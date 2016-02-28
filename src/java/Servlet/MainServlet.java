@@ -165,7 +165,18 @@ public class MainServlet extends HttpServlet
             {
                 request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
                 return;
-            } else if (request.getParameter("button_ladeKennzeichen") != null)
+            }else if (request.getParameter("button_ladeMitglieder") != null)
+            {
+                try
+                {
+                    ladeMitgliederFuerStundenauswertung(request);
+                } catch (Exception ex)
+                {
+                    System.out.println("ladeMitglieder.exception: "+ex.toString());
+                }
+                request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
+            }            
+            else if (request.getParameter("button_ladeKennzeichen") != null)
             {
                 try
                 {
@@ -593,11 +604,16 @@ public class MainServlet extends HttpServlet
         String strFeuerwehr = request.getParameter("select_feuerwehr");
         LinkedList<String> liTest = access.getFahrtenbuchKennzeichen(intBereichNr,intAbschnittNr,strFeuerwehr);
         System.out.println(liTest.size() + "----------------------------");
-//        liTest.add("Kennzeichen 1");
-//        liTest.add("Kennzeichen 2");
-//        liTest.add("Kennzeichen 3");
         request.setAttribute("select_kennzeichen_liste", liTest);
-
+    }
+    
+    private void ladeMitgliederFuerStundenauswertung(HttpServletRequest request) throws Exception
+    {
+        System.out.println("////////////////Lade Kennzeichen/////////////");
+        int intBereichNr = Integer.parseInt(request.getParameter("select_bezirk"));
+        int intAbschnittNr = Integer.parseInt(request.getParameter("select_abschnitt"));
+        String strFeuerwehr = request.getParameter("select_feuerwehr");
+        request.setAttribute("select_mitglieder_hs", access.getMitgliederFuerStundenauswertung(intBereichNr, intAbschnittNr, strFeuerwehr));
     }
 
     /**

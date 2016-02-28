@@ -67,6 +67,7 @@ function onChangeTypeOfDateUI(intTypeOfDateUI)
         document.getElementById("div_input_von_datum").style.display = "none";
         document.getElementById("div_input_bis_datum").style.display = "none";
         document.getElementById("div_select_jahr").style.display = "none";
+        document.getElementById("div_mitglied").style.display = "none";
         document.getElementById("div_kennzeichen").style.display = "none";
         document.getElementById("div_kein_datum_1").style.display = "none";
         document.getElementById("div_kein_datum_2").style.display = "none";
@@ -75,6 +76,7 @@ function onChangeTypeOfDateUI(intTypeOfDateUI)
         document.getElementById("div_input_von_datum").style.display = "none";
         document.getElementById("div_input_bis_datum").style.display = "none";
         document.getElementById("div_select_jahr").style.display = "block";
+        document.getElementById("div_mitglied").style.display = "none";
         document.getElementById("div_kennzeichen").style.display = "none";
         document.getElementById("div_kein_datum_1").style.display = "block";
         document.getElementById("div_kein_datum_2").style.display = "block";
@@ -82,19 +84,30 @@ function onChangeTypeOfDateUI(intTypeOfDateUI)
     {
         document.getElementById("div_input_von_datum").style.display = "block";
         document.getElementById("div_input_bis_datum").style.display = "block";
-        document.getElementById("div_kein_datum_1").style.display = "block";
-        document.getElementById("div_kein_datum_2").style.display = "none";
+        document.getElementById("div_mitglied").style.display = "none";
         document.getElementById("div_select_jahr").style.display = "none";
         document.getElementById("div_kennzeichen").style.display = "none";
+        document.getElementById("div_kein_datum_1").style.display = "block";
+        document.getElementById("div_kein_datum_2").style.display = "none";
 
     } else if (intTypeOfDateUI == 3)
     {
         document.getElementById("div_input_von_datum").style.display = "block";
         document.getElementById("div_input_bis_datum").style.display = "block";
-        document.getElementById("div_kein_datum_1").style.display = "none";
-        document.getElementById("div_kein_datum_2").style.display = "none";
         document.getElementById("div_select_jahr").style.display = "none";
         document.getElementById("div_kennzeichen").style.display = "block";
+        document.getElementById("div_mitglied").style.display = "none";
+        document.getElementById("div_kein_datum_1").style.display = "none";
+        document.getElementById("div_kein_datum_2").style.display = "none";
+    } else if (intTypeOfDateUI == 4)
+    {
+        document.getElementById("div_input_von_datum").style.display = "block";
+        document.getElementById("div_input_bis_datum").style.display = "block";
+        document.getElementById("div_select_jahr").style.display = "none";
+        document.getElementById("div_kennzeichen").style.display = "none";
+        document.getElementById("div_mitglied").style.display = "block";
+        document.getElementById("div_kein_datum_1").style.display = "none";
+        document.getElementById("div_kein_datum_2").style.display = "none";
     }
 }
 
@@ -173,12 +186,30 @@ function saveDataForCSV()
     document.formCSV.submit();
 }
 
+function resetSelectMitglieder()
+{
+    var lenght = document.getElementById("select_mitglied").getElementsByTagName("option").length;
+    if (lenght > 1)
+    {
+        document.getElementById("div_select_mitglieder").innerHTML = '<select name="select_mitglied" class="ui fluid dropdown" id="select_mitglied"></select>';
+        var selectMitglied = document.getElementById("select_mitglied");
+        var opt = document.createElement('option');
+        opt.value = "-2";
+        opt.innerHTML = "Alle Mitglieder";
+        selectMitglied.appendChild(opt);
+        $('#select_mitglied').dropdown();
+        fixDropdowns("select_mitglied");
+        document.getElementById("div_mitglieder_submit").style.display = "block";
+    }
+}
+
 
 function abschittChanged(select_abschnitt, strLetzteFW)
 {
     if (boolDeleteOnChange == true)
     {
         $('.ui.search').search();
+        resetSelectMitglieder();
     }
     //alert("Abschnitt_value: "+select_abschnitt.value);
     if (select_abschnitt.value != -1 && select_abschnitt.value != -2)
@@ -214,6 +245,7 @@ function bezirkChanged(select_bezirk, strLetzteAbschnitt)
     if (boolDeleteOnChange == true)
     {
         $('.ui.search').search();
+        resetSelectMitglieder();
     }
     //alert("Bezirk_value: "+select_bezirk.value);
     if (select_bezirk.value != -1 && select_bezirk.value != -2)
@@ -250,6 +282,7 @@ function feuerwehrChanged(select_feuerwehr)
     if (boolDeleteOnChange == true)
     {
         $('.ui.search').search();
+        resetSelectMitglieder();
     }
 }
 
@@ -292,7 +325,7 @@ function zuDynamischWeiterleiten()
     var strBezirk = document.getElementById("select_bezirk").value;
     var strAbschnitt = document.getElementById("select_abschnitt").value;
     var strFeuerwehr = document.getElementById("select_feuerwehr").value;
-    var strBerechtigung = strBezirk+";"+strAbschnitt+";"+strFeuerwehr;
+    var strBerechtigung = strBezirk + ";" + strAbschnitt + ";" + strFeuerwehr;
     document.getElementById("hidden_berechtigungs_info").value = strBerechtigung;
     document.form_dynamisch.submit();
 }

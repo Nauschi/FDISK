@@ -4,6 +4,8 @@
     Author     : user
 --%>
 
+<%@page import="java.util.Set"%>
+<%@page import="java.util.HashMap"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.Calendar"%>
@@ -63,6 +65,7 @@
             </div>
         </div>
         <h1>Vordefiniert</h1>
+
         <div class="ui grid" id="div_mitte">
             <div id="div_loader" class="ui active inverted dimmer">
                 <div class="ui large text loader">Loading..</div>
@@ -187,6 +190,42 @@
                                     </select>
                                 </fieldset>
                             </div>
+
+                            <div class="column" id="div_mitglied">
+                                <fieldset>
+                                    <legend><b>Mitglied</b></legend>
+                                    <table style="width: 100%">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div id="div_select_mitglieder">
+                                                        <select name="select_mitglied" class="ui fluid dropdown" id="select_mitglied">
+                                                            <option value="-2">Alle Mitglieder</option>
+                                                            <%
+                                                                if (request.getAttribute("select_mitglieder_hs") != null)
+                                                                {
+                                                                    HashMap<Integer, String> hsMitglieder = (HashMap<Integer, String>) request.getAttribute("select_mitglieder_hs");
+                                                                    Set<Integer> setKeys = hsMitglieder.keySet();
+                                                                    for (int key : setKeys)
+                                                                    {
+                                                                        out.println("<option value'" + key + "'>" + hsMitglieder.get(key) + "</option>");
+                                                                    }
+                                                                }
+                                                            %>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div id="div_mitglieder_submit" style="display: <%=(request.getAttribute("select_mitglieder_hs")!=null)?"none":"block"%>">
+                                                        <button type="submit" style="width: 100%;height: 100%" class="ui button styleGruen" name="button_ladeMitglieder" title="Lade Mitglieder">+</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </fieldset>
+                            </div>
+
                             <div class="column" id="div_kennzeichen">
                                 <fieldset>
                                     <legend><b>Kennzeichen</b></legend>
@@ -408,7 +447,7 @@
                                                 abschittChanged(document.getElementById("select_abschnitt"),<%=request.getParameter("hidden_berechtigungs_info").split(";")[2]%>);
             <%
                 }
-    if (request.getParameter("input_aktbericht") != null && request.getParameter("input_aktbericht").equals("Digitales Fahrtenbuch"))
+                if (request.getParameter("input_aktbericht") != null && request.getParameter("input_aktbericht").equals("Digitales Fahrtenbuch"))
                 {
             %>
                                         if (document.getElementById("div_zusatzDaten") == null)
@@ -423,6 +462,7 @@
                                                 fixDropdowns("select_bezirk");
                                                 fixDropdowns("select_abschnitt");
                                                 fixDropdowns("select_feuerwehr");
+                                                fixDropdowns("select_mitglied");
             <%
                 if (request.getAttribute("select_kennzeichen_liste") != null)
                 {
@@ -438,7 +478,11 @@
                 }
             %>
                                         ], error : {noResults   : 'Keine Ergebnisse'}});
-                                                setDeleteOnChange();
+            <%
+            } else if (request.getAttribute("select_mitglieder_hs") != null)
+            {
+            %>
+                                        setDeleteOnChange();
             <%
                 }
             %>
