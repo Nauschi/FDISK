@@ -425,7 +425,18 @@ public class MainServlet extends HttpServlet
                 String strDetails = access.getDetailsFuerFahrtenbuchFahrzeug(liFahrzeuge);
                 request.setAttribute("zusatz_informationen", strDetails.isEmpty() ? null : strDetails);
                 request.setAttribute("liste", liFahrzeuge);
-            } else
+            }
+            else if(strBericht.equals("Geräteträgerirgendwas"))
+            {
+                String strVonUntersuchungsDatum = request.getParameter("input_von_datum");
+                String strBisUntersuchungsDatum = request.getParameter("input_bis_datum");
+                String strVonNaechsteUntersuchungDatum = ""; 
+                String strBisNaechsteUntersuchungDatum = ""; 
+                
+                request.setAttribute("liste", access.getGereatetraegerMitglied(strVonUntersuchungsDatum, strBisUntersuchungsDatum,strVonNaechsteUntersuchungDatum, strBisNaechsteUntersuchungDatum,intBereichNr, intAbschnittNr, strFeuerwehr));
+
+            }
+            else
             {
                 System.out.println("MainServlet.generiereVorschau: last else");
             }

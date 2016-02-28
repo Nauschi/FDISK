@@ -1851,6 +1851,8 @@ public class DB_Access
      *
      * intBericht = 1 => Einsatzbericht intBericht = 2 => Taetigkeitsbericht
      * intBericht = 3 => Uebungsbericht intBericht = 4 => Kursstatistik
+     * intBericht = 5 => Gerateträger Untersuchungsdatum
+     * intBericht = 6 => Gerateträger nächstes Untersuchungsdatum
      *
      * @param strVon
      * @param strBis
@@ -1915,6 +1917,32 @@ public class DB_Access
             } else if (!strBis.isEmpty() && !strBis.equals("") && !strVon.isEmpty() && !strVon.equals(""))
             {
                 dateString += " (datum >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND datum < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1))";
+            }
+        } else if (intBericht == 5)
+        {
+            if ((strVon.isEmpty() || strVon.equals("")) && (!strBis.isEmpty() || !strBis.equals("")))
+            {
+                dateString += " untersuchungsdatum < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1)";
+
+            } else if (strBis.isEmpty() || strBis.equals("") && (!strVon.isEmpty() || !strVon.equals("")))
+            {
+                dateString += " untersuchungsdatum >= CAST('" + strVon + " 00:00.000' AS DATETIME)";
+            } else if (!strBis.isEmpty() && !strBis.equals("") && !strVon.isEmpty() && !strVon.equals(""))
+            {
+                dateString += " untersuchungsdatum >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND untersuchungsdatum < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1)";
+            }
+        }else if (intBericht == 6)
+        {
+            if ((strVon.isEmpty() || strVon.equals("")) && (!strBis.isEmpty() || !strBis.equals("")))
+            {
+                dateString += " naechste_untersuchung_am < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1)";
+
+            } else if (strBis.isEmpty() || strBis.equals("") && (!strVon.isEmpty() || !strVon.equals("")))
+            {
+                dateString += " naechste_untersuchung_am >= CAST('" + strVon + " 00:00.000' AS DATETIME)";
+            } else if (!strBis.isEmpty() && !strBis.equals("") && !strVon.isEmpty() && !strVon.equals(""))
+            {
+                dateString += " naechste_untersuchung_am >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND naechste_untersuchung_am < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1)";
             }
         }
 
@@ -2037,10 +2065,6 @@ public class DB_Access
             strMeldung = rs.getString("Meldung");
             strFehlalarm = rs.getString("Fehlalarm");
 
-            if (strTaetigkeitsart.equals("Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN"))
-            {
-                strTaetigkeitsart = "Jugendübung";
-            }
             Taetigkeitsbericht taetigkeitsbericht = new Taetigkeitsbericht(intIdBericht, intInstanznummer, strInstanzname, strTaetigkeitsart, strTaetigkeitsunterart, strNummer, dateBeginn, dateEnde, strStrasse, strNummerAdr, strStiege, strPlz, strOrt, strMeldung, strFehlalarm);
             liTaetigkeitsbericht.add(taetigkeitsbericht);
         }
@@ -2565,10 +2589,6 @@ public class DB_Access
             strMeldung = rs.getString("Meldung");
             strFehlalarm = rs.getString("Fehlalarm");
 
-            if (strArt.equals("Jugendübung-NICHT VERWENDEN!ALS TÄTIGKEIT ERFASSEN"))
-            {
-                strArt = "Jugendübung";
-            }
 
             Bericht bericht = new Bericht(intIdBericht,
                     intInstanznummer, strName, strArt,
@@ -2581,14 +2601,14 @@ public class DB_Access
         return liBericht;
     }
 
-    public LinkedList<Geraetetraegermitglied> getGereatetraegerMitglied(String strVon, String strBis, int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception
+    public LinkedList<Geraetetraegermitglied> getGereatetraegerMitglied(String strVonUntersuchung, String strBisUntersuchung, String strVonNaechsteUntersuchung, String strBisNaechsteUntersuchung, int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception
     {
         LinkedList<Geraetetraegermitglied> liGeraetetraeger = new LinkedList<>();
 
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 
-        String strStatement = "SELECT p.instanznummer \"Instanznr\""
+        String strStatement = "SELECT DISTINCT p.instanznummer \"Instanznr\""
                 + " ,p.standesbuchnummer \"STB\""
                 + " ,p.dienstgrad \"DGR\""
                 + " ,p.titel \"Titel\""
@@ -2608,6 +2628,11 @@ public class DB_Access
         StringBuilder sqlString = new StringBuilder();
         sqlString.append(strStatement);
 
+        sqlString.append(getSqlDateString(strVonUntersuchung, strBisUntersuchung, 5, true));
+        sqlString.append(getSqlDateString(strVonNaechsteUntersuchung, strBisNaechsteUntersuchung, 6, false));
+
+        System.out.println(sqlString);
+        
         ResultSet rs = stat.executeQuery(sqlString.toString());
 
         int intInstanznr;
@@ -2622,7 +2647,7 @@ public class DB_Access
         int intPersID;
         int intIdInstanzen;
         int intAnzahl;
-        String strInstanzname; 
+        String strInstanzname;
 
         while (rs.next())
         {
@@ -2634,8 +2659,8 @@ public class DB_Access
             strZuname = rs.getString("Zuname");
             intInstanznr = rs.getInt("Instanznr");
             dateGeb = rs.getDate("GebDate");
-            dateUntersuchung = rs.getDate("UDatum");
-            dateNaechsteUntersuchung = rs.getDate("NaechsteUDate");
+            dateUntersuchung = rs.getTimestamp("UDatum");
+            dateNaechsteUntersuchung = rs.getTimestamp("NaechsteUDate");
             intIdInstanzen = rs.getInt("IdInstanzen");
             intAnzahl = rs.getInt("Anz");
             strInstanzname = rs.getString("Instanzname");
@@ -3302,8 +3327,8 @@ public class DB_Access
         }
 
         String sqlString = "SELECT DISTINCT ";
-        
-        for (int i = 0; i<strSelectedCols.length; i++)
+
+        for (int i = 0; i < strSelectedCols.length; i++)
         {
             switch (strSelectedCols[i].toUpperCase())
             {
@@ -3315,10 +3340,10 @@ public class DB_Access
                     boAnrede = false;
                     break;
                 case "STAATSBÜRGERSCHAFT":
-                     strSelectedCols[i] = "Staatsbuergerschaft";
+                    strSelectedCols[i] = "Staatsbuergerschaft";
                 case "ISCO-BERUF":
-                     strSelectedCols[i] = "Beruf";
-                
+                    strSelectedCols[i] = "Beruf";
+
             }
             switch (strSelectedCols[i])
             {
@@ -3574,10 +3599,9 @@ public class DB_Access
 
             sbHtml.append("<tr>");
 
-            
             for (String str : strSelectedCols)
             {
-                
+
                 for (Map.Entry pair : haNamesTypes.entrySet())
                 {
                     if (pair.getKey().toString().toUpperCase().equals(str.toUpperCase()))
@@ -3595,23 +3619,19 @@ public class DB_Access
                                 boolean boEhrenmitglied = rs.getBoolean("Ehrenmitglied");
                                 sbHtml.append("<td>");
 
-                                
                                 if (boJugend)
                                 {
                                     sbHtml.append("Jugend");
-                                } else if(boAktiv)
+                                } else if (boAktiv)
                                 {
                                     sbHtml.append("Aktiv");
-                                }
-                                else if(boReserve)
+                                } else if (boReserve)
                                 {
                                     sbHtml.append("Reserve");
-                                }
-                                else if(boAbgemeldet)
+                                } else if (boAbgemeldet)
                                 {
                                     sbHtml.append("Abgemeldet");
-                                }
-                                else if(boEhrenmitglied)
+                                } else if (boEhrenmitglied)
                                 {
                                     sbHtml.append("Ehrenmitglied");
                                 }
@@ -3896,17 +3916,15 @@ public class DB_Access
                         }
                     };
 //
-            StringBuilder html = theInstance.getDynamischerBericht(dynamisch, "Vorname;Zuname;Geburtsdatum", 47, 4704, "-2");
+            //StringBuilder html = theInstance.getDynamischerBericht(dynamisch, "Vorname;Zuname;Geburtsdatum", 47, 4704, "-2");
 //            System.out.println(html);
-            
-            
-// !!!!!!!!!!!!! SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!
 
+// !!!!!!!!!!!!! SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!
 //           
-              LinkedList<Geraetetraegermitglied> li = theInstance.getGereatetraegerMitglied("01.01.2056", "10.11.2058",3,3,"");
+            LinkedList<Geraetetraegermitglied> li = theInstance.getGereatetraegerMitglied("01.01.2014", "10.11.2015","01.01.2010", "10.11.2019", 3, 3, "");
             for (Geraetetraegermitglied k : li)
             {
-                 System.out.println(k.toString());
+                System.out.println(k.getDateUntersuchung() + " "+k.getDateNaechsteUntersuchung());
             }
 // !!!!!!!!!!!!! Ende SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!
         } catch (Exception ex)
