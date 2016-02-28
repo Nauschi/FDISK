@@ -14,24 +14,30 @@ import java.util.Objects;
  */
 public class MitgliedsStunden extends Mitglied {
 
-    double doStunden;
+    int intMinuten;
     String strInstanznummer;
+    int intMinutenUb;
+    int intMinutenEb;
+    int intMinutenTb;
     private DB_Access theInstance;
 
-    public MitgliedsStunden(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, double doStunden, String strInstanznummer) throws ClassNotFoundException {
+    public MitgliedsStunden(int intMinuten, String strInstanznummer, int intMinutenUb, int intMinutenEb, int intMinutenTb, int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname) throws ClassNotFoundException {
         super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
-        this.doStunden = doStunden;
+        this.intMinuten = intMinuten;
         this.strInstanznummer = strInstanznummer;
+        this.intMinutenUb = intMinutenUb;
+        this.intMinutenEb = intMinutenEb;
+        this.intMinutenTb = intMinutenTb;
         
-        theInstance = DB_Access.getInstance(); 
+        theInstance = DB_Access.getInstance();
     }
 
-    public double getDoStunden() {
-        return doStunden;
+    public int getIntMinuten() {
+        return intMinuten;
     }
 
-    public void setDoStunden(double doStunden) {
-        this.doStunden = doStunden;
+    public void setIntMinuten(int intMinuten) {
+        this.intMinuten = intMinuten;
     }
 
     public String getStrInstanznummer() {
@@ -42,11 +48,38 @@ public class MitgliedsStunden extends Mitglied {
         this.strInstanznummer = strInstanznummer;
     }
 
+    public int getIntMinutenUb() {
+        return intMinutenUb;
+    }
+
+    public void setIntMinutenUb(int intMinutenUb) {
+        this.intMinutenUb = intMinutenUb;
+    }
+
+    public int getIntMinutenEb() {
+        return intMinutenEb;
+    }
+
+    public void setIntMinutenEb(int intMinutenEb) {
+        this.intMinutenEb = intMinutenEb;
+    }
+
+    public int getIntMinutenTb() {
+        return intMinutenTb;
+    }
+
+    public void setIntMinutenTb(int intMinutenTb) {
+        this.intMinutenTb = intMinutenTb;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 59 * hash + (int) (Double.doubleToLongBits(this.doStunden) ^ (Double.doubleToLongBits(this.doStunden) >>> 32));
-        hash = 59 * hash + Objects.hashCode(this.strInstanznummer);
+        int hash = 3;
+        hash = 97 * hash + this.intMinuten;
+        hash = 97 * hash + Objects.hashCode(this.strInstanznummer);
+        hash = 97 * hash + this.intMinutenUb;
+        hash = 97 * hash + this.intMinutenEb;
+        hash = 97 * hash + this.intMinutenTb;
         return hash;
     }
 
@@ -59,15 +92,23 @@ public class MitgliedsStunden extends Mitglied {
             return false;
         }
         final MitgliedsStunden other = (MitgliedsStunden) obj;
-        if (Double.doubleToLongBits(this.doStunden) != Double.doubleToLongBits(other.doStunden)) {
+        if (this.intMinuten != other.intMinuten) {
             return false;
         }
         if (!Objects.equals(this.strInstanznummer, other.strInstanznummer)) {
             return false;
         }
+        if (this.intMinutenUb != other.intMinutenUb) {
+            return false;
+        }
+        if (this.intMinutenEb != other.intMinutenEb) {
+            return false;
+        }
+        if (this.intMinutenTb != other.intMinutenTb) {
+            return false;
+        }
         return true;
     }
-
 
     @Override
     public String toString() {
@@ -97,7 +138,7 @@ public class MitgliedsStunden extends Mitglied {
                 + strVorname + "</td><td>"
                 + strZuname + "</td><td>"
                 + strInstanznummer + "</td><td>"
-                + (doStunden*60) / 60 + ":" + doStunden%60 + "</td>"
+                + (intMinuten) / 60 + ":" + intMinuten%60 + "</td>"
                 + "<td></td></tr>";
 
         return strHtml;
