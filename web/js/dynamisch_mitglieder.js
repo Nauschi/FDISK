@@ -163,21 +163,26 @@ function initialisiereCBFilter(strTyp, strID, strLastFilter)
         var strHTMLFilter = map[strTyp.toUpperCase()];
         var strSplitFilter = strHTMLFilter.split(';');
         var opt1 = document.createElement('option');
-
         for (var i = 0; i < strSplitFilter.length; i++)
         {
-
+            
             var opt = document.createElement('option');
             if (strLastFilter == strSplitFilter[i])
             {
                 opt.setAttribute('selected', 'selected');
             }
-            opt.value = strSplitFilter[i];
+            var opt_value = replaceAll(strSplitFilter[i],'"',"###")
+            
+            opt.value = opt_value;
             opt.innerHTML = strSplitFilter[i];
             select_filter.appendChild(opt);
         }
         $('#select_filter_cb_' + strID).dropdown();
     }
+}
+
+function replaceAll(str, find, replace) {
+  return str.replace(new RegExp(find, 'g'), replace);
 }
 
 
@@ -278,6 +283,7 @@ function onActionSubmit(intZaehler, strButton)
         if (strBoxArt == "cb")
         {
             strFilter_value = document.getElementById("select_filter_cb_" + i).value;
+            strFilter_value = replaceAll(strFilter_value,"###",'"');
         } else if (strBoxArt == "txt")
         {
             strFilter_value = document.getElementById("input_filter_" + i).value;
@@ -287,7 +293,7 @@ function onActionSubmit(intZaehler, strButton)
         }
         var strKlammerZu_value = document.getElementById("select_klammer_zu_" + i).value;
         var strVerknuefung_value = document.getElementById("select_verknuepfung_" + i).value;
-        var strHTML = '<input type="hidden" name="hidden_element_data_' + i + '" value="' + strKlammerAuf_value + ";" + strTyp_value + ";" + strOperator_value + ";" + strFilter_value + ";" + strKlammerZu_value + ";" + strVerknuefung_value + '">';
+        var strHTML = "<input type='hidden' name='hidden_element_data_" + i + "' value='" + strKlammerAuf_value + ';' + strTyp_value + ';' + strOperator_value + ';' + strFilter_value + ';' + strKlammerZu_value + ';' + strVerknuefung_value + "'>";
         div_element.innerHTML = div_element.innerHTML + strHTML;
     }
     var strBezirk = document.getElementById("select_bezirk").value;

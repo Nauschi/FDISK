@@ -21,6 +21,7 @@ and open the template in the editor.
     margin: 0 auto !important;
     background-color: #C00518;
     color: white;
+    border-radius: .28571429rem;
 }
 
 #div_typen_auswahl

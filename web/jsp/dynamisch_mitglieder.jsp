@@ -29,6 +29,7 @@
             private int intIDGruppe;
         %>
         <%
+            request.setCharacterEncoding("UTF-8");
             intIDGruppe = -1;
             String[] strFeldKlammerAuf =
             {
@@ -112,7 +113,7 @@
 
         <h1>Dynamisch - Mitglieder</h1>
         <br/>
-        <div style="background-color:#C00518;color:white; margin: 0 auto; width: 90%" class="ui segment">
+        <div style="background-color: #C00518;color: white; margin: 0 auto; width: 90%;" class="ui segment">
             <b>Basis Optionen</b>
 
         </div>
