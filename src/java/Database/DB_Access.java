@@ -3034,6 +3034,7 @@ public class DB_Access
         connPool.releaseConnection(conn);
         return liFilter;
     }
+    //Test
 
     /**
      * Gibt die passenden Filter für Leistungsabzeichen zurück.
@@ -3439,7 +3440,7 @@ public class DB_Access
                 continue;
             }
 
-            //d.h. User gibt eine WHERE clause ein
+            //d.h. User gibt keine WHERE clause ein
             if (strColWhere.contains("N/A") || strColSymbol.contains("N/A") || strColValue.contains("N/A"))
             {
                 System.out.println(strColWhere);
@@ -3564,7 +3565,6 @@ public class DB_Access
 
         while (rs.next())
         {
-            boolean boBoolean;
             String strString;
             Date dateDate;
             Long loLong;
@@ -3583,7 +3583,6 @@ public class DB_Access
                     if (pair.getKey().toString().toUpperCase().equals(str.toUpperCase()))
                     {
                         String strValue = pair.getValue().toString();
-                        System.out.println(pair.getKey()+"-----"+pair.getValue());
 
                         OUTER:
                         switch (strValue)
@@ -3682,7 +3681,6 @@ public class DB_Access
                                 sbHtml.append("</td>");
                                 break;
                             case "big decimal":
-                                System.out.println(str);
                                 if (str.equals("Vordienstzeit"))
                                 {
                                     bdBigDecimal = rs.getBigDecimal("vd_zeit");
