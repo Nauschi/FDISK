@@ -1025,10 +1025,11 @@ public class DB_Access {
         int intMinuten;
         String strInstanznummer;
         int intBerichtId;
+        String strInstanzname;
 
         String sqlString = "SELECT 1 \"bereicht_id\", t.[id_personen] PersID "
                 + ",t.vorname Vorname, t.zuname Zuname, t.instanznummer Instanznummer, m.standesbuchnummer STB, m.dienstgrad DGR, m.titel Titel "
-                + ", SUM(DATEDIFF(mi,einsatzzeit_von,einsatzzeit_bis)) Minuten "
+                + ",SUM(DATEDIFF(mi,einsatzzeit_von,einsatzzeit_bis)) Minuten, fw.instanzname Instanzname "
                 + "FROM [FDISK].[dbo].stmktaetigkeitsberichtemitglieder t INNER JOIN FDISK.dbo.stmkmitglieder m ON(t.id_personen = m.id_personen) "
                 + "INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = t.instanznummer) "
                 + "INNER JOIN [FDISK].[dbo].[stmktaetigkeitsberichte] tb ON(t.id_berichte = tb.id_berichte)";
@@ -1046,11 +1047,11 @@ public class DB_Access {
             sqlString += " WHERE t.id_personen = " + intIDPerson;
         }
         sqlString += getSqlDateString(strVon, strBis, 2, false);
-        sqlString += " GROUP BY t.id_personen, t.instanznummer, t.vorname, t.zuname, m.standesbuchnummer, m.dienstgrad, m.titel "
-                + "UNION\n"
+        sqlString += " GROUP BY t.id_personen, t.instanznummer, t.vorname, t.zuname, m.standesbuchnummer, m.dienstgrad, m.titel, fw.instanzname "
+                + "UNION "
                 + "SELECT 2 \"bereicht_id\", u.[id_personen] PersID "
                 + ",u.vorname Vorname, u.zuname Zuname, u.instanznummer Instanznummer, m.standesbuchnummer STB, m.dienstgrad DGR, m.titel Titel "
-                + ",SUM(DATEDIFF(mi,einsatzzeit_von,einsatzzeit_bis)) Minuten "
+                + ",SUM(DATEDIFF(mi,einsatzzeit_von,einsatzzeit_bis)) Minuten, fw.instanzname Instanzname "
                 + "FROM [FDISK].[dbo].stmkuebungsberichtemitglieder u INNER JOIN FDISK.dbo.stmkmitglieder m ON(u.id_personen = m.id_personen) "
                 + "INNER JOIN [FDISK].[dbo].stmkuebungsberichte ub ON(u.id_berichte = ub.id_berichte) "
                 + "INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = u.instanznummer)";
@@ -1068,11 +1069,11 @@ public class DB_Access {
             sqlString += " WHERE u.id_personen = " + intIDPerson;
         }
         sqlString += getSqlDateString(strVon, strBis, 3, false);
-        sqlString += " GROUP BY u.id_personen, u.instanznummer, u.vorname, u.zuname, m.standesbuchnummer, m.dienstgrad, m.titel "
+        sqlString += " GROUP BY u.id_personen, u.instanznummer, u.vorname, u.zuname, m.standesbuchnummer, m.dienstgrad, m.titel, fw.instanzname "
                 + "UNION "
                 + "SELECT 3 \"bereicht_id\", e.[id_personen] PersID, "
                 + "e.vorname Vorname, e.zuname Zuname, e.instanznummer Instanznummer, m.standesbuchnummer STB, m.dienstgrad DGR, m.titel Titel "
-                + ",SUM(DATEDIFF(mi,einsatzzeit_von,einsatzzeit_bis)) Minuten "
+                + ",SUM(DATEDIFF(mi,einsatzzeit_von,einsatzzeit_bis)) Minuten, fw.instanzname Instanzname "
                 + "FROM [FDISK].[dbo].stmkeinsatzberichtemitglieder e INNER JOIN FDISK.dbo.stmkmitglieder m ON(e.id_personen = m.id_personen) "
                 + "INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = e.instanznummer) "
                 + "INNER JOIN [FDISK].[dbo].[stmkeinsatzberichte] eb ON(e.id_berichte = eb.id_berichte)";
@@ -1090,7 +1091,7 @@ public class DB_Access {
             sqlString += " WHERE e.id_personen = " + intIDPerson;
         }
         sqlString += getSqlDateString(strVon, strBis, 1, false);
-        sqlString += " GROUP BY e.id_personen, e.instanznummer, e.vorname, e.zuname, m.standesbuchnummer, m.dienstgrad, m.titel "
+        sqlString += " GROUP BY e.id_personen, e.instanznummer, e.vorname, e.zuname, m.standesbuchnummer, m.dienstgrad, m.titel, fw.instanzname "
                 + "order by \"PersID\";";
 
         ResultSet rs = stat.executeQuery(sqlString);
@@ -1107,6 +1108,7 @@ public class DB_Access {
             intMinuten = rs.getInt("Minuten");
             strInstanznummer = rs.getString("Instanznummer");
             intBerichtId = rs.getInt("bereicht_id");
+            strInstanzname = rs.getString("Instanzname");
 
             if (!liStunden.isEmpty()) {
                 for (int i = 0; i < liStunden.size(); i++) {
@@ -1131,13 +1133,13 @@ public class DB_Access {
                     MitgliedsStunden mitgliedsStunden = null;
                     switch (intBerichtId) {
                         case 1:
-                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, 0, intMinuten, intIDPerson, strSTB, strDGR, strTitel, strVorname, strZuname);
+                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, 0, intMinuten, intIDPerson, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
                             break;
                         case 2:
-                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, intMinuten, 0, 0, intIDPerson, strSTB, strDGR, strTitel, strVorname, strZuname);
+                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, intMinuten, 0, 0, intIDPerson, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
                             break;
                         case 3:
-                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, intMinuten, 0, intIDPerson, strSTB, strDGR, strTitel, strVorname, strZuname);
+                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, intMinuten, 0, intIDPerson, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
                             break;
                     }
 
@@ -1149,13 +1151,13 @@ public class DB_Access {
                 MitgliedsStunden mitgliedsStunden = null;
                 switch (intBerichtId) {
                     case 1:
-                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, 0, intMinuten, intIDPerson, strSTB, strDGR, strTitel, strVorname, strZuname);
+                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, 0, intMinuten, intIDPerson, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
                         break;
                     case 2:
-                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, intMinuten, 0, 0, intIDPerson, strSTB, strDGR, strTitel, strVorname, strZuname);
+                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, intMinuten, 0, 0, intIDPerson, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
                         break;
                     case 3:
-                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, intMinuten, 0, intIDPerson, strSTB, strDGR, strTitel, strVorname, strZuname);
+                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, intMinuten, 0, intIDPerson, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
                         break;
                 }
                 liStunden.add(mitgliedsStunden);

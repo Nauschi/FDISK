@@ -19,19 +19,29 @@ public class MitgliedsStunden extends Mitglied {
     int intMinutenUb;
     int intMinutenEb;
     int intMinutenTb;
+    String strInstanzname;
     private DB_Access theInstance;
 
-    public MitgliedsStunden(int intMinuten, String strInstanznummer, int intMinutenUb, int intMinutenEb, int intMinutenTb, int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname) throws ClassNotFoundException {
+    public MitgliedsStunden(int intMinuten, String strInstanznummer, int intMinutenUb, int intMinutenEb, int intMinutenTb, int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, String strInstanzname) throws ClassNotFoundException {
         super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
         this.intMinuten = intMinuten;
         this.strInstanznummer = strInstanznummer;
         this.intMinutenUb = intMinutenUb;
         this.intMinutenEb = intMinutenEb;
         this.intMinutenTb = intMinutenTb;
+        this.strInstanzname = strInstanzname;
         
         theInstance = DB_Access.getInstance();
     }
 
+    public String getStrInstanzname() {
+        return strInstanzname;
+    }
+
+    public void setStrInstanzname(String strInstanzname) {
+        this.strInstanzname = strInstanzname;
+    }
+    
     public int getIntMinuten() {
         return intMinuten;
     }
@@ -74,12 +84,13 @@ public class MitgliedsStunden extends Mitglied {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 97 * hash + this.intMinuten;
-        hash = 97 * hash + Objects.hashCode(this.strInstanznummer);
-        hash = 97 * hash + this.intMinutenUb;
-        hash = 97 * hash + this.intMinutenEb;
-        hash = 97 * hash + this.intMinutenTb;
+        int hash = 5;
+        hash = 23 * hash + this.intMinuten;
+        hash = 23 * hash + Objects.hashCode(this.strInstanznummer);
+        hash = 23 * hash + this.intMinutenUb;
+        hash = 23 * hash + this.intMinutenEb;
+        hash = 23 * hash + this.intMinutenTb;
+        hash = 23 * hash + Objects.hashCode(this.strInstanzname);
         return hash;
     }
 
@@ -105,6 +116,9 @@ public class MitgliedsStunden extends Mitglied {
             return false;
         }
         if (this.intMinutenTb != other.intMinutenTb) {
+            return false;
+        }
+        if (!Objects.equals(this.strInstanzname, other.strInstanzname)) {
             return false;
         }
         return true;
@@ -137,7 +151,7 @@ public class MitgliedsStunden extends Mitglied {
                 + strTitel + "</td><td>"
                 + strVorname + "</td><td>"
                 + strZuname + "</td><td>"
-                + strInstanznummer + "</td><td>"
+                + strInstanzname + "</td><td>"
                 + (intMinuten) / 60 + ":" + intMinuten%60 + "</td>"
                 + "<td></td></tr>";
 
