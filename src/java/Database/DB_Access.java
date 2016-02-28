@@ -772,34 +772,15 @@ public class DB_Access
             strZuname = rs.getString("Zuname");
             intInstanznummer = rs.getInt("Instanzen");
             dateGeburtsdatum = new Date(rs.getDate("Geburtsdatum").getTime());
-
-            dateEintrittsdatum = new Date();
-
-            Timestamp helper = rs.getTimestamp("Eintrittsdatum");
-            if (helper != null)
-            {
-                dateEintrittsdatum = new java.util.Date(helper.getTime());
-            }
-
+            dateEintrittsdatum = new Date(rs.getDate("Eintrittsdatum").getTime());
             doubleVordienstzeit = rs.getDouble("VD_ZEIT");
-            Calendar calEintrittsdatum = Calendar.getInstance();
-            calEintrittsdatum.setTime(dateEintrittsdatum);
+            
+            long loDifference = new Date().getTime() - dateEintrittsdatum.getTime();
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(loDifference);
+            doubleVordienstzeit+=cal.get(Calendar.YEAR)-1970;
 
-            double doubleDienstzeit = Calendar.getInstance().get(Calendar.YEAR) - calEintrittsdatum.get(Calendar.YEAR);
-
-            if (Calendar.getInstance().get(Calendar.MONTH) < calEintrittsdatum.get(Calendar.MONTH))
-            {
-                doubleDienstzeit--;
-            }
-
-            if ((Calendar.getInstance().get(Calendar.MONTH) == calEintrittsdatum.get(Calendar.MONTH)) && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) < calEintrittsdatum.get(Calendar.DAY_OF_MONTH))
-            {
-                doubleDienstzeit--;
-            }
-
-            doubleDienstzeit += doubleVordienstzeit;
-
-            MitgliedsDienstzeit mitgliedsDienst = new MitgliedsDienstzeit(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true, dateGeburtsdatum, doubleDienstzeit, intInstanznummer, calEintrittsdatum, doubleVordienstzeit);
+            MitgliedsDienstzeit mitgliedsDienst = new MitgliedsDienstzeit(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true, dateGeburtsdatum, doubleVordienstzeit, intInstanznummer, dateEintrittsdatum, doubleVordienstzeit);
             liMitgliedsDienstzeiten.add(mitgliedsDienst);
 
         }
@@ -813,8 +794,16 @@ public class DB_Access
 
                 if (md1.getIntId_Personen() == md2.getIntId_Personen() && md1.getIntInstanznummer() == md2.getIntInstanznummer())
                 {
-                    Calendar calMd1 = md1.getCalEntrittsdatum();
-                    Calendar calMd2 = md2.getCalEntrittsdatum();
+                    /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    Hab des umgeschrieben weil in der Datenklasse MitgliedsDienstzeit das Eintrittsdatum jetzt ein Date ist und kein Calendar!! Allerliebste Grüße Coki
+                    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */ 
+                    Date dateMd1 = md1.getDateEintrittsdatum();
+                    Date dateMd2 = md2.getDateEintrittsdatum();
+                    
+                    Calendar calMd1 = Calendar.getInstance();
+                    calMd1.setTime(dateMd1);
+                    Calendar calMd2 = Calendar.getInstance();
+                    calMd2.setTime(dateMd2);
 
                     if (calMd1.get(Calendar.YEAR) > calMd2.get(Calendar.YEAR) && calMd1.get(Calendar.MONTH) > calMd2.get(Calendar.MONTH) && calMd1.get(Calendar.DAY_OF_MONTH) > calMd2.get(Calendar.DAY_OF_MONTH))
                     {
@@ -1270,7 +1259,7 @@ public class DB_Access
         Statement stat = conn.createStatement();
         String sqlString;
 
-        sqlString = "SELECT DISTINCT id_personen \"PersID\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"GebDat\""
+        sqlString = "SELECT DISTINCT id_personen 'PersID', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname', geburtsdatum 'GebDat'"
                 + " FROM [FDISK].[dbo].[stmkmitglieder] m INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(m.instanznummer = fw.instanznummer)";
 
         if (intAbschnittnr == -2)

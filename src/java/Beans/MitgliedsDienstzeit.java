@@ -20,19 +20,19 @@ public class MitgliedsDienstzeit extends Mitglied
 
     private Date dateGeburtsdatum;
     private double doubleDienstalter;
-    private Calendar calEntrittsdatum; 
+    private Date dateEintrittsdatum; 
     private int intInstanznummer; 
     private double doVordienstzeit; 
     
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
     private DB_Access theInstance;
 
-    public MitgliedsDienstzeit(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, Date dateGeburtsdatum, double doubleDienstalter, int intInstanznummer, Calendar calEntrittsdatum, double doVordienstzeit) throws ClassNotFoundException
+    public MitgliedsDienstzeit(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, Date dateGeburtsdatum, double doubleDienstalter, int intInstanznummer, Date dateEntrittsdatum, double doVordienstzeit) throws ClassNotFoundException
     {
         super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
         this.dateGeburtsdatum = dateGeburtsdatum;
         this.doubleDienstalter = doubleDienstalter;
-        this.calEntrittsdatum = calEntrittsdatum; 
+        this.dateEintrittsdatum = dateEintrittsdatum; 
         this.intInstanznummer = intInstanznummer; 
         this.doVordienstzeit = doVordienstzeit; 
         theInstance = DB_Access.getInstance();
@@ -64,16 +64,18 @@ public class MitgliedsDienstzeit extends Mitglied
         this.intInstanznummer = intInstanznummer;
     }
 
-    
-    public Calendar getCalEntrittsdatum()
+    public Date getDateEintrittsdatum()
     {
-        return calEntrittsdatum;
+        return dateEintrittsdatum;
     }
 
-    public void setCalEntrittsdatum(Calendar calEntrittsdatum)
+    public void setDateEintrittsdatum(Date dateEintrittsdatum)
     {
-        this.calEntrittsdatum = calEntrittsdatum;
+        this.dateEintrittsdatum = dateEintrittsdatum;
     }
+
+    
+    
 
     public void setDateGeburtsdatum(Date dateGeburtsdatum)
     {
@@ -113,12 +115,26 @@ public class MitgliedsDienstzeit extends Mitglied
         {
             return false;
         }
-        if (this.doubleDienstalter != other.doubleDienstalter)
+        if (Double.doubleToLongBits(this.doubleDienstalter) != Double.doubleToLongBits(other.doubleDienstalter))
+        {
+            return false;
+        }
+        if (!Objects.equals(this.dateEintrittsdatum, other.dateEintrittsdatum))
+        {
+            return false;
+        }
+        if (this.intInstanznummer != other.intInstanznummer)
+        {
+            return false;
+        }
+        if (Double.doubleToLongBits(this.doVordienstzeit) != Double.doubleToLongBits(other.doVordienstzeit))
         {
             return false;
         }
         return true;
     }
+
+    
 
     @Override
     public String toString()

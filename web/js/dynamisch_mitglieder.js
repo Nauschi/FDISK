@@ -233,7 +233,7 @@ function onVorschau(intZahler)
         }
     } else
     {
-        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Alle Verknüfungen, außer der Letzten, müssen gesetzt sein";
+        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Alle Verknüfungen, außer der letzten, müssen gesetzt sein";
         $('#modal_fehler').modal('show');
         return false;
     }

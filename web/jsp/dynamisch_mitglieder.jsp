@@ -462,7 +462,7 @@
         </div>
 
         <div class="ui small modal" id="modal_loesche_vorlage">
-            <div class="header">Welche Vorlage wollen Sie löschen</div>
+            <div class="header">Welche Vorlage wollen Sie löschen?</div>
             <div class="content">
                 <form action="MainServlet" method="POST" name="form_loescheVorlage">
                     <select name="select_loesche_vorlage" class="ui fluid dropdown" id="select_vorlage">
