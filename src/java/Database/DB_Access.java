@@ -1463,8 +1463,18 @@ public class DB_Access {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 
-        String sqlString = " SELECT DISTINCT kennzeichen 'Kennzeichen'"
-                + " FROM FDISK.dbo.stmkfahrzeuge";
+        String sqlString = " SELECT DISTINCT kennzeichen \"Kennzeichen\""
+                + " FROM FDISK.dbo.stmkfahrzeuge sf INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(sf.instanznummer = fw.instanznummer)";
+
+        if (intAbschnittnr == -2) {
+            sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
+        } else {
+            if (strFubwehr.equals("-2")) {
+                sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
+            } else {
+                sqlString += " WHERE sf.instanznummer = '" + strFubwehr + "'";
+            }
+        }
 
         ResultSet rs = stat.executeQuery(sqlString);
 
