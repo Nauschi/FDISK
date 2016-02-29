@@ -1,6 +1,7 @@
 package Beans;
 
 import Database.DB_Access;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -19,6 +20,8 @@ public class Geraetetraegermitglied extends Mitglied
     private int intAnzahl;
     private String strInstanzname; 
     
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
+     private SimpleDateFormat sdfGebDate = new SimpleDateFormat("dd.MM.yyyy");
     private DB_Access theInstance;
 
     public Geraetetraegermitglied(int intInstanznr, Date dateGeb, Date dateUntersuchung, Date dateNaechsteUntersuchung, int intIdInstanzen, int intAnzahl, int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, String strInstanzname) throws ClassNotFoundException
@@ -203,9 +206,9 @@ public class Geraetetraegermitglied extends Mitglied
                 + strTitel + "</td><td>"
                 + strVorname + "</td><td>"
                 + strZuname + "</td><td>"
-                + dateGeb + "</td><td>"
-                + dateUntersuchung + "</td><td>"
-                + dateNaechsteUntersuchung + "</td><td>"
+                + sdfGebDate.format(dateGeb) + "</td><td>"
+                + sdf.format(dateUntersuchung) + "</td><td>"
+                + sdf.format(dateNaechsteUntersuchung) + "</td><td>"
                 + strInstanzname + "</td></tr>";
 
         return strHtml;
