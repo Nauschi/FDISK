@@ -736,31 +736,34 @@ public class DB_Access {
                     Calendar calMd2 = Calendar.getInstance();
                     calMd2.setTime(dateMd2);
 
-                    if (calMd1.get(Calendar.YEAR) > calMd2.get(Calendar.YEAR) && calMd1.get(Calendar.MONTH) > calMd2.get(Calendar.MONTH) && calMd1.get(Calendar.DAY_OF_MONTH) > calMd2.get(Calendar.DAY_OF_MONTH)) {
+                    
+                    if (dateMd1.getTime() > dateMd2.getTime())
+                    {
                         System.out.println("Hallo, ich bin in der Dienstzeitliste");
-                        double doubleDienstzeit = Calendar.getInstance().get(Calendar.YEAR) - calMd2.get(Calendar.YEAR);
 
-                        if (Calendar.getInstance().get(Calendar.MONTH) < calMd2.get(Calendar.MONTH)) {
-                            doubleDienstzeit--;
-                        }
+//                        long loDifference = new Date().getTime() - dateEintrittsdatum.getTime();
+//                        Calendar cal = Calendar.getInstance();
+//                        cal.setTimeInMillis(loDifference);
+//                        double doDienstzeit = doubleVordienstzeit + cal.get(Calendar.YEAR) - 1970;
+//
+//                        int intAktJahr = intJahr - LocalDate.now().getYear();
+//                        doDienstzeit += intAktJahr;
 
-                        if ((Calendar.getInstance().get(Calendar.MONTH) == calMd2.get(Calendar.MONTH)) && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) < calMd2.get(Calendar.DAY_OF_MONTH)) {
-                            doubleDienstzeit--;
-                        }
-
-                        doubleDienstzeit += md2.getDoVordienstzeit();
-                        md2.setDoubleDienstalter(doubleDienstzeit);
+            //            md2.setDoubleDienstalter(doubleDienstzeit);
                         liMitgliedsDienstzeiten.remove(i);
                         liMitgliedsDienstzeiten.set(j, md2);
-                    } else if (calMd1.get(Calendar.YEAR) < calMd2.get(Calendar.YEAR) && calMd1.get(Calendar.MONTH) < calMd2.get(Calendar.MONTH) && calMd1.get(Calendar.DAY_OF_MONTH) < calMd2.get(Calendar.DAY_OF_MONTH)) {
+                    } else if (dateMd1.getTime() < dateMd2.getTime())
+                    {
                         System.out.println("Hallo, ich bin in der Dienstzeitliste2");
                         double doubleDienstzeit = Calendar.getInstance().get(Calendar.YEAR) - calMd1.get(Calendar.YEAR);
 
-                        if (Calendar.getInstance().get(Calendar.MONTH) < calMd1.get(Calendar.MONTH)) {
+                        if (Calendar.getInstance().get(Calendar.MONTH) < calMd1.get(Calendar.MONTH))
+                        {
                             doubleDienstzeit--;
                         }
 
-                        if ((Calendar.getInstance().get(Calendar.MONTH) == calMd1.get(Calendar.MONTH)) && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) < calMd1.get(Calendar.DAY_OF_MONTH)) {
+                        if ((Calendar.getInstance().get(Calendar.MONTH) == calMd1.get(Calendar.MONTH)) && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) < calMd1.get(Calendar.DAY_OF_MONTH))
+                        {
                             doubleDienstzeit--;
                         }
 
@@ -769,12 +772,6 @@ public class DB_Access {
                         liMitgliedsDienstzeiten.remove(i);
                         liMitgliedsDienstzeiten.set(i, md1);
                     } else {
-                        System.out.println("das ist jetzt blöd");
-                        md1.setDoubleDienstalter(-100);
-                        liMitgliedsDienstzeiten.remove(i);
-                        liMitgliedsDienstzeiten.set(i, md1);
-                    }
-                } else {
 //                    md1.setDoubleDienstalter(-100);
 //                    liMitgliedsDienstzeiten.remove(i);
 //                    liMitgliedsDienstzeiten.set(i, md1);
