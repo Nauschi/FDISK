@@ -2425,7 +2425,19 @@ public class DB_Access {
                 + " ,g.instanzname \"Instanzname\""
                 + " FROM FDISK.dbo.qry_fdisk_einsatztaugliche_ats_geraetetraeger_person p"
                 + " INNER JOIN FDISK.dbo.qry_fdisk_einsatztaugliche_ats_geraetetraeger g"
-                + " ON(p.instanznummer = g.instanznummer) ";
+                + " ON(p.instanznummer = g.instanznummer)"
+                + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw"
+                + " ON(p.instanznummer = fw.instanznummer)";
+        
+        if (intAbschnittnr == -2) {
+            strStatement += " WHERE fw.Bereich_Nr = " + intBereichnr;
+        } else {
+            if (strFubwehr.equals("-2")) {
+                strStatement += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
+            } else {
+                strStatement += " WHERE p.instanznummer = '" + strFubwehr + "'";
+            }
+        }
 
         StringBuilder sqlString = new StringBuilder();
         sqlString.append(strStatement);
