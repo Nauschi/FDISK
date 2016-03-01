@@ -1006,7 +1006,7 @@
                 if(s == "")
                 {
                     return 121;
-                }
+                } alert("seas"); 
                 return s.toUpperCase()
                     .replace(/OBR D.LFV/i,0)
                     .replace(/BR D.LFV/i,1)
@@ -1131,6 +1131,7 @@
                     .replace(/EM/i,120);
             }, 
             // set type, either numeric or text 
+            
             type: 'text' 
         }); 
     
