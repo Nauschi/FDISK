@@ -583,7 +583,7 @@ public class MainServlet extends HttpServlet
         for (int i = 1; i < liDaten.size(); i++)
         {
             String strZeile = liDaten.get(i);
-            request.setAttribute("hidden_element_data_" + (i + 1), strZeile);
+            request.setAttribute("hidden_element_data_" + i, strZeile);
         }
         System.out.println("Li.size: " + liDaten.size());
     }
