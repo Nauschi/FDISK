@@ -207,6 +207,10 @@ public class PDFServlet extends HttpServlet
                 }
                 boolLeerbericht = false;
                 break;
+            case "Stundenauswertung je Mitglied je Instanz":
+                strAusgabe = generiereStundenauswertungJeMitgliedJeInstanz(strTable);
+                boolLeerbericht = false;
+                break;
             default:
                 strAusgabe = "<h1>" + strBerichtname + "</h1>" + strTable;
                 boolLeerbericht = false;
@@ -282,6 +286,12 @@ public class PDFServlet extends HttpServlet
 
     }
 
+    public String generiereStundenauswertungJeMitgliedJeInstanz(String html)
+    {
+        String strAusgabe = html.replaceAll("style='display:none'", "");
+        return strAusgabe;
+    }
+    
     /**
      * Generiert einen Tätigkeitsbericht mit Hilfe des übergebenen Strings
      * strTable ist der HTML String der Zeilen des Tables
