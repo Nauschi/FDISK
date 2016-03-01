@@ -375,7 +375,8 @@ public class MainServlet extends HttpServlet
                 //request.setAttribute("liste", );
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
-                //request.setAttribute("liste", access.getStundenauswertungProMitgliedProInstanz(strVonDatum, strBisDatum,intBereichNr, intAbschnittNr, strFeuerwehr));
+                int intPersID = Integer.parseInt(request.getParameter("select_mitglied"));
+                request.setAttribute("liste", access.getStundenauswertungProMitgliedProInstanz(strVonDatum, strBisDatum,intBereichNr, intAbschnittNr, strFeuerwehr,intPersID));
            
 
             } else if (strBericht.equals("Tätigkeitsbericht leer"))//Tätigkeitsbericht leer
@@ -439,7 +440,7 @@ public class MainServlet extends HttpServlet
                 request.setAttribute("zusatz_informationen", strDetails.isEmpty() ? null : strDetails);
                 request.setAttribute("liste", liFahrzeuge);
             }
-            else if(strBericht.equals("Geräteträgerirgendwas"))
+            else if(strBericht.equals("Geräteträgermitglieder"))
             {
                 String strVonUntersuchungsDatum = request.getParameter("input_von_datum");
                 String strBisUntersuchungsDatum = request.getParameter("input_bis_datum");
