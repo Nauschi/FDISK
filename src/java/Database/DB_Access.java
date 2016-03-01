@@ -2442,7 +2442,7 @@ public class DB_Access {
         StringBuilder sqlString = new StringBuilder();
         sqlString.append(strStatement);
 
-        sqlString.append(getSqlDateString(strVonUntersuchung, strBisUntersuchung, 5, true));
+        sqlString.append(getSqlDateString(strVonUntersuchung, strBisUntersuchung, 5, false));
         sqlString.append(getSqlDateString(strVonNaechsteUntersuchung, strBisNaechsteUntersuchung, 6, false));
 
         System.out.println(sqlString);
