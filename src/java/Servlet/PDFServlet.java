@@ -208,7 +208,7 @@ public class PDFServlet extends HttpServlet
                 boolLeerbericht = false;
                 break;
             case "Stundenauswertung je Mitglied je Instanz":
-                strAusgabe = generiereStundenauswertungJeMitgliedJeInstanz(strTable);
+                strAusgabe = "<h1>" + strBerichtname + "</h1>" +generiereStundenauswertungJeMitgliedJeInstanz(strTable);
                 boolLeerbericht = false;
                 break;
             default:
@@ -286,12 +286,58 @@ public class PDFServlet extends HttpServlet
 
     }
 
-    public String generiereStundenauswertungJeMitgliedJeInstanz(String html)
+    public String generiereStundenauswertungJeMitgliedJeInstanz(String strTemp)
     {
-        String strAusgabe = html.replaceAll("style='display:none'", "");
-        return strAusgabe;
+        String ausgabe = "";
+        strTemp = strTemp.replace("<table class=\"tablesorter ui celled table\">", "");
+        strTemp = strTemp.replaceAll("style=\"display:none\"", "");
+//        System.out.println(strTemp);
+        int intIndex1 = strTemp.indexOf("<thead>");
+        int intIndex2 = strTemp.indexOf("</thead>") + 8;
+        String strThead = strTemp.substring(intIndex1, intIndex2);
+        intIndex1 = strTemp.indexOf("<tbody>") + 7;
+        intIndex2 = strTemp.lastIndexOf("</tbody>");
+        String strTRs = strTemp.substring(intIndex1, intIndex2);
+        int intIndex = -1;
+        //<tr></tr>
+        //<tr> <table>
+        //<thead>
+        //<tr></tr>
+        //</thead><tbody>
+        //<tr></tr>
+        //<tr></tr>
+        //<tr></tr>
+        //</tbody></tr>
+        try
+        {
+            while (true)
+            {
+
+                intIndex = strTRs.indexOf("</tr>") + 1;
+                intIndex = strTRs.indexOf("</tr>", intIndex) + 1;
+                intIndex = strTRs.indexOf("</tr>", intIndex) + 1;
+                intIndex = strTRs.indexOf("</tr>", intIndex) + 1;
+                intIndex = strTRs.indexOf("</tr>", intIndex) + 1;
+                intIndex = strTRs.indexOf("</tr>", intIndex) + 5;
+                String strAktRows = strTRs.substring(0, intIndex);
+                String strFirstRow = strAktRows.substring(0, strAktRows.indexOf("</tr>") + 5);
+                String strSecondRow =  strAktRows.substring(strAktRows.indexOf("<table"), strAktRows.indexOf("</table>") + 8);
+                System.out.println(strAktRows);
+                ausgabe += "<p>&nbsp;</p>"
+                        + "<table>" + strThead + "<tbody>" + strFirstRow + "</tbody></table>"
+                        + "<p>&nbsp;</p>"
+                        + "<div>"
+                        +strSecondRow
+                        +"</div>";
+                strTRs = strTRs.replace(strAktRows, "");
+            }
+        } catch (Exception ex)
+        {
+
+        }
+        return ausgabe;
     }
-    
+
     /**
      * Generiert einen Tätigkeitsbericht mit Hilfe des übergebenen Strings
      * strTable ist der HTML String der Zeilen des Tables

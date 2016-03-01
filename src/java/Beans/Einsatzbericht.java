@@ -374,7 +374,7 @@ public class Einsatzbericht
                 + sdf.format(dateUhrzeit_Rueckkehr) + "</td><td>"
                 + strStrasse + " " + strNummerAdr + " " + strStiege + " " + strPlz + " " + strOrt + "</td><td>"
                 + strVorname + "</td><td>"
-                + strZuname + "</td><td></td></tr>";
+                + strZuname + "</td></tr>";
 
         return strHtml;
     }

@@ -182,12 +182,12 @@ public class MitgliedsStunden extends Mitglied
                 + strVorname + "</td><td>"
                 + strZuname + "</td><td>"
                 + strInstanzname + "</td><td>"
-                + (intMinuten) / 60 + ":" + intMinuten % 60 + "</td>"
+                + ((intMinuten/60!=0)?intMinuten/60+"h ":"") + intMinuten % 60 + "min</td>"
                 + "</tr>";
 
         strHtml += "<tr style='display:none'>"
-                + "<td colspan= '7'><div style='width:100%'>"
-                + "<table style='width:100%;page-break-after: always;'>"
+                + "<td colspan= '7'>"
+                + "<table style='page-break-after: always;'>"
                 + "<thead>"
                 + "<tr>"
                 + "<th>Bericht</th>"
@@ -197,19 +197,19 @@ public class MitgliedsStunden extends Mitglied
                 + "<tbody>"
                 + "<tr>"
                 + "<td>Einsatzbericht</td>"
-                + "<td>" + intMinutenEb + "</td>"
+                + "<td>" + ((intMinutenEb/60!=0)?intMinutenEb/60+"h ":"") + intMinutenEb%60+"min</td>"
                 + "</tr>"
                 + "<tr>"
                 + "<td>Tätigkeitsbericht</td>"
-                + "<td>" + intMinutenTb + "</td>"
+                + "<td>" + ((intMinutenTb/60!=0)?intMinutenTb/60+"h ":"")+ intMinutenTb%60+"min</td>"
                 + "</tr>"
                 + "<tr>"
                 + "<td>Übungsbericht</td>"
-                + "<td>" + intMinutenUb + "</td>"
+                + "<td>" + ((intMinutenUb/60!=0)?intMinutenUb/60+"h ":"")+ intMinutenUb%60+"min</td>"
                 + "</tr>"
                 + "</tbody>"
                 + "</table>"
-                + "</div></tr>";
+                + "</tr>";
 
         return strHtml;
     }

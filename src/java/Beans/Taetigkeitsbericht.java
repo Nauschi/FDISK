@@ -336,7 +336,7 @@ public class Taetigkeitsbericht
                 + strNummer + "</td><td>"
                 + sdf.format(dateBeginn) + "</td><td>"
                 + sdf.format(dateEnde) + "</td><td>"
-                + strStrasse + " " + strNummerAdr + " " + strStiege + " " + strPlz + " " + strOrt + "</td><td></td></tr>";
+                + strStrasse + " " + strNummerAdr + " " + strStiege + " " + strPlz + " " + strOrt + "</td></tr>";
 
         return strHtml;
     }
