@@ -377,7 +377,7 @@ public class MainServlet extends HttpServlet
                 String strBisDatum = request.getParameter("input_bis_datum");
                 int intPersID = Integer.parseInt(request.getParameter("select_mitglied"));
                 request.setAttribute("liste", access.getStundenauswertungProMitgliedProInstanz(strVonDatum, strBisDatum,intBereichNr, intAbschnittNr, strFeuerwehr,intPersID));
-           
+                
 
             } else if (strBericht.equals("Tätigkeitsbericht leer"))//Tätigkeitsbericht leer
             {

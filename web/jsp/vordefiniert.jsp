@@ -208,7 +208,9 @@
                                                                     Set<Integer> setKeys = hsMitglieder.keySet();
                                                                     for (int key : setKeys)
                                                                     {
-                                                                        out.println("<option value'" + key + "'>" + hsMitglieder.get(key) + "</option>");
+                                                            %>
+                                                            <option value="<%=key + ""%>"><%=hsMitglieder.get(key)%></option>
+                                                            <%
                                                                     }
                                                                 }
                                                             %>
@@ -216,7 +218,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div id="div_mitglieder_submit" style="display: <%=(request.getAttribute("select_mitglieder_hs")!=null)?"none":"block"%>">
+                                                    <div id="div_mitglieder_submit" style="display: <%=(request.getAttribute("select_mitglieder_hs") != null) ? "none" : "block"%>">
                                                         <button type="submit" style="width: 100%;height: 100%" class="ui button styleGruen" name="button_ladeMitglieder" title="Lade Mitglieder">+</button>
                                                     </div>
                                                 </td>
@@ -536,7 +538,7 @@
                 && request.getParameter("input_aktbericht").equals("Geräteträgermitglieder"))
         {
             return "$('.tablesorter').tablesorter({headers: {1: {sorter: 'levels'},5: {sorter: 'germandate'},6: {sorter: 'berichtdate'},7: {sorter: 'berichtdate'}}});";
-        }else
+        } else
         {
             return "$('.tablesorter').tablesorter();";
         }

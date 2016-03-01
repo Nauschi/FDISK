@@ -154,6 +154,9 @@ public class MitgliedsStunden extends Mitglied {
                 + strInstanzname + "</td><td>"
                 + (intMinuten) / 60 + ":" + intMinuten%60 + "</td>"
                 + "<td></td></tr>";
+        
+//        strHtml += "<tr><td>"+intMinutenEb+"</td><td>"+intMinutenTb+"</td><td>"+intMinutenUb+"</td><td>"
+//                + strVorname + "</td></tr>";
 
         return strHtml;
     }
