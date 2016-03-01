@@ -1101,6 +1101,7 @@ public class DB_Access {
         boolean exists = false;
 
         while (rs.next()) {
+            
             intPersID = rs.getInt("PersID");
             strSTB = rs.getString("STB");
             strDGR = rs.getString("DGR");
@@ -1114,7 +1115,10 @@ public class DB_Access {
 
             if (!liStunden.isEmpty()) {
                 for (int i = 0; i < liStunden.size(); i++) {
+                    System.out.println("getStundenauswertungProMitgliedProInstanz: persid " + liStunden.get(i).getIntId_Personen() +" "+ intPersID);
+                    System.out.println("getStundenauswertungProMitgliedProInstanz: inst " + liStunden.get(i).getStrInstanznummer()+" "+strInstanznummer);
                     if (liStunden.get(i).getIntId_Personen() == intPersID && liStunden.get(i).getStrInstanznummer().equals(strInstanznummer)) {
+                        System.out.println("getStundenauswertungProMitgliedProInstanz IF CLAUSE!");
                         exists = true;
                         liStunden.get(i).setIntMinuten(liStunden.get(i).getIntMinuten() + intMinuten);
                         switch (intBerichtId) {
@@ -1135,16 +1139,15 @@ public class DB_Access {
                     MitgliedsStunden mitgliedsStunden = null;
                     switch (intBerichtId) {
                         case 1:
-                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, 0, intMinuten, intIDPerson, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
+                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, 0, intMinuten, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
                             break;
                         case 2:
-                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, intMinuten, 0, 0, intIDPerson, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
+                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, intMinuten, 0, 0, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
                             break;
                         case 3:
-                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, intMinuten, 0, intIDPerson, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
+                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, intMinuten, 0, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
                             break;
                     }
-
                     liStunden.add(mitgliedsStunden);
                 } else {
                     exists = false;
@@ -1153,13 +1156,13 @@ public class DB_Access {
                 MitgliedsStunden mitgliedsStunden = null;
                 switch (intBerichtId) {
                     case 1:
-                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, 0, intMinuten, intIDPerson, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
+                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, 0, intMinuten, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
                         break;
                     case 2:
-                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, intMinuten, 0, 0, intIDPerson, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
+                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, intMinuten, 0, 0, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
                         break;
                     case 3:
-                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, intMinuten, 0, intIDPerson, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
+                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, intMinuten, 0, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
                         break;
                 }
                 liStunden.add(mitgliedsStunden);
