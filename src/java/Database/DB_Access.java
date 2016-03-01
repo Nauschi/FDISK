@@ -1176,16 +1176,17 @@ public class DB_Access {
         Statement stat = conn.createStatement();
         String sqlString;
 
-        sqlString = "SELECT DISTINCT id_personen 'PersID', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname', geburtsdatum 'GebDat'"
-                + " FROM [FDISK].[dbo].[stmkmitglieder] m INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(m.instanznummer = fw.instanznummer)";
+        sqlString = "SELECT DISTINCT id_personen 'PersID', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname', geburtsdatum 'GebDat', abgemeldet"
+                + " FROM [FDISK].[dbo].[stmkmitglieder] m INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(m.instanznummer = fw.instanznummer)"
+                + " WHERE m.abgemeldet = 0";
 
         if (intAbschnittnr == -2) {
-            sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
+            sqlString += " AND fw.Bereich_Nr = " + intBereichnr;
         } else {
             if (strFubwehr.equals("-2")) {
-                sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
+                sqlString += " AND fw.abschnitt_instanznummer = " + intAbschnittnr;
             } else {
-                sqlString += " WHERE m.instanznummer = '" + strFubwehr + "'";
+                sqlString += " AND m.instanznummer = '" + strFubwehr + "'";
             }
         }
 
