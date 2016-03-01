@@ -1,44 +1,44 @@
-Anrede;cb
-Geschlecht;cb
-Titel;cb
-Amtstitel;cb
-Vorname;txt
-Zuname;txt
-Namenszusatz;txt
-Geburtsdatum;datepicker
 Alter;txt
-Geburtsort;txt
-SVNR;txt
-Staatsbürgerschaft;cb
-ISCO-Beruf;cb
-Familienstand;cb
-Blutgruppe;cb
-Standesbuchnummer;txt
-Eintrittsdatum;datepicker
-Dienstalter;datepicker
+Amtstitel;cb
 Angelobungsdatum;datepicker
-Status;cb
-Dienstgrad;cb
-Vordienstzeit in Jahren;txt
-Straße;txt
-Hausnummer;txt
-Stiege/Stock/Tür;txt
-Ort;txt
-Erreichbarkeitsart;cb
-Erreichbarkeit;cb
+Anrede;cb
 Auszeichnungsart;cb
-Auszeichnungsstufe;cb
 Auszeichnungsdatum;datepicker
+Auszeichnungsstufe;cb
+Blutgruppe;cb
+Dienstalter;txt
+Dienstgrad;cb
+Eintrittsdatum;datepicker
+Erreichbarkeit;txt
+Erreichbarkeitsart;cb
+Familienstand;cb
 Führerscheinklasse;cb
 Führerscheinklasse - Gültig bis;datepicker
-Funktionsinstanz;cb
-Funktionsbezeichnung;cb
-Funktion von;datepicker
 Funktion bis;datepicker
+Funktion von;datepicker
+Funktionsbezeichnung;cb
+Funktionsinstanz;cb
+Geburtsdatum;datepicker
+Geburtsort;txt
+Geschlecht;cb
+Hausnummer;txt
+ISCO-Beruf;cb
 Kursbezeichnung;cb
 Kursdatum;datepicker
-Leistungsabzeichenbezeichnung;cb
 Leistungsabzeichen Stufe;cb
+Leistungsabzeichenbezeichnung;cb
 Leistungsabzeichendatum;datepicker
+Namenszusatz;txt
+Ort;txt
+Staatsbürgerschaft;cb
+Standesbuchnummer;txt
+Status;cb
+Stiege/Stock/Tür;txt
+Straße;txt
+SVNR;txt
+Titel;cb
 Untersuchungsart;cb
 Untersuchungsdatum;datepicker
+Vordienstzeit in Jahren;txt
+Vorname;txt
+Zuname;txt
