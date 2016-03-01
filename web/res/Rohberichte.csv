@@ -13,4 +13,4 @@ Liste aller Übungsberichte;Übungsart;Übungsunterart;Nummer;Begin;Ende;Adresse;2;
 Liste aller Berichte;Beginn;Ende;Beschreibung;2;
 Kursstatistik;Anz Teilnehmer;Anz Km;Tätigkeitsart;Tätigkeitsunterart;Begin;Ende;2;
 Digitales Fahrtenbuch;Beschreibung;Beginn;Ende;Km;3;
-Geräteträgerirgendwas;STB;DGR;Titel;Vorname;Zuname;Geburtsdatum;Untersuchungsdatum;Nächste Untersuchung;Instanzasd;2;
+Geräteträgermitglieder;STB;DGR;Titel;Vorname;Zuname;Geburtsdatum;Untersuchung;Nächste Untersuchung;Instanzname;2;
