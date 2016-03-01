@@ -604,20 +604,28 @@
                        // $('.sortable.table').tablesort();
                         
                         var elementArray = document.getElementById("dyn_table").getElementsByTagName("th"); 
-               
+                        var isDifferent = false; 
                         for(var i = 0; i<elementArray.length; i++)
-                        {
-                            if(elementArray[i].innerHTML == "Dienstgrad")
-                            {
-                                alert("i");
-                               $('.tablesorter').tablesorter({headers: {i: {sorter: 'levels'}}});
-                            }
+                       {
+                          var columnNumber = i; 
+                          if(elementArray[i].innerHTML == "Dienstgrad")
+                          {
+                              
+                              $('.tablesorter').tablesorter({headers: { columnNumber: {sorter: 'levels'}}});
+                              isDifferent = true; 
+                              break; 
+                           }
+                            
                                 
+                        }
+                        if(isDifferent === false)
+                        {
+                             $('.tablesorter').tablesorter();
                         }
 
                             
     
-                      //  $('.tablesorter').tablesorter();
+                      
                         $('th').popup();
                         document.getElementById("div_csv_pdf").style.display = "block";
             <%
