@@ -4,6 +4,7 @@
     Author     : user
 --%>
 
+<%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.util.Set"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.time.LocalDate"%>
@@ -136,7 +137,13 @@
                                     <legend><b>Datum von</b></legend>
                                     <div class="ui input" style="width: 100%">
                                         <%String str_input_von_datum = request.getParameter("input_von_datum");%>
-                                        <input name="input_von_datum" id="input_von_datum" placeholder="von..." autocomplete="off" readonly="true" type="text"
+                                        
+                                        <%
+                                        int intBerichtjahrAnfang = LocalDate.now().getYear() - 1;
+                                        String strBerichtAnfangText = "01.12." + intBerichtjahrAnfang;
+                                        %>
+
+                                        <input value="<%=strBerichtAnfangText%>" name="input_von_datum" id="input_von_datum" placeholder="von..." autocomplete="off" readonly="true" type="text"
                                                <%=(str_input_von_datum != null) ? "value='" + str_input_von_datum + "'" : ""%>
                                                >
                                         <div id="div_remove_von_datum" style="display:  <%=(str_input_von_datum != null && !str_input_von_datum.isEmpty()) ? "block" : "none"%>;">
@@ -150,7 +157,13 @@
                                     <legend><b>Datum bis</b></legend>
                                     <div class="ui input" style="width: 100%">
                                         <%String str_input_bis_datum = request.getParameter("input_bis_datum");%>
-                                        <input name="input_bis_datum" id="input_bis_datum" placeholder="bis..." autocomplete="off" readonly="true" type="text" 
+                                        
+                                        <%
+                                        int intBerichtjahrEnde = LocalDate.now().getYear();
+                                        String strBerichtEndeText = "30.11." + intBerichtjahrEnde;
+                                        %>
+                                        
+                                        <input value="<%=strBerichtEndeText%>" name="input_bis_datum" id="input_bis_datum" placeholder="bis..." autocomplete="off" readonly="true" type="text" 
                                                <%=(str_input_bis_datum != null) ? "value='" + str_input_bis_datum + "'" : ""%>
                                                >
                                         <div id="div_remove_bis_datum" style="display: <%=(str_input_bis_datum != null && !str_input_bis_datum.isEmpty()) ? "block" : "none"%>;">
