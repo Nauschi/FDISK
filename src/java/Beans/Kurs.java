@@ -3,6 +3,7 @@ package Beans;
 import Database.DB_Access;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  *
@@ -20,11 +21,13 @@ public class Kurs
     private int intIdInstanzenVeranstalter;
     private int intIdInstanzenDurchfuehrend;
     private String strKursstatus;
+    private int intAnzahlTeilnehmer;
+    private int intAnzahlTaetigkeiten;
     
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
     private DB_Access theInstance;
 
-    public Kurs(int intIdKurse, int intIdKursart, int intLehrgangsnummer, String strKursbezeichnung, String strKurskurzbezeichnung, Date dateDatum, int intIdInstanzenVeranstalter, int intIdInstanzenDurchfuehrend, String strKursstatus) throws ClassNotFoundException
+    public Kurs(int intIdKurse, int intIdKursart, int intLehrgangsnummer, String strKursbezeichnung, String strKurskurzbezeichnung, Date dateDatum, int intIdInstanzenVeranstalter, int intIdInstanzenDurchfuehrend, String strKursstatus, int intAnzhahlTeilnehmer) throws ClassNotFoundException
     {
         this.intIdKurse = intIdKurse;
         this.intIdKursart = intIdKursart;
@@ -35,14 +38,31 @@ public class Kurs
         this.intIdInstanzenVeranstalter = intIdInstanzenVeranstalter;
         this.intIdInstanzenDurchfuehrend = intIdInstanzenDurchfuehrend;
         this.strKursstatus = strKursstatus;
+        this.intAnzahlTeilnehmer = intAnzhahlTeilnehmer;
         theInstance = DB_Access.getInstance();
     }
 
+    public int getIntAnzahlTaetigkeiten() {
+        return intAnzahlTaetigkeiten;
+    }
+
+    public void setIntAnzahlTaetigkeiten(int intAnzahlTaetigkeiten) {
+        this.intAnzahlTaetigkeiten = intAnzahlTaetigkeiten;
+    }
+    
     public int getIntIdKurse()
     {
         return intIdKurse;
     }
 
+    public int getIntAnzahlTeilnehmer() {
+        return intAnzahlTeilnehmer;
+    }
+
+    public void setIntAnzahlTeilnehmer(int intAnzahlTeilnehmer) {
+        this.intAnzahlTeilnehmer = intAnzahlTeilnehmer;
+    }
+    
     public void setIntIdKurse(int intIdKurse)
     {
         this.intIdKurse = intIdKurse;
@@ -129,30 +149,67 @@ public class Kurs
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 7;
+        hash = 61 * hash + this.intIdKurse;
+        hash = 61 * hash + this.intIdKursart;
+        hash = 61 * hash + this.intLehrgangsnummer;
+        hash = 61 * hash + Objects.hashCode(this.strKursbezeichnung);
+        hash = 61 * hash + Objects.hashCode(this.strKurskurzbezeichnung);
+        hash = 61 * hash + Objects.hashCode(this.dateDatum);
+        hash = 61 * hash + this.intIdInstanzenVeranstalter;
+        hash = 61 * hash + this.intIdInstanzenDurchfuehrend;
+        hash = 61 * hash + Objects.hashCode(this.strKursstatus);
+        hash = 61 * hash + this.intAnzahlTeilnehmer;
+        hash = 61 * hash + this.intAnzahlTaetigkeiten;
         return hash;
     }
 
     @Override
-    public boolean equals(Object obj)
-    {
-        if (obj == null)
-        {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass())
-        {
+        if (getClass() != obj.getClass()) {
             return false;
         }
         final Kurs other = (Kurs) obj;
-        if (this.intIdKurse != other.intIdKurse)
-        {
+        if (this.intIdKurse != other.intIdKurse) {
+            return false;
+        }
+        if (this.intIdKursart != other.intIdKursart) {
+            return false;
+        }
+        if (this.intLehrgangsnummer != other.intLehrgangsnummer) {
+            return false;
+        }
+        if (!Objects.equals(this.strKursbezeichnung, other.strKursbezeichnung)) {
+            return false;
+        }
+        if (!Objects.equals(this.strKurskurzbezeichnung, other.strKurskurzbezeichnung)) {
+            return false;
+        }
+        if (!Objects.equals(this.dateDatum, other.dateDatum)) {
+            return false;
+        }
+        if (this.intIdInstanzenVeranstalter != other.intIdInstanzenVeranstalter) {
+            return false;
+        }
+        if (this.intIdInstanzenDurchfuehrend != other.intIdInstanzenDurchfuehrend) {
+            return false;
+        }
+        if (!Objects.equals(this.strKursstatus, other.strKursstatus)) {
+            return false;
+        }
+        if (this.intAnzahlTeilnehmer != other.intAnzahlTeilnehmer) {
+            return false;
+        }
+        if (this.intAnzahlTaetigkeiten != other.intAnzahlTaetigkeiten) {
             return false;
         }
         return true;
     }
+    
 
     @Override
     public String toString()
@@ -173,6 +230,7 @@ public class Kurs
         String strHtml = "<tr><td>"
                 + strKursbezeichnung + "</td><td>"
                 + strKursstatus + "</td><td>"
+                + intAnzahlTeilnehmer + "</td><td>"
                 + sdf.format(dateDatum) + "</td><td></td></tr>";
 
         return strHtml;

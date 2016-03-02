@@ -459,7 +459,8 @@ public class MainServlet extends HttpServlet
 
     private String generiereKurstatistikZusatzTable(String strVonDatum, String strBisDatum) throws Exception
     {
-        //LinkedList<Kurs> liKurse = access.getKursstatistikkurse(strVonDatum, strBisDatum);
+        //LinkedList<Kurs> liKurse = access.getKursstatistikkurse(intBereichnr, intAbschnittnr, strFubwehr, strVonDatum, strBisDatum);
+        
         String strZusatzInfo = "<table class='tablesorter2 ui celled table'><thead>";
         strZusatzInfo += "<tr>"
                 + "<th data-content='nach Kursbezeichnung sortieren' class='sort'>Kursbezeichnung</th>"

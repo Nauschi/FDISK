@@ -57,7 +57,7 @@ import java.util.logging.Logger;
 /**
  *
  * @author philipp
- * 
+ *
  * sdfsdfsdf
  */
 public class DB_Access {
@@ -134,10 +134,23 @@ public class DB_Access {
         LinkedList<LoginMitglied> liLoginBerechtigung = new LinkedList<>();
         liLoginBerechtigung = getLoginBerechtigung(intUserID);
         String fubwehr = getFubwehrForUserID(intUserID);
-        String feuerwehrname = getNameFuerFubwehr(fubwehr);
+        String feuerwehrname;
+        String abschnitt;
+        String bereich;
 
-        String abschnitt = getAbschnittsnameFuerFubwehr(fubwehr);
-        String bereich = getBereichsnameFuerFubwehr(fubwehr);
+        if (!fubwehr.endsWith("601") && fubwehr.length() > 2) {
+            feuerwehrname = getNameFuerFubwehr(fubwehr);
+        } else {
+            int bereichnr = Integer.parseInt(fubwehr.substring(0, 2));
+            LinkedList<Integer> liAbschnittNummern = getAbschnittNummernFuerBereich(bereichnr);
+            LinkedList<String> liFubwehrNummern = getFubwehrNummernFuerAbschnitt(liAbschnittNummern.getFirst());
+            fubwehr = liFubwehrNummern.getFirst();
+            feuerwehrname = getNameFuerFubwehr(liFubwehrNummern.getFirst());
+
+        }
+        abschnitt = getAbschnittsnameFuerFubwehr(fubwehr);
+        bereich = getBereichsnameFuerFubwehr(fubwehr);
+
         String strBerechtigung = "";
 
         if (liLoginBerechtigung.isEmpty()) {
@@ -619,13 +632,12 @@ public class DB_Access {
      * @see MitgliedsDienstzeit
      * @see LinkedList
      */
-    public LinkedList<MitgliedsDienstzeit> getDienstzeitListe(int intJahr, int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception
-    {
+    public LinkedList<MitgliedsDienstzeit> getDienstzeitListe(int intJahr, int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
         LinkedList<MitgliedsDienstzeit> liMitgliedsDienstzeiten = new LinkedList<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
         String sqlString = "";
-        
+
 //                   sqlString = "SELECT DISTINCT m.id_personen \"PersID\", m.standesbuchnummer \"STB\", m.dienstgrad \"DGR\", m.titel \"Titel\", m.vorname \"Vorname\", m.zuname \"Zuname\", m.geburtsdatum \"Geburtsdatum\",  m.datum_abgemeldet \"Datum_abgemeldet\", m.eintrittsdatum \"Eintrittsdatum\", m.vordienstzeit \"Vordienstzeit\", SUM(z.VD_ZEIT) \"VD_ZEIT\", m.id_instanzen \"Instanzen\""
 //                    + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_VD_ZEIT z ON(m.id_personen = z.id_personen)"
 //                    + " WHERE m.datum_abgemeldet IS NULL "
@@ -641,8 +653,7 @@ public class DB_Access {
 //                    + " m.eintrittsdatum, "
 //                    + " m.vordienstzeit, "
 //                    + " m.id_instanzen";
-
-    if (intAbschnittnr == -2) {
+        if (intAbschnittnr == -2) {
             sqlString = "SELECT m.id_personen \"PersID\", m.standesbuchnummer \"STB\", m.dienstgrad \"DGR\", m.titel \"Titel\", m.vorname \"Vorname\", m.zuname \"Zuname\", m.geburtsdatum \"Geburtsdatum\",  m.datum_abgemeldet \"Datum_abgemeldet\", m.eintrittsdatum \"Eintrittsdatum\", m.vordienstzeit \"Vordienstzeit\", SUM(z.VD_ZEIT) \"VD_ZEIT\", m.id_instanzen \"Instanzen\""
                     + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_VD_ZEIT z ON(m.id_personen = z.id_personen)"
                     + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(m.instanznummer = f.instanznummer)"
@@ -698,7 +709,7 @@ public class DB_Access {
                         + " m.id_instanzen";
             }
         }
-    
+
         ResultSet rs = stat.executeQuery(sqlString);
 
         String strSTB;
@@ -712,8 +723,7 @@ public class DB_Access {
         double doVordienstzeit;
         int intInstanznummer;
 
-        while (rs.next())
-        {
+        while (rs.next()) {
             intPersID = rs.getInt("PersID");
             strSTB = rs.getString("STB");
             strDGR = rs.getString("DGR");
@@ -721,24 +731,20 @@ public class DB_Access {
             strVorname = rs.getString("Vorname");
             strZuname = rs.getString("Zuname");
             intInstanznummer = rs.getInt("Instanzen");
-            
-          //  dateGeburtsdatum = new Date(rs.getDate("Geburtsdatum").getTime());
-            dateGeburtsdatum = rs.getDate("Geburtsdatum"); 
-           
-            if(rs.getDate("Eintrittsdatum") != null)
-            {
+
+            //  dateGeburtsdatum = new Date(rs.getDate("Geburtsdatum").getTime());
+            dateGeburtsdatum = rs.getDate("Geburtsdatum");
+
+            if (rs.getDate("Eintrittsdatum") != null) {
                 dateEintrittsdatum = new Date(rs.getDate("Eintrittsdatum").getTime());
-            }
-            else
-            {
+            } else {
                 dateEintrittsdatum = null;
             }
-            
+
             doVordienstzeit = rs.getDouble("VD_ZEIT");
             double doDienstzeit;
 
-            if (dateEintrittsdatum != null)
-            {
+            if (dateEintrittsdatum != null) {
                 long loDifference = new Date().getTime() - dateEintrittsdatum.getTime();
                 Calendar cal = Calendar.getInstance();
                 cal.setTimeInMillis(loDifference);
@@ -747,17 +753,16 @@ public class DB_Access {
                 int intAktJahr = intJahr - LocalDate.now().getYear();
                 doDienstzeit += intAktJahr;
 
-            } else
-            {
+            } else {
                 doDienstzeit = doVordienstzeit;
             }
             MitgliedsDienstzeit mitgliedsDienst = new MitgliedsDienstzeit(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true, dateGeburtsdatum, doDienstzeit, intInstanznummer, dateEintrittsdatum, doVordienstzeit);
             liMitgliedsDienstzeiten.add(mitgliedsDienst);
             System.out.println(mitgliedsDienst.toString());
-            
+
         }
         System.out.println(liMitgliedsDienstzeiten.size());
-        
+
 //        for (int i = 0; i < liMitgliedsDienstzeiten.size(); i++) 
 //        {
 //            MitgliedsDienstzeit md1 = liMitgliedsDienstzeiten.get(i);
@@ -823,8 +828,8 @@ public class DB_Access {
 //                    liMitgliedsDienstzeiten.remove(i);
 //                    liMitgliedsDienstzeiten.set(i, md1);
 //                    System.out.println("Anscheinend gibts keine doppeleten");
-              //  }
-          //  }
+        //  }
+        //  }
         //}
         connPool.releaseConnection(conn);
         return liMitgliedsDienstzeiten;
@@ -1000,27 +1005,36 @@ public class DB_Access {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 
-        String sqlString = "SELECT k.id_kurse KursId "
-                + ",id_kursarten KursartId "
-                + ",lehrgangsnummer Lehrgangsnr "
-                + ",kursbezeichnung Kursbez "
-                + ",kurskurzbezeichnung Kurskurzbez "
-                + ",datum Datum "
-                + ",id_instanzen_veranstalter Veran "
-                + ",id_instanzen_durchfuehrend Durchf "
-                + ",kursstatus \"Status\" "
+        String sqlString = "SELECT DISTINCT k.id_kurse KursId "
+                + ",k.id_kursarten KursartId "
+                + ",k.lehrgangsnummer Lehrgangsnr "
+                + ",k.kursbezeichnung Kursbez "
+                + ",k.kurskurzbezeichnung Kurskurzbez "
+                + " ,k.datum Datum "
+                + " ,k.id_instanzen_veranstalter Veran "
+                + " ,k.id_instanzen_durchfuehrend Durchf "
+                + " ,k.kursstatus \"Status\" "
+                + " ,COUNT(km.id_kurse) \"Anzahl_Teilnehmer\" "
                 + "FROM FDISK.dbo.stmkkurse k "
                 + "INNER JOIN FDISK.dbo.stmkkursemitglieder km ON(k.id_kurse = km.id_kurse) "
                 + "INNER JOIN FDISK.dbo.stmkmitglieder m ON(km.id_mitgliedschaften = m.id_mitgliedschaften) "
-                + "INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(m.instanznummer = fw.instanznummer) ";
-
+                + "INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(m.instanznummer = fw.instanznummer) "
+                + "GROUP BY k.id_kurse "
+                + ",k.id_kursarten "
+                + ",k.lehrgangsnummer "
+                + ",k.kursbezeichnung "
+                + ",k.kurskurzbezeichnung "
+                + " ,k.datum "
+                + " ,k.id_instanzen_veranstalter "
+                + " ,k.id_instanzen_durchfuehrend "
+                + " ,k.kursstatus ";
         if (intAbschnittnr == -2) {
             sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
         } else {
             if (strFubwehr.equals("-2")) {
                 sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
             } else {
-                sqlString += " WHERE m.instanznummer = '" + strFubwehr + "'";
+                sqlString += " WHERE m.instanznummer = '" + 47030 + "'";
             }
         }
 
@@ -1036,6 +1050,7 @@ public class DB_Access {
         int intIdVer;
         int intIdDurchf;
         String strStatus;
+        int intAnzahlTeilnehmer;
 
         while (rs.next()) {
             intKursId = rs.getInt("KursId");
@@ -1047,8 +1062,9 @@ public class DB_Access {
             intIdVer = rs.getInt("Veran");
             intIdDurchf = rs.getInt("Durchf");
             strStatus = rs.getString("Status");
+            intAnzahlTeilnehmer = rs.getInt("Anzahl_Teilnehmer");
 
-            Kurs kurs = new Kurs(intKursId, intKursartId, intLehrgangsnr, strKursbez, strKurskurzbez, dateDatum, intIdVer, intIdDurchf, strStatus);
+            Kurs kurs = new Kurs(intKursId, intKursartId, intLehrgangsnr, strKursbez, strKurskurzbez, dateDatum, intIdVer, intIdDurchf, strStatus, intAnzahlTeilnehmer);
             liKurse.add(kurs);
         }
         connPool.releaseConnection(conn);
@@ -1143,7 +1159,7 @@ public class DB_Access {
         boolean exists = false;
 
         while (rs.next()) {
-            
+
             intPersID = rs.getInt("PersID");
             strSTB = rs.getString("STB");
             strDGR = rs.getString("DGR");
@@ -1157,10 +1173,7 @@ public class DB_Access {
 
             if (!liStunden.isEmpty()) {
                 for (int i = 0; i < liStunden.size(); i++) {
-                    System.out.println("getStundenauswertungProMitgliedProInstanz: persid " + liStunden.get(i).getIntId_Personen() +" "+ intPersID);
-                    System.out.println("getStundenauswertungProMitgliedProInstanz: inst " + liStunden.get(i).getStrInstanznummer()+" "+strInstanznummer);
                     if (liStunden.get(i).getIntId_Personen() == intPersID && liStunden.get(i).getStrInstanznummer().equals(strInstanznummer)) {
-                        System.out.println("getStundenauswertungProMitgliedProInstanz IF CLAUSE!");
                         exists = true;
                         liStunden.get(i).setIntMinuten(liStunden.get(i).getIntMinuten() + intMinuten);
                         switch (intBerichtId) {
@@ -2476,7 +2489,7 @@ public class DB_Access {
                 + " ON(p.instanznummer = g.instanznummer)"
                 + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw"
                 + " ON(p.instanznummer = fw.instanznummer)";
-        
+
         if (intAbschnittnr == -2) {
             strStatement += " WHERE fw.Bereich_Nr = " + intBereichnr;
         } else {
@@ -3383,12 +3396,10 @@ public class DB_Access {
                                 System.out.println(pair.getKey().toString());
                                 if (strString.equals("") && (pair.getKey().toString().equals("titel") || pair.getKey().toString().equals("amtstitel"))) {
                                     strString = "-";
-                                }
-                                else if(strString.equals(""))
-                                {
+                                } else if (strString.equals("")) {
                                     strString = "";
                                 }
-                                
+
                                 if (boAnrede == true) {
                                     switch (strString) {
                                         case "w":
