@@ -191,7 +191,7 @@
                                 </fieldset>
                             </div>
 
-                            <div class="column" id="div_mitglied">
+                            <div class="column" id="div_mitglied" style="display: none">
                                 <fieldset>
                                     <legend><b>Mitglied</b></legend>
                                     <table style="width: 100%">
@@ -228,7 +228,7 @@
                                 </fieldset>
                             </div>
 
-                            <div class="column" id="div_kennzeichen">
+                            <div class="column" id="div_kennzeichen" style="display: none">
                                 <fieldset>
                                     <legend><b>Kennzeichen</b></legend>
                                     <div class="ui search">
@@ -249,13 +249,59 @@
 
                         </div>
                         <div class="ui equal width grid">
-                            <div class="column"></div>
-                            <div class="column"></div>
+                            <div class="column" id="div_kein_datum_3"></div>
+
+                            <div class="column" id="div_kein_datum_4"></div>
+
+                            <div class="column" id="div_naechste_untersuchung_von" style="display: none">
+                                <fieldset>
+                                    <legend><b>Nächste Untersuchung von</b></legend>
+                                    <div class="ui input" style="width: 100%">
+                                        <%String str_input_naechste_untersuchung_von = request.getParameter("input_naechste_untersuchung_von");%>
+                                        <input name="input_naechste_untersuchung_von" id="input_naechste_untersuchung_von" placeholder="von..." autocomplete="off" readonly="true" type="text"
+                                               <%=(str_input_naechste_untersuchung_von != null) ? "value='" + str_input_naechste_untersuchung_von + "'" : ""%>
+                                               >
+                                        <div id="div_remove_naechste_untersuchung_von" style="display:  <%=(str_input_naechste_untersuchung_von != null && !str_input_naechste_untersuchung_von.isEmpty()) ? "block" : "none"%>;">
+                                            <button type="button" class="ui button styleRot" onclick="removeDateAndSetDivHidden('div_remove_naechste_untersuchung_von', 'input_naechste_untersuchung_von')" title="Lösche 'Nächste Untersuchung von'">X</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            <div class="column" id="div_naechste_untersuchung_bis" style="display: none">
+                                <fieldset>
+                                    <legend><b>Nächste Untersuchung bis</b></legend>
+                                    <div class="ui input" style="width: 100%">
+                                        <%String str_input_naechste_untersuchung_bis = request.getParameter("input_naechste_untersuchung_bis");%>
+                                        <input name="input_naechste_untersuchung_bis" id="input_naechste_untersuchung_bis" placeholder="bis..." autocomplete="off" readonly="true" type="text"
+                                               <%=(str_input_naechste_untersuchung_bis != null) ? "value='" + str_input_naechste_untersuchung_bis + "'" : ""%>
+                                               >
+                                        <div id="div_remove_naechste_untersuchung_bis" style="display:  <%=(str_input_naechste_untersuchung_bis != null && !str_input_naechste_untersuchung_bis.isEmpty()) ? "block" : "none"%>;">
+                                            <button type="button" class="ui button styleRot" onclick="removeDateAndSetDivHidden('div_remove_naechste_untersuchung_bis', 'input_naechste_untersuchung_bis')" title="Lösche 'Nächste Untersuchung bis'">X</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
                             <div class="column">
-                                <button type="submit" name="button_vorschau" class="ui button styleGrau" onclick="document.getElementById('div_loader').className = 'ui active inverted dimmer';" title="Vorschau erstellen" style="width: 100%;">Vorschau</button>
+                                <fieldset>
+                                    <legend>&nbsp;</legend>
+                                    <button type="submit" name="button_vorschau" class="ui button styleGrau" onclick="document.getElementById('div_loader').className = 'ui active inverted dimmer';" title="Vorschau erstellen" style="width: 100%;">Vorschau</button>
+                                </fieldset>
                             </div>
                         </div>
                     </form>
+
+                    <div class="ui small modal" id="modal_fehler">
+                        <div class="header">Fehler</div>
+                        <div class="content">
+                            <p></p>
+                        </div>
+                        <div class="actions">
+                            <button type="button" onClick="$('#modal_fehler').modal('hide');" class="ui button styleGrau">OK</button>
+                        </div>
+                    </div>
+
 
                     <form id="formPDF" name="formPDF" action="PDFServlet" method="POST" target="_blank">
                         <input type="hidden" name="hidden_pdfData" id="hidden_pdfData"/>
@@ -502,8 +548,7 @@
                 || request.getParameter("input_aktbericht").equals("Dienstzeitliste")
                 || request.getParameter("input_aktbericht").equals("Einfache Mitgliederliste")
                 || request.getParameter("input_aktbericht").equals("Erreichbarkeitsliste")
-                || request.getParameter("input_aktbericht").equals("Adressliste")
-               ))
+                || request.getParameter("input_aktbericht").equals("Adressliste")))
         {
             if (request.getParameter("input_aktbericht").equals("Geburtstagsliste")
                     || request.getParameter("input_aktbericht").equals("Dienstzeitliste"))
@@ -542,7 +587,7 @@
                 && request.getParameter("input_aktbericht").equals("Stundenauswertung je Mitglied je Instanz"))
         {
             return "";
-        }else
+        } else
         {
             return "$('.tablesorter').tablesorter();";
         }

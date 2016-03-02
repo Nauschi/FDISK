@@ -440,8 +440,8 @@ public class MainServlet extends HttpServlet
             {
                 String strVonUntersuchungsDatum = request.getParameter("input_von_datum");
                 String strBisUntersuchungsDatum = request.getParameter("input_bis_datum");
-                String strVonNaechsteUntersuchungDatum = "01.01.2010";
-                String strBisNaechsteUntersuchungDatum = "30.12.2020";
+                String strVonNaechsteUntersuchungDatum = request.getParameter("input_naechste_untersuchung_von");
+                String strBisNaechsteUntersuchungDatum = request.getParameter("input_naechste_untersuchung_bis");
 
                 request.setAttribute("liste", access.getGereatetraegerMitglied(strVonUntersuchungsDatum, strBisUntersuchungsDatum, strVonNaechsteUntersuchungDatum, strBisNaechsteUntersuchungDatum, intBereichNr, intAbschnittNr, strFeuerwehr));
 

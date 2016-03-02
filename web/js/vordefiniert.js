@@ -42,6 +42,40 @@ $(function () {
         }
     });
 
+
+
+    $("#input_naechste_untersuchung_von").datepicker({
+        onSelect: function (selected)
+        {
+            var dt = new Date(dateUmwandeln(selected));
+            if (selected != null)
+            {
+                document.getElementById("div_remove_naechste_untersuchung_von").style.display = "block";
+            }
+            dt.setDate(dt.getDate() + 1);
+            $("#input_naechste_untersuchung_bis").datepicker("option", "minDate", dt);
+            $("#input_naechste_untersuchung_von").datepicker("option", "showAnim", "slideDown");
+            $("#input_naechste_untersuchung_von").datepicker("option", "dateFormat", "dd.mm.yy");
+            $("#input_naechste_untersuchung_von").datepicker("option", $.datepicker.regional['de']);
+        }
+    });
+    $("#input_naechste_untersuchung_bis").datepicker({
+        onSelect: function (selected) {
+
+            var dt = new Date(dateUmwandeln(selected));
+            if (selected != null)
+            {
+                document.getElementById("div_remove_naechste_untersuchung_bis").style.display = "block";
+            }
+            dt.setDate(dt.getDate() - 1);
+            $("#input_naechste_untersuchung_von").datepicker("option", "maxDate", dt);
+            $("#input_naechste_untersuchung_bis").datepicker("option", "showAnim", "slideDown");
+            $("#input_naechste_untersuchung_bis").datepicker("option", "dateFormat", "dd.mm.yy");
+            $("#input_naechste_untersuchung_bis").datepicker("option", $.datepicker.regional['de']);
+        }
+    });
+
+
 });
 
 /**
@@ -71,6 +105,10 @@ function onChangeTypeOfDateUI(intTypeOfDateUI)
         document.getElementById("div_kennzeichen").style.display = "none";
         document.getElementById("div_kein_datum_1").style.display = "none";
         document.getElementById("div_kein_datum_2").style.display = "none";
+        document.getElementById("div_kein_datum_3").style.display = "block";
+        document.getElementById("div_kein_datum_4").style.display = "block";
+        document.getElementById("div_naechste_untersuchung_von").style.display = "none";
+        document.getElementById("div_naechste_untersuchung_bis").style.display = "none";
     } else if (intTypeOfDateUI == 1)
     {
         document.getElementById("div_input_von_datum").style.display = "none";
@@ -80,6 +118,10 @@ function onChangeTypeOfDateUI(intTypeOfDateUI)
         document.getElementById("div_kennzeichen").style.display = "none";
         document.getElementById("div_kein_datum_1").style.display = "block";
         document.getElementById("div_kein_datum_2").style.display = "block";
+        document.getElementById("div_kein_datum_3").style.display = "block";
+        document.getElementById("div_kein_datum_4").style.display = "block";
+        document.getElementById("div_naechste_untersuchung_von").style.display = "none";
+        document.getElementById("div_naechste_untersuchung_bis").style.display = "none";
     } else if (intTypeOfDateUI == 2)
     {
         document.getElementById("div_input_von_datum").style.display = "block";
@@ -89,6 +131,10 @@ function onChangeTypeOfDateUI(intTypeOfDateUI)
         document.getElementById("div_kennzeichen").style.display = "none";
         document.getElementById("div_kein_datum_1").style.display = "block";
         document.getElementById("div_kein_datum_2").style.display = "none";
+        document.getElementById("div_kein_datum_3").style.display = "block";
+        document.getElementById("div_kein_datum_4").style.display = "block";
+        document.getElementById("div_naechste_untersuchung_von").style.display = "none";
+        document.getElementById("div_naechste_untersuchung_bis").style.display = "none";
 
     } else if (intTypeOfDateUI == 3)
     {
@@ -99,6 +145,10 @@ function onChangeTypeOfDateUI(intTypeOfDateUI)
         document.getElementById("div_mitglied").style.display = "none";
         document.getElementById("div_kein_datum_1").style.display = "none";
         document.getElementById("div_kein_datum_2").style.display = "none";
+        document.getElementById("div_kein_datum_3").style.display = "block";
+        document.getElementById("div_kein_datum_4").style.display = "block";
+        document.getElementById("div_naechste_untersuchung_von").style.display = "none";
+        document.getElementById("div_naechste_untersuchung_bis").style.display = "none";
     } else if (intTypeOfDateUI == 4)
     {
         document.getElementById("div_input_von_datum").style.display = "block";
@@ -108,7 +158,33 @@ function onChangeTypeOfDateUI(intTypeOfDateUI)
         document.getElementById("div_mitglied").style.display = "block";
         document.getElementById("div_kein_datum_1").style.display = "none";
         document.getElementById("div_kein_datum_2").style.display = "none";
+        document.getElementById("div_kein_datum_3").style.display = "block";
+        document.getElementById("div_kein_datum_4").style.display = "block";
+        document.getElementById("div_naechste_untersuchung_von").style.display = "none";
+        document.getElementById("div_naechste_untersuchung_bis").style.display = "none";
+    } else if (intTypeOfDateUI == 5)
+    {
+        document.getElementById("div_input_von_datum").style.display = "block";
+        document.getElementById("div_input_bis_datum").style.display = "block";
+        document.getElementById("div_select_jahr").style.display = "none";
+        document.getElementById("div_kennzeichen").style.display = "none";
+        document.getElementById("div_mitglied").style.display = "none";
+        document.getElementById("div_kein_datum_1").style.display = "block";
+        document.getElementById("div_kein_datum_2").style.display = "none";
+        document.getElementById("div_kein_datum_3").style.display = "none";
+        document.getElementById("div_kein_datum_4").style.display = "none";
+        document.getElementById("div_naechste_untersuchung_von").style.display = "block";
+        document.getElementById("div_naechste_untersuchung_bis").style.display = "block";
+        document.getElementById("div_input_bis_datum").getElementsByTagName("b")[0].innerHTML = "Untersuchungen bis";
+        document.getElementById("div_input_von_datum").getElementsByTagName("b")[0].innerHTML = "Untersuchungen von";
     }
+    
+    if (intTypeOfDateUI != 5)
+    {
+        document.getElementById("div_input_bis_datum").getElementsByTagName("b")[0].innerHTML = "Datum bis";
+        document.getElementById("div_input_von_datum").getElementsByTagName("b")[0].innerHTML = "Datum von";
+    }
+    
 }
 
 //Wird aufgerufen wenn bei der Liste ein anderer Bericht ausgewählt wird
@@ -180,8 +256,15 @@ function saveDataForPDF()
  */
 function saveDataForCSV()
 {
-    var strTable = document.getElementById("div_table").innerHTML;
     var strName = document.getElementById("h2_bericht").innerHTML;
+    if(strName=="Stundenauswertung je Mitglied je Instanz"||strName=="Kursstatistik"||strName=="Digitales Fahrtenbuch")
+    {
+        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Diese  Funktion ist für diesen Bericht nicht verfügbar";
+        $('#modal_fehler').modal('show');
+        return;
+    }
+    var strTable = document.getElementById("div_table").innerHTML;
+    
     document.getElementById("hidden_CSVData").value = strName + "###" + strTable;
     document.formCSV.submit();
 }
