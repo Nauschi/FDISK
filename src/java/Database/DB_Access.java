@@ -3310,7 +3310,7 @@ public class DB_Access {
 
         ResultSet rs = stat.executeQuery(sqlString);
 
-        sbHtml.append("<table class='ui tablesorter celled table' id='dyn_table'><thead><tr>");
+        sbHtml.append("<table class='tablesorter ui celled table' id='dyn_table'><thead><tr>");
 
         for (String str : strSelectedCols) {
             sbHtml.append("<th data-content='nach ").append(str).append(" sortieren'>");

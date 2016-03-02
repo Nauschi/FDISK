@@ -74,7 +74,7 @@ public class Rohbericht
         for (int i = 0; i < liBerichtSpalten.size(); i++)
         {
             String strSpalte = liBerichtSpalten.get(i);
-            if(strSpalte.equals("Bemerkung")||strSpalte.equals("-"))
+            if(strSpalte.equals("Bemerkung")||strSpalte.equals("-") || strBerichtname.equals("Stundenauswertung je Mitglied je Instanz"))
             {
                 strHTML += "<th>" + strSpalte + "</th>";
             }

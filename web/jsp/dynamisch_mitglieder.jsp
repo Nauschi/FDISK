@@ -623,7 +623,11 @@
                         if(columnNumber != -1)
                         {
                             console.log(columnNumber)
-                            $('.tablesorter').tablesorter({headers: { columnNumber: {sorter: 'levels'}}});
+                            if(columnNumber == 0)
+                            {
+                                $('.tablesorter').tablesorter({headers: {0:{sorter: 'levels'}}});
+                            }
+                            
                         } else
                         {
                              $('.tablesorter').tablesorter();

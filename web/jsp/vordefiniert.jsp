@@ -503,7 +503,7 @@
                 || request.getParameter("input_aktbericht").equals("Einfache Mitgliederliste")
                 || request.getParameter("input_aktbericht").equals("Erreichbarkeitsliste")
                 || request.getParameter("input_aktbericht").equals("Adressliste")
-                || request.getParameter("input_aktbericht").equals("Stundenauswertung je Mitglied je Instanz")))
+               ))
         {
             if (request.getParameter("input_aktbericht").equals("Geburtstagsliste")
                     || request.getParameter("input_aktbericht").equals("Dienstzeitliste"))
@@ -538,7 +538,11 @@
                 && request.getParameter("input_aktbericht").equals("Geräteträgermitglieder"))
         {
             return "$('.tablesorter').tablesorter({headers: {1: {sorter: 'levels'},5: {sorter: 'germandate'},6: {sorter: 'berichtdate'},7: {sorter: 'berichtdate'}}});";
-        } else
+        } else if (request.getParameter("input_aktbericht") != null
+                && request.getParameter("input_aktbericht").equals("Stundenauswertung je Mitglied je Instanz"))
+        {
+            return "";
+        }else
         {
             return "$('.tablesorter').tablesorter();";
         }
