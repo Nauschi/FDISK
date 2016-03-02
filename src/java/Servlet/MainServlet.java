@@ -35,8 +35,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author user
- * test2
+ * @author user test2
  */
 @WebServlet(name = "MainServlet", urlPatterns
         =
@@ -155,29 +154,30 @@ public class MainServlet extends HttpServlet
                         System.out.println(pair.getKey() + " = " + pair.getValue());
                         it.remove(); // avoids a ConcurrentModificationException
                     }
-                    request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
-                    return;
+
                 } catch (Exception ex)
                 {
                     Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
+                return;
 
             } else if (request.getParameter("vordefiniert") != null)
             {
                 request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
                 return;
-            }else if (request.getParameter("button_ladeMitglieder") != null)
+            } else if (request.getParameter("button_ladeMitglieder") != null)
             {
                 try
                 {
                     ladeMitgliederFuerStundenauswertung(request);
                 } catch (Exception ex)
                 {
-                    System.out.println("ladeMitglieder.exception: "+ex.toString());
+                    System.out.println("ladeMitglieder.exception: " + ex.toString());
                 }
                 request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
-            }            
-            else if (request.getParameter("button_ladeKennzeichen") != null)
+                return;
+            } else if (request.getParameter("button_ladeKennzeichen") != null)
             {
                 try
                 {
@@ -196,7 +196,7 @@ public class MainServlet extends HttpServlet
             {
 
                 System.out.println("//////////MainServlet.doPost.hidden_action");
-                System.out.println(""+request.getParameter("hidden_berechtigungs_info"));
+                System.out.println("" + request.getParameter("hidden_berechtigungs_info"));
                 if (request.getParameter("hidden_action").equals("vorschau"))
                 {
                     System.out.println("MainServlet.doPost: hidden_action: in vorschau");
@@ -376,8 +376,7 @@ public class MainServlet extends HttpServlet
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
                 int intPersID = Integer.parseInt(request.getParameter("select_mitglied"));
-                request.setAttribute("liste", access.getStundenauswertungProMitgliedProInstanz(strVonDatum, strBisDatum,intBereichNr, intAbschnittNr, strFeuerwehr,intPersID));
-                
+                request.setAttribute("liste", access.getStundenauswertungProMitgliedProInstanz(strVonDatum, strBisDatum, intBereichNr, intAbschnittNr, strFeuerwehr, intPersID));
 
             } else if (strBericht.equals("Tätigkeitsbericht leer"))//Tätigkeitsbericht leer
             {
@@ -433,24 +432,20 @@ public class MainServlet extends HttpServlet
 
                 //Login für Farhetnbuch implementiert, also können die Übergabeparameter da dazu gemacht werden lg nauschi
                 //System.out.println(access.getFahrtenbuch("", "", strKennzeichen).toString());
-                
-                
                 LinkedList<Fahrzeug> liFahrzeuge = access.getFahrtenbuch(intBereichNr, intAbschnittNr, strFeuerwehr, strVonDatum, strBisDatum, strKennzeichen1);
                 String strDetails = access.getDetailsFuerFahrtenbuchFahrzeug(liFahrzeuge);
                 request.setAttribute("zusatz_informationen", strDetails.isEmpty() ? null : strDetails);
                 request.setAttribute("liste", liFahrzeuge);
-            }
-            else if(strBericht.equals("Geräteträgermitglieder"))
+            } else if (strBericht.equals("Geräteträgermitglieder"))
             {
                 String strVonUntersuchungsDatum = request.getParameter("input_von_datum");
                 String strBisUntersuchungsDatum = request.getParameter("input_bis_datum");
-                String strVonNaechsteUntersuchungDatum = "01.01.2010"; 
-                String strBisNaechsteUntersuchungDatum = "30.12.2020"; 
-                
-                request.setAttribute("liste", access.getGereatetraegerMitglied(strVonUntersuchungsDatum, strBisUntersuchungsDatum,strVonNaechsteUntersuchungDatum, strBisNaechsteUntersuchungDatum,intBereichNr, intAbschnittNr, strFeuerwehr));
+                String strVonNaechsteUntersuchungDatum = "01.01.2010";
+                String strBisNaechsteUntersuchungDatum = "30.12.2020";
 
-            }
-            else
+                request.setAttribute("liste", access.getGereatetraegerMitglied(strVonUntersuchungsDatum, strBisUntersuchungsDatum, strVonNaechsteUntersuchungDatum, strBisNaechsteUntersuchungDatum, intBereichNr, intAbschnittNr, strFeuerwehr));
+
+            } else
             {
                 System.out.println("MainServlet.generiereVorschau: last else");
             }
@@ -485,7 +480,7 @@ public class MainServlet extends HttpServlet
     {
         System.out.println("//////////////generiereDynamischeVorschau////////////");
         String strTypen = request.getParameter("hidden_typen_daten");
-        System.out.println("Typen: "+strTypen);
+        System.out.println("Typen: " + strTypen);
         int intZaehler = Integer.parseInt(request.getParameter("hidden_zaehler"));
         System.out.println("MainServlet.doPost: hidden_action: zaehler: " + intZaehler);
         String[][] strDaten = new String[intZaehler][6];
@@ -512,7 +507,7 @@ public class MainServlet extends HttpServlet
 
         try
         {
-            String []strBerechtigung = request.getParameter("hidden_berechtigungs_info").split(";");
+            String[] strBerechtigung = request.getParameter("hidden_berechtigungs_info").split(";");
             int intBezirk = Integer.parseInt(strBerechtigung[0]);
             int intAbschnitt = Integer.parseInt(strBerechtigung[1]);
             String strFeuerwehr = strBerechtigung[2];
@@ -578,8 +573,8 @@ public class MainServlet extends HttpServlet
         int intUserID = (int) session.getAttribute("intUserID");
         HashMap<String, LinkedList<String>> hsVorlagen = (HashMap<String, LinkedList<String>>) sc.getAttribute("userid_" + intUserID + "_vorlagen");
         LinkedList<String> liDaten = hsVorlagen.get(strVorlageName);
-        request.setAttribute("hidden_zaehler", liDaten.size()-1);
-        request.setAttribute("hidden_typen_daten",liDaten.get(0));
+        request.setAttribute("hidden_zaehler", liDaten.size() - 1);
+        request.setAttribute("hidden_typen_daten", liDaten.get(0));
         for (int i = 1; i < liDaten.size(); i++)
         {
             String strZeile = liDaten.get(i);
@@ -605,11 +600,11 @@ public class MainServlet extends HttpServlet
         int intBereichNr = Integer.parseInt(request.getParameter("select_bezirk"));
         int intAbschnittNr = Integer.parseInt(request.getParameter("select_abschnitt"));
         String strFeuerwehr = request.getParameter("select_feuerwehr");
-        LinkedList<String> liTest = access.getFahrtenbuchKennzeichen(intBereichNr,intAbschnittNr,strFeuerwehr);
+        LinkedList<String> liTest = access.getFahrtenbuchKennzeichen(intBereichNr, intAbschnittNr, strFeuerwehr);
         System.out.println(liTest.size() + "----------------------------");
         request.setAttribute("select_kennzeichen_liste", liTest);
     }
-    
+
     private void ladeMitgliederFuerStundenauswertung(HttpServletRequest request) throws Exception
     {
         System.out.println("////////////////Lade Kennzeichen/////////////");

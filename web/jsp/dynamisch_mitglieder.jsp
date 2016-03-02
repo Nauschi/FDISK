@@ -88,7 +88,7 @@
             int intZaehler = 1;
             if (request.getAttribute("hidden_zaehler") != null)
             {
-                intZaehler = (int) request.getAttribute("hidden_zaehler");
+                intZaehler = Integer.parseInt(request.getAttribute("hidden_zaehler").toString());
             } else if (request.getParameter("hidden_action") != null)
             {
 
@@ -605,20 +605,26 @@
                         
                         var elementArray = document.getElementById("dyn_table").getElementsByTagName("th"); 
                         var isDifferent = false; 
+                        var columnNumber = -1; 
                         for(var i = 0; i<elementArray.length; i++)
                        {
-                          var columnNumber = i; 
+                          
                           if(elementArray[i].innerHTML == "Dienstgrad")
                           {
                               
-                              $('.tablesorter').tablesorter({headers: { columnNumber: {sorter: 'levels'}}});
+                              columnNumber = i;
                               isDifferent = true; 
                               break; 
                            }
                             
                                 
                         }
-                        if(isDifferent === false)
+                        
+                        if(columnNumber != -1)
+                        {
+                            console.log(columnNumber)
+                            $('.tablesorter').tablesorter({headers: { columnNumber: {sorter: 'levels'}}});
+                        } else
                         {
                              $('.tablesorter').tablesorter();
                         }
