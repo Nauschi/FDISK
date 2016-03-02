@@ -626,10 +626,9 @@ public class DB_Access {
         Statement stat = conn.createStatement();
         String sqlString = "";
         
-//                   sqlString = "SELECT m.id_personen \"PersID\", m.standesbuchnummer \"STB\", m.dienstgrad \"DGR\", m.titel \"Titel\", m.vorname \"Vorname\", m.zuname \"Zuname\", m.geburtsdatum \"Geburtsdatum\",  m.datum_abgemeldet \"Datum_abgemeldet\", m.eintrittsdatum \"Eintrittsdatum\", m.vordienstzeit \"Vordienstzeit\", SUM(z.VD_ZEIT) \"VD_ZEIT\", m.id_instanzen \"Instanzen\""
+//                   sqlString = "SELECT DISTINCT m.id_personen \"PersID\", m.standesbuchnummer \"STB\", m.dienstgrad \"DGR\", m.titel \"Titel\", m.vorname \"Vorname\", m.zuname \"Zuname\", m.geburtsdatum \"Geburtsdatum\",  m.datum_abgemeldet \"Datum_abgemeldet\", m.eintrittsdatum \"Eintrittsdatum\", m.vordienstzeit \"Vordienstzeit\", SUM(z.VD_ZEIT) \"VD_ZEIT\", m.id_instanzen \"Instanzen\""
 //                    + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_VD_ZEIT z ON(m.id_personen = z.id_personen)"
-//                    + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(m.instanznummer = f.instanznummer)"
-//                    + " AND m.datum_abgemeldet IS NULL "
+//                    + " WHERE m.datum_abgemeldet IS NULL "
 //                    + " GROUP BY "
 //                    + " m.id_personen, "
 //                    + " m.standesbuchnummer, "
@@ -722,7 +721,10 @@ public class DB_Access {
             strVorname = rs.getString("Vorname");
             strZuname = rs.getString("Zuname");
             intInstanznummer = rs.getInt("Instanzen");
-            dateGeburtsdatum = new Date(rs.getDate("Geburtsdatum").getTime());
+            
+          //  dateGeburtsdatum = new Date(rs.getDate("Geburtsdatum").getTime());
+            dateGeburtsdatum = rs.getDate("Geburtsdatum"); 
+           
             if(rs.getDate("Eintrittsdatum") != null)
             {
                 dateEintrittsdatum = new Date(rs.getDate("Eintrittsdatum").getTime());
@@ -751,76 +753,79 @@ public class DB_Access {
             }
             MitgliedsDienstzeit mitgliedsDienst = new MitgliedsDienstzeit(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true, dateGeburtsdatum, doDienstzeit, intInstanznummer, dateEintrittsdatum, doVordienstzeit);
             liMitgliedsDienstzeiten.add(mitgliedsDienst);
+            System.out.println(mitgliedsDienst.toString());
+            
         }
+        System.out.println(liMitgliedsDienstzeiten.size());
         
-        for (int i = 0; i < liMitgliedsDienstzeiten.size(); i++) 
-        {
-            MitgliedsDienstzeit md1 = liMitgliedsDienstzeiten.get(i);
-            for (int j = i + 1; j < liMitgliedsDienstzeiten.size(); j++) {
-                MitgliedsDienstzeit md2 = liMitgliedsDienstzeiten.get(j);
-
-                if (md1.getIntId_Personen() == md2.getIntId_Personen() && md1.getIntInstanznummer() == md2.getIntInstanznummer()) 
-                {
-
-                    /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                     Hab des umgeschrieben weil in der Datenklasse MitgliedsDienstzeit das Eintrittsdatum jetzt ein Date ist und kein Calendar!! Allerliebste Grüße Coki
-                     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-                    Date dateMd1 = md1.getDateEintrittsdatum();
-                    Date dateMd2 = md2.getDateEintrittsdatum();
-
-                    Calendar calMd1 = Calendar.getInstance();
-                    calMd1.setTime(dateMd1);
-                    Calendar calMd2 = Calendar.getInstance();
-                    calMd2.setTime(dateMd2);
-                    
-                    
-
-                    if (dateMd1.getTime() > dateMd2.getTime()) {
-                        System.out.println("Hallo, ich bin in der Dienstzeitliste");
-                        double doubleDienstzeit = Calendar.getInstance().get(Calendar.YEAR) - calMd2.get(Calendar.YEAR);
-
-                        if (Calendar.getInstance().get(Calendar.MONTH) < calMd2.get(Calendar.MONTH)) {
-                            doubleDienstzeit--;
-                        }
-
-                        if ((Calendar.getInstance().get(Calendar.MONTH) == calMd2.get(Calendar.MONTH)) && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) < calMd2.get(Calendar.DAY_OF_MONTH)) {
-                            doubleDienstzeit--;
-                        }
-
-                        doubleDienstzeit += md2.getDoVordienstzeit();
-                        md2.setDoubleDienstalter(doubleDienstzeit);
-                        liMitgliedsDienstzeiten.remove(i);
-                        liMitgliedsDienstzeiten.set(j, md2);
-                    } else if (dateMd1.getTime() < dateMd2.getTime()) {
-                        System.out.println("Hallo, ich bin in der Dienstzeitliste2");
-                        double doubleDienstzeit = Calendar.getInstance().get(Calendar.YEAR) - calMd1.get(Calendar.YEAR);
-
-                        if (Calendar.getInstance().get(Calendar.MONTH) < calMd1.get(Calendar.MONTH)) {
-                            doubleDienstzeit--;
-                        }
-
-                        if ((Calendar.getInstance().get(Calendar.MONTH) == calMd1.get(Calendar.MONTH)) && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) < calMd1.get(Calendar.DAY_OF_MONTH)) {
-                            doubleDienstzeit--;
-                        }
-
-                        doubleDienstzeit += md1.getDoVordienstzeit();
-                        md1.setDoubleDienstalter(doubleDienstzeit);
-                        liMitgliedsDienstzeiten.remove(i);
-                        liMitgliedsDienstzeiten.set(i, md1);
-                    } else {
-                        System.out.println("das ist jetzt blöd");
-                        md1.setDoubleDienstalter(-100);
-                        liMitgliedsDienstzeiten.remove(i);
-                        liMitgliedsDienstzeiten.set(i, md1);
-                    }
-                } else {
+//        for (int i = 0; i < liMitgliedsDienstzeiten.size(); i++) 
+//        {
+//            MitgliedsDienstzeit md1 = liMitgliedsDienstzeiten.get(i);
+//            for (int j = i + 1; j < liMitgliedsDienstzeiten.size(); j++) {
+//                MitgliedsDienstzeit md2 = liMitgliedsDienstzeiten.get(j);
+//
+//                if (md1.getIntId_Personen() == md2.getIntId_Personen() && md1.getIntInstanznummer() == md2.getIntInstanznummer()) 
+//                {
+//
+//                    /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//                     Hab des umgeschrieben weil in der Datenklasse MitgliedsDienstzeit das Eintrittsdatum jetzt ein Date ist und kein Calendar!! Allerliebste Grüße Coki
+//                     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+//                    Date dateMd1 = md1.getDateEintrittsdatum();
+//                    Date dateMd2 = md2.getDateEintrittsdatum();
+//
+//                    Calendar calMd1 = Calendar.getInstance();
+//                    calMd1.setTime(dateMd1);
+//                    Calendar calMd2 = Calendar.getInstance();
+//                    calMd2.setTime(dateMd2);
+//                    
+//                    
+//
+//                    if (dateMd1.getTime() > dateMd2.getTime()) {
+//                        System.out.println("Hallo, ich bin in der Dienstzeitliste");
+//                        double doubleDienstzeit = Calendar.getInstance().get(Calendar.YEAR) - calMd2.get(Calendar.YEAR);
+//
+//                        if (Calendar.getInstance().get(Calendar.MONTH) < calMd2.get(Calendar.MONTH)) {
+//                            doubleDienstzeit--;
+//                        }
+//
+//                        if ((Calendar.getInstance().get(Calendar.MONTH) == calMd2.get(Calendar.MONTH)) && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) < calMd2.get(Calendar.DAY_OF_MONTH)) {
+//                            doubleDienstzeit--;
+//                        }
+//
+//                        doubleDienstzeit += md2.getDoVordienstzeit();
+//                        md2.setDoubleDienstalter(doubleDienstzeit);
+//                        liMitgliedsDienstzeiten.remove(i);
+//                        liMitgliedsDienstzeiten.set(j, md2);
+//                    } else if (dateMd1.getTime() < dateMd2.getTime()) {
+//                        System.out.println("Hallo, ich bin in der Dienstzeitliste2");
+//                        double doubleDienstzeit = Calendar.getInstance().get(Calendar.YEAR) - calMd1.get(Calendar.YEAR);
+//
+//                        if (Calendar.getInstance().get(Calendar.MONTH) < calMd1.get(Calendar.MONTH)) {
+//                            doubleDienstzeit--;
+//                        }
+//
+//                        if ((Calendar.getInstance().get(Calendar.MONTH) == calMd1.get(Calendar.MONTH)) && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) < calMd1.get(Calendar.DAY_OF_MONTH)) {
+//                            doubleDienstzeit--;
+//                        }
+//
+//                        doubleDienstzeit += md1.getDoVordienstzeit();
+//                        md1.setDoubleDienstalter(doubleDienstzeit);
+//                        liMitgliedsDienstzeiten.remove(i);
+//                        liMitgliedsDienstzeiten.set(i, md1);
+//                    } else {
+//                        System.out.println("das ist jetzt blöd");
+//                        md1.setDoubleDienstalter(-100);
+//                        liMitgliedsDienstzeiten.remove(i);
+//                        liMitgliedsDienstzeiten.set(i, md1);
+//                    }
+//                } else {
 //                    md1.setDoubleDienstalter(-100);
 //                    liMitgliedsDienstzeiten.remove(i);
 //                    liMitgliedsDienstzeiten.set(i, md1);
 //                    System.out.println("Anscheinend gibts keine doppeleten");
-                }
-            }
-        }
+              //  }
+          //  }
+        //}
         connPool.releaseConnection(conn);
         return liMitgliedsDienstzeiten;
     }

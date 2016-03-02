@@ -178,9 +178,19 @@ public class MitgliedsDienstzeit extends Mitglied
                 + strDienstgrad + "</b></td><td><b>"
                 + strTitel + "</b></td><td><b>"
                 + strVorname + "</b></td><td><b>"
-                + strZuname + "</b></td><td><b>"
-                + sdf.format(dateGeburtsdatum) + "</b></td><td><b>"
-                +(int)doubleDienstalter+"</b></td></tr>";
+                + strZuname + "</b></td><td><b>";
+             
+             if(dateGeburtsdatum == null)
+             {
+                 strHtml += " ";
+             }
+             else
+             {
+                 
+                  strHtml +=  sdf.format(dateGeburtsdatum); 
+             }
+                strHtml  +="</b></td><td><b>"
+                            +(int)doubleDienstalter+"</b></td></tr>";
         }else
         {
              strHtml = "<tr><td>"
@@ -188,9 +198,18 @@ public class MitgliedsDienstzeit extends Mitglied
                 + strDienstgrad + "</td><td>"
                 + strTitel + "</td><td>"
                 + strVorname + "</td><td>"
-                + strZuname + "</td><td>"
-                + sdf.format(dateGeburtsdatum) + "</td><td>"
-                +(int)doubleDienstalter +"</td></tr>";
+                + strZuname + "</td><td>";
+             if(dateGeburtsdatum == null)
+             {
+                 strHtml += " ";
+                 
+             }
+             else
+             {
+                strHtml +=  sdf.format(dateGeburtsdatum); 
+             }
+                strHtml  +="</td><td><b>"
+                            +(int)doubleDienstalter+"</td></tr>";
         }
         return strHtml;
     }
