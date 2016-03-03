@@ -1919,7 +1919,7 @@ public class DB_Access {
             }
         }
 
-        sqlString += getSqlDateString(strVon, strBis, 2, true);
+        sqlString += getSqlDateString(strVon, strBis, 2, false);
 
         ResultSet rs = stat.executeQuery(sqlString);
 
@@ -2044,7 +2044,7 @@ public class DB_Access {
             }
         }
 
-        sqlString += getSqlDateString(strVon, strBis, 1, true);
+        sqlString += getSqlDateString(strVon, strBis, 1, false);
 
         ResultSet rs = stat.executeQuery(sqlString);
 
@@ -2290,10 +2290,10 @@ public class DB_Access {
             }
         }
 
-        sqlString.append(getSqlDateString(strVon, strBis, 3, true));
+        sqlString.append(getSqlDateString(strVon, strBis, 3, false));
 
         if (intAbschnittnr == -2) {
-            sqlString.append(" SELECT DISTINCT id_berichte \"ID\""
+            sqlString.append(" UNION SELECT DISTINCT id_berichte \"ID\""
                     + " ,eb.nstanznummer \"Instanznummer\""
                     + " ,name \"Name\""
                     + " ,einsatzart \"Art\""
@@ -2305,16 +2305,13 @@ public class DB_Access {
                     + " ,stiege \"Stiege\""
                     + " ,plz \"PLZ\""
                     + " ,ort \"Ort\""
-                    + " ,standesbuchnummer \"SBN\""
-                    + " ,vorname \"Vorname\""
-                    + " ,zuname \"Zuname\""
                     + " ,meldung \"Meldung\""
                     + " ,Fehlalarm \"Fehlalarm\""
                     + " FROM FDISK.dbo.stmkeinsatzberichte eb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(eb.instanznummer = f.instanznummer) "
                     + " WHERE f.Bereich_Nr = " + intBereichnr);
         } else {
             if (strFubwehr.equals("-2")) {
-                sqlString.append(" SELECT DISTINCT id_berichte \"ID\""
+                sqlString.append(" UNION SELECT DISTINCT id_berichte \"ID\""
                         + " ,eb.nstanznummer \"Instanznummer\""
                         + " ,name \"Name\""
                         + " ,einsatzart \"Art\""
@@ -2326,15 +2323,12 @@ public class DB_Access {
                         + " ,stiege \"Stiege\""
                         + " ,plz \"PLZ\""
                         + " ,ort \"Ort\""
-                        + " ,standesbuchnummer \"SBN\""
-                        + " ,vorname \"Vorname\""
-                        + " ,zuname \"Zuname\""
                         + " ,meldung \"Meldung\""
                         + " ,Fehlalarm \"Fehlalarm\""
                         + " FROM FDISK.dbo.stmkeinsatzberichte eb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(eb.instanznummer = f.instanznummer) "
                         + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr);
             } else {
-                sqlString.append(" SELECT DISTINCT id_berichte \"ID\""
+                sqlString.append(" UNION SELECT DISTINCT id_berichte \"ID\""
                         + " ,instanznummer \"Instanznummer\""
                         + " ,name \"Name\""
                         + " ,einsatzart \"Art\""
@@ -2346,9 +2340,6 @@ public class DB_Access {
                         + " ,stiege \"Stiege\""
                         + " ,plz \"PLZ\""
                         + " ,ort \"Ort\""
-                        + " ,standesbuchnummer \"SBN\""
-                        + " ,vorname \"Vorname\""
-                        + " ,zuname \"Zuname\""
                         + " ,meldung \"Meldung\""
                         + " ,Fehlalarm \"Fehlalarm\""
                         + " FROM FDISK.dbo.stmkeinsatzberichte"
@@ -2356,15 +2347,14 @@ public class DB_Access {
             }
         }
 
-        sqlString.append(getSqlDateString(strVon, strBis, 1, true));
+        sqlString.append(getSqlDateString(strVon, strBis, 1, false));
 
         //Start Tätigkeitsbericht + UNION Übungsberichte Jungend
         if (intAbschnittnr == -2) {
-            sqlString.append(" SELECT DISTINCT id_berichte \"ID\""
+            sqlString.append(" UNION SELECT DISTINCT id_berichte \"ID\""
                     + " ,tb.instanznummer \"Instanznummer\""
                     + " ,tb.instanzname \"Instanzname\""
                     + " ,taetigkeitsart \"Taetigkeitsart\""
-                    + " ,taetigkeitsunterart \"Taetigkeitsunterart\""
                     + " ,nummer \"Nummer\""
                     + " ,beginn \"Beginn\""
                     + " ,ende \"Ende\""
@@ -2379,11 +2369,10 @@ public class DB_Access {
                     + " WHERE f.Bereich_Nr = " + intBereichnr);
         } else {
             if (strFubwehr.equals("-2")) {
-                sqlString.append(" SELECT DISTINCT id_berichte \"ID\""
+                sqlString.append(" UNION SELECT DISTINCT id_berichte \"ID\""
                         + " ,tb.instanznummer \"Instanznummer\""
                         + " ,tb.instanzname \"Instanzname\""
                         + " ,taetigkeitsart \"Taetigkeitsart\""
-                        + " ,taetigkeitsunterart \"Taetigkeitsunterart\""
                         + " ,nummer \"Nummer\""
                         + " ,beginn \"Beginn\""
                         + " ,ende \"Ende\""
@@ -2397,11 +2386,11 @@ public class DB_Access {
                         + " FROM FDISK.dbo.stmktaetigkeitsberichte tb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(tb.instanznummer = f.instanznummer)"
                         + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr);
             } else {
-                sqlString.append(" SELECT DISTINCT id_berichte \"ID\""
+                sqlString.append(" UNION SELECT DISTINCT id_berichte \"ID\""
                         + " ,instanznummer \"Instanznummer\""
                         + " ,instanzname \"Instanzname\""
                         + " ,taetigkeitsart \"Taetigkeitsart\""
-                        + " ,taetigkeitsunterart \"Taetigkeitsunterart\""
+                        
                         + " ,nummer \"Nummer\""
                         + " ,beginn \"Beginn\""
                         + " ,ende \"Ende\""
@@ -2417,7 +2406,7 @@ public class DB_Access {
             }
         }
 
-        sqlString.append(getSqlDateString(strVon, strBis, 2, true));
+        sqlString.append(getSqlDateString(strVon, strBis, 2, false));
 
         sqlString.append(" ORDER BY beginn");
 
