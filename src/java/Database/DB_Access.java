@@ -2967,6 +2967,8 @@ public class DB_Access {
         String strSpaltenUeberschrift;
 
         int intRows = strEingabe.length % 6;
+        
+      
 
         initializeDBValuesWithDBTypes();
 
@@ -3029,6 +3031,7 @@ public class DB_Access {
                         strEingabe[i][j] = "datum_bis";
                         break;
                     case "STAATSBÜRGERSCHAFT":
+                        System.out.println("asöldkfjasöldfkjöasldkfj");
                         strEingabe[i][j] = "Staatsbuergerschaft";
                         break;
                     case "ISCO-BERUF":
@@ -3116,7 +3119,9 @@ public class DB_Access {
         String sqlString = "SELECT DISTINCT ";
 
         for (int i = 0; i < strSelectedCols.length; i++) {
+            System.out.println("ASDfsadf2"+strSelectedCols[i]);
             switch (strSelectedCols[i].toUpperCase()) {
+                
                 case "ANREDE":
                     strSelectedCols[i] = "Geschlecht";
                     boAnrede = true;
@@ -3126,8 +3131,11 @@ public class DB_Access {
                     break;
                 case "STAATSBÜRGERSCHAFT":
                     strSelectedCols[i] = "Staatsbuergerschaft";
+                    break;
+                    
                 case "ISCO-BERUF":
                     strSelectedCols[i] = "Beruf";
+                    break;
 
             }
             switch (strSelectedCols[i]) {
@@ -3138,6 +3146,7 @@ public class DB_Access {
                     sqlString += "Jugend, Aktiv, Reserve, Abgemeldet, Ehrenmitglied, ";
                     break;
                 default:
+                    System.out.println("TEST: "+strSelectedCols[i]);
                     sqlString += "m." + strSelectedCols[i] + ",";
                     break;
             }
@@ -3385,7 +3394,7 @@ public class DB_Access {
                             case "varchar":
                                 strString = rs.getString(str);
                                 System.out.println(pair.getKey().toString());
-                                if (strString.equals("") && (pair.getKey().toString().equals("titel") || pair.getKey().toString().equals("amtstitel"))) {
+                                if (strString.equals("") && (pair.getKey().toString().equals("titel") || pair.getKey().toString().equals("amtstitel") || pair.getKey().toString().equals("beruf"))) {
                                     strString = "-";
                                 } else if (strString.equals("")) {
                                     strString = "";
