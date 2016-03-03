@@ -89,21 +89,27 @@ public class CSVServlet extends HttpServlet
         String strData = request.getParameter("hidden_CSVData");
         String[] strSplitData = strData.split("###");
         String strBerichtname;
-        String strTable;
+        String strTable1;
+        boolean boolExtraTable = false;
         if (strSplitData.length < 2)
         {
             strBerichtname = "Dynamisch";
-            strTable = strData;
-        } else
+            strTable1 = strData;
+        }else if(strSplitData.length > 2)
         {
             strBerichtname = strSplitData[0];
-            strTable = strSplitData[1];
+            strTable1 = strSplitData[2]+strSplitData[1];
+            boolExtraTable=true;
+        }else
+        {
+            strBerichtname = strSplitData[0];
+            strTable1 = strSplitData[1];
         }
 
         strBerichtname = strBerichtname.replaceAll(" ", "_");
         response.setContentType("text/csv");
         response.setHeader("Content-Disposition", "attachment; filename=" + strBerichtname + ".csv");
-        String[] strRows = erstelleCSVString(strTable);
+        String[] strRows = erstelleCSVString(strTable1,boolExtraTable);
         writeCsv(strRows, response.getOutputStream());
     }
 
@@ -115,13 +121,26 @@ public class CSVServlet extends HttpServlet
      * @param strTable
      * @return
      */
-    public String[] erstelleCSVString(String strTable)
+    public String[] erstelleCSVString(String strTable, boolean boolExtraTable)
     {
         String strCSV = strTable;
-        strCSV = strCSV.replace("<table id=\"table\" class=\"ui sortable celled table\"> <thead>     ", "");
-        strCSV = strCSV.replace("<table class=\"ui sortable celled table\" id=\"dyn_table\"><thead>", "");
-        strCSV = strCSV.replace("</thead><tbody>", "");
-        strCSV = strCSV.replace("</tbody></table>", "");
+        strCSV = strCSV.replaceAll("<br>", "");
+        if(boolExtraTable)
+        {
+            strCSV = strCSV.replaceAll("<fieldset><legend><b>Fahrzeugdaten</b></legend>", "");
+            strCSV = strCSV.replaceAll("</fieldset>", "");
+            strCSV = strCSV.replaceAll("<table class=\"tablesorter ui celled table\">", "</tr>");
+//            strCSV = strCSV.replaceAll("<table class=\"ui celled table\">", "");
+        }
+//        strCSV = strCSV.replaceAll("<table class=\"tablesorter ui celled table\">", "");
+        
+        strCSV = strCSV.replaceAll("\\<table[^>]*>", ""); //Wie funktioniert das??
+//        strCSV = strCSV.replaceAll("<table class='sortable ui celled table' id='dyn_table'>", "");
+//        strCSV = strCSV.replaceAll("<table class='ui celled table'>", "");
+//        strCSV = strCSV.replaceAll("<table class=\"tablesorter2 ui celled table\">", "");
+        strCSV = strCSV.replaceAll("<thead>", "");
+        strCSV = strCSV.replaceAll("</thead><tbody>", "");
+        strCSV = strCSV.replaceAll("</tbody></table>", "");
         strCSV = strCSV.replaceAll("\\<th[^>]*>", ""); //Wie funktioniert das??
         strCSV = strCSV.replaceAll("</th>", ";");
         strCSV = strCSV.replaceAll("<td>", "");
@@ -131,6 +150,7 @@ public class CSVServlet extends HttpServlet
         strCSV = strCSV.replaceAll("</b>", "");
         strCSV = strCSV.trim();
         String[] strRows = strCSV.split("</tr>");
+        
         return strRows;
     }
 
@@ -148,6 +168,7 @@ public class CSVServlet extends HttpServlet
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, "UTF-8"));
         for (String strRow : strRows)
         {
+            strRow = strRow.trim();
             writer.append(strRow);
             writer.newLine();
         }

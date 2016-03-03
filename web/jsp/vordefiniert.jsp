@@ -174,9 +174,13 @@
                                     </div>
                                 </fieldset>
                             </div >
+                            
 
-
-                            <div class="column" id="div_select_jahr" style="display: none">
+                        </div>
+                        <div class="ui grid">
+                            <div class="eleven wide column" id="div_hidden_hilfe"></div>
+                            
+                            <div class="eleven wide column" id="div_select_jahr" style="display: none">
                                 <fieldset id="fieldset_jahr">
                                     <legend><b>Jahr</b></legend>
                                     <select name="select_jahr" class="ui fluid dropdown" id="select_jahr">
@@ -205,8 +209,24 @@
                                     </select>
                                 </fieldset>
                             </div>
+                            
+                            
+                            <div class="eleven wide column" id="div_kennzeichen" style="display: none">
+                                <fieldset>
+                                    <legend><b>Kennzeichen</b></legend>
+                                    <div class="ui search">
+                                        <div class="ui input" style="width: 100%">
+                                            <input id="input_kennzeichen" class="prompt" style="border-radius: .28571429rem;" name="input_kennzeichen" placeholder="Kennzeichen" type="text" 
+                                                   <%=request.getParameter("input_kennzeichen") != null ? "value='" + request.getParameter("input_kennzeichen") + "'" : ""%>>
+                                            <button type="submit" class="ui button styleGruen" name="button_ladeKennzeichen" title="Lade Kennzeichen">+</button>
+                                        </div>
+                                        <div class="results"></div>
+                                    </div>
 
-                            <div class="column" id="div_mitglied" style="display: none">
+                                </fieldset>
+                            </div>
+                            
+                            <div class="eleven wide column" id="div_mitglied" style="display: none">
                                 <fieldset>
                                     <legend><b>Mitglied</b></legend>
                                     <table style="width: 100%">
@@ -242,63 +262,8 @@
                                     </table>
                                 </fieldset>
                             </div>
-
-                            <div class="column" id="div_kennzeichen" style="display: none">
-                                <fieldset>
-                                    <legend><b>Kennzeichen</b></legend>
-                                    <div class="ui search">
-                                        <div class="ui input" style="width: 100%">
-                                            <input id="input_kennzeichen" class="prompt" style="border-radius: .28571429rem;" name="input_kennzeichen" placeholder="Kennzeichen" type="text" 
-                                                   <%=request.getParameter("input_kennzeichen") != null ? "value='" + request.getParameter("input_kennzeichen") + "'" : ""%>>
-                                            <button type="submit" class="ui button styleGruen" name="button_ladeKennzeichen" title="Lade Kennzeichen">+</button>
-                                        </div>
-                                        <div class="results"></div>
-                                    </div>
-
-                                </fieldset>
-                            </div>
-                            <div class="column" id="div_kein_datum_1" style="display: none">
-                            </div>
-                            <div class="column" id="div_kein_datum_2" style="display: none">
-                            </div>
-
-                        </div>
-                        <div class="ui equal width grid">
-                            <div class="column" id="div_kein_datum_3"></div>
-
-                            <div class="column" id="div_kein_datum_4"></div>
-
-                            <div class="column" id="div_naechste_untersuchung_von" style="display: none">
-                                <fieldset>
-                                    <legend><b>Nächste Untersuchung von</b></legend>
-                                    <div class="ui input" style="width: 100%">
-                                        <%String str_input_naechste_untersuchung_von = request.getParameter("input_naechste_untersuchung_von");%>
-                                        <input name="input_naechste_untersuchung_von" id="input_naechste_untersuchung_von" placeholder="von..." autocomplete="off" readonly="true" type="text"
-                                               <%=(str_input_naechste_untersuchung_von != null) ? "value='" + str_input_naechste_untersuchung_von + "'" : ""%>
-                                               >
-                                        <div id="div_remove_naechste_untersuchung_von" style="display:  <%=(str_input_naechste_untersuchung_von != null && !str_input_naechste_untersuchung_von.isEmpty()) ? "block" : "none"%>;">
-                                            <button type="button" class="ui button styleRot" onclick="removeDateAndSetDivHidden('div_remove_naechste_untersuchung_von', 'input_naechste_untersuchung_von')" title="Lösche 'Nächste Untersuchung von'">X</button>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                            </div>
-
-                            <div class="column" id="div_naechste_untersuchung_bis" style="display: none">
-                                <fieldset>
-                                    <legend><b>Nächste Untersuchung bis</b></legend>
-                                    <div class="ui input" style="width: 100%">
-                                        <%String str_input_naechste_untersuchung_bis = request.getParameter("input_naechste_untersuchung_bis");%>
-                                        <input name="input_naechste_untersuchung_bis" id="input_naechste_untersuchung_bis" placeholder="bis..." autocomplete="off" readonly="true" type="text"
-                                               <%=(str_input_naechste_untersuchung_bis != null) ? "value='" + str_input_naechste_untersuchung_bis + "'" : ""%>
-                                               >
-                                        <div id="div_remove_naechste_untersuchung_bis" style="display:  <%=(str_input_naechste_untersuchung_bis != null && !str_input_naechste_untersuchung_bis.isEmpty()) ? "block" : "none"%>;">
-                                            <button type="button" class="ui button styleRot" onclick="removeDateAndSetDivHidden('div_remove_naechste_untersuchung_bis', 'input_naechste_untersuchung_bis')" title="Lösche 'Nächste Untersuchung bis'">X</button>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                            </div>
-
-                            <div class="column">
+                            
+                            <div class="five wide column">
                                 <fieldset>
                                     <legend>&nbsp;</legend>
                                     <button type="submit" name="button_vorschau" class="ui button styleGrau" onclick="document.getElementById('div_loader').className = 'ui active inverted dimmer';" title="Vorschau erstellen" style="width: 100%;">Vorschau</button>
