@@ -3256,7 +3256,7 @@ public class DB_Access {
             } else if (strColWhere.equals("Alter")) {
                 sqlString += "(DATEDIFF(YY, geburtsdatum, GETDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum) > GETDATE() THEN 1 ELSE 0 END )" + " " + strColSymbol + " '" + strColValue + "' " + strColLink + " ";
             } else if (strColWhere.equals("Status")) {
-                sqlString += strColValue + " " + strColSymbol + " '1' ";
+                sqlString += strColValue + " " + strColSymbol + " '1' " + strColLink + " ";
             }
 
         }
@@ -3304,8 +3304,10 @@ public class DB_Access {
                 }
             }
         }
+        System.out.println("SQL-String: "+sqlString);
 
         StringBuilder sbHtml = createDynamicReportGeneratorOutput(sqlString, strSelectedCols);
+        
         return sbHtml;
     }
 
