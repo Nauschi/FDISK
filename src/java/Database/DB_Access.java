@@ -1029,6 +1029,7 @@ public class DB_Access {
                 sqlString += " WHERE m.instanznummer = '" + 47030 + "'";
             }
         }
+        sqlString += getSqlDateString(strVon, strBis, 4, false);
         sqlString += " GROUP BY k.id_kurse "
                 + ",k.id_kursarten "
                 + ",k.lehrgangsnummer "
@@ -1038,8 +1039,7 @@ public class DB_Access {
                 + ",k.id_instanzen_veranstalter "
                 + ",k.id_instanzen_durchfuehrend "
                 + ",k.kursstatus ";
-
-        sqlString += getSqlDateString(strVon, strBis, 4, false);
+        
         ResultSet rs = stat.executeQuery(sqlString);
 
         int intKursId;
