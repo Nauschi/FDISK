@@ -331,6 +331,7 @@
                                 <tr>
                                     <th>Kursbezeichnung</th>
                                     <th>Kursstatus</th>
+                                    <th>Anz. Teilnehmer</th>
                                     <th>Kursdatum</th>
                                     <th>-</th>
                                 </tr>
@@ -588,7 +589,7 @@
         } else if (request.getParameter("input_aktbericht") != null
                 && request.getParameter("input_aktbericht").equals("Kursstatistik"))
         {
-            return "$('.tablesorter2').tablesorter({headers: {2: {sorter: 'berichtdate'}}});"
+            return "$('.tablesorter2').tablesorter({headers: {3: {sorter: 'berichtdate'}}});"
                     + "$('.tablesorter').tablesorter({headers: {4: {sorter: 'berichtdate'},5: {sorter: 'berichtdate'}}});";
         } else if (request.getParameter("input_aktbericht") != null
                 && request.getParameter("input_aktbericht").equals("Digitales Fahrtenbuch"))

@@ -465,6 +465,7 @@ public class MainServlet extends HttpServlet
         strZusatzInfo += "<tr>"
                 + "<th data-content='nach Kursbezeichnung sortieren' class='sort'>Kursbezeichnung</th>"
                 + "<th data-content='nach Kursstatus sortieren' class='sort'>Kursstatus</th>"
+                + "<th data-content='nach Anzahl Teilnehmer sortieren' class='sort'>Anz. Teiln.</th>"
                 + "<th data-content='nach Kursdatum sortieren' class='sort'>Kursdatum</th>"
                 + "<th>-</th>"
                 + "</tr>";
