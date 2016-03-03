@@ -141,7 +141,7 @@
                                         <%
                                         int intBerichtjahrAnfang = LocalDate.now().getYear() - 1;
                                         String strBerichtAnfangText = "01.12." + intBerichtjahrAnfang;
-                                        //value="<%=strBerichtAnfangText%>"
+                                        
                                         %>
 
                                         <input  name="input_von_datum" id="input_von_datum" placeholder="von..." autocomplete="off" readonly="true" type="text"
@@ -162,7 +162,7 @@
                                         <%
                                         int intBerichtjahrEnde = LocalDate.now().getYear();
                                         String strBerichtEndeText = "30.11." + intBerichtjahrEnde;
-                                        //value="<%=strBerichtEndeText%>" 
+                                        
                                         %>
                                         
                                         <input name="input_bis_datum" id="input_bis_datum" placeholder="bis..." autocomplete="off" readonly="true" type="text" 
