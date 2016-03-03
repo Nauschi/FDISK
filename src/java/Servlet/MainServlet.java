@@ -419,8 +419,7 @@ public class MainServlet extends HttpServlet
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
                 request.setAttribute("liste", access.getKursstatistiktaetigkeit(intBereichNr, intAbschnittNr, strFeuerwehr, strVonDatum, strBisDatum));
-                //Zweite methode noch aufrufen..
-                request.setAttribute("zusatz_informationen", generiereKurstatistikZusatzTable(strVonDatum, strBisDatum));
+                request.setAttribute("zusatz_informationen", generiereKurstatistikZusatzTable(intBereichNr, intAbschnittNr, strFeuerwehr, strVonDatum, strBisDatum));
             } else if (strBericht.equals("Digitales Fahrtenbuch"))//Digitales Fahrtenbuch
             {
                 String strVonDatum = request.getParameter("input_von_datum");
@@ -457,10 +456,11 @@ public class MainServlet extends HttpServlet
         return;
     }
 
-    private String generiereKurstatistikZusatzTable(String strVonDatum, String strBisDatum) throws Exception
+    private String generiereKurstatistikZusatzTable(int intBereichnr, int intAbschnittnr, String strFubwehr, String strVonDatum, String strBisDatum) throws Exception
     {
-        //LinkedList<Kurs> liKurse = access.getKursstatistikkurse(intBereichnr, intAbschnittnr, strFubwehr, strVonDatum, strBisDatum);
-        
+        System.out.println("/////////////generiereKurstatistikZusatzTable//////////////");
+        LinkedList<Kurs> liKurse = access.getKursstatistikkurse(intBereichnr, intAbschnittnr, strFubwehr, strVonDatum, strBisDatum);
+        System.out.println(liKurse.size());
         String strZusatzInfo = "<table class='tablesorter2 ui celled table'><thead>";
         strZusatzInfo += "<tr>"
                 + "<th data-content='nach Kursbezeichnung sortieren' class='sort'>Kursbezeichnung</th>"
@@ -469,10 +469,10 @@ public class MainServlet extends HttpServlet
                 + "<th>-</th>"
                 + "</tr>";
         strZusatzInfo += "</thead><tbody>";
-//        for (Kurs kurs : liKurse)
-//        {
-//            strZusatzInfo += kurs.toString();
-//        }
+        for (Kurs kurs : liKurse)
+        {
+            strZusatzInfo += kurs.toString();
+        }
         strZusatzInfo += "</tbody></table>";
         return strZusatzInfo;
     }
@@ -647,6 +647,7 @@ public class MainServlet extends HttpServlet
 
             leseRohberichte(strPath + File.separator + "Rohberichte.csv");
             leseTypenDynamisch(strPath + File.separator + "TypenDynamisch.csv");
+            leseTypenAusgabeDynamisch(strPath + File.separator + "TypenDynamischOutput.csv");
         } catch (IOException ex)
         {
 //            try
@@ -720,6 +721,25 @@ public class MainServlet extends HttpServlet
         br.close();
 
         this.getServletContext().setAttribute("Typen", liTypen);
+    }
+    
+    public void leseTypenAusgabeDynamisch(String strPfad) throws FileNotFoundException, UnsupportedEncodingException, IOException
+    {
+        File file = new File(strPfad);
+        LinkedList<String> liTypenAusgabe = new LinkedList<>();
+
+        FileInputStream fis = new FileInputStream(file);
+        InputStreamReader isr = new InputStreamReader(fis, "ISO-8859-1");
+        BufferedReader br = new BufferedReader(isr);
+        String strReihe;
+
+        while ((strReihe = br.readLine()) != null)
+        {
+            liTypenAusgabe.add(strReihe);
+        }
+        br.close();
+
+        this.getServletContext().setAttribute("TypenAusgabe", liTypenAusgabe);
     }
 
 }

@@ -508,7 +508,7 @@
             %>
                         var liTypen = [
             <%
-                LinkedList<String> liTypen = (LinkedList<String>) application.getAttribute("Typen");
+                LinkedList<String> liTypen = (LinkedList<String>) application.getAttribute("TypenAusgabe");
                 for (String strTyp : liTypen)
                 {
                     out.print('"' + strTyp.split(";")[0] + '"');
