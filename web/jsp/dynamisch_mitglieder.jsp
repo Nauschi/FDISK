@@ -483,12 +483,12 @@
         <script src="js/jquery-2.1.1.min.js"></script>
         <script src="semantic/dist/semantic.min.js"></script>
         <script src="js/jquery-ui.js"></script> 
-       <!-- <script src="js/tablesort.js"></script>-->
+        <script src="js/tablesort.js"></script>
        
       
         <script src="js/dynamisch_mitglieder.js"></script>
         <script src="js/datepicker-de.js"></script>
-        <script src="tablesorter/jquery.tablesorter.js"></script> 
+      <!--  <script src="tablesorter/jquery.tablesorter.js"></script> -->
         <script>
                     $(function () {
             <%                for (int i = 1; i <= intZaehler; i++)
@@ -601,38 +601,9 @@
                 if (request.getAttribute("dyn_table") != null)
                 {
             %>
-                       // $('.sortable.table').tablesort();
+                        $('.sortable.table').tablesort();
                         
-                        var elementArray = document.getElementById("dyn_table").getElementsByTagName("th"); 
-                        var isDifferent = false; 
-                        var columnNumber = -1; 
-                        for(var i = 0; i<elementArray.length; i++)
-                       {
-                          
-                          if(elementArray[i].innerHTML == "Dienstgrad")
-                          {
-                              
-                              columnNumber = i;
-                              isDifferent = true; 
-                              break; 
-                           }
-                            
-                                
-                        }
-                        
-                        if(columnNumber != -1)
-                        {
-                            console.log(columnNumber)
-                            if(columnNumber == 0)
-                            {
-                                $('.tablesorter').tablesorter({headers: {0:{sorter: 'levels'}}});
-                            }
-                            
-                        } else
-                        {
-                             $('.tablesorter').tablesorter();
-                        }
-
+                       
                             
     
                       
