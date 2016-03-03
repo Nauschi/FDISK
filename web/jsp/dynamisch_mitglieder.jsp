@@ -556,6 +556,7 @@
                     for (String value : liValues)
                     {
                         value = value.replace("''", "\"");
+                        value = value.replace("&quot", "\"");
                         value = value.replace(";", "");
                         if (liValues.getLast().equals(value))
                         {
