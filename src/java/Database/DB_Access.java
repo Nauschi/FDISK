@@ -1018,16 +1018,8 @@ public class DB_Access {
                 + "FROM FDISK.dbo.stmkkurse k "
                 + "INNER JOIN FDISK.dbo.stmkkursemitglieder km ON(k.id_kurse = km.id_kurse) "
                 + "INNER JOIN FDISK.dbo.stmkmitglieder m ON(km.id_mitgliedschaften = m.id_mitgliedschaften) "
-                + "INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(m.instanznummer = fw.instanznummer) "
-                + "GROUP BY k.id_kurse "
-                + ",k.id_kursarten "
-                + ",k.lehrgangsnummer "
-                + ",k.kursbezeichnung "
-                + ",k.kurskurzbezeichnung "
-                + " ,k.datum "
-                + " ,k.id_instanzen_veranstalter "
-                + " ,k.id_instanzen_durchfuehrend "
-                + " ,k.kursstatus ";
+                + "INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(m.instanznummer = fw.instanznummer) ";
+
         if (intAbschnittnr == -2) {
             sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
         } else {
@@ -1037,6 +1029,15 @@ public class DB_Access {
                 sqlString += " WHERE m.instanznummer = '" + 47030 + "'";
             }
         }
+        sqlString += " GROUP BY k.id_kurse "
+                + ",k.id_kursarten "
+                + ",k.lehrgangsnummer "
+                + ",k.kursbezeichnung "
+                + ",k.kurskurzbezeichnung "
+                + ",k.datum "
+                + ",k.id_instanzen_veranstalter "
+                + ",k.id_instanzen_durchfuehrend "
+                + ",k.kursstatus ";
 
         sqlString += getSqlDateString(strVon, strBis, 4, false);
         ResultSet rs = stat.executeQuery(sqlString);
@@ -2390,7 +2391,6 @@ public class DB_Access {
                         + " ,instanznummer \"Instanznummer\""
                         + " ,instanzname \"Instanzname\""
                         + " ,taetigkeitsart \"Taetigkeitsart\""
-                        
                         + " ,nummer \"Nummer\""
                         + " ,beginn \"Beginn\""
                         + " ,ende \"Ende\""
@@ -3304,10 +3304,10 @@ public class DB_Access {
                 }
             }
         }
-        System.out.println("SQL-String: "+sqlString);
+        System.out.println("SQL-String: " + sqlString);
 
         StringBuilder sbHtml = createDynamicReportGeneratorOutput(sqlString, strSelectedCols);
-        
+
         return sbHtml;
     }
 
