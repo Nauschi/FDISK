@@ -2952,6 +2952,9 @@ public class DB_Access {
     }
 
     public StringBuilder getDynamischerBericht(String strEingabe[][], String strSelectedColumns, int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
+        StringBuilder sbHelper = new StringBuilder(strSelectedColumns);
+        sbHelper.insert(0, "Standesbuchnummer;Vorname;Zuname;Dienstgrad;");
+        strSelectedColumns = sbHelper.toString();
         String[] strSelectedCols = strSelectedColumns.split(";");
         LinkedList<String> liSpaltenUeberschriften = new LinkedList<>();
         boolean boAdresse = false;
@@ -2967,8 +2970,6 @@ public class DB_Access {
         String strSpaltenUeberschrift;
 
         int intRows = strEingabe.length % 6;
-        
-      
 
         initializeDBValuesWithDBTypes();
 
@@ -3116,10 +3117,10 @@ public class DB_Access {
 
         }
 
-        String sqlString = "SELECT DISTINCT ";
+        String sqlString = "SELECT DISTINCT standesbuchnummer, vorname, zuname, dienstgrad, ";
 
+    
         for (int i = 0; i < strSelectedCols.length; i++) {
-            System.out.println("ASDfsadf2"+strSelectedCols[i]);
             switch (strSelectedCols[i].toUpperCase()) {
                 
                 case "ANREDE":
@@ -3199,11 +3200,12 @@ public class DB_Access {
 
         sqlString += " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(m.instanznummer = fw.instanznummer) ";
 
-        sqlString += " WHERE ";
+        sqlString += " WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST')) AND ";
 
         String strColLink = "";
 
-        for (int i = 0; i < intRows; i++) {
+        for (int i = 0; i < intRows; i++) 
+        {
             String strColWhere = strEingabe[i][1];
             String strColSymbol = strEingabe[i][2];
             String strColValue = strEingabe[i][3];
@@ -3279,9 +3281,6 @@ public class DB_Access {
             sqlString = sqlString.substring(0, intIndex) + " ";
         }
 
-        if (sqlString.endsWith("WHERE ")) {
-            sqlString = sqlString.replace("WHERE ", " ");
-        }
         if (sqlString.endsWith("AND ") || sqlString.endsWith("AND")) {
             sqlString = sqlString.replace("AND ", " ");
         }
@@ -3332,11 +3331,17 @@ public class DB_Access {
 
         for (String str : strSelectedCols) {
             sbHtml.append("<th data-content='nach ").append(str).append(" sortieren'>");
-            if (boAnrede == true && str.equals("Geschlecht")) {
+            
+            if(str.equals("Staatsbuergerschaft"))
+            {
+                sbHtml.append("Staatsbürgerschaft");
+            }
+            else if (boAnrede == true && str.equals("Geschlecht")) {
                 sbHtml.append("Anrede");
             } else {
                 sbHtml.append(str);
             }
+            
             sbHtml.append("</th>");
         }
         sbHtml.append("</tr></thead><tbody>");
