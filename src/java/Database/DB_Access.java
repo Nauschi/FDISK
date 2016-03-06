@@ -1773,8 +1773,7 @@ public class DB_Access {
      *
      * intBericht = 1 => Einsatzbericht intBericht = 2 => Taetigkeitsbericht
      * intBericht = 3 => Uebungsbericht intBericht = 4 => Kursstatistik
-     * intBericht = 5 => Gerateträger Untersuchungsdatum intBericht = 6 =>
-     * Gerateträger nächstes Untersuchungsdatum
+     
      *
      * @param strVon
      * @param strBis
@@ -1824,26 +1823,7 @@ public class DB_Access {
             } else if (!strBis.isEmpty() && !strBis.equals("") && !strVon.isEmpty() && !strVon.equals("")) {
                 dateString += " (datum >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND datum < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1))";
             }
-        } else if (intBericht == 5) {
-            if ((strVon.isEmpty() || strVon.equals("")) && (!strBis.isEmpty() || !strBis.equals(""))) {
-                dateString += " untersuchungsdatum < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1)";
-
-            } else if (strBis.isEmpty() || strBis.equals("") && (!strVon.isEmpty() || !strVon.equals(""))) {
-                dateString += " untersuchungsdatum >= CAST('" + strVon + " 00:00.000' AS DATETIME)";
-            } else if (!strBis.isEmpty() && !strBis.equals("") && !strVon.isEmpty() && !strVon.equals("")) {
-                dateString += " untersuchungsdatum >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND untersuchungsdatum < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1)";
-            }
-        } else if (intBericht == 6) {
-            if ((strVon.isEmpty() || strVon.equals("")) && (!strBis.isEmpty() || !strBis.equals(""))) {
-                dateString += " naechste_untersuchung_am < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1)";
-
-            } else if (strBis.isEmpty() || strBis.equals("") && (!strVon.isEmpty() || !strVon.equals(""))) {
-                dateString += " naechste_untersuchung_am >= CAST('" + strVon + " 00:00.000' AS DATETIME)";
-            } else if (!strBis.isEmpty() && !strBis.equals("") && !strVon.isEmpty() && !strVon.equals("")) {
-                dateString += " naechste_untersuchung_am >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND naechste_untersuchung_am < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1)";
-            }
-        }
-
+        } 
         return dateString;
     }
 
@@ -2454,7 +2434,7 @@ public class DB_Access {
         return liBericht;
     }
 
-    public LinkedList<Geraetetraegermitglied> getGereatetraegerMitglied(String strVonUntersuchung, String strBisUntersuchung, String strVonNaechsteUntersuchung, String strBisNaechsteUntersuchung, int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
+    public LinkedList<Geraetetraegermitglied> getGereatetraegerMitglied(int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
         LinkedList<Geraetetraegermitglied> liGeraetetraeger = new LinkedList<>();
 
         Connection conn = connPool.getConnection();
@@ -2492,8 +2472,6 @@ public class DB_Access {
         StringBuilder sqlString = new StringBuilder();
         sqlString.append(strStatement);
 
-        sqlString.append(getSqlDateString(strVonUntersuchung, strBisUntersuchung, 5, false));
-        sqlString.append(getSqlDateString(strVonNaechsteUntersuchung, strBisNaechsteUntersuchung, 6, false));
 
         ResultSet rs = stat.executeQuery(sqlString.toString());
 
@@ -3651,9 +3629,9 @@ public class DB_Access {
 
 // !!!!!!!!!!!!! SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!
 //           
-            LinkedList<Geraetetraegermitglied> li = theInstance.getGereatetraegerMitglied("01.01.2014", "10.11.2015", "01.01.2010", "10.11.2019", 3, 3, "");
+            LinkedList<Geraetetraegermitglied> li = theInstance.getGereatetraegerMitglied(47, 4704, "-2");
             for (Geraetetraegermitglied k : li) {
-                System.out.println(k.getDateUntersuchung() + " " + k.getDateNaechsteUntersuchung());
+               // System.out.println(k.getDateUntersuchung() + " " + k.getDateNaechsteUntersuchung());
             }
 // !!!!!!!!!!!!! Ende SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!
         } catch (Exception ex) {

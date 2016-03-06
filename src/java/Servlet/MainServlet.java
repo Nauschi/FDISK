@@ -435,14 +435,10 @@ public class MainServlet extends HttpServlet
                 String strDetails = access.getDetailsFuerFahrtenbuchFahrzeug(liFahrzeuge);
                 request.setAttribute("zusatz_informationen", strDetails.isEmpty() ? null : strDetails);
                 request.setAttribute("liste", liFahrzeuge);
-            } else if (strBericht.equals("Geräteträgermitglieder"))
+            } else if (strBericht.equals("Einsatztaugliche Atemschutzgeräteträger"))
             {
-                String strVonUntersuchungsDatum = request.getParameter("input_von_datum");
-                String strBisUntersuchungsDatum = request.getParameter("input_bis_datum");
-                String strVonNaechsteUntersuchungDatum = request.getParameter("input_naechste_untersuchung_von");
-                String strBisNaechsteUntersuchungDatum = request.getParameter("input_naechste_untersuchung_bis");
 
-                request.setAttribute("liste", access.getGereatetraegerMitglied(strVonUntersuchungsDatum, strBisUntersuchungsDatum, strVonNaechsteUntersuchungDatum, strBisNaechsteUntersuchungDatum, intBereichNr, intAbschnittNr, strFeuerwehr));
+                request.setAttribute("liste", access.getGereatetraegerMitglied(intBereichNr, intAbschnittNr, strFeuerwehr));
 
             } else
             {

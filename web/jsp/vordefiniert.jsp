@@ -561,7 +561,7 @@
         {
             return "$('.tablesorter').tablesorter({headers: {1: {sorter: 'berichtdate'},2: {sorter: 'berichtdate'}}});";
         } else if (request.getParameter("input_aktbericht") != null
-                && request.getParameter("input_aktbericht").equals("Geräteträgermitglieder"))
+                && request.getParameter("input_aktbericht").equals("Einsatztaugliche Atemschutzgeräteträger"))
         {
             return "$('.tablesorter').tablesorter({headers: {1: {sorter: 'levels'},5: {sorter: 'germandate'},6: {sorter: 'berichtdate'},7: {sorter: 'berichtdate'}}});";
         } else if (request.getParameter("input_aktbericht") != null
