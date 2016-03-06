@@ -137,17 +137,14 @@
                                     <legend><b>Datum von</b></legend>
                                     <div class="ui input" style="width: 100%">
                                         <%String str_input_von_datum = request.getParameter("input_von_datum");%>
-                                        
+
                                         <%
-                                        int intBerichtjahrAnfang = LocalDate.now().getYear() - 1;
-                                        String strBerichtAnfangText = "01.12." + intBerichtjahrAnfang;
-                                        
+                                            String strBerichtAnfangText = "01.12." + (LocalDate.now().getYear() - 1);
                                         %>
 
-                                        <input  name="input_von_datum" id="input_von_datum" placeholder="von..." autocomplete="off" readonly="true" type="text"
-                                               <%=(str_input_von_datum != null) ? "value='" + str_input_von_datum + "'" : ""%>
-                                               >
-                                        <div id="div_remove_von_datum" style="display:  <%=(str_input_von_datum != null && !str_input_von_datum.isEmpty()) ? "block" : "none"%>;">
+                                        <input  name="input_von_datum" id="input_von_datum" placeholder="von..." autocomplete="off" readonly="true" type="text" 
+                                                value='<%=(str_input_von_datum != null) ? str_input_von_datum : strBerichtAnfangText%>'>
+                                        <div id="div_remove_von_datum" style="display:  <%=(str_input_von_datum == null || !str_input_von_datum.isEmpty()) ? "block" : "none"%>;">
                                             <button type="button" class="ui button styleRot" onclick="removeDateAndSetDivHidden('div_remove_von_datum', 'input_von_datum')" title="Lösche 'Datum von'">X</button>
                                         </div>
                                     </div>
@@ -158,28 +155,25 @@
                                     <legend><b>Datum bis</b></legend>
                                     <div class="ui input" style="width: 100%">
                                         <%String str_input_bis_datum = request.getParameter("input_bis_datum");%>
-                                        
+
                                         <%
-                                        int intBerichtjahrEnde = LocalDate.now().getYear();
-                                        String strBerichtEndeText = "30.11." + intBerichtjahrEnde;
-                                        
+                                            String strBerichtEndeText = "30.11." + LocalDate.now().getYear();
                                         %>
-                                        
+
                                         <input name="input_bis_datum" id="input_bis_datum" placeholder="bis..." autocomplete="off" readonly="true" type="text" 
-                                               <%=(str_input_bis_datum != null) ? "value='" + str_input_bis_datum + "'" : ""%>
-                                               >
-                                        <div id="div_remove_bis_datum" style="display: <%=(str_input_bis_datum != null && !str_input_bis_datum.isEmpty()) ? "block" : "none"%>;">
+                                               value='<%=(str_input_bis_datum != null) ? str_input_bis_datum : strBerichtEndeText%>'>
+                                        <div id="div_remove_bis_datum" style="display: <%=(str_input_bis_datum == null || !str_input_bis_datum.isEmpty()) ? "block" : "none"%>;">
                                             <button type="button" class="ui button styleRot" onclick="removeDateAndSetDivHidden('div_remove_bis_datum', 'input_bis_datum')" title="Lösche 'Datum bis'">X</button>
                                         </div>
                                     </div>
                                 </fieldset>
                             </div >
-                            
+
 
                         </div>
                         <div class="ui grid">
                             <div class="eleven wide column" id="div_hidden_hilfe"></div>
-                            
+
                             <div class="eleven wide column" id="div_select_jahr" style="display: none">
                                 <fieldset id="fieldset_jahr">
                                     <legend><b>Jahr</b></legend>
@@ -209,8 +203,8 @@
                                     </select>
                                 </fieldset>
                             </div>
-                            
-                            
+
+
                             <div class="eleven wide column" id="div_kennzeichen" style="display: none">
                                 <fieldset>
                                     <legend><b>Kennzeichen</b></legend>
@@ -225,44 +219,34 @@
 
                                 </fieldset>
                             </div>
-                            
+
                             <div class="eleven wide column" id="div_mitglied" style="display: none">
                                 <fieldset>
                                     <legend><b>Mitglied</b></legend>
-                                    <table style="width: 100%">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div id="div_select_mitglieder">
-                                                        <select name="select_mitglied" class="ui fluid dropdown" id="select_mitglied">
-                                                            <option value="-2">Alle Mitglieder</option>
-                                                            <%
-                                                                if (request.getAttribute("select_mitglieder_hs") != null)
-                                                                {
-                                                                    HashMap<Integer, String> hsMitglieder = (HashMap<Integer, String>) request.getAttribute("select_mitglieder_hs");
-                                                                    Set<Integer> setKeys = hsMitglieder.keySet();
-                                                                    for (int key : setKeys)
-                                                                    {
-                                                            %>
-                                                            <option value="<%=key + ""%>"><%=hsMitglieder.get(key)%></option>
-                                                            <%
-                                                                    }
-                                                                }
-                                                            %>
-                                                        </select>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div id="div_mitglieder_submit" style="display: <%=(request.getAttribute("select_mitglieder_hs") != null) ? "none" : "block"%>">
-                                                        <button type="submit" style="width: 100%;height: 100%" class="ui button styleGruen" name="button_ladeMitglieder" title="Lade Mitglieder">+</button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <div id="div_select_mitglieder" style="width: 90%;float:left">
+                                        <select name="select_mitglied" class="ui fluid dropdown" id="select_mitglied">
+                                            <option value="-2">Alle Mitglieder</option>
+                                            <%
+                                                if (request.getAttribute("select_mitglieder_hs") != null)
+                                                {
+                                                    HashMap<Integer, String> hsMitglieder = (HashMap<Integer, String>) request.getAttribute("select_mitglieder_hs");
+                                                    Set<Integer> setKeys = hsMitglieder.keySet();
+                                                    for (int key : setKeys)
+                                                    {
+                                            %>
+                                            <option value="<%=key + ""%>"><%=hsMitglieder.get(key)%></option>
+                                            <%
+                                                    }
+                                                }
+                                            %>
+                                        </select>
+                                    </div>
+                                    <div id="div_mitglieder_submit" style="display: <%=(request.getAttribute("select_mitglieder_hs") != null) ? "none" : "block"%>;float:right;width: 10%">
+                                        <button type="submit" style="float: left" class="ui button styleGruen" name="button_ladeMitglieder" title="Lade Mitglieder">+</button>
+                                    </div>
                                 </fieldset>
                             </div>
-                            
+
                             <div class="five wide column">
                                 <fieldset>
                                     <legend>&nbsp;</legend>
