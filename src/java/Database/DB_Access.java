@@ -2931,7 +2931,7 @@ public class DB_Access {
 
     public StringBuilder getDynamischerBericht(String strEingabe[][], String strSelectedColumns, int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
         StringBuilder sbHelper = new StringBuilder(strSelectedColumns);
-        sbHelper.insert(0, "Standesbuchnummer;Vorname;Zuname;Dienstgrad;");
+        sbHelper.insert(0, "Dienstgrad;Standesbuchnummer;Vorname;Zuname;");
         strSelectedColumns = sbHelper.toString();
         String[] strSelectedCols = strSelectedColumns.split(";");
         LinkedList<String> liSpaltenUeberschriften = new LinkedList<>();
@@ -3316,7 +3316,11 @@ public class DB_Access {
             }
             else if (boAnrede == true && str.equals("Geschlecht")) {
                 sbHtml.append("Anrede");
-            } else {
+            }
+            else if (str.equals("Standesbuchnummer")) {
+                sbHtml.append("STB");
+            }
+            else {
                 sbHtml.append(str);
             }
             
