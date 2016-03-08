@@ -165,14 +165,14 @@ function initialisiereCBFilter(strTyp, strID, strLastFilter)
         var opt1 = document.createElement('option');
         for (var i = 0; i < strSplitFilter.length; i++)
         {
-            
+
             var opt = document.createElement('option');
             if (strLastFilter == strSplitFilter[i])
             {
                 opt.setAttribute('selected', 'selected');
             }
-            var opt_value = replaceAll(strSplitFilter[i],'"',"###")
-            
+            var opt_value = replaceAll(strSplitFilter[i], '"', "###")
+
             opt.value = opt_value;
             opt.innerHTML = strSplitFilter[i];
             select_filter.appendChild(opt);
@@ -182,7 +182,7 @@ function initialisiereCBFilter(strTyp, strID, strLastFilter)
 }
 
 function replaceAll(str, find, replace) {
-  return str.replace(new RegExp(find, 'g'), replace);
+    return str.replace(new RegExp(find, 'g'), replace);
 }
 
 
@@ -222,7 +222,19 @@ function onVorschau(intZahler)
         {
             boolCorrect = false;
         }
+        var filterValue = getValueOfFilterObject(i);
+
+        if (filterValue == "")
+        {
+            boolCorrect = false;
+        }
+
     }
+    if(getValueOfFilterObject(intZahler)=="")
+    {
+        boolCorrect=false;
+    }
+    
     if (boolCorrect == true)
     {
         var strWertVonLetztemSelect = document.getElementById("select_verknuepfung_" + intZahler).value;
@@ -238,12 +250,30 @@ function onVorschau(intZahler)
         }
     } else
     {
-        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Alle Verknüfungen, außer der letzten, müssen gesetzt sein";
+        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Alle Verknüfungen, außer der letzten, müssen gesetzt sein"
+                + "<br/> Alle Filter müssen einen Wert besitzen";
         $('#modal_fehler').modal('show');
         return false;
     }
+}
 
 
+function getValueOfFilterObject(index)
+{
+    var strBoxArt = document.getElementById("select_typ_" + index).value.split(";")[1];
+    var strFilter_value = "";
+    if (strBoxArt == "cb")
+    {
+        strFilter_value = document.getElementById("select_filter_cb_" + index).value;
+        strFilter_value = replaceAll(strFilter_value, "###", '"');
+    } else if (strBoxArt == "txt")
+    {
+        strFilter_value = document.getElementById("input_filter_" + index).value;
+    } else if (strBoxArt == "datepicker")
+    {
+        strFilter_value = document.getElementById("input_filter_datepicker_" + index).value;
+    }
+    return strFilter_value.trim();
 }
 
 function onActionSubmit(intZaehler, strButton)
@@ -278,19 +308,7 @@ function onActionSubmit(intZaehler, strButton)
         var strKlammerAuf_value = document.getElementById("select_klammer_" + i).value;
         var strTyp_value = document.getElementById("select_typ_" + i).value;
         var strOperator_value = document.getElementById("select_operator_" + i).value;
-        var strBoxArt = document.getElementById("select_typ_" + i).value.split(";")[1];
-        var strFilter_value = "";
-        if (strBoxArt == "cb")
-        {
-            strFilter_value = document.getElementById("select_filter_cb_" + i).value;
-            strFilter_value = replaceAll(strFilter_value,"###",'"');
-        } else if (strBoxArt == "txt")
-        {
-            strFilter_value = document.getElementById("input_filter_" + i).value;
-        } else if (strBoxArt == "datepicker")
-        {
-            strFilter_value = document.getElementById("input_filter_datepicker_" + i).value;
-        }
+        var strFilter_value = getValueOfFilterObject(i);
         var strKlammerZu_value = document.getElementById("select_klammer_zu_" + i).value;
         var strVerknuefung_value = document.getElementById("select_verknuepfung_" + i).value;
         var strHTML = "<input type='hidden' name='hidden_element_data_" + i + "' value='" + strKlammerAuf_value + ';' + strTyp_value + ';' + strOperator_value + ';' + strFilter_value + ';' + strKlammerZu_value + ';' + strVerknuefung_value + "'>";

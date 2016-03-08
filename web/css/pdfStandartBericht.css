@@ -17,9 +17,10 @@ div
 {
     padding-left: 100px;
     /*width: 80%;*/
-    
+
 }
 
 tr.noBorder td {
     border: 0px solid white !important;
 }
+
