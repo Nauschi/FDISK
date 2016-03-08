@@ -58,6 +58,7 @@ public class PDFServlet extends HttpServlet
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
     private String strUebungsbericht = "<h1>Übungsbericht</h1>"
             + "<b><p><u>Allgemein</u></p></b>"
             + "<p>Verfasser:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</p>"
@@ -96,7 +97,100 @@ public class PDFServlet extends HttpServlet
             + "<b><p><u>Eingesetzte Mitglieder</u></p></b>"
             + "<table border='0'><tbody>##MitgliedData##</tbody></table>";
 
-    private String strEinsatzbericht = "";
+    private String strEinsatzbericht = "<h1>Einstatzbericht</h1>"
+            + "<p>Datum: <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>  </p>"
+            + "<p>Wehrtext: <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>"
+            + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Instanznummer:&nbsp; <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </u></p>"
+            + "<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BRAND&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TECHNISCH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            + "BSW&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Eigener EB</p>"
+            + "<p>Einsatzart: &nbsp;&nbsp;&nbsp;&nbsp; <u>|&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;|</u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>|&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;|</u> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<u>|&nbsp;&nbsp;&nbsp;|</u></p>"
+            + "<p>Einsatzort: <font color='#D3D3D3'>Straße</font><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            + "</u> / <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> / <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></p>"
+            + "<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color='#D3D3D3'>PLZ</font><u> &nbsp;&nbsp;_ "
+            + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> <font color='#D3D3D3'>Ort</font> <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></p>"
+            + "<p>Datum/Uhrzeit</p>"
+            + "<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Meldung:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ausfahrt:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></p>"
+            + "<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Alamierung:&nbsp; <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rückkehr:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> </p>"
+            + "<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Brand aus: &nbsp; &nbsp; <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Brandwache  "
+            + "von: &nbsp; &nbsp; <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Brandwache bis: &nbsp; &nbsp; <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> </p>"
+            + "<p>Lage: &nbsp;</p><br /><br /><br />"
+            + "<p>Einsatzleiter: <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></p>"
+            + "<p><b>Wetter:</b></p>"
+            + "<table class='fuenf'>"
+            + "<tr><td>&Omicron;&nbsp; Gl&auml;tte</td><td>&Omicron;&nbsp; Glatteis</td><td>&Omicron;&nbsp; Nebel</td><td>&Omicron;&nbsp; Regen</td><td>&Omicron;&nbsp; Schnee</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; Wind/Sturm</td></tr>"
+            + "</table>"
+            + "<p><b>Alamierung:</b></p>"
+            + "<table class='fuenf'>"
+            + "<tr><td>&Omicron;&nbsp; Funkempf. FW</td><td>&Omicron;&nbsp; Funkempf Florian</td><td>&Omicron;&nbsp; Pers&ouml;hnlich</td><td>&Omicron;&nbsp; Sirene Florian</td><td>&Omicron;&nbsp; Sirene Feuerw.</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; SMS</td><td>&Omicron;&nbsp; Telefon</td><td>&Omicron;&nbsp; Sonstiges</td></tr>"
+            + "</table>"
+            + "<p><b>Meldung:</b></p>"
+            + "<table class='fuenf'>"
+            + "<tr><td>&Omicron;&nbsp; Brandmelder</td><td>&Omicron;&nbsp; Florian/Feuerw.</td><td>&Omicron;&nbsp; Gemeinde</td><td>&Omicron;&nbsp; Polizei</td><td>&Omicron;&nbsp; Privatperson</td></tr>"
+            + "<tr><td>&Omicron;&nbsp;1 Sonstige</td></tr>"
+            + "</table>"
+            + "<p><b>Anwesend:</b></p>"
+            + "<table class='fuenf'>"
+            + "<tr><td>&Omicron;&nbsp; BH</td><td>&Omicron;&nbsp; BFKDT/AFKDT</td><td>&Omicron;&nbsp; Bundesheer</td><td>&Omicron;&nbsp; EVU/WVU/GVU</td><td>&Omicron;&nbsp; Firmeninhaber</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; Gemeinde</td><td>&Omicron;&nbsp; Hubschrauber</td><td>&Omicron;&nbsp; &Ouml;lalarmdienst</td><td>&Omicron;&nbsp; Polizei</td><td>&Omicron;&nbsp; Rettung</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; Straßenverw.</td><td>&Omicron;&nbsp;Sonstige</td></tr>"
+            + "</table>"
+            + "<p><b>Gefahrenkl.:</b></p>"
+            + "<table class='fuenf'>"
+            + "<tr><td>&Omicron;&nbsp; 1 Sprengstoff</td><td>&Omicron;&nbsp; 2 Gase</td><td>&Omicron;&nbsp; 3 Brennb. Fl&uuml;ssig.</td><td>&Omicron;&nbsp; 4 Brennb. feste St.</td><td>&Omicron;&nbsp; 5 Brandf&ouml;. Stoffe</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; 6 Gifte</td><td>&Omicron;&nbsp; 7 Radioakt. Mat.</td><td>&Omicron;&nbsp; 8 &Auml;tzende Stoffe</td><td>&Omicron;&nbsp; 9 Sonstige</td></tr>"
+            + "</table> <br /><br /><br />"
+            + "<p><b>Technischer Einsatz:</b></p>"
+            + "<table>"
+            + "<tr><td>&Omicron;&nbsp; Ausl. v. ger. Mengen &Ouml;l/Treibst.</td><td>&Omicron;&nbsp; Freimachen von Verkehrswegen</td><td>&Omicron;&nbsp; Taucheinsatz</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; Auslaufen von &Ouml;l/Treibstoff</td><td>&Omicron;&nbsp; Hochwasser</td><td>&Omicron;&nbsp; T&uuml;r&ouml;ffnung oder Fenstereinstieg</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; Auspumparbeiten</td><td>&Omicron;&nbsp; Insektenbekämpfung</td><td>&Omicron;&nbsp; Unfall mit Schadstoffen</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; Beistellen von Ger&auml;ten</td><td>&Omicron;&nbsp; Lawinen- oder Murenabgang</td><td>&Omicron;&nbsp; Verkehrsregelung</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; Bergen von Tieren</td><td>&Omicron;&nbsp; Notstromversorgung</td><td>&Omicron;&nbsp; Verkehrsunfall Autobus</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; Bergen von G&uuml;tern</td><td>&Omicron;&nbsp; Retten/Befreien von Menschen</td><td>&Omicron;&nbsp; Verkehrsunfall einspur. Fahrzeug</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; Bergen von Toten</td><td>&Omicron;&nbsp; Retten/Befreien von Tieren</td><td>&Omicron;&nbsp; Verkehrsunfall LKW/Traktor</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; Dammbruch</td><td>&Omicron;&nbsp; Schneeeinsatz</td><td>&Omicron;&nbsp; Verkehrsunfall Luftfahrzeug</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; Einsturz von Bauwerken</td><td>&Omicron;&nbsp; Sicherungsdienst</td><td>&Omicron;&nbsp; Verkehrsunfall PKW</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; Elektrounfall</td><td>&Omicron;&nbsp; Sprengeinsatz</td><td>&Omicron;&nbsp; Verkehrsu. Schienen-/Wasserfzg.</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; Entfernung gef&auml;hrl. Baumteile</td><td>&Omicron;&nbsp; Strahlenschutzeinsatz</td><td>&Omicron;&nbsp; Wasserd. -Einsatz</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; Erd- oder Felsrutsch</td><td>&Omicron;&nbsp; Straßen- oder Kanalreinigung</td><td>&Omicron;&nbsp; Wasserschaden</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; Explosion ohne Brand</td><td>&Omicron;&nbsp; Sturmeinsatz</td><td>&Omicron;&nbsp; Wasserversorgung</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; Fahrzeugbereinigung</td><td>&Omicron;&nbsp; Suchaktion</td><td>&Omicron;&nbsp; Sonstiges:</td></tr>"
+            + "</table>"
+            + "<p><b>Brandeinsatz:</b></p>"
+            + "<table>"
+            + "<tr><td>&Omicron;&nbsp; Beherbergungsbetrieb</td><td>&Omicron;&nbsp; Kamin</td><td>&Omicron;&nbsp; Tankfahrzeug</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; B&uuml;rogeb&auml;ude</td><td>&Omicron;&nbsp; Landw. Betrieb, Heustock</td><td>&Omicron;&nbsp; Wald</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; Einsp. Fahrzeug oder PKW</td><td>&Omicron;&nbsp; LKW, Bus</td><td>&Omicron;&nbsp; Wohngeb&auml;ude</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; Feld, Wiese, Flur</td><td>&Omicron;&nbsp; &Ouml;ffentliches Geb&auml;ude</td><td>&Omicron;&nbsp; M&uuml;ll</td></tr>"
+            + "<tr><td>&Omicron;&nbsp; Gewerbe-, Industriebetrieb</td><td>&Omicron;&nbsp; Schienen-, Luft-, Wasserfahrzeug</td><td>&Omicron;&nbsp; Sonstiges:</td></tr>"
+            + "</table>"
+            + "<p><b>T&auml;uschungsa.</b></p>"
+            + "<table>"
+            + "<tr><td>&Omicron;&nbsp; Autom. Brandanlage</td><td>&Omicron;&nbsp; Fehl- oder T&auml;uschungsalarm</td><td>&Omicron;&nbsp; B&ouml;swilliger Alarm</td></tr>"
+            + "</table>"
+            + "<p><b>Gesch&auml;digte</b></p>"
+            + "<p>&nbsp;</p>"
+            + "<table border='1px solid black'>"
+            + "<tr><td colspan='8' align='center'><b>Gesch&auml;digter 1</b></td><td colspan='8' align='center'><b>Gesch&auml;digter 2</b></td></tr>"
+            + "<tr><td colspan='4'><font color='#D3D3D3'>Vorname</font></td><td colspan='4'><font color='#D3D3D3'>Zuname</font></td><td colspan='4'><font color='#D3D3D3'>Vorname</font></td><td colspan='4'><font color='#D3D3D3'>Zuname</font></td></tr>"
+            + "<tr><td colspan='8'><font color='#D3D3D3'>Straße und Hausnummer</font></td><td colspan='8'><font color='#D3D3D3'>Straße und Hausnummer</font></td></tr>"
+            + "<tr><td colspan='2'><font color='#D3D3D3'>PLZ</font></td><td colspan='6'><font color='#D3D3D3'>Ort</font></td><td colspan='2'><font color='#D3D3D3'>PLZ</font></td><td colspan='6'><font color='#D3D3D3'>Ort</font></td></tr>"
+            + "<tr><td colspan='3'><font color='#D3D3D3'>Kennzeichen</font></td><td colspan='5'><font color='#D3D3D3'>Fahrzeug</font></td><td colspan='3'><font color='#D3D3D3'>Kennzeichen</font></td><td colspan='5'><font color='#D3D3D3'>Fahrzeug</font></td></tr>"
+            + "</table><p>&nbsp;</p>"
+            + "<table border='1px solid black'>"
+            + "<tr><td colspan='4'>Verl. Personen:</td><td colspan='4'>Get&ouml;t. Personen:</td><td colspan='4'>Gerett. Personen:</td><td colspan='4'>Gerettete Tiere:</td></tr>"
+            + "</table>";
 
     private LinkedList<String> liBerHochformat;
 
@@ -172,7 +266,7 @@ public class PDFServlet extends HttpServlet
         switch (strBerichtname)
         {
             case "Einsatzbericht leer":
-
+                strAusgabe = generiereAusgabeEinsatzberichtLeer(strTable, strSplitData[2]);
                 break;
             case "Übungsbericht leer":
                 strAusgabe = generiereAusgabeUebungsberichtLeer(strTable, strSplitData[2]);
@@ -372,6 +466,23 @@ public class PDFServlet extends HttpServlet
 
         return strHTMLOutput;
     }
+    
+        /**
+     * Generiert einen Einsatzbericht mit Hilfe des übergebenen Strings strTable
+     * ist der HTML String der Zeilen des Tables
+     * (<tr>...</tr><tr>...</tr><tr>...</tr>....)
+     *
+     * @param strTable
+     * @return
+     */
+    public String generiereAusgabeEinsatzberichtLeer(String strTableMitglieder, String strTableFahrzeuge)
+    {
+        String strHTMLOutput = strEinsatzbericht;
+        strHTMLOutput = strHTMLOutput.replace("##FahrzeugData##", strTableFahrzeuge);
+        strHTMLOutput = strHTMLOutput.replace("##MitgliedData##", strTableMitglieder);
+
+        return strHTMLOutput;
+    }
 
     @Override
     public void init(ServletConfig config) throws ServletException
@@ -380,6 +491,7 @@ public class PDFServlet extends HttpServlet
         liBerHochformat = new LinkedList<>();
         liBerHochformat.add("Tätigkeitsbericht leer");
         liBerHochformat.add("Übungsbericht leer");
+        liBerHochformat.add("Einsatzbericht leer");
     }
 
     /**

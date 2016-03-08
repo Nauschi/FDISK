@@ -384,7 +384,8 @@ public class MainServlet extends HttpServlet
                 request.setAttribute("zusatz_liste", access.getLeerberichtFahrzeug(intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals("Einsatzbericht leer"))//Einsatzbericht leer
             {
-                //request.setAttribute("liste", );
+                request.setAttribute("liste", access.getLeerberichtMitglied(intBereichNr, intAbschnittNr, strFeuerwehr));
+                request.setAttribute("zusatz_liste", access.getLeerberichtFahrzeug(intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals("Übungsbericht leer"))//Übungsbericht leer
             {
                 request.setAttribute("liste", access.getLeerberichtMitglied(intBereichNr, intAbschnittNr, strFeuerwehr));
