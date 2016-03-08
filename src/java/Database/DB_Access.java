@@ -1006,16 +1006,14 @@ public class DB_Access {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 
-        String sqlString = "SELECT DISTINCT k.id_kurse KursId "
-                + ",k.id_kursarten KursartId "
+        String sqlString = "SELECT k.id_kursarten KursartId "
                 + ",k.lehrgangsnummer Lehrgangsnr "
                 + ",k.kursbezeichnung Kursbez "
                 + ",k.kurskurzbezeichnung Kurskurzbez "
-                + " ,k.datum Datum "
-                + " ,k.id_instanzen_veranstalter Veran "
-                + " ,k.id_instanzen_durchfuehrend Durchf "
-                + " ,k.kursstatus \"Status\" "
-                + " ,COUNT(km.id_kurse) \"Anzahl_Teilnehmer\" "
+                + ",k.id_instanzen_veranstalter Veran "
+                + ",k.id_instanzen_durchfuehrend Durchf "
+                + ",k.kursstatus \"Status\" "
+                + ",COUNT(km.id_kurse) \"Anzahl_Teilnehmer\" "
                 + "FROM FDISK.dbo.stmkkurse k "
                 + "INNER JOIN FDISK.dbo.stmkkursemitglieder km ON(k.id_kurse = km.id_kurse) "
                 + "INNER JOIN FDISK.dbo.stmkmitglieder m ON(km.id_mitgliedschaften = m.id_mitgliedschaften) "
@@ -1030,45 +1028,43 @@ public class DB_Access {
                 sqlString += " WHERE m.instanznummer = '" + 47030 + "'";
             }
         }
+        System.out.println("getKursstatistikKurse Datum von & Datum bis: " + strVon + " / " + strBis);
         sqlString += getSqlDateString(strVon, strBis, 4, false);
-        sqlString += " GROUP BY k.id_kurse "
-                + ",k.id_kursarten "
+        sqlString += " GROUP BY "
+                + "k.id_kursarten "
                 + ",k.lehrgangsnummer "
                 + ",k.kursbezeichnung "
                 + ",k.kurskurzbezeichnung "
-                + ",k.datum "
                 + ",k.id_instanzen_veranstalter "
                 + ",k.id_instanzen_durchfuehrend "
-                + ",k.kursstatus ";
-        
+                + ",k.kursstatus "
+                + "order by k.kursbezeichnung ";
+
         ResultSet rs = stat.executeQuery(sqlString);
 
-        int intKursId;
         int intKursartId;
         int intLehrgangsnr;
         String strKursbez;
         String strKurskurzbez;
-        Date dateDatum;
         int intIdVer;
         int intIdDurchf;
         String strStatus;
         int intAnzahlTeilnehmer;
 
         while (rs.next()) {
-            intKursId = rs.getInt("KursId");
             intKursartId = rs.getInt("KursartId");
             intLehrgangsnr = rs.getInt("Lehrgangsnr");
             strKursbez = rs.getString("Kursbez");
             strKurskurzbez = rs.getString("Kurskurzbez");
-            dateDatum = rs.getTimestamp("Datum");
             intIdVer = rs.getInt("Veran");
             intIdDurchf = rs.getInt("Durchf");
             strStatus = rs.getString("Status");
             intAnzahlTeilnehmer = rs.getInt("Anzahl_Teilnehmer");
 
-            Kurs kurs = new Kurs(intKursId, intKursartId, intLehrgangsnr, strKursbez, strKurskurzbez, dateDatum, intIdVer, intIdDurchf, strStatus, intAnzahlTeilnehmer);
+            Kurs kurs = new Kurs(intKursartId, intLehrgangsnr, strKursbez, strKurskurzbez, intIdVer, intIdDurchf, strStatus, intAnzahlTeilnehmer);
             liKurse.add(kurs);
-        }
+        }        
+        
         connPool.releaseConnection(conn);
         return liKurse;
     }
@@ -1774,7 +1770,7 @@ public class DB_Access {
      *
      * intBericht = 1 => Einsatzbericht intBericht = 2 => Taetigkeitsbericht
      * intBericht = 3 => Uebungsbericht intBericht = 4 => Kursstatistik
-     
+     *
      *
      * @param strVon
      * @param strBis
@@ -1824,7 +1820,7 @@ public class DB_Access {
             } else if (!strBis.isEmpty() && !strBis.equals("") && !strVon.isEmpty() && !strVon.equals("")) {
                 dateString += " (datum >= CAST('" + strVon + " 00:00.000' AS DATETIME) AND datum < (CAST('" + strBis + " 00:00.000' AS DATETIME)+1))";
             }
-        } 
+        }
         return dateString;
     }
 
@@ -2473,7 +2469,6 @@ public class DB_Access {
         StringBuilder sqlString = new StringBuilder();
         sqlString.append(strStatement);
 
-
         ResultSet rs = stat.executeQuery(sqlString.toString());
 
         int intInstanznr;
@@ -3098,10 +3093,9 @@ public class DB_Access {
 
         String sqlString = "SELECT DISTINCT ";
 
-    
         for (int i = 0; i < strSelectedCols.length; i++) {
             switch (strSelectedCols[i].toUpperCase()) {
-                
+
                 case "ANREDE":
                     strSelectedCols[i] = "Geschlecht";
                     boAnrede = true;
@@ -3112,7 +3106,7 @@ public class DB_Access {
                 case "STAATSBÜRGERSCHAFT":
                     strSelectedCols[i] = "Staatsbuergerschaft";
                     break;
-                    
+
                 case "ISCO-BERUF":
                     strSelectedCols[i] = "Beruf";
                     break;
@@ -3126,7 +3120,7 @@ public class DB_Access {
                     sqlString += "Jugend, Aktiv, Reserve, Abgemeldet, Ehrenmitglied, ";
                     break;
                 default:
-                    System.out.println("TEST: "+strSelectedCols[i]);
+                    System.out.println("TEST: " + strSelectedCols[i]);
                     sqlString += "m." + strSelectedCols[i] + ",";
                     break;
             }
@@ -3183,8 +3177,7 @@ public class DB_Access {
 
         String strColLink = "";
 
-        for (int i = 0; i < intRows; i++) 
-        {
+        for (int i = 0; i < intRows; i++) {
             String strColWhere = strEingabe[i][1];
             String strColSymbol = strEingabe[i][2];
             String strColValue = strEingabe[i][3];
@@ -3310,12 +3303,10 @@ public class DB_Access {
 
         for (String str : strSelectedCols) {
             sbHtml.append("<th data-content='nach ").append(str).append(" sortieren'>");
-            
-            if(str.equals("Staatsbuergerschaft"))
-            {
+
+            if (str.equals("Staatsbuergerschaft")) {
                 sbHtml.append("Staatsbürgerschaft");
-            }
-            else if (boAnrede == true && str.equals("Geschlecht")) {
+            } else if (boAnrede == true && str.equals("Geschlecht")) {
                 sbHtml.append("Anrede");
             }
             else if (str.equals("Standesbuchnummer")) {
@@ -3327,7 +3318,7 @@ public class DB_Access {
             else {
                 sbHtml.append(str);
             }
-            
+
             sbHtml.append("</th>");
         }
         sbHtml.append("</tr></thead><tbody>");
@@ -3639,7 +3630,7 @@ public class DB_Access {
 //           
             LinkedList<Geraetetraegermitglied> li = theInstance.getGereatetraegerMitglied(47, 4704, "-2");
             for (Geraetetraegermitglied k : li) {
-               // System.out.println(k.getDateUntersuchung() + " " + k.getDateNaechsteUntersuchung());
+                // System.out.println(k.getDateUntersuchung() + " " + k.getDateNaechsteUntersuchung());
             }
 // !!!!!!!!!!!!! Ende SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!
         } catch (Exception ex) {
