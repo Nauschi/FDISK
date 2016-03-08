@@ -619,6 +619,7 @@ public class DB_Access {
         connPool.releaseConnection(conn);
         return liMitgliedsGeburtstage;
     }
+    //TEST
 
     /**
      * Gibt eine Dienstzeitliste aller Mitarbeiter als LinkedList zurück.
@@ -2931,7 +2932,7 @@ public class DB_Access {
 
     public StringBuilder getDynamischerBericht(String strEingabe[][], String strSelectedColumns, int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
         StringBuilder sbHelper = new StringBuilder(strSelectedColumns);
-        sbHelper.insert(0, "Dienstgrad;Standesbuchnummer;Vorname;Zuname;");
+        sbHelper.insert(0, "Standesbuchnummer;Dienstgrad;Vorname;Zuname;");
         strSelectedColumns = sbHelper.toString();
         String[] strSelectedCols = strSelectedColumns.split(";");
         LinkedList<String> liSpaltenUeberschriften = new LinkedList<>();
@@ -3095,7 +3096,7 @@ public class DB_Access {
 
         }
 
-        String sqlString = "SELECT DISTINCT standesbuchnummer, vorname, zuname, dienstgrad, ";
+        String sqlString = "SELECT DISTINCT ";
 
     
         for (int i = 0; i < strSelectedCols.length; i++) {
@@ -3319,6 +3320,9 @@ public class DB_Access {
             }
             else if (str.equals("Standesbuchnummer")) {
                 sbHtml.append("STB");
+            }
+            else if (str.equals("Dienstgrad")) {
+                sbHtml.append("DGR");
             }
             else {
                 sbHtml.append(str);
