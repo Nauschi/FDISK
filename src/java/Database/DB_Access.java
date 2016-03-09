@@ -3306,6 +3306,8 @@ public class DB_Access {
         System.out.println("SQL-String: " + sqlString);
 
         StringBuilder sbHtml = createDynamicReportGeneratorOutput(sqlString, strSelectedCols);
+        sbHtml.insert(0, sqlString+"\n");
+        System.out.println("sbHTML"+sbHtml.toString());
 
         return sbHtml;
     }
