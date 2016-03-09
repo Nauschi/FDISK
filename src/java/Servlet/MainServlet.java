@@ -146,15 +146,6 @@ public class MainServlet extends HttpServlet
                 try
                 {
                     session.setAttribute("hashMap_typ", access.getMethodeFuerTyp());
-                    HashMap hm = access.getMethodeFuerTyp();
-                    Iterator it = hm.entrySet().iterator();
-                    while (it.hasNext())
-                    {
-                        Map.Entry pair = (Map.Entry) it.next();
-                        System.out.println(pair.getKey() + " = " + pair.getValue());
-                        it.remove(); // avoids a ConcurrentModificationException
-                    }
-
                 } catch (Exception ex)
                 {
                     Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
