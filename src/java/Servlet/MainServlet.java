@@ -458,12 +458,10 @@ public class MainServlet extends HttpServlet
         System.out.println("/////////////generiereKurstatistikZusatzTable//////////////");
         LinkedList<Kurs> liKurse = access.getKursstatistikkurse(intBereichnr, intAbschnittnr, strFubwehr, strVonDatum, strBisDatum);
         System.out.println(liKurse.size());
-        String strZusatzInfo = "<table class='tablesorter2 ui celled table'><thead>";
+        String strZusatzInfo = "<table class='tablesorter ui celled table'><thead>";
         strZusatzInfo += "<tr>"
                 + "<th data-content='nach Kursbezeichnung sortieren' class='sort'>Kursbezeichnung</th>"
-                + "<th data-content='nach Kursstatus sortieren' class='sort'>Kursstatus</th>"
                 + "<th data-content='nach Anzahl Teilnehmer sortieren' class='sort'>Anz. Teiln.</th>"
-                + "<th data-content='nach Kursdatum sortieren' class='sort'>Kursdatum</th>"
                 + "<th>-</th>"
                 + "</tr>";
         strZusatzInfo += "</thead><tbody>";

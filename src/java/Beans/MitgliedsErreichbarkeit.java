@@ -132,7 +132,7 @@ public class MitgliedsErreichbarkeit extends Mitglied
             for (Erreichbarkeit erreichbarkeit : liErreichbarkeiten)
             {
                 String str = theInstance.formatiereAusgabe(erreichbarkeit.getStrErreichbarkeitsArt());
-                strHtml += "<p>" + str + ": " + erreichbarkeit.getStrCode() + "</p>";
+                 strHtml +=  str + ": " + erreichbarkeit.getStrCode() + "<br>";
             }
             strHtml += "</td><td></td></tr>";
 

@@ -279,9 +279,7 @@
                             <thead>
                                 <tr>
                                     <th>Kursbezeichnung</th>
-                                    <th>Kursstatus</th>
                                     <th>Anz. Teilnehmer</th>
-                                    <th>Kursdatum</th>
                                     <th>-</th>
                                 </tr>
                             </thead>

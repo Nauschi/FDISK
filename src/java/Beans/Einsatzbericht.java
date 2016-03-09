@@ -364,17 +364,13 @@ public class Einsatzbericht
 
              
         strEinsatzart = theInstance.formatiereAusgabe(strEinsatzart); 
-        strVorname = theInstance.formatiereAusgabe(strVorname); 
-        strZuname = theInstance.formatiereAusgabe(strZuname); 
 
         String strHtml = "<tr><td>"
                 + strEinsatzart + "</td><td>"
                 + strNummer + "</td><td>"
                 + sdf.format(dateUhrzeit_Alarmierung) + "</td><td>"
                 + sdf.format(dateUhrzeit_Rueckkehr) + "</td><td>"
-                + strStrasse + " " + strNummerAdr + " " + strStiege + " " + strPlz + " " + strOrt + "</td><td>"
-                + strVorname + "</td><td>"
-                + strZuname + "</td></tr>";
+                + strStrasse + " " + strNummerAdr + " " + strStiege + " " + strPlz + " " + strOrt + "</td></tr>";
 
         return strHtml;
     }

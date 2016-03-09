@@ -1286,23 +1286,27 @@ public class DB_Access {
                 + "<table class='ui celled table'>"
                 + "<thead>"
                 + "<tr>"
+                
                 + "<th>Art</th>"
                 + "<th>Baujahr</th>"
                 + "<th>Aufbaufirma</th>"
                 + "<th>Marke</th>"
                 + "<th>Leistung</th>"
                 + "<th>Treibstoff</th>"
+                + "<th>Kennzeichen</th>"
                 + "<th>KM Gesamt</th>"
                 + "</tr>"
                 + "</thead>"
                 + "<tbody>"
                 + "<tr>"
+                
                 + "<td>" + f.getStrFahrzeugart() + "</td>"
                 + "<td>" + f.getIntBaujahr() + "</td>"
                 + "<td>" + f.getStrAufbaufirma() + "</td>"
                 + "<td>" + f.getStrFahrzeugmarke() + "</td>"
                 + "<td>" + f.getIntLeistung() + "</td>"
                 + "<td>" + f.getStrTreibstoff() + "</td>"
+                + "<td>" + f.getStrKennzeichen()+ "</td>"
                 + "<td>" + doKmGesamt + "</td>"
                 + "</tr>"
                 + "</tbody>"
@@ -2200,6 +2204,9 @@ public class DB_Access {
      *
      * @param strVon
      * @param strBis
+     * @param intBereichnr
+     * @param intAbschnittnr
+     * @param strFubwehr
      * @return
      * @throws Exception
      */
@@ -2228,6 +2235,7 @@ public class DB_Access {
                     + " ,ort \"Ort\""
                     + " ,meldung \"Meldung\""
                     + " ,Fehlalarm \"Fehlalarm\""
+                    + " , 'Übungsbericht' \"BArt\""
                     + " FROM FDISK.dbo.stmkuebungsberichte ub INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(ub.instanznummer = f.instanznummer)"
                     + " WHERE f.Bereich_Nr = " + intBereichnr);
         } else {
@@ -2246,6 +2254,7 @@ public class DB_Access {
                         + " ,ort \"Ort\""
                         + " ,meldung \"Meldung\""
                         + " ,Fehlalarm \"Fehlalarm\""
+                        + " , 'Übungsbericht' \"BArt\""
                         + " FROM FDISK.dbo.stmkuebungsberichte ub INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(ub.instanznummer = f.instanznummer)"
                         + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr);
             } else {
@@ -2263,6 +2272,7 @@ public class DB_Access {
                         + " ,ort \"Ort\""
                         + " ,meldung \"Meldung\""
                         + " ,Fehlalarm \"Fehlalarm\""
+                        + " , 'Übungsbericht' \"BArt\""
                         + " FROM FDISK.dbo.stmkuebungsberichte"
                         + " WHERE instanznummer = '" + strFubwehr + "'");
             }
@@ -2285,6 +2295,7 @@ public class DB_Access {
                     + " ,ort \"Ort\""
                     + " ,meldung \"Meldung\""
                     + " ,Fehlalarm \"Fehlalarm\""
+                    + " , 'Einsatzbericht' \"BArt\""
                     + " FROM FDISK.dbo.stmkeinsatzberichte eb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(eb.instanznummer = f.instanznummer) "
                     + " WHERE f.Bereich_Nr = " + intBereichnr);
         } else {
@@ -2303,6 +2314,7 @@ public class DB_Access {
                         + " ,ort \"Ort\""
                         + " ,meldung \"Meldung\""
                         + " ,Fehlalarm \"Fehlalarm\""
+                        + " , 'Einsatzbericht' \"BArt\""
                         + " FROM FDISK.dbo.stmkeinsatzberichte eb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(eb.instanznummer = f.instanznummer) "
                         + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr);
             } else {
@@ -2320,6 +2332,7 @@ public class DB_Access {
                         + " ,ort \"Ort\""
                         + " ,meldung \"Meldung\""
                         + " ,Fehlalarm \"Fehlalarm\""
+                        + " , 'Einsatzbericht' \"BArt\""
                         + " FROM FDISK.dbo.stmkeinsatzberichte"
                         + " WHERE instanznummer = '" + strFubwehr + "'");
             }
@@ -2343,6 +2356,7 @@ public class DB_Access {
                     + " ,ort \"Ort\""
                     + " ,meldung \"Meldung\""
                     + " ,Fehlalarm \"Fehlalarm\""
+                    + " , 'Tätigkeitsbericht' \"BArt\""
                     + " FROM FDISK.dbo.stmktaetigkeitsberichte tb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(tb.instanznummer = f.instanznummer)"
                     + " WHERE f.Bereich_Nr = " + intBereichnr);
         } else {
@@ -2361,6 +2375,7 @@ public class DB_Access {
                         + " ,ort \"Ort\""
                         + " ,meldung \"Meldung\""
                         + " ,Fehlalarm \"Fehlalarm\""
+                        + " , 'Tätigkeitsbericht' \"BArt\""
                         + " FROM FDISK.dbo.stmktaetigkeitsberichte tb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(tb.instanznummer = f.instanznummer)"
                         + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr);
             } else {
@@ -2378,6 +2393,7 @@ public class DB_Access {
                         + " ,ort \"Ort\""
                         + " ,meldung \"Meldung\""
                         + " ,Fehlalarm \"Fehlalarm\""
+                        + " , 'Tätigkeitsbericht' \"BArt\""
                         + " FROM FDISK.dbo.stmktaetigkeitsberichte"
                         + " WHERE instanznummer = '" + strFubwehr + "'");
             }
@@ -2403,6 +2419,7 @@ public class DB_Access {
         String strOrt;
         String strMeldung;
         String strFehlalarm;
+        String strBerichtart; 
 
         while (rs.next()) {
             intIdBericht = rs.getInt("ID");
@@ -2420,10 +2437,12 @@ public class DB_Access {
             strMeldung = rs.getString("Meldung");
             strFehlalarm = rs.getString("Fehlalarm");
 
+            strBerichtart = rs.getString("BArt"); 
+                    
             Bericht bericht = new Bericht(intIdBericht,
                     intInstanznummer, strName, strArt,
                     strNummer, dateBeginn, dateEnde, strStrasse, strNummerAdr,
-                    strStiege, strPlz, strOrt, strMeldung, strFehlalarm);
+                    strStiege, strPlz, strOrt, strMeldung, strFehlalarm, strBerichtart);
             liBericht.add(bericht);
         }
 

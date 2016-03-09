@@ -208,8 +208,7 @@ public class Geraetetraegermitglied extends Mitglied
                 + strZuname + "</td><td>"
                 + sdfGebDate.format(dateGeb) + "</td><td>"
                 + sdf.format(dateUntersuchung) + "</td><td>"
-                + sdf.format(dateNaechsteUntersuchung) + "</td><td>"
-                + strInstanzname + "</td></tr>";
+                + sdf.format(dateNaechsteUntersuchung) + "</td></tr>";
 
         return strHtml;
 

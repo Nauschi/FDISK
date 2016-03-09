@@ -26,11 +26,12 @@ public class Bericht
     private String strOrt;
     private String strMeldung;
     private String strFehlalarm;
+    private String strBerichtart; 
 
     private DB_Access theInstance;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
 
-    public Bericht(int intId_Berichte, int intInstanznummer, String strName, String strArt, String strNummer, Date dateBeginn, Date dateEnde, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, String strMeldung, String strFehlalarm) throws ClassNotFoundException
+    public Bericht(int intId_Berichte, int intInstanznummer, String strName, String strArt, String strNummer, Date dateBeginn, Date dateEnde, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, String strMeldung, String strFehlalarm, String strBerichtart) throws ClassNotFoundException
     {
         this.intId_Berichte = intId_Berichte;
         this.intInstanznummer = intInstanznummer;
@@ -46,6 +47,7 @@ public class Bericht
         this.strOrt = strOrt;
         this.strMeldung = strMeldung;
         this.strFehlalarm = strFehlalarm;
+        this.strBerichtart = strBerichtart; 
         theInstance = DB_Access.getInstance();
     }
 
@@ -189,6 +191,16 @@ public class Bericht
         this.strFehlalarm = strFehlalarm;
     }
 
+    public String getStrBerichtart()
+    {
+        return strBerichtart;
+    }
+
+    public void setStrBerichtart(String strBerichtart)
+    {
+        this.strBerichtart = strBerichtart;
+    }
+
     @Override
     public int hashCode()
     {
@@ -264,9 +276,16 @@ public class Bericht
         {
             return false;
         }
+        if (!Objects.equals(this.strBerichtart, other.strBerichtart))
+        {
+            return false;
+        }
         return true;
     }
 
+    
+            
+            
     @Override
     public String toString()
     {
@@ -280,7 +299,8 @@ public class Bericht
         String strHtml = "<tr><td>"
                 + sdf.format(dateBeginn) + "</td><td>"
                 + sdf.format(dateEnde) + "</td><td>"
-                + strArt + "</td><td></td></tr>";
+                + strBerichtart + "</td><td>"
+                + strArt + "</td></tr>";
 
         return strHtml;
     }
