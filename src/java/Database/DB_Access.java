@@ -2777,7 +2777,7 @@ public class DB_Access
      /*                                                                                *
      /**********************************************************************************/
     /**
-     * Ruft die richtige Methode für einen Typ auf
+     * Ruft die richtige Methode für einen Typ Filter auf
      *
      * @return
      * @throws Exception
@@ -2808,6 +2808,13 @@ public class DB_Access
         return hmAlleTypenUndFilter;
     }
 
+    
+    /**
+     * Gibt alle in der Datenbank vorkommenden Geschlechter zurück
+     *
+     * @return
+     * @throws Exception
+     */
     public LinkedList<String> getFilterFuerGeschlecht() throws Exception
     {
         LinkedList<String> liFilter = new LinkedList<>();
@@ -2829,6 +2836,12 @@ public class DB_Access
         return liFilter;
     }
 
+    /**
+     * Gibt alle in der Datenbank vorkommenden Staatsbürgerschaften zurück
+     *
+     * @return
+     * @throws Exception
+     */
     public LinkedList<String> getFilterFuerStaatsbuergerschaft() throws Exception
     {
         LinkedList<String> liFilter = new LinkedList<>();
@@ -2850,6 +2863,12 @@ public class DB_Access
         return liFilter;
     }
 
+    /**
+     * Gibt alle in der Datenbank vorkommenden ISCO-Berufe zurück
+     *
+     * @return
+     * @throws Exception
+     */
     public LinkedList<String> getFilterFuerBeruf() throws Exception
     {
         LinkedList<String> liFilter = new LinkedList<>();
@@ -2871,6 +2890,12 @@ public class DB_Access
         return liFilter;
     }
 
+    /**
+     * Gibt alle in der Datenbank vorkommenden Titel zurück
+     *
+     * @return
+     * @throws Exception
+     */
     public LinkedList<String> getFilterFuerTitel() throws Exception
     {
         LinkedList<String> liFilter = new LinkedList<>();
@@ -2892,6 +2917,12 @@ public class DB_Access
         return liFilter;
     }
 
+    /**
+     * Gibt alle in der Datenbank vorkommenden Amtstitel zurück
+     *
+     * @return
+     * @throws Exception
+     */
     public LinkedList<String> getFilterFuerAmtstitel() throws Exception
     {
         LinkedList<String> liFilter = new LinkedList<>();
@@ -2913,6 +2944,12 @@ public class DB_Access
         return liFilter;
     }
 
+    /**
+     * Gibt alle in der Datenbank vorkommenden Blutgruppen zurück
+     *
+     * @return
+     * @throws Exception
+     */
     public LinkedList<String> getFilterFuerBlutgruppe() throws Exception
     {
         LinkedList<String> liFilter = new LinkedList<>();
@@ -2934,6 +2971,12 @@ public class DB_Access
         return liFilter;
     }
 
+    /**
+     * Gibt alle in der Datenbank vorkommenden Familienstände zurück
+     *
+     * @return
+     * @throws Exception
+     */
     public LinkedList<String> getFilterFuerFamilienstand() throws Exception
     {
         LinkedList<String> liFilter = new LinkedList<>();
@@ -2955,6 +2998,12 @@ public class DB_Access
         return liFilter;
     }
 
+    /**
+     * Gibt alle in der Datenbank vorkommenden Dienstgrade zurück
+     *
+     * @return
+     * @throws Exception
+     */
     public LinkedList<String> getFilterFuerDienstgrad() throws Exception
     {
         LinkedList<String> liFilter = new LinkedList<>();
@@ -2977,7 +3026,7 @@ public class DB_Access
     }
 
     /**
-     * Sucht den passenden Filter für den Typ "Anrede"
+     * Gibt alle verfügbaren Anreden zurück ("Herr" und "Frau")
      *
      * @return
      * @throws Exception
@@ -2992,7 +3041,7 @@ public class DB_Access
     }
 
     /**
-     * Sucht den passenden Filter für Kurse
+     * Gibt alle in der Datenbank vorkommenden Kursbezeichnungen zurück
      *
      * @return
      * @throws Exception
@@ -3019,7 +3068,7 @@ public class DB_Access
     }
 
     /**
-     * Sucht den passenden Filter für Funktionen
+     * Gibt alle in der Datenbank vorkommenden Funktionsbezeichnungen zurück
      *
      * @return
      * @throws Exception
@@ -3045,6 +3094,12 @@ public class DB_Access
         return liFilter;
     }
 
+    /**
+     * Gibt alle in der Datenbank vorkommenden Funktionsinstanzen zurück
+     *
+     * @return
+     * @throws Exception
+     */
     public LinkedList<String> getFilterFuerFunktionsinstanz() throws Exception
     {
         LinkedList<String> liFilter = new LinkedList<>();
@@ -3067,7 +3122,7 @@ public class DB_Access
     }
 
     /**
-     * Gibt die passenden Filter für die Status zurück
+     * Gibt alle in der Datenbank vorkommenden Status zurück
      *
      * @return
      * @throws Exception
@@ -3085,7 +3140,7 @@ public class DB_Access
     }
 
     /**
-     * Sucht den passenden Filter für Erreichbarkeiten
+     * Gibt alle in der Datenbank vorkommenden Erreichbarkeitsarten zurück
      *
      * @return
      * @throws Exception
@@ -3111,7 +3166,7 @@ public class DB_Access
     }
 
     /**
-     * Gibt die passenden Filter für Auszeichnungen zurück
+     * Gibt alle in der Datenbank vorkommenden Auszeichnungen zurück
      *
      * @return
      * @throws Exception
@@ -3136,6 +3191,12 @@ public class DB_Access
         return liFilter;
     }
 
+    /**
+     * Gibt alle in der Datenbank vorkommenden Auszeichnungsstufen zurück
+     *
+     * @return
+     * @throws Exception
+     */
     public LinkedList<String> getFilterFuerAuszeichnungsstufe() throws Exception
     {
         LinkedList<String> liFilter = new LinkedList<>();
@@ -3155,10 +3216,9 @@ public class DB_Access
         connPool.releaseConnection(conn);
         return liFilter;
     }
-    //Test
 
     /**
-     * Gibt die passenden Filter für Leistungsabzeichen zurück.
+     * Gibt alle in der Datenbank vorkommenden Leistungsabzeichenstufen zurück
      *
      * @return
      * @throws Exception
@@ -3183,6 +3243,12 @@ public class DB_Access
         return liFilter;
     }
 
+    /**
+     * Gibt alle in der Datenbank vorkommenden Leistungsabzeichenbezeichnungen zurück
+     *
+     * @return
+     * @throws Exception
+     */
     public LinkedList<String> getFilterFuerLeistungsabzeichenbezeichnung() throws Exception
     {
         LinkedList<String> liFilter = new LinkedList<>();
@@ -3203,6 +3269,12 @@ public class DB_Access
         return liFilter;
     }
 
+    /**
+     * Gibt alle in der Datenbank vorkommenden Führerscheinklassen zurück
+     *
+     * @return
+     * @throws Exception
+     */
     public LinkedList<String> getFilterFuerFuehrerscheinklassen() throws Exception
     {
         LinkedList<String> liFilter = new LinkedList<>();
@@ -3223,6 +3295,12 @@ public class DB_Access
         return liFilter;
     }
 
+    /**
+     * Gibt alle in der Datenbank vorkommenden Untersuchungsarten zurück
+     *
+     * @return
+     * @throws Exception
+     */
     public LinkedList<String> getFilterFuerUntersuchungsart() throws Exception
     {
         LinkedList<String> liFilter = new LinkedList<>();
@@ -3243,6 +3321,20 @@ public class DB_Access
         return liFilter;
     }
 
+    /**
+     * Generiert aus einem 2-dimensionalen Eingabearray und den spezifizierten
+     * Ausgabespalten das Statement und gibt den daraus
+     * erhaltenen fertigen Bericht als HTML-Tabelle zurück (berücksichtigt
+     * die Berechtigungen des Users)
+     * HTML-Tabelle zurück
+     * @param strEingabe
+     * @param strSelectedColumns
+     * @param intBereichnr
+     * @param intAbschnittnr
+     * @param strFubwehr
+     * @return
+     * @throws Exception 
+     */
     public StringBuilder getDynamischerBericht(String strEingabe[][], String strSelectedColumns, int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception
     {
         StringBuilder sbHelper = new StringBuilder(strSelectedColumns);
@@ -3272,6 +3364,9 @@ public class DB_Access
             {
                 switch (strEingabe[i][j].toUpperCase())
                 {
+                    case "N/A":
+                        strEingabe[i][j] = "";
+                        break;
                     case "[":
                         strEingabe[i][j] = "(";
                         break;
@@ -3425,7 +3520,7 @@ public class DB_Access
 
         }
 
-        String sqlString = "SELECT DISTINCT ";
+        StringBuilder sbSqlString = new StringBuilder("SELECT DISTINCT ");
 
         for (int i = 0; i < strSelectedCols.length; i++)
         {
@@ -3451,13 +3546,13 @@ public class DB_Access
             switch (strSelectedCols[i])
             {
                 case "Alter":
-                    sqlString += "DATEDIFF(YY, geburtsdatum, GETDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum) > GETDATE() THEN 1 ELSE 0 END 'Lebensalter', ";
+                    sbSqlString.append("DATEDIFF(YY, geburtsdatum, GETDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum) > GETDATE() THEN 1 ELSE 0 END 'Lebensalter', ");
                     break;
                 case "Status":
-                    sqlString += "Jugend, Aktiv, Reserve, Abgemeldet, Ehrenmitglied, ";
+                    sbSqlString.append("Jugend, Aktiv, Reserve, Abgemeldet, Ehrenmitglied, ");
                     break;
                 default:
-                    sqlString += "m." + strSelectedCols[i] + ",";
+                    sbSqlString.append("m.").append(strSelectedCols[i]).append(",");
                     break;
             }
             if (!liSpaltenUeberschriften.contains(strSelectedCols[i]))
@@ -3466,60 +3561,61 @@ public class DB_Access
             }
         }
 
-        sqlString = sqlString.substring(0, sqlString.lastIndexOf(",")) + " ";
-
-        sqlString += "FROM FDISK.dbo.stmkmitglieder m ";
+        sbSqlString = new StringBuilder(sbSqlString.subSequence(0, sbSqlString.lastIndexOf(",")));
+        sbSqlString.append(" ");
+        
+        sbSqlString.append("FROM FDISK.dbo.stmkmitglieder m ");
         if (boAdresse == true)
         {
-            sqlString += " INNER JOIN FDISK.dbo.stmkadressen a ON(a.id_personen = m.id_personen) ";
+            sbSqlString.append(" INNER JOIN FDISK.dbo.stmkadressen a ON(a.id_personen = m.id_personen) ");
         }
 
         if (boAuszeichnung == true)
         {
-            sqlString += " INNER JOIN FDISK.dbo.stmkauszeichnungenmitglieder auszm ON(auszm.id_personen = m.id_personen) "
-                    + " INNER JOIN FDISK.dbo.stmkauszeichnungen ausz ON(auszm.id_auszeichnungen = ausz.id_auszeichnungen) ";
+            sbSqlString.append(" INNER JOIN FDISK.dbo.stmkauszeichnungenmitglieder auszm ON(auszm.id_personen = m.id_personen) ")
+                    .append( " INNER JOIN FDISK.dbo.stmkauszeichnungen ausz ON(auszm.id_auszeichnungen = ausz.id_auszeichnungen) ");
         }
 
         if (boLeistungsabzeichen == true)
         {
-            sqlString += " INNER JOIN FDISK.dbo.stmkleistungsabzeichenmitglieder lam ON(m.id_personen = lam.id_personen) "
-                    + " INNER JOIN FDISK.dbo.stmkleistungsabzeichen la ON(la.id_leistungsabzeichen = lam.id_leistungsabzeichen) ";
+            sbSqlString.append(" INNER JOIN FDISK.dbo.stmkleistungsabzeichenmitglieder lam ON(m.id_personen = lam.id_personen) ")
+                    .append(" INNER JOIN FDISK.dbo.stmkleistungsabzeichen la ON(la.id_leistungsabzeichen = lam.id_leistungsabzeichen) ");
         }
 
         if (boKurse == true)
         {
-            sqlString += " INNER JOIN FDISK.dbo.stmkkursemitglieder km ON(m.id_personen = km.id_mitgliedschaften) "
-                    + " INNER JOIN FDISK.dbo.stmkkurse k ON (k.id_kurse = km.id_kurse) ";
+            sbSqlString.append(" INNER JOIN FDISK.dbo.stmkkursemitglieder km ON(m.id_personen = km.id_mitgliedschaften) ")
+                    .append(" INNER JOIN FDISK.dbo.stmkkurse k ON (k.id_kurse = km.id_kurse) ");
         }
         if (boErreichbarkeiten == true)
         {
-            sqlString += " INNER JOIN FDISK.dbo.stmkerreichbarkeiten e ON(m.id_personen = e.id_personen) ";
+            sbSqlString.append(" INNER JOIN FDISK.dbo.stmkerreichbarkeiten e ON(m.id_personen = e.id_personen) ");
         }
 
         if (boFahrgenehmigungen == true)
         {
-            sqlString += " INNER JOIN FDISK.dbo.stmkgesetzl_fahrgenehmigungen gf ON(m.id_personen = gf.fdisk_personen_id) ";
+            sbSqlString.append(" INNER JOIN FDISK.dbo.stmkgesetzl_fahrgenehmigungen gf ON(m.id_personen = gf.fdisk_personen_id) ");
         }
 
         if (boFunktionen == true)
         {
-            sqlString += " INNER JOIN FDISK.dbo.stmkfunktionenmitglieder fm ON(m.id_personen = fm.id_mitgliedschaften) "
-                    + " INNER JOIN FDISK.dbo.stmkfunktionen f ON(f.id_funktionen = fm.id_funktionen) ";
+            sbSqlString.append(" INNER JOIN FDISK.dbo.stmkfunktionenmitglieder fm ON(m.id_personen = fm.id_mitgliedschaften) ")
+                    .append( " INNER JOIN FDISK.dbo.stmkfunktionen f ON(f.id_funktionen = fm.id_funktionen) ");
         }
 
         if (boUntersuchungen == true)
         {
-            sqlString += " INNER JOIN FDISK.dbo.stmkuntersuchungenmitglieder u ON(m.id_personen = u.id_mitgliedschaften) ";
+            sbSqlString.append(" INNER JOIN FDISK.dbo.stmkuntersuchungenmitglieder u ON(m.id_personen = u.id_mitgliedschaften) ");
         }
 
         if (boVordienstzeit == true)
         {
-            sqlString += " INNER JOIN FDISK.dbo.FDISK_MAPPING_VD_ZEIT z ON(m.id_personen = z.id_personen) ";
+            sbSqlString.append(" INNER JOIN FDISK.dbo.FDISK_MAPPING_VD_ZEIT z ON(m.id_personen = z.id_personen) ");
         }
 
-        sqlString += " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(m.instanznummer = fw.instanznummer) ";
+        sbSqlString.append(" INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(m.instanznummer = fw.instanznummer) ");
 
-        sqlString += " WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST')) AND ";
+        sbSqlString.append(" WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST')) AND ");
 
         String strColLink = "";
 
@@ -3564,7 +3660,7 @@ public class DB_Access
                         strColValue = "w";
                         break;
                 }
-                sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' " + strColLink + " ";
+                sbSqlString.append(strColWhere).append(" ").append(strColSymbol).append(" '").append(strColValue).append("' ").append(strColLink).append(" ");
                 continue;
             }
 
@@ -3573,28 +3669,28 @@ public class DB_Access
             {
             } else if (strColWhere.equals("Vordienstzeit"))
             {
-                sqlString += "ROUND(VD_ZEIT, 0, 1)" + " " + strColSymbol + strColValue + " ";
+                sbSqlString.append("ROUND(VD_ZEIT, 0, 1) ").append(strColSymbol).append(strColValue).append(" ");
             } else if (!strColWhere.equals("Alter") && !strColWhere.equals("Status"))
             {
                 switch (strColWhereType)
                 {
                     case "datetime":
-                        sqlString += strColWhere + " " + strColSymbol + " CAST('" + strColValue + "' AS datetime) " + strColLink + " ";
+                        sbSqlString.append(strColWhere).append(" ").append(strColSymbol).append(" CAST('").append(strColValue).append("' AS datetime) ").append(strColLink).append(" ");
                         break;
                     case "varchar":
-                        sqlString += "UPPER(" + strColWhere + ") " + strColSymbol + " '" + strColValue.toUpperCase() + "' " + strColLink + " ";
+                        sbSqlString.append("UPPER(").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
                         break;
                     //default bei byte, tinyint, bigint, int
                     default:
-                        sqlString += strColWhere + " " + strColSymbol + " '" + strColValue + "' " + strColLink + " ";
+                        sbSqlString.append(strColWhere).append(" ").append(strColSymbol).append(" '").append(strColValue).append("' ").append(strColLink).append(" ");
                         break;
                 }
             } else if (strColWhere.equals("Alter"))
             {
-                sqlString += "(DATEDIFF(YY, geburtsdatum, GETDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum) > GETDATE() THEN 1 ELSE 0 END )" + " " + strColSymbol + " '" + strColValue + "' " + strColLink + " ";
+                sbSqlString.append("(DATEDIFF(YY, geburtsdatum, GETDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum) > GETDATE() THEN 1 ELSE 0 END ) ").append(strColSymbol).append(" '").append(strColValue).append("' ").append(strColLink).append(" ");
             } else if (strColWhere.equals("Status"))
             {
-                sqlString += strColValue + " " + strColSymbol + " '1' " + strColLink + " ";
+                sbSqlString.append(strColValue).append(" ").append(strColSymbol).append(" '1' ").append(strColLink).append(" ");
             }
 
         }
@@ -3602,63 +3698,42 @@ public class DB_Access
 
         if (!strColLink.isEmpty())
         {
-            intIndex = sqlString.lastIndexOf(strColLink);
+            intIndex = sbSqlString.lastIndexOf(strColLink);
         }
 
         if (intIndex != -1)
         {
-            sqlString = sqlString.substring(0, intIndex) + " ";
+            sbSqlString.substring(0, intIndex);
+            sbSqlString.append(" ");
         }
 
-        if (sqlString.endsWith("AND ") || sqlString.endsWith("AND"))
-        {
-            sqlString = sqlString.replace("AND ", " ");
-        }
-        if (sqlString.endsWith("OR ") || sqlString.endsWith("OR"))
-        {
-            sqlString = sqlString.replace("OR", " ");
-        }
-        if (sqlString.endsWith("NOT ") || sqlString.endsWith("NOT"))
-        {
-            sqlString = sqlString.replace("NOT", " ");
-        }
 
-        if (sqlString.contains("WHERE"))
-        {
             if (intAbschnittnr == -2)
             {
-                sqlString += " AND (fw.Bereich_Nr = " + intBereichnr + ")";
+                sbSqlString.append(" AND (fw.Bereich_Nr = ").append(intBereichnr).append(")");
             } else
             {
                 if (strFubwehr.equals("-2"))
                 {
-                    sqlString += " AND (fw.abschnitt_instanznummer = " + intAbschnittnr + ")";
+                    sbSqlString.append(" AND (fw.abschnitt_instanznummer = ").append(intAbschnittnr).append( ")");
                 } else
                 {
-                    sqlString += " AND (m.instanznummer = '" + strFubwehr + "'" + ")";
+                    sbSqlString.append(" AND (m.instanznummer = '").append(strFubwehr).append("')");
                 }
             }
-        } else
-        {
-            if (intAbschnittnr == -2)
-            {
-                sqlString += " WHERE (fw.Bereich_Nr = " + intBereichnr + ")";
-            } else
-            {
-                if (strFubwehr.equals("-2"))
-                {
-                    sqlString += " WHERE (fw.abschnitt_instanznummer = " + intAbschnittnr + ")";
-                } else
-                {
-                    sqlString += " WHERE (m.instanznummer = '" + strFubwehr + "'" + ")";
-                }
-            }
-        }
-        StringBuilder sbHtml = createDynamicReportGeneratorOutput(sqlString, strSelectedCols);
-        sbHtml.insert(0, sqlString + "\n");
+        
+        StringBuilder sbHtml = createDynamicReportGeneratorOutput(sbSqlString.toString(), strSelectedCols);
+        sbHtml.insert(0, sbSqlString.toString() + "\n");
         return sbHtml;
     }
 
+    /**
+     * Generiert aus einem SQL Statement einen Report in Form einer HTML Tabelle
+     * @param sqlString
+     * @param strSelectedCols
+     * @return
+     * @throws Exception 
+     */
     public StringBuilder createDynamicReportGeneratorOutput(String sqlString, String[] strSelectedCols) throws Exception
     {
         Connection conn = connPool.getConnection();
@@ -3855,6 +3930,9 @@ public class DB_Access
         return sbHtml;
     }
 
+    /**
+     * Definiert welche Spalten welchen Datentyp in der Datenbank haben
+     */
     public void initializeDBValuesWithDBTypes()
     {
         //Tabelle stmkmitglieder
