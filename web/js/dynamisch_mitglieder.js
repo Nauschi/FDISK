@@ -346,8 +346,15 @@ function onErstelleNeueVorlage()
  */
 function saveDataForPDF()
 {
+    var name = document.getElementById("input_stetze_name").value;
+    if(name.trim() == "")
+    {
+        name = "Dynamisch"
+    }
     var strTable = document.getElementById("div_table").innerHTML;
-    document.getElementById("hidden_pdfData").value = strTable;
+    document.getElementById("hidden_pdfData").value = name+"###"+strTable;
+    document.getElementById("input_stetze_name").value ="";
+    $('#modal_setze_name').modal('hide');
     document.formPDF.submit();
 }
 

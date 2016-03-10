@@ -359,13 +359,26 @@
                 <div id="div_csv_pdf" style="display:none" class="ui segment">
                     <div class="ui equal width grid">
                         <div class="column">
-                            <button type="button" class="ui button styleRot" onClick="saveDataForPDF()" title="Generiere PDF" style="width: 100%;">PDF</button>
+                            <button type="button" class="ui button styleRot" onClick="$('#modal_setze_name').modal('show');" title="Generiere PDF" style="width: 100%;">PDF</button>
                         </div>
                         <div class="column">
                             <button type="button" class="ui button styleGruen" onClick="saveDataForCSV()" title="Generiere CSV"  style="width: 100%;">CSV</button>
                         </div>
                     </div>
                 </div> 
+            </div>
+
+            <div class="ui small modal" id="modal_setze_name">
+                <div class="header">Wählen sie bitte einen Name für Ihren Bericht</div>
+                <div class="content">
+                    <div class="ui input" style="width: 100%">
+                        <input placeholder="Berichtname" type="text" id="input_stetze_name">
+                    </div>
+                </div>
+                <div class="actions">
+                    <button type="button" onClick="saveDataForPDF()" class="ui button styleGruen"  style="width: 20%;">Bestätigen</button>
+                    <button type="button" onClick="$('#modal_setze_name').modal('hide');" class="ui button styleRot"  style="width: 20%;">Abbrechen</button>
+                </div>
             </div>
 
             <%
@@ -484,11 +497,11 @@
         <script src="semantic/dist/semantic.min.js"></script>
         <script src="js/jquery-ui.js"></script> 
         <script src="js/tablesort.js"></script>
-       
-      
+
+
         <script src="js/dynamisch_mitglieder.js"></script>
         <script src="js/datepicker-de.js"></script>
-      <!--  <script src="tablesorter/jquery.tablesorter.js"></script> -->
+        <!--  <script src="tablesorter/jquery.tablesorter.js"></script> -->
         <script>
                     $(function () {
             <%                for (int i = 1; i <= intZaehler; i++)
@@ -603,11 +616,11 @@
                 {
             %>
                         $('.sortable.table').tablesort();
-                        
-                       
-                            
-    
-                      
+
+
+
+
+
                         $('th').popup();
                         document.getElementById("div_csv_pdf").style.display = "block";
             <%

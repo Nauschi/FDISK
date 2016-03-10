@@ -58,7 +58,6 @@ public class PDFServlet extends HttpServlet
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     private String strUebungsbericht = "<h1>Übungsbericht</h1>"
             + "<b><p><u>Allgemein</u></p></b>"
             + "<p>Verfasser:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</p>"
@@ -250,16 +249,10 @@ public class PDFServlet extends HttpServlet
         System.out.println("size: " + strSplitData.length);
         String strBerichtname;
         String strTable;
-        if (strSplitData.length < 2)
-        {
-            strBerichtname = "Dynamisch";
-            strTable = strData;
-        } else
-        {
-            strBerichtname = strSplitData[0];
-            strTable = strSplitData[1];
-        }
 
+        strBerichtname = strSplitData[0];
+        strTable = strSplitData[1];
+        
         String strAusgabe = "Es ist ein unerwartetes Problem aufgetreten";
         boolean boolLeerbericht = true;
 
@@ -275,7 +268,7 @@ public class PDFServlet extends HttpServlet
                 strAusgabe = generiereAusgabeTaetigkeitsberichtLeer(strTable, strSplitData[2]);
                 break;
             case "Dynamisch":
-                strAusgabe = strTable;
+                strAusgabe = "<h1>" + strBerichtname + "</h1>" + strTable;
                 boolLeerbericht = false;
                 break;
             case "Kursstatistik":
@@ -302,7 +295,7 @@ public class PDFServlet extends HttpServlet
                 boolLeerbericht = false;
                 break;
             case "Stundenauswertung je Mitglied je Instanz":
-                strAusgabe = "<h1>" + strBerichtname + "</h1>" +generiereStundenauswertungJeMitgliedJeInstanz(strTable);
+                strAusgabe = "<h1>" + strBerichtname + "</h1>" + generiereStundenauswertungJeMitgliedJeInstanz(strTable);
                 boolLeerbericht = false;
                 break;
             default:
@@ -415,14 +408,14 @@ public class PDFServlet extends HttpServlet
                 intIndex = strTRs.indexOf("</tr>", intIndex) + 5;
                 String strAktRows = strTRs.substring(0, intIndex);
                 String strFirstRow = strAktRows.substring(0, strAktRows.indexOf("</tr>") + 5);
-                String strSecondRow =  strAktRows.substring(strAktRows.indexOf("<table"), strAktRows.indexOf("</table>") + 8);
+                String strSecondRow = strAktRows.substring(strAktRows.indexOf("<table"), strAktRows.indexOf("</table>") + 8);
                 System.out.println(strAktRows);
                 ausgabe += "<p>&nbsp;</p>"
                         + "<table>" + strThead + "<tbody>" + strFirstRow + "</tbody></table>"
                         + "<p>&nbsp;</p>"
                         + "<div>"
-                        +strSecondRow
-                        +"</div>";
+                        + strSecondRow
+                        + "</div>";
                 strTRs = strTRs.replace(strAktRows, "");
             }
         } catch (Exception ex)
@@ -466,8 +459,8 @@ public class PDFServlet extends HttpServlet
 
         return strHTMLOutput;
     }
-    
-        /**
+
+    /**
      * Generiert einen Einsatzbericht mit Hilfe des übergebenen Strings strTable
      * ist der HTML String der Zeilen des Tables
      * (<tr>...</tr><tr>...</tr><tr>...</tr>....)
