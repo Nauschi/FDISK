@@ -492,6 +492,9 @@ public class PDFServlet extends HttpServlet
         liBerHochformat.add("Tätigkeitsbericht leer");
         liBerHochformat.add("Übungsbericht leer");
         liBerHochformat.add("Einsatzbericht leer");
+        liBerHochformat.add("Einfache Mitgliederliste");
+        liBerHochformat.add("Dienstzeitliste");
+        liBerHochformat.add("Geburtstagsliste");
     }
 
     /**
