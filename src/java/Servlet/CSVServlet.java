@@ -143,7 +143,7 @@ public class CSVServlet extends HttpServlet
         strCSV = strCSV.replaceAll("</tbody></table>", "");
         strCSV = strCSV.replaceAll("\\<th[^>]*>", ""); //Wie funktioniert das??
         strCSV = strCSV.replaceAll("</th>", ";");
-        strCSV = strCSV.replaceAll("<td>", "");
+        strCSV = strCSV.replaceAll("\\<td[^>]*>", ""); //Wie funktioniert das??
         strCSV = strCSV.replaceAll("</td>", ";");
         strCSV = strCSV.replaceAll("<tr>", "");
         strCSV = strCSV.replaceAll("<b>", "");
