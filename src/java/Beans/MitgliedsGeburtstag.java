@@ -114,8 +114,8 @@ public class MitgliedsGeburtstag extends Mitglied
         String strHtml = ""; 
         if(intZielalter%10 == 0)
         {
-            strHtml = "<tr><td><b>"
-                + strStammblattnummer + "</b></td><td><b>"
+            strHtml = "<tr><td class='STB'><b>"
+                + strStammblattnummer + "</b></td><td class='DGR'><b>"
                 + strDienstgrad + "</b></td><td><b>"
                 + strTitel + "</b></td><td><b>"
                 + strVorname + "</b></td><td><b>"
@@ -125,8 +125,8 @@ public class MitgliedsGeburtstag extends Mitglied
         }
         else
         {
-            strHtml = "<tr><td>"
-                + strStammblattnummer + "</td><td>"
+            strHtml = "<tr><td class='STB'>"
+                + strStammblattnummer + "</td><td class='DGR'>"
                 + strDienstgrad + "</td><td>"
                 + strTitel + "</td><td>"
                 + strVorname + "</td><td>"

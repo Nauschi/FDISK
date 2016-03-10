@@ -200,14 +200,14 @@ public class MitgliedsAdresse extends Mitglied
         strStrasse = theInstance.formatiereAusgabe(strStrasse);
         strOrt = theInstance.formatiereAusgabe(strOrt);
 
-        String strHtml = "<tr><td>"
-                + strStammblattnummer + "</td><td>"
+        String strHtml = "<tr><td class='STB'>"
+                + strStammblattnummer + "</td><td class='DGR'>"
                 + strDienstgrad + "</td><td>"
                 + strTitel + "</td><td>"
                 + strVorname + "</td><td>"
                 + strZuname + "</td><td>"
                 + strStrasse + " " + strNummer + ", " + intPLZ + " " + strOrt + "</td>"
-                + "<td></td></tr>";
+                + "<td class='bemerkung'></td></tr>";
 
         return strHtml;
     }

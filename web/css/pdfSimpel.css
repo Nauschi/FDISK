@@ -46,10 +46,22 @@ table
     border-collapse: collapse;
 }
 
-
-
 th
 {
     background-color: #C00518;
 }
 
+.STB
+{
+    width: 40px;
+}
+
+.DGR
+{
+    width: 70px;
+}
+
+.bemerkung
+{
+    width: 200px;
+}

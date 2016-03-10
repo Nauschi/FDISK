@@ -170,12 +170,12 @@ public class Mitglied
         strZuname = theInstance.formatiereAusgabe(strZuname);
         strVorname = theInstance.formatiereAusgabe(strVorname);
 
-        String strHtml = "<tr><td>"
-                + strStammblattnummer + "</td><td>"
+        String strHtml = "<tr><td class='STB'>"
+                + strStammblattnummer + "</td><td class='DGR'>"
                 + strDienstgrad + "</td><td>"
                 + strTitel + "</td><td>"
                 + strVorname + "</td><td>"
-                + strZuname + "</td><td></td></tr>";
+                + strZuname + "</td><td class='bemerkung'></td></tr>";
     
         return strHtml;
     }
