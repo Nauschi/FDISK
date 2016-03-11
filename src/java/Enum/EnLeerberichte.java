@@ -184,7 +184,7 @@ public enum EnLeerberichte
             + "<tr><td align='center'>&nbsp;</td><td colspan='8' align='center'>&nbsp;</td><td colspan='2' align='center'>&nbsp;</td><td colspan='8' align='center'>&nbsp;</td></tr>"
             + "</table>"
             + "<p><b>Erstellt am: <table border='1px solid black'><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr></table></b></p>"
-            + "<p><b>Erstellt am: <table border='1px solid black'><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr></table></b></p><br/><br/><br/><br/><br/><br/><br/>"
+            + "<p><b>Erstellt von: <table border='1px solid black'><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr></table></b></p><br/><br/><br/><br/><br/><br/><br/>"
             + "<b><p><u>Eingesetzte Fahrzeuge</u></p></b>"
             + "<table border='0'><tbody>##FahrzeugData##</tbody></table>"
             + "<b><p><u>Eingesetzte Mitglieder</u></p></b>"
