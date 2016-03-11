@@ -2039,8 +2039,8 @@ public class DB_Access
         if (intAbschnittnr == -2)
         {
             sqlString = "SELECT DISTINCT id_berichte 'ID'"
-                    + " ,tb.instanznummer 'Instanznummer'"
-                    + " ,tb.instanzname 'Instanzname'"
+                    + " ,instanznummer 'Instanznummer'"
+                    + " ,instanzname 'Instanzname'"
                     + " ,taetigkeitsart 'Taetigkeitsart'"
                     + " ,taetigkeitsunterart 'Taetigkeitsunterart'"
                     + " ,nummer 'Nummer'"
@@ -2060,8 +2060,8 @@ public class DB_Access
             if (strFubwehr.equals("-2"))
             {
                 sqlString = "SELECT DISTINCT id_berichte 'ID'"
-                        + " ,tb.instanznummer 'Instanznummer'"
-                        + " ,tb.instanzname 'Instanzname'"
+                        + " ,instanznummer 'Instanznummer'"
+                        + " ,instanzname 'Instanzname'"
                         + " ,taetigkeitsart 'Taetigkeitsart'"
                         + " ,taetigkeitsunterart 'Taetigkeitsunterart'"
                         + " ,nummer 'Nummer'"
@@ -2079,8 +2079,8 @@ public class DB_Access
             } else
             {
                 sqlString = "SELECT DISTINCT id_berichte 'ID'"
-                        + " ,tb.instanznummer 'Instanznummer'"
-                        + " ,tb.instanzname 'Instanzname'"
+                        + " ,instanznummer 'Instanznummer'"
+                        + " ,instanzname 'Instanzname'"
                         + " ,taetigkeitsart 'Taetigkeitsart'"
                         + " ,taetigkeitsunterart 'Taetigkeitsunterart'"
                         + " ,nummer 'Nummer'"
@@ -2164,7 +2164,7 @@ public class DB_Access
         if (intAbschnittnr == -2)
         {
             sqlString = "SELECT DISTINCT id_berichte 'ID'"
-                    + " ,eb.instanznummer 'Instanznummer'"
+                    + " ,instanznummer 'Instanznummer'"
                     + " ,name 'Name'"
                     + " ,einsatzart 'Art'"
                     + " ,nummer 'Nr'"
@@ -2187,7 +2187,7 @@ public class DB_Access
             if (strFubwehr.equals("-2"))
             {
                 sqlString = "SELECT DISTINCT id_berichte 'ID'"
-                        + " ,eb.instanznummer 'Instanznummer'"
+                        + " ,instanznummer 'Instanznummer'"
                         + " ,name 'Name'"
                         + " ,einsatzart 'Art'"
                         + " ,nummer 'Nr'"
@@ -2208,7 +2208,7 @@ public class DB_Access
             } else
             {
                 sqlString = "SELECT DISTINCT id_berichte 'ID'"
-                        + " ,eb.instanznummer 'Instanznummer'"
+                        + " ,instanznummer 'Instanznummer'"
                         + " ,name 'Name'"
                         + " ,einsatzart 'Art'"
                         + " ,nummer 'Nr'"
@@ -2302,7 +2302,7 @@ public class DB_Access
         if (intAbschnittnr == -2)
         {
             sqlString = "SELECT DISTINCT id_berichte 'ID'"
-                    + " ,ub.instanznummer 'Instanznummer'"
+                    + " ,instanznummer 'Instanznummer'"
                     + " ,name 'Instanzname'"
                     + " ,uebungsart 'Uebungsart'"
                     + " ,uebungsunterart 'Uebungsunterart'"
@@ -2323,7 +2323,7 @@ public class DB_Access
             if (strFubwehr.equals("-2"))
             {
                 sqlString = "SELECT DISTINCT id_berichte 'ID'"
-                        + " ,ub.instanznummer 'Instanznummer'"
+                        + " ,instanznummer 'Instanznummer'"
                         + " ,name 'Instanzname'"
                         + " ,uebungsart 'Uebungsart'"
                         + " ,uebungsunterart 'Uebungsunterart'"
@@ -2342,7 +2342,7 @@ public class DB_Access
             } else
             {
                 sqlString = "SELECT DISTINCT id_berichte 'ID'"
-                        + " ,ub.instanznummer 'Instanznummer'"
+                        + " ,instanznummer 'Instanznummer'"
                         + " ,name 'Instanzname'"
                         + " ,uebungsart 'Uebungsart'"
                         + " ,uebungsunterart 'Uebungsunterart'"
@@ -2434,7 +2434,7 @@ public class DB_Access
         if (intAbschnittnr == -2)
         {
             sqlString.append(" SELECT DISTINCT id_berichte 'ID'")
-                    .append(" ,ub.instanznummer 'Instanznummer'")
+                    .append(" ,instanznummer 'Instanznummer'")
                     .append(" ,name 'Instanzname'")
                     .append(" ,uebungsart 'Art'")
                     .append(" ,nummer 'Nummer'")
@@ -2456,7 +2456,7 @@ public class DB_Access
             if (strFubwehr.equals("-2"))
             {
                 sqlString.append(" SELECT DISTINCT id_berichte 'ID'")
-                        .append(" ,ub.instanznummer 'Instanznummer'")
+                        .append(" ,instanznummer 'Instanznummer'")
                         .append(" ,name 'Instanzname'")
                         .append(" ,uebungsart 'Art'")
                         .append(" ,nummer 'Nummer'")
@@ -2502,7 +2502,7 @@ public class DB_Access
         if (intAbschnittnr == -2)
         {
             sqlString.append(" UNION SELECT DISTINCT id_berichte 'ID'")
-                    .append(" ,eb.instanznummer 'Instanznummer'")
+                    .append(" ,instanznummer 'Instanznummer'")
                     .append(" ,name 'Name'")
                     .append(" ,einsatzart 'Art'")
                     .append(" ,nummer 'Nr'")
@@ -2524,7 +2524,7 @@ public class DB_Access
             if (strFubwehr.equals("-2"))
             {
                 sqlString.append(" UNION SELECT DISTINCT id_berichte 'ID'")
-                        .append(" ,eb.instanznummer 'Instanznummer'")
+                        .append(" ,instanznummer 'Instanznummer'")
                         .append(" ,name 'Name'")
                         .append(" ,einsatzart 'Art'")
                         .append(" ,nummer 'Nr'")
@@ -2571,8 +2571,8 @@ public class DB_Access
         if (intAbschnittnr == -2)
         {
             sqlString.append(" UNION SELECT DISTINCT id_berichte 'ID'")
-                    .append(" ,tb.instanznummer 'Instanznummer'")
-                    .append(" ,tb.instanzname 'Instanzname'")
+                    .append(" ,instanznummer 'Instanznummer'")
+                    .append(" ,instanzname 'Instanzname'")
                     .append(" ,taetigkeitsart 'Taetigkeitsart'")
                     .append(" ,nummer 'Nummer'")
                     .append(" ,beginn 'Beginn'")
@@ -2593,8 +2593,8 @@ public class DB_Access
             if (strFubwehr.equals("-2"))
             {
                 sqlString.append(" UNION SELECT DISTINCT id_berichte 'ID'")
-                        .append(" ,tb.instanznummer 'Instanznummer'")
-                        .append(" ,tb.instanzname 'Instanzname'")
+                        .append(" ,instanznummer 'Instanznummer'")
+                        .append(" ,instanzname 'Instanzname'")
                         .append(" ,taetigkeitsart 'Taetigkeitsart'")
                         .append(" ,nummer 'Nummer'")
                         .append(" ,beginn 'Beginn'")
