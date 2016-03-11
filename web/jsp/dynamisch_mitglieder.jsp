@@ -646,7 +646,7 @@
             %>
                         onTypChanged(document.getElementById("select_typ_<%=i%>"), strLastFilter, strLastOperator);
             <%   }
-                if (request.getAttribute("dyn_table") != null)
+                if (request.getAttribute("dyn_table") != null &&request.getAttribute("dyn_table").toString().split("<tr>").length>2)
                 {
             %>
                         $('.sortable.table').tablesort();

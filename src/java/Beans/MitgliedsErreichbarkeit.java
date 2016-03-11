@@ -120,21 +120,19 @@ public class MitgliedsErreichbarkeit extends Mitglied
             strVorname = theInstance.formatiereAusgabe(strVorname);
             strZuname = theInstance.formatiereAusgabe(strZuname);
 
-            String strHtml = "<tr><td>"
-                    + strStammblattnummer + "</td><td>"
-                    + strDienstgrad + "</td><td>"
+            String strHtml = "<tr><td class='STB'>"
+                    + strStammblattnummer + "</td><td class='DGR'>"
+                    + strDienstgrad + "</td><td class='titel'>"
                     + strTitel + "</td><td>"
                     + strVorname + "</td><td>"
-                    + strZuname + "</td><td>";
-
-            System.out.println("LISTENGROESSSE:" + liErreichbarkeiten.size());
+                    + strZuname + "</td><td class='erreichbarkeiten'>";
 
             for (Erreichbarkeit erreichbarkeit : liErreichbarkeiten)
             {
                 String str = theInstance.formatiereAusgabe(erreichbarkeit.getStrErreichbarkeitsArt());
                  strHtml +=  "<div>"+str + ": " + erreichbarkeit.getStrCode() + "</div>";
             }
-            strHtml += "</td><td></td></tr>";
+            strHtml += "</td><td class='bemerkung'></td></tr>";
 
             return strHtml;
         }

@@ -124,7 +124,7 @@ public class PDFServlet extends HttpServlet
 
         strBerichtname = strSplitData[0];
         strTable = strSplitData[1];
-        
+
         String strAusgabe = "Es ist ein unerwartetes Problem aufgetreten";
         boolean boolLeerbericht = true;
 
@@ -212,8 +212,16 @@ public class PDFServlet extends HttpServlet
 
             //hier das (falls benötigt) CSS File einbinden für die .pdf Datei
             cssResolver.addCssFile(strCSSPath1, true);
+
             if (!boolLeerbericht)
             {
+                if (liBerHochformat.contains(strBerichtname))
+                {
+                    cssResolver.addCssFile(strCSSPath1.replace("Simpel", "Hoch"), true);
+                } else
+                {
+                    cssResolver.addCssFile(strCSSPath1.replace("Simpel", "Quer"), true);
+                }
                 cssResolver.addCssFile(strCSSPath1.replace("Simpel", "StandartBericht"), true);
             } else
             {
@@ -285,7 +293,7 @@ public class PDFServlet extends HttpServlet
                 ausgabe += "<p>&nbsp;</p>"
                         + "<table>" + strThead + "<tbody>" + strFirstRow + "</tbody></table>"
                         + "<p>&nbsp;</p>"
-                        + "<div>"
+                        + "<div class='extraTable'>"
                         + strSecondRow
                         + "</div>";
                 strTRs = strTRs.replace(strAktRows, "");
@@ -360,6 +368,7 @@ public class PDFServlet extends HttpServlet
         liBerHochformat.add("Einfache Mitgliederliste");
         liBerHochformat.add("Dienstzeitliste");
         liBerHochformat.add("Geburtstagsliste");
+        liBerHochformat.add("Kursstatistik");
     }
 
     /**

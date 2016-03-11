@@ -279,8 +279,7 @@
                             <thead>
                                 <tr>
                                     <th>Kursbezeichnung</th>
-                                    <th>Anz. Teilnehmer</th>
-                                    <th>Bemerkung</th>
+                                    <th>Anz Teiln</th>
                                 </tr>
                             </thead>
                         </table>
@@ -375,12 +374,20 @@
                     int i = 0;
                     while (i < liBerichtDaten.size())
                     {
+                        
                         if (request.getParameter("input_aktbericht").contains(" leer") && i % 3 == 0)
                         {
                             strHTML += "<tr>";
                         }
+                        
                         Object zeile = liBerichtDaten.get(i);
-                        strHTML += zeile.toString();
+                        String temp =zeile.toString();
+                        
+                        if(temp!=null)
+                        {
+                            strHTML += temp;
+                        }
+                        
                         i++;
                         if (request.getParameter("input_aktbericht").contains(" leer") && i % 3 == 0)
                         {

@@ -199,7 +199,7 @@ public class Kurs
 
         String strHtml = "<tr><td>"
                 + strKursbezeichnung + "</td><td>"
-                + intAnzahlTeilnehmer + "</td><td class='bemerkung'></td></tr>";
+                + intAnzahlTeilnehmer + "</td></tr>";
 
         return strHtml;
     }

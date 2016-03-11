@@ -202,7 +202,7 @@ public class Geraetetraegermitglied extends Mitglied
 
         String strHtml = "<tr><td class='STB'>"
                 + strStammblattnummer + "</td><td class='DGR'>"
-                + strDienstgrad + "</td><td>"
+                + strDienstgrad + "</td><td class='titel'>"
                 + strTitel + "</td><td>"
                 + strVorname + "</td><td>"
                 + strZuname + "</td><td>"

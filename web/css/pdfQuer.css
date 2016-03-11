@@ -4,23 +4,31 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 */
 /* 
-    Created on : 24.11.2015, 15:50:35
+    Created on : 11.03.2016, 22:18:07
     Author     : user
 */
 
-table, th, td
+.STB
 {
-    border: 0.2px solid black;
+    width: 20px;
 }
 
-.extraTable
+.DGR
 {
-    padding-left: 100px;
-    /*width: 80%;*/
-
+    width: 40px;
 }
 
-tr.noBorder td {
-    border: 0px solid white !important;
+.erreichbarkeiten
+{
+    width: 400px;
 }
 
+.bemerkung
+{
+    width: 150px;
+}
+
+.titel
+{
+    width: 50px;
+}
