@@ -2164,7 +2164,7 @@ public class DB_Access
         if (intAbschnittnr == -2)
         {
             sqlString = "SELECT DISTINCT id_berichte 'ID'"
-                    + " ,eb.nstanznummer 'Instanznummer'"
+                    + " ,eb.instanznummer 'Instanznummer'"
                     + " ,name 'Name'"
                     + " ,einsatzart 'Art'"
                     + " ,nummer 'Nr'"
@@ -2187,7 +2187,7 @@ public class DB_Access
             if (strFubwehr.equals("-2"))
             {
                 sqlString = "SELECT DISTINCT id_berichte 'ID'"
-                        + " ,eb.nstanznummer 'Instanznummer'"
+                        + " ,eb.instanznummer 'Instanznummer'"
                         + " ,name 'Name'"
                         + " ,einsatzart 'Art'"
                         + " ,nummer 'Nr'"
@@ -2208,7 +2208,7 @@ public class DB_Access
             } else
             {
                 sqlString = "SELECT DISTINCT id_berichte 'ID'"
-                        + " ,eb.nstanznummer 'Instanznummer'"
+                        + " ,eb.instanznummer 'Instanznummer'"
                         + " ,name 'Name'"
                         + " ,einsatzart 'Art'"
                         + " ,nummer 'Nr'"
@@ -2502,7 +2502,7 @@ public class DB_Access
         if (intAbschnittnr == -2)
         {
             sqlString.append(" UNION SELECT DISTINCT id_berichte 'ID'")
-                    .append(" ,eb.nstanznummer 'Instanznummer'")
+                    .append(" ,eb.instanznummer 'Instanznummer'")
                     .append(" ,name 'Name'")
                     .append(" ,einsatzart 'Art'")
                     .append(" ,nummer 'Nr'")
@@ -2524,7 +2524,7 @@ public class DB_Access
             if (strFubwehr.equals("-2"))
             {
                 sqlString.append(" UNION SELECT DISTINCT id_berichte 'ID'")
-                        .append(" ,eb.nstanznummer 'Instanznummer'")
+                        .append(" ,eb.instanznummer 'Instanznummer'")
                         .append(" ,name 'Name'")
                         .append(" ,einsatzart 'Art'")
                         .append(" ,nummer 'Nr'")
