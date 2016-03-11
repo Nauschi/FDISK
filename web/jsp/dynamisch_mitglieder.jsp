@@ -167,7 +167,7 @@
                             <button type="button" onclick="showLoeschenModal();" class="ui button styleRot" title="Vorlage löschen" style="width: 100%;"><p><i class="remove icon"></i></p></button>
                         </div>                        
                         <div class="column">
-                            <button type="button" onclick="showLadenModal();" class="ui button styleGrau" title="Vorlage laden" style="width: 100%"><p><i class="refresh icon"></i></p></button>
+                            <button type="button" onclick="showLadenModal();" class="ui button styleGrau" title="Vorlage laden" style="width: 100%"><p><i class="folder open outline icon"></i></p></button>
                         </div>
                         <div class="column">
                             <button type="button" onclick="showErstellenModal();" class="ui button styleGruen" title="Vorlage erstellen" style="width: 100%;"><p><i class="plus icon"></i></p></button>
