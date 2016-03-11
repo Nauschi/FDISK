@@ -280,7 +280,7 @@
                                 <tr>
                                     <th>Kursbezeichnung</th>
                                     <th>Anz. Teilnehmer</th>
-                                    <th>-</th>
+                                    <th>Bemerkung</th>
                                 </tr>
                             </thead>
                         </table>
