@@ -635,6 +635,7 @@ public class MainServlet extends HttpServlet
             leseRohberichte(strPath + File.separator + "Rohberichte.csv");
             leseTypenDynamisch(strPath + File.separator + "TypenDynamisch.csv");
             leseTypenAusgabeDynamisch(strPath + File.separator + "TypenDynamischOutput.csv");
+            leseOperatorenDynamisch(strPath + File.separator + "TypenDynamischOperatoren.csv");
         } catch (IOException ex)
         {
 //            try
@@ -727,6 +728,25 @@ public class MainServlet extends HttpServlet
         br.close();
 
         this.getServletContext().setAttribute("TypenAusgabe", liTypenAusgabe);
+    }
+    
+    public void leseOperatorenDynamisch(String strPfad) throws FileNotFoundException, UnsupportedEncodingException, IOException
+    {
+        File file = new File(strPfad);
+        LinkedList<String> liOperatoren = new LinkedList<>();
+
+        FileInputStream fis = new FileInputStream(file);
+        InputStreamReader isr = new InputStreamReader(fis, "ISO-8859-1");
+        BufferedReader br = new BufferedReader(isr);
+        String strReihe;
+
+        while ((strReihe = br.readLine()) != null)
+        {
+            liOperatoren.add(strReihe);
+        }
+        br.close();
+
+        this.getServletContext().setAttribute("liOperatoren", liOperatoren);
     }
 
 }

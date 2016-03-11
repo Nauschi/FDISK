@@ -5,6 +5,7 @@
  */
 
 var map = {'Test': 'anushgjk'};
+var mapOperatoren = {'##Test##': 'Test1'};
 var liTypen = ["Test"];
 var intCountTypen = 0;
 
@@ -18,6 +19,11 @@ $('.ui.dropdown').dropdown();
 function setMap(otherMap)
 {
     map = otherMap;
+}
+
+function setMapOperatoren(otherMap)
+{
+    mapOperatoren = otherMap;
 }
 
 function setTypen(liTypen2)
@@ -94,8 +100,6 @@ function onTypChanged(select_typ, strLastFilter, strLastOperator)
 
     } else if (strBoxArt == "txt")
     {
-        var operatorFeld = ["=", "<>"];
-        aktualisiereOperator(strID, operatorFeld, strLastOperator);
         document.getElementById("div_filter_cb_" + strID).style.display = "none";
         document.getElementById("div_filter_txt_" + strID).style.display = "block";
         if (strLastFilter != null)
@@ -114,11 +118,15 @@ function onTypChanged(select_typ, strLastFilter, strLastOperator)
         }
     }
 
-    if (strBoxArt == "datepicker" || strBoxArt == "cb")
-    {
+    
         var operatorFeld = ["=", "<>", "<=", ">=", "<", ">"];
+        if(mapOperatoren[strTyp.toUpperCase()]!=undefined)
+        {
+            operatorFeld = mapOperatoren[strTyp.toUpperCase()].split(";");
+        }
+        
         aktualisiereOperator(strID, operatorFeld, strLastOperator);
-    }
+    
 
 }
 /**

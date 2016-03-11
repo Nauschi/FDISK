@@ -29,6 +29,7 @@
             private int intIDGruppe;
         %>
         <%
+            response.setCharacterEncoding("UTF-8");
             request.setCharacterEncoding("UTF-8");
             intIDGruppe = -1;
             String[] strFeldKlammerAuf =
@@ -592,6 +593,39 @@
             %>
                         };
                         setMap(mapAlt);
+            <%                LinkedList<String> liOperatoren = (LinkedList<String>) application.getAttribute("liOperatoren");
+            %>
+
+                        var mapOperatoren = {
+            <%
+                for (String strLine : liOperatoren)
+                {
+                    String[] daten = strLine.split(";");
+                    out.print("'" + daten[0].toUpperCase() + "' : '");
+                    for (int i = 1; i < daten.length; i++)
+                    {
+                        if (i + 1 == daten.length)
+                        {
+                            out.print(daten[i]);
+                        } else
+                        {
+                            out.print(daten[i] + ";");
+                        }
+
+                    }
+                    if (strLine.equals(liOperatoren.getLast()))
+                    {
+                        out.print("'");
+                    } else
+                    {
+                        out.println("',");
+                    }
+                }
+
+            %>
+                        };
+                        setMapOperatoren(mapOperatoren);
+
 
             <%                for (int i = 1; i <= intZaehler; i++)
                 {

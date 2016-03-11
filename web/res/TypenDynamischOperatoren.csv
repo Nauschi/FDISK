@@ -1,44 +1,44 @@
 Alter;=;<>;<;>;<=;>=
-Amtstitel;=;<>;;;;
+Amtstitel;=;<>
 Angelobungsdatum;=;<>;<;>;<=;>=
-Anrede;=;<>;;;;
-Auszeichnungsart;=;<>;;;;
+Anrede;=;<>
+Auszeichnungsart;=;<>
 Auszeichnungsdatum;=;<>;<;>;<=;>=
-Auszeichnungsstufe;=;<>;;;;
-Blutgruppe;=;<>;;;;
+Auszeichnungsstufe;=;<>
+Blutgruppe;=;<>
 Dienstalter;=;<>;<;>;<=;>=
-Dienstgrad;=;<>;;;;
+Dienstgrad;=;<>
 Eintrittsdatum;=;<>;<;>;<=;>=
-Erreichbarkeit;=;<>;;;;
-Erreichbarkeitsart;=;<>;;;;
-FÃ¼hrerscheinklasse;=;<>;;;;
-FÃ¼hrerscheinklasse - GÃ¼ltig bis;=;<>;<;>;<=;>=
-Familienstand;=;<>;;;;
+Erreichbarkeit;=;<>
+Erreichbarkeitsart;=;<>
+Führerscheinklasse;=;<>
+Führerscheinklasse - Gültig bis;=;<>;<;>;<=;>=
+Familienstand;=;<>
 Funktion bis;=;<>;<;>;<=;>=
 Funktion von;=;<>;<;>;<=;>=
-Funktionsbezeichnung;=;<>;;;;
-Funktionsinstanz;=;<>;;;;
+Funktionsbezeichnung;=;<>
+Funktionsinstanz;=;<>
 Geburtsdatum;=;<>;<;>;<=;>=
-Geburtsort;=;<>;;;;
-Geschlecht;=;<>;;;;
+Geburtsort;=;<>
+Geschlecht;=;<>
 Hausnummer;=;<>;<;>;<=;>=
-ISCO-Beruf;=;<>;;;;
-Kursbezeichnung;=;<>;;;;
+ISCO-Beruf;=;<>
+Kursbezeichnung;=;<>
 Kursdatum;=;<>;<;>;<=;>=
-Leistungsabzeichen Stufe;=;<>;;;;
-Leistungsabzeichenbezeichnung;=;<>;;;;
+Leistungsabzeichen Stufe;=;<>
+Leistungsabzeichenbezeichnung;=;<>
 Leistungsabzeichendatum;=;<>;<;>;<=;>=
-Namenszusatz;=;<>;;;;
-Ort;=;<>;;;;
-StaatsbÃ¼rgerschaft;=;<>;;;;
+Namenszusatz;=;<>
+Ort;=;<>
+Staatsbürgerschaft;=;<>
 Standesbuchnummer;=;<>;<;>;<=;>=
-Status;=;<>;;;;
-Stiege/Stock/TÃ¼r;=;<>;;;;
-StraÃŸe;=;<>;;;;
-SVNR;=;<>;;;;
-Titel;=;<>;;;;
-Untersuchungsart;=;<>;;;;
+Status;=;<>
+Stiege/Stock/Tür;=;<>
+Straße;=;<>
+SVNR;=;<>
+Titel;=;<>
+Untersuchungsart;=;<>
 Untersuchungsdatum;=;<>;<;>;<=;>=
 Vordienstzeit in Jahren;=;<>;<;>;<=;>=
-Vorname;=;<>;;;;
-Zuname;=;<>;;;;
+Vorname;=;<>
+Zuname;=;<>
