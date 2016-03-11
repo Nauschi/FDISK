@@ -650,23 +650,16 @@
                 {
             %>
                         $('.sortable.table').tablesort();
-
-
-
-
-
                         $('th').popup();
                         document.getElementById("div_csv_pdf").style.display = "block";
             <%
                 }
-
                 if (request.getAttribute("dynamisch_vorlage_vorhanden") != null)
                 {
             %>
                         $('#modal_vorhanden').modal('show');
             <%
                 }
-
                 if (request.getParameter("hidden_berechtigungs_info") != null)
                 {
             %>
@@ -680,11 +673,8 @@
                         fixDropdowns("select_feuerwehr");
                     });
         </script>
-
-
     </body>
 </html>
-
 
 
 <%!
@@ -805,5 +795,4 @@
             return "";
         }
     }
-
 %>

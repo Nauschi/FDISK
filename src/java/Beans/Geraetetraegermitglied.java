@@ -211,7 +211,5 @@ public class Geraetetraegermitglied extends Mitglied
                 + sdf.format(dateNaechsteUntersuchung) + "</td></tr>";
 
         return strHtml;
-
     }
-
 }

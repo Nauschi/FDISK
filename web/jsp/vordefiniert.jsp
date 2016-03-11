@@ -374,20 +374,20 @@
                     int i = 0;
                     while (i < liBerichtDaten.size())
                     {
-                        
+
                         if (request.getParameter("input_aktbericht").contains(" leer") && i % 3 == 0)
                         {
                             strHTML += "<tr>";
                         }
-                        
+
                         Object zeile = liBerichtDaten.get(i);
-                        String temp =zeile.toString();
-                        
-                        if(temp!=null)
+                        String temp = zeile.toString();
+
+                        if (temp != null)
                         {
                             strHTML += temp;
                         }
-                        
+
                         i++;
                         if (request.getParameter("input_aktbericht").contains(" leer") && i % 3 == 0)
                         {
@@ -398,35 +398,30 @@
                     {
                         strHTML += "</tr>";
                     }
-                    System.out.println("Vordefiniert: strHTML: " + strHTML);
-            %>
 
-
-            <%
-                if (request.getParameter("input_aktbericht") != null && request.getParameter("input_aktbericht").contains(" leer"))
-                {
-                    LinkedList<Object> liFahrzeug = (LinkedList<Object>) request.getAttribute("zusatz_liste");
-                    String strZusatzHTML = "";
-                    i = 0;
-                    while (i < liFahrzeug.size())
+                    if (request.getParameter("input_aktbericht") != null && request.getParameter("input_aktbericht").contains(" leer"))
                     {
-                        if (i % 3 == 0)
+                        LinkedList<Object> liFahrzeug = (LinkedList<Object>) request.getAttribute("zusatz_liste");
+                        String strZusatzHTML = "";
+                        i = 0;
+                        while (i < liFahrzeug.size())
                         {
-                            strZusatzHTML += "<tr>";
+                            if (i % 3 == 0)
+                            {
+                                strZusatzHTML += "<tr>";
+                            }
+                            Object zeile = liFahrzeug.get(i);
+                            strZusatzHTML += zeile.toString();
+                            i++;
+                            if (i % 3 == 0)
+                            {
+                                strZusatzHTML += "</tr>";
+                            }
                         }
-                        Object zeile = liFahrzeug.get(i);
-                        strZusatzHTML += zeile.toString();
-                        i++;
-                        if (i % 3 == 0)
+                        if (i % 3 != 0)
                         {
                             strZusatzHTML += "</tr>";
                         }
-                    }
-                    if (i % 3 != 0)
-                    {
-                        strZusatzHTML += "</tr>";
-                    }
-
             %>
 
                                     document.getElementById("hidden_pdfData").value = "<%=request.getParameter("input_aktbericht")%>###<%=strHTML%>###<%=strZusatzHTML%>";
@@ -437,7 +432,6 @@
                 if (strHTML.split("<tr>").length > 1)
                 {
             %>
-
                                         document.getElementById("div_csv_pdf").style.display = "block";
                                                 document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
             <%=setzeTablesort(request)%>
@@ -475,7 +469,6 @@
             <%
                 }
             %>
-
                                         document.getElementById("div_loader").className = "ui disabled loader";
                                                 fixDropdowns("select_bezirk");
                                                 fixDropdowns("select_abschnitt");
@@ -506,7 +499,6 @@
             %>
                                         });
         </script>        
-
     </body>
 </html>
 
@@ -544,7 +536,7 @@
                 && request.getParameter("input_aktbericht").equals("Kursstatistik"))
         {
 //            return "$('.tablesorter2').tablesorter({headers: {3: {sorter: 'berichtdate'}}});"
-              return "$('.tablesorter').tablesorter({headers: {4: {sorter: 'berichtdate'},5: {sorter: 'berichtdate'}}});";
+            return "$('.tablesorter').tablesorter({headers: {4: {sorter: 'berichtdate'},5: {sorter: 'berichtdate'}}});";
         } else if (request.getParameter("input_aktbericht") != null
                 && request.getParameter("input_aktbericht").equals("Digitales Fahrtenbuch"))
         {
