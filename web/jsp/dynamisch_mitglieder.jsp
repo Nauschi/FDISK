@@ -395,6 +395,14 @@
             <div class="header">Hilfe: Ausgabe</div>
             <div class="content">
                 <p>In diesem Bereich können Sie auswählen welche Spalten Sie später in Ihrem Bericht angezeigt haben wollen</p>
+                    Automatisch ausgegeben werden:
+                <ul>
+                    <li>die Standesbuchnummer</li>
+                    <li>der Dienstgrad</li>
+                    <li>der Vorname</li>
+                    <li>der Zuname</li>
+                </ul>
+                <p>Es können maximal 6 zusätzliche Spalten ausgewählt werden.</p>
             </div>
             <div class="actions">
                 <button type="button" onClick="$('#modal_ausgabe_hilfe').modal('hide');" class="ui button styleGrau"  style="width: 20%;">OK</button>
@@ -545,15 +553,14 @@
                     {
                         strTypen = request.getParameter("hidden_typen_daten").split(";");
                     }
-                    for (String strLastTyp : strTypen)
+
+                    for (int i = 0; i < strTypen.length; i++)
                     {
-                        out.println("addTypenAuswahl('" + strLastTyp + "');");
+                        if (!strTypen[i].isEmpty())
+                        {
+                            out.println("addTypenAuswahl('" + strTypen[i] + "');");
+                        }
                     }
-                } else
-                {
-            %>
-                        addTypenAuswahl(null);
-            <%
                 }
                 HashMap<String, LinkedList<String>> hsFilter = (HashMap<String, LinkedList<String>>) session.getAttribute("hashMap_typ");
                 Set<String> set = hsFilter.keySet();
@@ -646,7 +653,7 @@
             %>
                         onTypChanged(document.getElementById("select_typ_<%=i%>"), strLastFilter, strLastOperator);
             <%   }
-                if (request.getAttribute("dyn_table") != null &&request.getAttribute("dyn_table").toString().split("<tr>").length>2)
+                if (request.getAttribute("dyn_table") != null && request.getAttribute("dyn_table").toString().split("<tr>").length > 2)
                 {
             %>
                         $('.sortable.table').tablesort();

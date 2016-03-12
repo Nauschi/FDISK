@@ -37,42 +37,49 @@ function setTypen(liTypen2)
 
 function addTypenAuswahl(lastType)//Für die typen die man ausgeben will
 {
-    var div_typen_auswahl = document.getElementById("div_typen_auswahl");
-    var new_div = document.createElement("div");
-    new_div.className = "four wide column";
-    var new_select = document.createElement("select");
-    new_select.className = "ui fluid dropdown displayType";
-    new_select.id = "select_typ_ausgabe_" + intCountTypen;
-    intCountTypen++;
-    for (var i = 0; i < liTypen.length; i++)
+    if (intCountTypen < 6)
     {
-        var opt = document.createElement('option');
-        opt.value = liTypen[i];
-        opt.innerHTML = liTypen[i];
-        if (lastType == liTypen[i])
+        var div_typen_auswahl = document.getElementById("div_typen_auswahl");
+        var new_div = document.createElement("div");
+        new_div.className = "four wide column";
+        var new_select = document.createElement("select");
+        new_select.className = "ui fluid dropdown displayType";
+        new_select.id = "select_typ_ausgabe_" + intCountTypen;
+        intCountTypen++;
+        for (var i = 0; i < liTypen.length; i++)
         {
-            //alert("Beide gleich");
-            opt.setAttribute('selected', 'selected');
+            var opt = document.createElement('option');
+            opt.value = liTypen[i];
+            opt.innerHTML = liTypen[i];
+            if (lastType == liTypen[i])
+            {
+                //alert("Beide gleich");
+                opt.setAttribute('selected', 'selected');
+            }
+            new_select.appendChild(opt);
         }
-        new_select.appendChild(opt);
-    }
-    new_div.appendChild(new_select);
-    $('#div_typen_panel').before(new_div);
+        new_div.appendChild(new_select);
+        $('#div_typen_panel').before(new_div);
 
-    //div_typen_auswahl.appendChild(new_div);
-    $('.ui.dropdown.displayType').dropdown();
+        //div_typen_auswahl.appendChild(new_div);
+        $('.ui.dropdown.displayType').dropdown();
+    }else
+    {
+        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Es können keine Spalten mehr hinzugefügt werden";
+        $('#modal_fehler').modal('show');
+    }
 
 }
 
 function deleteTypenAuswahl()
 {
-    if (intCountTypen > 1)
+    if (intCountTypen > 0)
     {
         intCountTypen--;
         $('#select_typ_ausgabe_' + intCountTypen).parent().parent().remove();
     } else
     {
-        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Es kann kein Element mehr gelöscht werden, mindestens eine Ausgabe muss gewählt sein";
+        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Es kann kein Element mehr gelöscht werden";
         $('#modal_fehler').modal('show');
     }
 }
@@ -118,15 +125,15 @@ function onTypChanged(select_typ, strLastFilter, strLastOperator)
         }
     }
 
-    
-        var operatorFeld = ["=", "<>", "<=", ">=", "<", ">"];
-        if(mapOperatoren[strTyp.toUpperCase()]!=undefined)
-        {
-            operatorFeld = mapOperatoren[strTyp.toUpperCase()].split(";");
-        }
-        
-        aktualisiereOperator(strID, operatorFeld, strLastOperator);
-    
+
+    var operatorFeld = ["=", "<>", "<=", ">=", "<", ">"];
+    if (mapOperatoren[strTyp.toUpperCase()] != undefined)
+    {
+        operatorFeld = mapOperatoren[strTyp.toUpperCase()].split(";");
+    }
+
+    aktualisiereOperator(strID, operatorFeld, strLastOperator);
+
 
 }
 /**
@@ -238,11 +245,11 @@ function onVorschau(intZahler)
         }
 
     }
-    if(getValueOfFilterObject(intZahler)=="")
+    if (getValueOfFilterObject(intZahler) == "")
     {
-        boolCorrect=false;
+        boolCorrect = false;
     }
-    
+
     if (boolCorrect == true)
     {
         var strWertVonLetztemSelect = document.getElementById("select_verknuepfung_" + intZahler).value;
@@ -309,6 +316,7 @@ function onActionSubmit(intZaehler, strButton)
     {
         strTypen += document.getElementById("select_typ_ausgabe_" + i).value + ";";
     }
+
     document.getElementById("hidden_typen_daten").value = strTypen;
     for (var i = 1; i <= intZaehler; i++)
     {
@@ -355,13 +363,13 @@ function onErstelleNeueVorlage()
 function saveDataForPDF()
 {
     var name = document.getElementById("input_stetze_name").value;
-    if(name.trim() == "")
+    if (name.trim() == "")
     {
         name = "Dynamisch"
     }
     var strTable = document.getElementById("div_table").innerHTML;
-    document.getElementById("hidden_pdfData").value = name+"###"+strTable;
-    document.getElementById("input_stetze_name").value ="";
+    document.getElementById("hidden_pdfData").value = name + "###" + strTable;
+    document.getElementById("input_stetze_name").value = "";
     $('#modal_setze_name').modal('hide');
     document.formPDF.submit();
 }

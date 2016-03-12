@@ -213,15 +213,16 @@ public class PDFServlet extends HttpServlet
             //hier das (falls benötigt) CSS File einbinden für die .pdf Datei
             cssResolver.addCssFile(strCSSPath1, true);
 
+            if (liBerHochformat.contains(strBerichtname))
+            {
+                cssResolver.addCssFile(strCSSPath1.replace("Simpel", "Hoch"), true);
+            } else
+            {
+                cssResolver.addCssFile(strCSSPath1.replace("Simpel", "Quer"), true);
+            }
             if (!boolLeerbericht)
             {
-                if (liBerHochformat.contains(strBerichtname))
-                {
-                    cssResolver.addCssFile(strCSSPath1.replace("Simpel", "Hoch"), true);
-                } else
-                {
-                    cssResolver.addCssFile(strCSSPath1.replace("Simpel", "Quer"), true);
-                }
+
                 cssResolver.addCssFile(strCSSPath1.replace("Simpel", "StandartBericht"), true);
             } else
             {
