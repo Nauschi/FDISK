@@ -29,6 +29,10 @@
             private int intIDGruppe;
         %>
         <%
+            if(session==null || session.getAttribute("loggedIn")==null)
+            {
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
             response.setCharacterEncoding("UTF-8");
             request.setCharacterEncoding("UTF-8");
             intIDGruppe = -1;

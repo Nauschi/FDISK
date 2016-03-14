@@ -216,10 +216,12 @@ public class MainServlet extends HttpServlet
             {
                 System.out.println("MainServlet.doPost: logout");
 
+                session.invalidate();
                 if (request.getSession(false) == null)
                 {
                     System.out.println("session deleted");
                 }
+                
                 request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
                 return;
             }
@@ -251,7 +253,6 @@ public class MainServlet extends HttpServlet
             HttpSession session = request.getSession(true);
             try
             {
-
                 session.setAttribute("loggedIn", true);
                 session.setAttribute("intUserID", intIDUser);
                 LinkedList<Berechtigung> liBerechtigung = access.getBerechtigungen(intIDUser);

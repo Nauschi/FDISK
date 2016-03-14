@@ -34,6 +34,10 @@
             private int intIDGruppe;
         %>
         <%
+            if(session==null || session.getAttribute("loggedIn")==null)
+            {
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
             intIDGruppe = -1;
         %>
 
