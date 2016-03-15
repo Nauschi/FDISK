@@ -41,7 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author user
+ * @author Marcel Schmidt
  */
 @WebServlet(name = "PDFServlet", urlPatterns =
 {

@@ -9,7 +9,7 @@ import java.util.LinkedList;
 
 /**
  *
- * @author user
+ * @author Marcel Schmidt
  */
 public class Rohbericht
 {

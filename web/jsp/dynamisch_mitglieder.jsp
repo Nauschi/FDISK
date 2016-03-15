@@ -8,7 +8,7 @@
 <%-- 
     Document   : dynamisch_mitarbeiter
     Created on : 18.08.2015, 17:15:59
-    Author     : user
+    Author     : Marcel Schmidt
 --%>
 <%@page import="java.util.LinkedList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

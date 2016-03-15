@@ -1,7 +1,7 @@
 <%-- 
     Document   : error
     Created on : 16.02.2016, 18:10:03
-    Author     : user
+    Author     : Marcel Schmidt
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

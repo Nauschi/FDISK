@@ -35,7 +35,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author user test2
+ * @author Marcel Schmidt
  */
 @WebServlet(name = "MainServlet", urlPatterns
         =

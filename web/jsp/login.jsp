@@ -1,7 +1,7 @@
 <%-- 
     Document   : login
     Created on : 02.09.2015, 15:40:35
-    Author     : user
+    Author     : Marcel Schmidt
 --%>
 
 <%@page import="java.util.LinkedList"%>
