@@ -374,7 +374,7 @@
             </div>
 
             <div class="ui small modal" id="modal_setze_name">
-                <div class="header">Wählen sie bitte einen Name für Ihren Bericht</div>
+                <div class="header">Wählen sie bitte einen Namen für Ihren Bericht</div>
                 <div class="content">
                     <div class="ui input" style="width: 100%">
                         <input placeholder="Berichtname" type="text" id="input_stetze_name">
@@ -417,6 +417,7 @@
         <div class="ui small modal" id="modal_erstelle_vorlage">
             <div class="header">Neue Vorlage</div>
             <div class="content">
+                <p>Wählen Sie bitte einen Namen für die neue Vorlage aus:</p>
                 <div class="ui input" style="width: 100%">
                     <%                        if (request.getParameter("hidden_vorlage_name") != null && request.getAttribute("dynamisch_vorlage_vorhanden") != null)
                         {
@@ -474,8 +475,9 @@
             {
         %>
         <div class="ui small modal" id="modal_lade_vorlage">
-            <div class="header">Wählen Sie bitte eine Vorlage aus</div>
+            <div class="header">Lade Vorlage</div>
             <div class="content">
+                <p>Wählen Sie bitte eine Vorlage aus:</p>
                 <form action="MainServlet" method="POST" name="form_ladeVorlage">
                     <select name="select_lade_vorlage" class="ui fluid dropdown" id="select_vorlage">
                         <%=leseVorhandeneVorlagen(application, session)%>
@@ -489,8 +491,9 @@
         </div>
 
         <div class="ui small modal" id="modal_loesche_vorlage">
-            <div class="header">Welche Vorlage wollen Sie löschen?</div>
+            <div class="header">Lösche Vorlage</div>
             <div class="content">
+                <p>Welche Vorlage möchten Sie löschen?</p>
                 <form action="MainServlet" method="POST" name="form_loescheVorlage">
                     <select name="select_loesche_vorlage" class="ui fluid dropdown" id="select_vorlage">
                         <%=leseVorhandeneVorlagen(application, session)%>
