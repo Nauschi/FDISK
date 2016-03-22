@@ -137,7 +137,7 @@ function onTypChanged(select_typ, strLastFilter, strLastOperator)
 
 }
 /**
- * 
+ * Aktualisiert das Operator dropdown an der Stelle strID
  * @param {type} strID
  * @param {type} operatorFeld
  * @returns {undefined}
@@ -384,11 +384,22 @@ function saveDataForCSV()
     document.formCSV.submit();
 }
 
+/**
+ * Öffnet das Modal verantwortlich für das erstellen
+ * von Vorlagen
+ * @returns {undefined}
+ */
 function showErstellenModal()
 {
     $('#modal_erstelle_vorlage').modal('show');
 }
 
+/**
+ * Öffnet das Modal verantwortlich für das laden
+ * von Vorlagen, falls keine Vorlagen vorhanden sind
+ * wird eine Fehlermeldung geöffnet
+ * @returns {undefined}
+ */
 function showLadenModal()
 {
     if (document.getElementById("modal_lade_vorlage") != null)
@@ -400,7 +411,12 @@ function showLadenModal()
         $('#modal_fehler').modal('show');
     }
 }
-
+/**
+ * Öffnet das Modal verantwortlich für das löschen
+ * von Vorlagen, falls keine Vorlagen vorhanden sind
+ * wird eine Fehlermeldung geöffnet
+ * @returns {undefined}
+ */
 function showLoeschenModal()
 {
     if (document.getElementById("modal_loesche_vorlage") != null)
@@ -477,6 +493,12 @@ function bezirkChanged(select_bezirk, strLetzteAbschnitt)
     }
 }
 
+/**
+ * Überprüft ob in einem Dropdown nur ein Wert
+ * vorhanden ist. Wenn ja wird es auf disabled gesetzt.
+ * @param {type} id
+ * @returns {undefined}
+ */
 function fixDropdowns(id)
 {
     //alert("Fix: "+id);
@@ -492,6 +514,10 @@ function fixDropdowns(id)
     }
 }
 
+/**
+ * Leitet zum Vordefiniert.jsp weiter
+ * @returns {undefined}
+ */
 function zuVordefiniertWeiterleiten()
 {
     var strBezirk = document.getElementById("select_bezirk").value;
