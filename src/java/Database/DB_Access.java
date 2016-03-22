@@ -140,8 +140,8 @@ public class DB_Access
      * *******************************************************************************
      */
     /*                                                                                *
-     /*                       STATISCHER BERICHTGENERATOR                              *
-     /*                                                                                *
+     /*                       LOGIN                                                   *
+     /*                                                                               *
      /**********************************************************************************/
     public LinkedList<Berechtigung> getBerechtigungen(int intUserID) throws Exception
     {
@@ -530,8 +530,17 @@ public class DB_Access
         return liFubwehrnummern;
     }
 
+    
+     /**
+     * *******************************************************************************
+     */
+    /*                                                                                 *
+     /*                       STATISCHER BERICHTGENERATOR                              *
+     /*                                                                                *
+     /**********************************************************************************/
+    
     /**
-     * Gibt eine LinkedList mit allen Mitarbeitern (je nach Berechtigung eines
+     * Gibt eine LinkedList mit allen Mitgliedern (je nach Berechtigung eines
      * Users) zurück
      *
      * @param intBereichnr
@@ -545,10 +554,6 @@ public class DB_Access
     public LinkedList<Mitglied> getEinfacheMitgliederliste(int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception
     {
         LinkedList<Mitglied> liMitglieder = new LinkedList<>();
-        //String strFubwehr = getFubwehrForUserID(intUserID) + "";
-        //int intAbschnittsnummer = getAbschnittsnummerForFubwehr(strFubwehr);
-        //String strBereich = ("" + intAbschnittsnummer).substring(0, 2);
-        //System.out.println("Bereich wenn Mitgliederliste aufgerufen wird: " + strBereich);
 
         Connection conn = connPool.getConnection();
 
@@ -571,10 +576,7 @@ public class DB_Access
             }
         }
 
-//WICHTIG NICHT LÖSCHEN!
-//        sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\" "
-//                + "FROM FDISK.dbo.stmkmitglieder "
-//                + "WHERE SUBSTRING(instanznummer, 0, 3) = '" + intBereichnr + "'";
+
         ResultSet rs = prepStat.executeQuery();
 
         String strSTB;
@@ -604,6 +606,9 @@ public class DB_Access
     /**
      * Gibt eine Geburtstagsliste aller Mitarbeiter als LinkedList zurück.
      *
+     * Gibt eine LinkedList mit allen Mitgliedern inkl. des Alters des Mitglieds
+     * im angegebnen Jahr (je nach Berechtigung eines Users) zurück
+     * 
      * @param intBereichnr
      * @param strFubwehr
      * @param intAbschnittnr
@@ -638,10 +643,7 @@ public class DB_Access
             }
         }
 
-//WICHTIG NICHT LÖSCHEN!
-//         sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\""
-//                + " FROM FDISK.dbo.stmkmitglieder"
-//                + " WHERE SUBSTRING(instanznummer, 0, 3) = '" + intBereichnr + "'";
+
         ResultSet rs = prepStat.executeQuery();
 
         String strSTB;
@@ -684,11 +686,13 @@ public class DB_Access
         connPool.releaseConnection(conn);
         return liMitgliedsGeburtstage;
     }
-    //TEST
+    
 
     /**
-     * Gibt eine Dienstzeitliste aller Mitarbeiter als LinkedList zurück.
-     *
+     * Gibt eine LinkedList mit allen Mitgliedern inkl. der Dienstzeit des Mitglieds
+     * im angegebnen Jahr (je nach Berechtigung eines Users) zurück
+     * 
+     * @param intJahr
      * @param intBereichnr
      * @param intAbschnittnr
      * @param strFubwehr
@@ -913,6 +917,9 @@ public class DB_Access
      * Gibt eine Liste mit allen Adressen aller Mitarbeiter als LinkedList
      * zurück.
      *
+     * Gibt eine LinkedList mit allen Mitgliedern inkl. der Adresse des Mitglieds
+     * (je nach Berechtigung eines Users) zurück
+     * 
      * @param intBereichnr
      * @param intAbschnittnr
      * @param strFubwehr
