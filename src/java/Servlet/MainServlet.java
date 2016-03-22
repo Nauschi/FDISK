@@ -79,7 +79,7 @@ public class MainServlet extends HttpServlet
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
-     *
+     * Wird nur zu Beginn verwendet und leitet zum Login.jsp weiter
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -105,7 +105,8 @@ public class MainServlet extends HttpServlet
 
     /**
      * Handles the HTTP <code>POST</code> method.
-     *
+     * Je nach auf dem request vorhandene Parameter werden
+     * Methoden aufgerufen
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -230,6 +231,18 @@ public class MainServlet extends HttpServlet
         request.getRequestDispatcher("jsp/error.jsp").forward(request, response);
     }
 
+    /**
+     * Überprüft die eingegebenen Login Daten:
+     * Falls die Daten korrekt sind werden die Berechtigungen 
+     * geladen und zum Login.jsp weiter geletet bzw. falls der User nur
+     * eine Berechtigung hat gleich zum vordfiniert.jsp
+     * Falls die Daten inkorrekt sind wird eine Error Nachricht auf dem request
+     * gespeichert und zurück zum Login.jsp geleitet
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void loginUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         System.out.println("MainServlet.loginUser: button_Login");
@@ -278,6 +291,13 @@ public class MainServlet extends HttpServlet
         }
     }
 
+    /**
+     * Holt sich die benötigten Informationen zur ausgewählten Berechtigung
+     * @param request
+     * @param response
+     * @param session
+     * @throws Exception 
+     */
     private void getBerechtigungsinformationen(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception
     {
         int intIDUser = (int) session.getAttribute("intUserID");
@@ -295,6 +315,14 @@ public class MainServlet extends HttpServlet
         generiereBerechtigungVorschau(request, response, session, aktBerechtigung);
     }
 
+    /**
+     * Setz je nach ausgewählter Sicht die Berechtigungen
+     * @param request
+     * @param response
+     * @param session
+     * @param aktBerechtigung
+     * @throws Exception 
+     */
     private void generiereBerechtigungVorschau(HttpServletRequest request, HttpServletResponse response, HttpSession session, Berechtigung aktBerechtigung) throws Exception
     {
         if (aktBerechtigung.getIntIDGruppe() == 5)
@@ -332,6 +360,14 @@ public class MainServlet extends HttpServlet
         request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
     }
 
+    /**
+     * Lädt je nach im request vorhandenen Bericht die benötigten
+     * Daten und speichert sie auf dem request
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void generiereVorschau(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         System.out.println("MainServlet.generiereVorschau: button_vorschau");
@@ -662,6 +698,11 @@ public class MainServlet extends HttpServlet
         return "Short description";
     }// </editor-fold>
 
+    /**
+     * Wird beim erstmaligen Starten des Servlets aufgerufen
+     * @param config
+     * @throws ServletException 
+     */
     @Override
     public void init(ServletConfig config) throws ServletException
     {
@@ -705,7 +746,7 @@ public class MainServlet extends HttpServlet
 
     /**
      * Liest Informationen über Berichte von einem .csv File
-     *
+     * 
      * @throws UnsupportedEncodingException
      * @throws IOException
      */
@@ -741,6 +782,13 @@ public class MainServlet extends HttpServlet
         servletContext.setAttribute("rohberichte", liRohberichte);
     }
 
+    /**
+     * Liest benötigte Daten für das dynamisch.jsp aus einem .csv File
+     * @param strPfad
+     * @throws FileNotFoundException
+     * @throws UnsupportedEncodingException
+     * @throws IOException 
+     */
     public void leseTypenDynamisch(String strPfad) throws FileNotFoundException, UnsupportedEncodingException, IOException
     {
         File file = new File(strPfad);
@@ -760,6 +808,13 @@ public class MainServlet extends HttpServlet
         this.getServletContext().setAttribute("Typen", liTypen);
     }
     
+    /**
+     * Liest benötigte Daten für das dynamisch.jsp aus einem .csv File
+     * @param strPfad
+     * @throws FileNotFoundException
+     * @throws UnsupportedEncodingException
+     * @throws IOException 
+     */
     public void leseTypenAusgabeDynamisch(String strPfad) throws FileNotFoundException, UnsupportedEncodingException, IOException
     {
         File file = new File(strPfad);
@@ -779,6 +834,13 @@ public class MainServlet extends HttpServlet
         this.getServletContext().setAttribute("TypenAusgabe", liTypenAusgabe);
     }
     
+    /**
+     * Liest benötigte Daten für das dynamisch.jsp aus einem .csv File
+     * @param strPfad
+     * @throws FileNotFoundException
+     * @throws UnsupportedEncodingException
+     * @throws IOException 
+     */
     public void leseOperatorenDynamisch(String strPfad) throws FileNotFoundException, UnsupportedEncodingException, IOException
     {
         File file = new File(strPfad);
