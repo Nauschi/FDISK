@@ -952,15 +952,6 @@ public class DB_Access
             }
         }
 
-//WICHTIG NICHT LÖSCHEN!
-//sqlString = "SELECT adressen.id_adressen \"AdressID\", adressen.strasse \"Strasse\", adressen.nummer \"Nummer\","
-//                + " adressen.stiege \"Stiege\", adressen.plz \"PLZ\", adressen.ort \"Ort\", mitglied.id_personen \"PersID\","
-//                + " mitglied.standesbuchnummer \"STB\", mitglied.dienstgrad \"DGR\","
-//                + " mitglied.titel \"Titel\", mitglied.vorname \"Vorname\", mitglied.zuname \"Zuname\","
-//                + " mitglied.geburtsdatum \"Geburtsdatum\""
-//                + " FROM FDISK.dbo.stmkadressen adressen INNER JOIN FDISK.dbo.stmkmitglieder mitglied"
-//                + " ON (adressen.id_personen = mitglied.id_personen)"
-//                + " WHERE SUBSTRING(mitglied.instanznummer, 0, 3) = '" + intBereichnr + "'";     
         ResultSet rs = prepStat.executeQuery();
 
         String strSTB;
@@ -1093,6 +1084,18 @@ public class DB_Access
         return liKursetaetigkeiten;
     }
 
+    
+    /**
+     * Liefert alle Kurse die in einem bestimmten Zeitraum sstattgefunden haben
+     * als LinkedList zurück
+     * @param intBereichnr
+     * @param intAbschnittnr
+     * @param strFubwehr
+     * @param strVon
+     * @param strBis
+     * @return
+     * @throws Exception 
+     */
     public LinkedList<Kurs> getKursstatistikkurse(int intBereichnr, int intAbschnittnr, String strFubwehr, String strVon, String strBis) throws Exception
     {
         LinkedList<Kurs> liKurse = new LinkedList<>();
@@ -1166,6 +1169,17 @@ public class DB_Access
         return liKurse;
     }
 
+    /**
+     * 
+     * @param strVon
+     * @param strBis
+     * @param intBereichnr
+     * @param intAbschnittnr
+     * @param strFubwehr
+     * @param intIDPerson
+     * @return
+     * @throws Exception 
+     */
     public LinkedList<MitgliedsStunden> getStundenauswertungProMitgliedProInstanz(String strVon, String strBis, int intBereichnr, int intAbschnittnr, String strFubwehr, int intIDPerson) throws Exception
     {
         LinkedList<MitgliedsStunden> liStunden = new LinkedList<>();
@@ -1404,6 +1418,12 @@ public class DB_Access
         return hmMitgliedsMap;
     }
 
+    /**
+     * Setzt einen HTML String mit den Basis Informationen für ein ausgewähltes 
+     * Fahrzeug zusammen und gibt diesen String zurück
+     * @param liFahrzeuge
+     * @return 
+     */
     public String getDetailsFuerFahrtenbuchFahrzeug(LinkedList<Fahrzeug> liFahrzeuge)
     {
         if (liFahrzeuge == null || liFahrzeuge.size() == 0)
@@ -1450,8 +1470,9 @@ public class DB_Access
     }
 
     /**
-     * Gibt alle relevanten Daten (Fahrzeugtyp, Kennzeichen, Baujahr etc...) von
-     * jedem Fahrzeug als LinkedList zurück.
+     * Gibt alle relevanten Daten (Fahrzeugtyp, Kennzeichen, Baujahr etc...) 
+     * inkl. aller Fahrten in einem bestimmten Zeitraum von
+     * einem ausgewählten Fahrzeug als LinkedList zurück.
      *
      * @param intBereichnr
      * @param intAbschnittnr
@@ -1672,6 +1693,16 @@ public class DB_Access
         return liFahrzeuge;
     }
 
+    
+    /**
+     * Gibt alle Kennzeichen für die ausgewählte Instanz als LinkedList zurück
+     * 
+     * @param intBereichnr
+     * @param intAbschnittnr
+     * @param strFubwehr
+     * @return
+     * @throws Exception 
+     */
     public LinkedList<String> getFahrtenbuchKennzeichen(int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception
     {
         LinkedList<String> liKennzeichen = new LinkedList<>();
@@ -1724,6 +1755,7 @@ public class DB_Access
      *
      * @param intBereichnr
      * @param intAbschnittnr
+     * @param strFubwehr
      * @return LinkedList
      * @throws java.lang.Exception
      * @see Mitglied
@@ -1753,10 +1785,7 @@ public class DB_Access
                 prepStat.setString(1, strFubwehr);
             }
         }
-//WICHTIG NICHT LÖSCHEN!
-//sqlString = "SELECT id_personen \"PersID\", standesbuchnummer \"STB\", dienstgrad \"DGR\", titel \"Titel\", vorname \"Vorname\", zuname \"Zuname\", geburtsdatum \"Geburtsdatum\",  datum_abgemeldet \"Datum_abgemeldet\", eintrittsdatum \"Eintrittsdatum\", vordienstzeit \"Vordienstzeit\""
-//                + " FROM FDISK.dbo.stmkmitglieder"
-//                + " WHERE SUBSTRING(instanznummer, 0, 3) = '" + intBereichnr + "'";
+
         ResultSet rs = prepStat.executeQuery();
 
         String strErreichbarkeitsart;
@@ -1893,6 +1922,9 @@ public class DB_Access
     /**
      * Liefert alle Fahrzeuge für einen Leerbericht zurück
      *
+     * @param intBereichnr
+     * @param intAbschnittnr
+     * @param strFubwehr
      * @return
      * @throws Exception
      */
@@ -2028,10 +2060,13 @@ public class DB_Access
     }
 
     /**
-     * Gibt eine Liste mit allen Tätigkeitsberichten zurück
+     * Gibt eine LinkedList mit allen Tätigkeitsberichten zurück
      *
      * @param strVon
      * @param strBis
+     * @param intBereichnr
+     * @param intAbschnittnr
+     * @param strFubwehr
      * @return
      * @throws Exception
      */
@@ -2152,10 +2187,13 @@ public class DB_Access
     }
 
     /**
-     * Gibt eine Liste mit allen Einsatzberichten zurück
+     * Gibt eine LinkedList mit allen Einsatzberichten zurück
      *
      * @param strVon
      * @param strBis
+     * @param intBereichnr
+     * @param intAbschnittnr
+     * @param strFubwehr
      * @return
      * @throws Exception
      */
@@ -2291,10 +2329,13 @@ public class DB_Access
     }
 
     /**
-     * Gibt eine Liste mit allen Übungsberichten zurück
+     * Gibt eine LinkedList mit allen Übungsberichten zurück
      *
      * @param strVon
      * @param strBis
+     * @param intBereichnr
+     * @param intAbschnittnr
+     * @param strFubwehr
      * @return
      * @throws Exception
      */
@@ -2417,7 +2458,7 @@ public class DB_Access
     }
 
     /**
-     * Gibt alle eine List mit allen Berichten zurück
+     * Gibt eine LinkedList mit allen Berichten (Einsatz + Übung + Tätigketi) zurück
      *
      * @param strVon
      * @param strBis
@@ -2436,8 +2477,6 @@ public class DB_Access
 
         StringBuilder sqlString = new StringBuilder();
 
-        // String sqlString = "";
-        //Übungsbericht UNION Einsatzbericht UNION Tätigkeitsbericht 
         if (intAbschnittnr == -2)
         {
             sqlString.append(" SELECT DISTINCT id_berichte 'ID'")
@@ -2693,6 +2732,16 @@ public class DB_Access
         return liBericht;
     }
 
+    /**
+     * Gibt eine LinkedList mit allen Mitgliedern (je nach Berechtigung der Users)
+     * die einsatztaugliche Geräteträger sind, zurück. 
+     * 
+     * @param intBereichnr
+     * @param intAbschnittnr
+     * @param strFubwehr
+     * @return
+     * @throws Exception 
+     */
     public LinkedList<Geraetetraegermitglied> getGereatetraegerMitglied(int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception
     {
         LinkedList<Geraetetraegermitglied> liGeraetetraeger = new LinkedList<>();
