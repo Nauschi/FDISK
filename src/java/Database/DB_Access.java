@@ -4061,6 +4061,37 @@ public class DB_Access
         }
         return strType;
     }
+    
+    public void getRangfolge() throws SQLException, Exception
+    {
+        LinkedList<Mitglied> liMitglieder = new LinkedList<>();
+
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement(); 
+
+        String str = "SELECT [kurzbezeichnung] 'hi' " +
+                        "      ,[langbezeichnung] " +
+                        "      ,[rangfolge]  " +
+                        "      ,[vorschlagen] " +
+                        "      ,[ehrendienstgrad] " +
+                        "      ,[id_dienstgrade] " +
+                        "  FROM [FDISK].[dbo].[stmkdienstgrade] " +
+                        "  ORDER BY rangfolge DESC"; 
+
+
+        ResultSet rs = stat.executeQuery(str); 
+
+        String strSTB;
+        int count = 0; 
+        while (rs.next())
+        {
+            System.out.println(" .replace(/"+rs.getString("hi")+"/i,"+count+")");
+            count++; 
+        }
+
+        connPool.releaseConnection(conn);
+    }
+    
 
     /**
      *
@@ -4166,6 +4197,7 @@ public class DB_Access
 
 // !!!!!!!!!!!!! SUPERDUPER Tests von der allerbesten Yvonne !!!!!!!!!!!!!!!!!!!!!!
 //           
+            theInstance.getRangfolge();
             LinkedList<Geraetetraegermitglied> li = theInstance.getGereatetraegerMitglied(47, 4704, "-2");
             for (Geraetetraegermitglied k : li)
             {
