@@ -268,7 +268,9 @@ public class MainServlet extends HttpServlet
             {
                 session.setAttribute("loggedIn", true);
                 session.setAttribute("intUserID", intIDUser);
+                System.out.println("Bla1");
                 LinkedList<Berechtigung> liBerechtigung = access.getBerechtigungen(intIDUser);
+                System.out.println("Bla2");
                 request.setAttribute("berechtigungen", liBerechtigung);
                 if (liBerechtigung.size() == 1)
                 {
@@ -325,7 +327,17 @@ public class MainServlet extends HttpServlet
      */
     private void generiereBerechtigungVorschau(HttpServletRequest request, HttpServletResponse response, HttpSession session, Berechtigung aktBerechtigung) throws Exception
     {
-        if (aktBerechtigung.getIntIDGruppe() == 5)
+        System.out.println("//////////////////generiereBerechtigungVorschau");
+        if (aktBerechtigung.getIntIDGruppe() == 1)
+        {
+            System.out.println("MainServlet.generiereBerechtigungVorschau: id=5");
+            session.setAttribute("alleBezirke", access.getAllBezirke());
+            session.setAttribute("bezirk", null);
+            session.setAttribute("bezirkName", null);
+            session.setAttribute("abschnitt", null);
+            session.setAttribute("abschnittName", null);
+            session.setAttribute("feuerwehr", null);
+        } else if (aktBerechtigung.getIntIDGruppe() == 5)
         {
             System.out.println("MainServlet.generiereBerechtigungVorschau: id=5");
             session.setAttribute("bezirk", access.getBezirk(aktBerechtigung.getIntBereich()));

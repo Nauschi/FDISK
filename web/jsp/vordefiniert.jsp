@@ -34,7 +34,7 @@
             private int intIDGruppe;
         %>
         <%
-            if(session==null || session.getAttribute("loggedIn")==null)
+            if (session == null || session.getAttribute("loggedIn") == null)
             {
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
@@ -106,7 +106,7 @@
                                 </fieldset>
                             </div>
                             <%
-                                if (intIDGruppe == 5)
+                                if (intIDGruppe == 5 || intIDGruppe == 1)
                                 {
                                     out.println(generiereHiddenBezirkDiv(session));
                                 }
@@ -121,7 +121,7 @@
                             </div>
 
                             <%
-                                if (intIDGruppe == 15 || intIDGruppe == 5)
+                                if (intIDGruppe == 15 || intIDGruppe == 5 || intIDGruppe == 1)
                                 {
                                     out.println(generiereHiddenAbschnittDiv(session));
                                 }
@@ -507,6 +507,117 @@
 </html>
 
 <%!
+    private String generiereHiddenAbschnittDiv(HttpSession session)
+    {
+        String strAusgabe = "";
+        if (intIDGruppe == 15)
+        {
+            Abschnitt abschnitt = (Abschnitt) session.getAttribute("abschnitt");
+            strAusgabe = abschnitt.generiereHiddenDiv();
+        } else if (intIDGruppe == 5)
+        {
+            String strAbschnittDivs = "";
+            Bezirk bezirk = (Bezirk) session.getAttribute("bezirk");
+            LinkedList<Abschnitt> liAbschnitte = bezirk.getLiAbschnitte();
+            for (Abschnitt abschnitt : liAbschnitte)
+            {
+                strAbschnittDivs += abschnitt.generiereHiddenDiv();
+            }
+            strAusgabe = strAbschnittDivs;
+        } else if (intIDGruppe == 1)
+        {
+            String strAbschnittDivs = "";
+            LinkedList<Bezirk> liBezirke = (LinkedList<Bezirk>) session.getAttribute("alleBezirke");
+            for (Bezirk bezirk : liBezirke)
+            {
+                LinkedList<Abschnitt> liAbschnitte = bezirk.getLiAbschnitte();
+                for (Abschnitt abschnitt : liAbschnitte)
+                {
+                    strAbschnittDivs += abschnitt.generiereHiddenDiv();
+                }
+            }
+            strAusgabe = strAbschnittDivs;
+        }
+
+        return strAusgabe;
+    }
+
+    private String generiereHiddenBezirkDiv(HttpSession session)
+    {
+        String strAusgabe = "";
+        if (intIDGruppe == 1)
+        {
+            LinkedList<Bezirk> liBezirke = (LinkedList<Bezirk>) session.getAttribute("alleBezirke");
+            for (Bezirk bezirk : liBezirke)
+            {
+                strAusgabe += bezirk.generiereHiddenDiv();
+            }
+        } else if (intIDGruppe == 5)
+        {
+            Bezirk bezirk = (Bezirk) session.getAttribute("bezirk");
+            strAusgabe += bezirk.generiereHiddenDiv();
+        }
+
+        return strAusgabe;
+    }
+
+    private String generiereBezirk(HttpSession session)
+    {
+        String strAusgabe = "";
+        if (session.getAttribute("alleBezirke") != null)
+        {
+            intIDGruppe = 1;
+            LinkedList<Bezirk> liBezirke = (LinkedList<Bezirk>) session.getAttribute("alleBezirke");
+            for (Bezirk bezirk : liBezirke)
+            {
+                strAusgabe += bezirk.toString();
+            }
+        } else if (session.getAttribute("bezirk") != null)
+        {
+            intIDGruppe = 5;
+            Bezirk bezirk = (Bezirk) session.getAttribute("bezirk");
+            strAusgabe = bezirk.toString();
+        } else
+        {
+            String strName = (String) session.getAttribute("bezirkName");
+            strAusgabe = "<option value='-1'>" + strName + "</option>";
+        }
+        return strAusgabe;
+    }
+
+    private String generiereAbschnitt(HttpSession session)
+    {
+        if (session.getAttribute("abschnitt") != null)
+        {
+            intIDGruppe = 15;
+            Abschnitt abschnitt = (Abschnitt) session.getAttribute("abschnitt");
+            return abschnitt.toString();
+        } else if (intIDGruppe != -1)
+        {
+            return "";
+        } else
+        {
+            String strName = (String) session.getAttribute("abschnittName");
+            return "<option value='-1'>" + strName + "</option>";
+        }
+    }
+
+    private String generiereFeuerwehr(HttpSession session)
+    {
+
+        if (session.getAttribute("feuerwehr") != null)
+        {
+            System.out.println("vordefiniert.generiereFeuerwehr: if");
+            intIDGruppe = 9;
+            Feuerwehr feuerwehr = (Feuerwehr) session.getAttribute("feuerwehr");
+            return feuerwehr.toString();
+        } else
+        {
+            System.out.println("vordefiniert.generiereFeuerwehr: if");
+            return "";
+        }
+    }
+
     private String setzeTablesort(HttpServletRequest request)
     {
         if (request.getParameter("input_aktbericht") != null
@@ -558,77 +669,4 @@
             return "$('.tablesorter').tablesorter();";
         }
     }
-
-    private String generiereHiddenAbschnittDiv(HttpSession session)
-    {
-        if (intIDGruppe == 15)
-        {
-            Abschnitt abschnitt = (Abschnitt) session.getAttribute("abschnitt");
-            return abschnitt.generiereHiddenDiv();
-        } else
-        {
-            String strAbschnittDivs = "";
-            Bezirk bezirk = (Bezirk) session.getAttribute("bezirk");
-            LinkedList<Abschnitt> liAbschnitte = bezirk.getLiAbschnitte();
-            for (Abschnitt abschnitt : liAbschnitte)
-            {
-                strAbschnittDivs += abschnitt.generiereHiddenDiv();
-            }
-            return strAbschnittDivs;
-        }
-    }
-
-    private String generiereHiddenBezirkDiv(HttpSession session)
-    {
-        Bezirk bezirk = (Bezirk) session.getAttribute("bezirk");
-        return bezirk.generiereHiddenDiv();
-    }
-
-    private String generiereBezirk(HttpSession session)
-    {
-        if (session.getAttribute("bezirk") != null)
-        {
-            intIDGruppe = 5;
-            Bezirk bezirk = (Bezirk) session.getAttribute("bezirk");
-            return bezirk.toString();
-        } else
-        {
-            String strName = (String) session.getAttribute("bezirkName");
-            return "<option value='-1'>" + strName + "</option>";
-        }
-    }
-
-    private String generiereAbschnitt(HttpSession session)
-    {
-        if (session.getAttribute("abschnitt") != null)
-        {
-            intIDGruppe = 15;
-            Abschnitt abschnitt = (Abschnitt) session.getAttribute("abschnitt");
-            return abschnitt.toString();
-        } else if (intIDGruppe != -1)
-        {
-            return "";
-        } else
-        {
-            String strName = (String) session.getAttribute("abschnittName");
-            return "<option value='-1'>" + strName + "</option>";
-        }
-    }
-
-    private String generiereFeuerwehr(HttpSession session)
-    {
-
-        if (session.getAttribute("feuerwehr") != null)
-        {
-            System.out.println("vordefiniert.generiereFeuerwehr: if");
-            intIDGruppe = 9;
-            Feuerwehr feuerwehr = (Feuerwehr) session.getAttribute("feuerwehr");
-            return feuerwehr.toString();
-        } else
-        {
-            System.out.println("vordefiniert.generiereFeuerwehr: if");
-            return "";
-        }
-    }
-
 %>
