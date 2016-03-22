@@ -29,7 +29,7 @@
             private int intIDGruppe;
         %>
         <%
-            if(session==null || session.getAttribute("loggedIn")==null)
+            if (session == null || session.getAttribute("loggedIn") == null)
             {
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
@@ -399,7 +399,7 @@
             <div class="header">Hilfe: Ausgabe</div>
             <div class="content">
                 <p>In diesem Bereich können Sie auswählen welche Spalten Sie später in Ihrem Bericht angezeigt haben wollen</p>
-                    Automatisch ausgegeben werden:
+                Automatisch ausgegeben werden:
                 <ul>
                     <li>die Standesbuchnummer</li>
                     <li>der Dienstgrad</li>
@@ -662,10 +662,10 @@
             <%   }
                 if (request.getAttribute("dyn_table") != null && request.getAttribute("dyn_table").toString().split("<tr>").length > 2)
                 {
+                    String strDynHTML = request.getAttribute("dyn_table").toString();
             %>
-                    
-                        $('.sortable').tablesorter({headers: {1: {sorter: 'levels'}}});
-                       // $('.sortable.table').tablesort();
+            <%=initialisiereTableSorter(strDynHTML)%>
+                        // $('.sortable.table').tablesort();
                         $('th').popup();
                         document.getElementById("div_csv_pdf").style.display = "block";
             <%
@@ -694,6 +694,27 @@
 
 
 <%!
+    private String initialisiereTableSorter(String strTable)
+    {
+//        System.out.println(strTable);
+        String output = "$('.sortable').tablesorter({headers: {1: {sorter: 'levels'}";
+        int index1 = strTable.indexOf("<th ");
+        int index2 = strTable.lastIndexOf("</th>");
+        strTable = strTable.substring(index1, index2);
+        strTable = strTable.replaceAll("\\<th[^>]*>", "");
+        String[] strSplit = strTable.split("</th>");
+
+        for (int i = 4; i < strSplit.length; i++)
+        {
+            if(strSplit[i].toUpperCase().contains("DATUM"))
+            {
+                output+=","+i+": {sorter: 'berichtdate'}";
+            }
+        }
+        output += "}});";
+        return output;
+    }
+
     private String leseVorhandeneVorlagen(ServletContext application, HttpSession session)
     {
         String strHTML = "";

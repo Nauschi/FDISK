@@ -1177,10 +1177,16 @@
             },
             format: function(s) { 
               var datum2teile = s.split(' ');
-              var datumteil1 = datum2teile[0].split('.');
-              var datumteil2 = datum2teile[1].split(':');
-              return datumteil1[2]+datumteil1[1]+ datumteil1[0]+datumteil2[0]+datumteil2[1];
-              
+              if(datum2teile.lenght==2)
+              {
+                var datumteil1 = datum2teile[0].split('.');
+                var datumteil2 = datum2teile[1].split(':');
+                return datumteil1[2]+datumteil1[1]+ datumteil1[0]+datumteil2[0]+datumteil2[1];
+              }else
+              {
+                  var datumteil1 = s.split('.');
+                  return datumteil1[2]+datumteil1[1]+datumteil1[0];
+              }
             },
             type: 'text'
           });
