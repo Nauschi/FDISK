@@ -4085,7 +4085,7 @@ public class DB_Access
         int count = 0; 
         while (rs.next())
         {
-            System.out.println(" .replace(/"+rs.getString("hi")+"/i,"+count+")");
+            System.out.println(" .replace(/ "+rs.getString("hi").toUpperCase()+" /i,"+count+")");
             count++; 
         }
 

@@ -445,6 +445,17 @@ public class MainServlet extends HttpServlet
         return;
     }
 
+    /**
+     * Erstellt den HTML String für die zweite Tabelle die bei der Kurstatistik
+     * benötigt wird
+     * @param intBereichnr
+     * @param intAbschnittnr
+     * @param strFubwehr
+     * @param strVonDatum
+     * @param strBisDatum
+     * @return
+     * @throws Exception 
+     */
     private String generiereKurstatistikZusatzTable(int intBereichnr, int intAbschnittnr, String strFubwehr, String strVonDatum, String strBisDatum) throws Exception
     {
         System.out.println("/////////////generiereKurstatistikZusatzTable//////////////");
@@ -464,6 +475,13 @@ public class MainServlet extends HttpServlet
         return strZusatzInfo;
     }
 
+    /**
+     * Erstellt ein Objekt, dass den HTML String für den dynamischen Bericht
+     * enthält
+     * @param request
+     * @param response
+     * @param session 
+     */
     private void generiereDynamischeVorschau(HttpServletRequest request, HttpServletResponse response, HttpSession session)
     {
         System.out.println("//////////////generiereDynamischeVorschau////////////");
@@ -515,6 +533,15 @@ public class MainServlet extends HttpServlet
         }
     }
 
+    /**
+     * Falls der Name der Vorlage noch nicht vorhanden ist
+     * erstellt diese Mehtode eine neue Vorlage
+     * Falls der Name schon vorhanden ist sendet er diese Information
+     * an das dynamisch.jsp in dem die Informationen verwertet werden
+     * @param request
+     * @param response
+     * @param session 
+     */
     private void erstelleDynamischeVorlage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
     {
         System.out.println("/////////////MainServlet.erstelleDynamischeVorlage///////////////");
@@ -553,6 +580,12 @@ public class MainServlet extends HttpServlet
         System.out.println("HS: " + hsVorlagen.size());
     }
 
+    /**
+     * Ladet eine dynamische Vorlage und speichert die notwendigen Daten auf dem request
+     * @param request
+     * @param response
+     * @param session 
+     */
     private void ladeDynamischeVorlage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
     {
         System.out.println("/////////////MainServlet.ladeDynamischeVorlage///////////////");
@@ -571,6 +604,12 @@ public class MainServlet extends HttpServlet
         System.out.println("Li.size: " + liDaten.size());
     }
 
+    /**
+     * Löscht eine dynamische Vorlage von dem ServletContext
+     * @param request
+     * @param response
+     * @param session 
+     */
     private void loescheDynamischeVorlage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
     {
         System.out.println("/////////////MainServlet.loescheDynamischeVorlage///////////////");
@@ -582,6 +621,11 @@ public class MainServlet extends HttpServlet
         sc.setAttribute("userid_" + intUserID + "_vorlagen", hsVorlagen);
     }
 
+    /**
+     * Ladet alle Kenzeichen von der momentanten Sicht
+     * @param request
+     * @throws Exception 
+     */
     private void ladeKennzeichen(HttpServletRequest request) throws Exception
     {
         System.out.println("////////////////Lade Kennzeichen/////////////");
@@ -593,6 +637,11 @@ public class MainServlet extends HttpServlet
         request.setAttribute("select_kennzeichen_liste", liTest);
     }
 
+    /**
+     * Ladet alle Mitglieder von der momentanten Sicht
+     * @param request
+     * @throws Exception 
+     */
     private void ladeMitgliederFuerStundenauswertung(HttpServletRequest request) throws Exception
     {
         System.out.println("////////////////Lade Kennzeichen/////////////");
