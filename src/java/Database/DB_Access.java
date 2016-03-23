@@ -1190,6 +1190,7 @@ public class DB_Access {
                 + "ORDER BY 'PersID'";
 
         ResultSet rs = stat.executeQuery(sqlString);
+        System.out.println("Stundenauswertung: "+sqlString);
 
         boolean exists = false;
 
