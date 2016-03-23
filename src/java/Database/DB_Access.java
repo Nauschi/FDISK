@@ -47,8 +47,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -132,7 +134,7 @@ public class DB_Access {
         LinkedList<LoginMitglied> liLoginBerechtigung = new LinkedList<>();
         liLoginBerechtigung = getLoginBerechtigung(intUserID);
         String fubwehr = getFubwehrForUserID(intUserID);
-        String feuerwehrname = ""; 
+        String feuerwehrname = "";
         String abschnitt;
         String bereich;
 
@@ -1274,8 +1276,8 @@ public class DB_Access {
         return liStunden;
     }
 
-    public HashMap<Integer, String> getMitgliederFuerStundenauswertung(int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
-        HashMap<Integer, String> hmMitgliedsMap = new HashMap<>();
+    public LinkedHashMap<Integer, String> getMitgliederFuerStundenauswertung(int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
+        LinkedHashMap<Integer, String> hmMitgliedsMap = new LinkedHashMap<>();
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
         String sqlString;
@@ -1293,6 +1295,8 @@ public class DB_Access {
                 sqlString += " AND m.instanznummer = '" + strFubwehr + "'";
             }
         }
+        
+        sqlString += " ORDER BY zuname";
 
         ResultSet rs = stat.executeQuery(sqlString);
 
@@ -1312,7 +1316,7 @@ public class DB_Access {
             strZuname = formatiereAusgabe(rs.getString("Zuname"));
             gebDat = new Date(rs.getDate("GebDat").getTime());
 
-            hmMitgliedsMap.put(intPersID, strDGR + " " + strVorname + " " + strZuname + "(" + sdf.format(gebDat) + ")");
+            hmMitgliedsMap.put(intPersID, strDGR + " " + strVorname + " " + strZuname + " (" + sdf.format(gebDat) + ")");
         }
 
         connPool.releaseConnection(conn);

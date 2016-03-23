@@ -4,6 +4,8 @@
     Author     : Marcel Schmidt
 --%>
 
+<%@page import="java.util.LinkedHashMap"%>
+<%@page import="java.util.TreeMap"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.util.Set"%>
 <%@page import="java.util.HashMap"%>
@@ -233,7 +235,7 @@
                                             <%
                                                 if (request.getAttribute("select_mitglieder_hs") != null)
                                                 {
-                                                    HashMap<Integer, String> hsMitglieder = (HashMap<Integer, String>) request.getAttribute("select_mitglieder_hs");
+                                                    LinkedHashMap<Integer, String> hsMitglieder = (LinkedHashMap<Integer, String>) request.getAttribute("select_mitglieder_hs");
                                                     Set<Integer> setKeys = hsMitglieder.keySet();
                                                     for (int key : setKeys)
                                                     {
