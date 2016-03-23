@@ -132,19 +132,25 @@ public class DB_Access {
         LinkedList<LoginMitglied> liLoginBerechtigung = new LinkedList<>();
         liLoginBerechtigung = getLoginBerechtigung(intUserID);
         String fubwehr = getFubwehrForUserID(intUserID);
-        String feuerwehrname;
+        String feuerwehrname = ""; 
         String abschnitt;
         String bereich;
+
+        System.out.println("getBerechtigung: liLoginBerechtigung.getSize() => " + liLoginBerechtigung.size());
+        System.out.println("getBerechtigung: liLoginBerechtigung.getIntIDGruppe() => " + liLoginBerechtigung.getFirst().getIntIDGruppe());
 
         if (!fubwehr.endsWith("601") && fubwehr.length() > 2) {
             feuerwehrname = getNameFuerFubwehr(fubwehr);
         } else {
             int bereichnr = Integer.parseInt(fubwehr.substring(0, 2));
-            LinkedList<Integer> liAbschnittNummern = getAbschnittNummernFuerBereich(bereichnr);
-            LinkedList<String> liFubwehrNummern = getFubwehrNummernFuerAbschnitt(liAbschnittNummern.getFirst());
-            fubwehr = liFubwehrNummern.getFirst();
-            feuerwehrname = getNameFuerFubwehr(liFubwehrNummern.getFirst());
-
+            if (bereichnr < 60) {
+                LinkedList<Integer> liAbschnittNummern = getAbschnittNummernFuerBereich(bereichnr);
+                LinkedList<String> liFubwehrNummern = getFubwehrNummernFuerAbschnitt(liAbschnittNummern.getFirst());
+                fubwehr = liFubwehrNummern.getFirst();
+                feuerwehrname = getNameFuerFubwehr(liFubwehrNummern.getFirst());
+            } else {
+                fubwehr = "-1";
+            }
         }
         abschnitt = getAbschnittsnameFuerFubwehr(fubwehr);
         bereich = getBereichsnameFuerFubwehr(fubwehr);
@@ -175,8 +181,12 @@ public class DB_Access {
                     default:
                         strBerechtigung = "nice! A fail";
                 }
-
-                Berechtigung berechtigung = new Berechtigung(strBerechtigung, loginMitglied.getIntIDGruppe(), fubwehr, getAbschnittsnummerForFubwehr(fubwehr), getBereichsnummerFuerFubwehr(fubwehr), intUserID);
+                Berechtigung berechtigung;
+                if (!fubwehr.equals("-1")) {
+                    berechtigung = new Berechtigung(strBerechtigung, loginMitglied.getIntIDGruppe(), fubwehr, getAbschnittsnummerForFubwehr(fubwehr), getBereichsnummerFuerFubwehr(fubwehr), intUserID);
+                } else {
+                    berechtigung = new Berechtigung(strBerechtigung, loginMitglied.getIntIDGruppe(), fubwehr, 4001, 40, intUserID);
+                }
                 liBerechtigungen.add(berechtigung);
             }
         }
@@ -1190,7 +1200,7 @@ public class DB_Access {
                 + "ORDER BY 'PersID'";
 
         ResultSet rs = stat.executeQuery(sqlString);
-        System.out.println("Stundenauswertung: "+sqlString);
+        System.out.println("Stundenauswertung: " + sqlString);
 
         boolean exists = false;
 

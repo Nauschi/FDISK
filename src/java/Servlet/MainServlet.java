@@ -330,7 +330,7 @@ public class MainServlet extends HttpServlet
         System.out.println("//////////////////generiereBerechtigungVorschau");
         if (aktBerechtigung.getIntIDGruppe() == 1)
         {
-            System.out.println("MainServlet.generiereBerechtigungVorschau: id=5");
+            System.out.println("MainServlet.generiereBerechtigungVorschau: id=1");
             session.setAttribute("alleBezirke", access.getAllBezirke());
             session.setAttribute("bezirk", null);
             session.setAttribute("bezirkName", null);
