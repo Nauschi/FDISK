@@ -3457,6 +3457,14 @@ public class DB_Access
         LinkedList<Integer> liDoppelteAuszeichnungsart = new LinkedList<>();
         LinkedList<Integer> liDoppelteAuszeichnungsstufe = new LinkedList<>();
         LinkedList<Integer> liDoppelteDienstgrad = new LinkedList<>();
+        LinkedList<Integer> liDoppelteErreichbarkeitsart = new LinkedList<>();
+        LinkedList<Integer> liDoppelteFuehrerscheinklasse = new LinkedList<>();
+        LinkedList<Integer> liDoppelteFunktionsbezeichnung = new LinkedList<>();
+        LinkedList<Integer> liDoppelteFunktionsinstanz = new LinkedList<>();
+        LinkedList<Integer> liDoppelteKursbezeichnung = new LinkedList<>();
+        LinkedList<Integer> liDoppelteLeistungsabzeichenStufe = new LinkedList<>();
+        LinkedList<Integer> liDoppelteLeistungsabzeichenbezeichnung = new LinkedList<>();
+        LinkedList<Integer> liDoppelteUntersuchungsart = new LinkedList<>();
 
         int intRows = strEingabe.length % 6;
 
@@ -3466,6 +3474,7 @@ public class DB_Access
         {
             for (int j = 0; j < 6; j++)
             {
+                System.out.println("TESET: " + strEingabe[i][1].toUpperCase());
                 switch (strEingabe[i][1].toUpperCase())
                 {
                     case "AUSZEICHNUNGSART":
@@ -3513,6 +3522,134 @@ public class DB_Access
                             if (!liDoppelteDienstgrad.contains(i))
                             {
                                 liDoppelteDienstgrad.add(i);
+                            }
+                        }
+                        break;
+                    case "ERREICHBARKEITSART":
+                        if (i > 0 && (strEingabe[i - 1][5].equals("UND") || strEingabe[i - 1][5].equals("UND NICHT")))
+                        {
+                            if (!liDoppelteErreichbarkeitsart.contains(i))
+                            {
+                                liDoppelteErreichbarkeitsart.add(i);
+                            }
+
+                        } else if (i == 0)
+                        {
+                            if (!liDoppelteErreichbarkeitsart.contains(i))
+                            {
+                                liDoppelteErreichbarkeitsart.add(i);
+                            }
+                        }
+                        break;
+                    case "FÜHRERSCHEINKLASSE":
+                        if (i > 0 && (strEingabe[i - 1][5].equals("UND") || strEingabe[i - 1][5].equals("UND NICHT")))
+                        {
+                            if (!liDoppelteFuehrerscheinklasse.contains(i))
+                            {
+                                liDoppelteFuehrerscheinklasse.add(i);
+                            }
+
+                        } else if (i == 0)
+                        {
+                            if (!liDoppelteFuehrerscheinklasse.contains(i))
+                            {
+                                liDoppelteFuehrerscheinklasse.add(i);
+                            }
+                        }
+                        break;
+                    case "FUNKTIONSBEZEICHNUNG":
+                        if (i > 0 && (strEingabe[i - 1][5].equals("UND") || strEingabe[i - 1][5].equals("UND NICHT")))
+                        {
+                            if (!liDoppelteFunktionsbezeichnung.contains(i))
+                            {
+                                liDoppelteFunktionsbezeichnung.add(i);
+                            }
+
+                        } else if (i == 0)
+                        {
+                            if (!liDoppelteFunktionsbezeichnung.contains(i))
+                            {
+                                liDoppelteFunktionsbezeichnung.add(i);
+                            }
+                        }
+                        break;
+                    case "FUNKTIONSINSTANZ":
+                        if (i > 0 && (strEingabe[i - 1][5].equals("UND") || strEingabe[i - 1][5].equals("UND NICHT")))
+                        {
+                            if (!liDoppelteFunktionsinstanz.contains(i))
+                            {
+                                liDoppelteFunktionsinstanz.add(i);
+                            }
+
+                        } else if (i == 0)
+                        {
+                            if (!liDoppelteFunktionsinstanz.contains(i))
+                            {
+                                liDoppelteFunktionsinstanz.add(i);
+                            }
+                        }
+                        break;
+                    case "KURSBEZEICHNUNG":
+                        if (i > 0 && (strEingabe[i - 1][5].equals("UND") || strEingabe[i - 1][5].equals("UND NICHT")))
+                        {
+                            if (!liDoppelteKursbezeichnung.contains(i))
+                            {
+                                liDoppelteKursbezeichnung.add(i);
+                            }
+
+                        } else if (i == 0)
+                        {
+                            if (!liDoppelteKursbezeichnung.contains(i))
+                            {
+                                liDoppelteKursbezeichnung.add(i);
+                            }
+                        }
+                        break;
+                    case "LEISTUNGSABZEICHEN STUFE":
+                        if (i > 0 && (strEingabe[i - 1][5].equals("UND") || strEingabe[i - 1][5].equals("UND NICHT")))
+                        {
+                            if (!liDoppelteLeistungsabzeichenStufe.contains(i))
+                            {
+                                liDoppelteLeistungsabzeichenStufe.add(i);
+                            }
+
+                        } else if (i == 0)
+                        {
+                            if (!liDoppelteLeistungsabzeichenStufe.contains(i))
+                            {
+                                liDoppelteLeistungsabzeichenStufe.add(i);
+                            }
+                        }
+                        break;
+                    case "LEISTUNGSABZEICHENBEZEICHNUNG":
+                        if (i > 0 && (strEingabe[i - 1][5].equals("UND") || strEingabe[i - 1][5].equals("UND NICHT")))
+                        {
+                            if (!liDoppelteLeistungsabzeichenbezeichnung.contains(i))
+                            {
+                                liDoppelteLeistungsabzeichenbezeichnung.add(i);
+                            }
+
+                        } else if (i == 0)
+                        {
+                            if (!liDoppelteLeistungsabzeichenbezeichnung.contains(i))
+                            {
+                                liDoppelteLeistungsabzeichenbezeichnung.add(i);
+                            }
+                        }
+                        break;
+                    case "UNTERSUCHUNGSART":
+                        if (i > 0 && (strEingabe[i - 1][5].equals("UND") || strEingabe[i - 1][5].equals("UND NICHT")))
+                        {
+                            if (!liDoppelteUntersuchungsart.contains(i))
+                            {
+                                liDoppelteUntersuchungsart.add(i);
+                            }
+
+                        } else if (i == 0)
+                        {
+                            if (!liDoppelteUntersuchungsart.contains(i))
+                            {
+                                liDoppelteUntersuchungsart.add(i);
                             }
                         }
                         break;
@@ -3596,21 +3733,15 @@ public class DB_Access
             }
         }
 
-        //dann steht nur eins drin, also braucht man keine komplizierten JoinBedingungen (z.b. auszm1 statt nur auszm)
-        if (liDoppelteAuszeichnungsart.size() == 1)
-        {
-            liDoppelteAuszeichnungsart.clear();
-        }
-        if (liDoppelteAuszeichnungsstufe.size() == 1)
-        {
-            liDoppelteAuszeichnungsstufe.clear();
-        }
-        if (liDoppelteDienstgrad.size() == 1)
-        {
-            liDoppelteDienstgrad.clear();
-        }
         //damit ich nicht zwei verschiedene listen für den gleichen Join habe
         liDoppelteAuszeichnungsart.addAll(liDoppelteAuszeichnungsstufe);
+        liDoppelteFunktionsbezeichnung.addAll(liDoppelteFunktionsinstanz);
+        liDoppelteLeistungsabzeichenStufe.addAll(liDoppelteLeistungsabzeichenbezeichnung);
+
+        for (int i = 0; i < liDoppelteLeistungsabzeichenbezeichnung.size(); i++)
+        {
+            System.out.println(liDoppelteLeistungsabzeichenbezeichnung.get(i));
+        }
 
         for (int i = 0; i < intRows; i++)
         {
@@ -3768,34 +3899,97 @@ public class DB_Access
 
         if (boLeistungsabzeichen == true)
         {
-            sbSqlString.append(" INNER JOIN FDISK.dbo.stmkleistungsabzeichenmitglieder lam ON(m.id_personen = lam.id_personen) ")
-                    .append(" INNER JOIN FDISK.dbo.stmkleistungsabzeichen la ON(la.id_leistungsabzeichen = lam.id_leistungsabzeichen) ");
+            if (liDoppelteLeistungsabzeichenStufe.size() > 0)
+            {
+                for (Integer i : liDoppelteLeistungsabzeichenStufe)
+                {
+                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkleistungsabzeichenmitglieder lam" + i + " ON(m.id_personen = lam" + i + ".id_personen) ")
+                            .append(" INNER JOIN FDISK.dbo.stmkleistungsabzeichen la" + i + " ON(la" + i + ".id_leistungsabzeichen = lam" + i + ".id_leistungsabzeichen) ");
+                }
+
+            } else
+            {
+                sbSqlString.append(" INNER JOIN FDISK.dbo.stmkleistungsabzeichenmitglieder lam ON(m.id_personen = lam.id_personen) ")
+                        .append(" INNER JOIN FDISK.dbo.stmkleistungsabzeichen la ON(la.id_leistungsabzeichen = lam.id_leistungsabzeichen) ");
+            }
+
         }
 
         if (boKurse == true)
         {
-            sbSqlString.append(" INNER JOIN FDISK.dbo.stmkkursemitglieder km ON(m.id_personen = km.id_mitgliedschaften) ")
-                    .append(" INNER JOIN FDISK.dbo.stmkkurse k ON (k.id_kurse = km.id_kurse) ");
+            if (liDoppelteKursbezeichnung.size() > 0)
+            {
+                for (Integer i : liDoppelteKursbezeichnung)
+                {
+                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkkursemitglieder km" + i + " ON(m.id_personen = km" + i + ".id_mitgliedschaften) ")
+                            .append(" INNER JOIN FDISK.dbo.stmkkurse k" + i + " ON (k" + i + ".id_kurse = km" + i + ".id_kurse) ");
+                }
+
+            } else
+            {
+                sbSqlString.append(" INNER JOIN FDISK.dbo.stmkkursemitglieder km ON(m.id_personen = km.id_mitgliedschaften) ")
+                        .append(" INNER JOIN FDISK.dbo.stmkkurse k ON (k.id_kurse = km.id_kurse) ");
+            }
+
         }
         if (boErreichbarkeiten == true)
         {
-            sbSqlString.append(" INNER JOIN FDISK.dbo.stmkerreichbarkeiten e ON(m.id_personen = e.id_personen) ");
+            if (liDoppelteErreichbarkeitsart.size() > 0)
+            {
+                for (Integer i : liDoppelteErreichbarkeitsart)
+                {
+                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkerreichbarkeiten e" + i + " ON(m.id_personen = e" + i + ".id_personen) ");
+                }
+
+            } else
+            {
+                sbSqlString.append(" INNER JOIN FDISK.dbo.stmkerreichbarkeiten e ON(m.id_personen = e.id_personen) ");
+            }
         }
 
         if (boFahrgenehmigungen == true)
         {
-            sbSqlString.append(" INNER JOIN FDISK.dbo.stmkgesetzl_fahrgenehmigungen gf ON(m.id_personen = gf.fdisk_personen_id) ");
+            if (liDoppelteFuehrerscheinklasse.size() > 0)
+            {
+                for (Integer i : liDoppelteFuehrerscheinklasse)
+                {
+                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkgesetzl_fahrgenehmigungen gf" + i + " ON(m.id_personen = gf" + i + ".fdisk_personen_id) ");
+                }
+            } else
+            {
+                sbSqlString.append(" INNER JOIN FDISK.dbo.stmkgesetzl_fahrgenehmigungen gf ON(m.id_personen = gf.fdisk_personen_id) ");
+            }
         }
 
         if (boFunktionen == true)
         {
-            sbSqlString.append(" INNER JOIN FDISK.dbo.stmkfunktionenmitglieder fm ON(m.id_personen = fm.id_mitgliedschaften) ")
-                    .append(" INNER JOIN FDISK.dbo.stmkfunktionen f ON(f.id_funktionen = fm.id_funktionen) ");
+            if (liDoppelteFunktionsbezeichnung.size() > 0)
+            {
+                for (Integer i : liDoppelteFunktionsbezeichnung)
+                {
+                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkfunktionenmitglieder fm" + i + " ON(m.id_personen = fm" + i + ".id_mitgliedschaften) ")
+                            .append(" INNER JOIN FDISK.dbo.stmkfunktionen f" + i + " ON(f" + i + ".id_funktionen = fm" + i + ".id_funktionen) ");
+                }
+            } else
+            {
+                sbSqlString.append(" INNER JOIN FDISK.dbo.stmkfunktionenmitglieder fm ON(m.id_personen = fm.id_mitgliedschaften) ")
+                        .append(" INNER JOIN FDISK.dbo.stmkfunktionen f ON(f.id_funktionen = fm.id_funktionen) ");
+            }
         }
 
         if (boUntersuchungen == true)
         {
-            sbSqlString.append(" INNER JOIN FDISK.dbo.stmkuntersuchungenmitglieder u ON(m.id_personen = u.id_mitgliedschaften) ");
+            if (liDoppelteUntersuchungsart.size() > 0)
+            {
+                for (Integer i : liDoppelteUntersuchungsart)
+                {
+                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkuntersuchungenmitglieder u"+i+" ON(m.id_mitgliedschaften = u"+i+".id_mitgliedschaften) ");
+                }
+            } else
+            {
+                sbSqlString.append(" INNER JOIN FDISK.dbo.stmkuntersuchungenmitglieder u ON(m.id_mitgliedschaften = u.id_mitgliedschaften) ");
+            }
+
         }
 
         if (boVordienstzeit == true)
@@ -3865,20 +4059,53 @@ public class DB_Access
                         sbSqlString.append(strColWhere).append(" ").append(strColSymbol).append(" CAST('").append(strColValue).append("' AS datetime) ").append(strColLink).append(" ");
                         break;
                     case "varchar":
-                        System.out.println("VARCHAR");
                         if (liDoppelteAuszeichnungsart.contains(i))
                         {
-                            sbSqlString.append("UPPER(").append("ausz" + i + "." + strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
+                            sbSqlString.append("UPPER(").append("ausz").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
                             break;
 
                         } else if (liDoppelteDienstgrad.contains(i))
                         {
-                            sbSqlString.append("UPPER(").append("m" + i + "." + strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
+                            sbSqlString.append("UPPER(").append("m").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
+                            break;
+                        } else if (liDoppelteErreichbarkeitsart.contains(i))
+                        {
+                            sbSqlString.append("UPPER(").append("e").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
+                            break;
+                        } else if (liDoppelteFuehrerscheinklasse.contains(i))
+                        {
+                            sbSqlString.append("UPPER(").append("gf").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
+                            break;
+                        } else if (liDoppelteFunktionsbezeichnung.contains(i))
+                        {
+                            if (strColWhere.contains("f."))
+                            {
+                                sbSqlString.append("UPPER(").append("f").append(i).append(".").append(strColWhere.substring(2)).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
+
+                            } else
+                            {
+                                sbSqlString.append("UPPER(").append("f").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
+
+                            }
+                            break;
+
+                        } else if (liDoppelteKursbezeichnung.contains(i))
+                        {
+                            sbSqlString.append("UPPER(").append("k").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
+                            break;
+                        } else if (liDoppelteLeistungsabzeichenStufe.contains(i))
+                        {
+                            sbSqlString.append("UPPER(").append("la").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
+                            break;
+                        }
+                        else if (liDoppelteUntersuchungsart.contains(i))
+                        {
+                            sbSqlString.append("UPPER(").append("u").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
                             break;
                         } 
                         else
                         {
-                            System.out.println("ELSE! NEIN!!! :(");
+                            System.out.println("ELSE");
                             sbSqlString.append("UPPER(").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
                             break;
                         }
@@ -3926,7 +4153,6 @@ public class DB_Access
 
         System.out.println("SQLSTRING: " + sbSqlString);
         StringBuilder sbHtml = createDynamicReportGeneratorOutput(sbSqlString.toString(), strSelectedCols);
-        sbHtml.insert(0, sbSqlString.toString() + "\n");
         return sbHtml;
     }
 
@@ -4176,6 +4402,7 @@ public class DB_Access
         //Tabelle stmkleistungsabzeichen bzw. stmkleistungsabzeichenmitglieder
         haNamesTypes.put("k.Datum", "datetime");
         haNamesTypes.put("kursbezeichnung", "varchar");
+        haNamesTypes.put("bezeichnung", "varchar");
 
         //Tabelle stmkerreichbarkeiten
         haNamesTypes.put("code", "varchar");
