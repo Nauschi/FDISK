@@ -78,8 +78,9 @@ public class MainServlet extends HttpServlet
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP <code>GET</code> method.
-     * Wird nur zu Beginn verwendet und leitet zum Login.jsp weiter
+     * Handles the HTTP <code>GET</code> method. Wird nur zu Beginn verwendet
+     * und leitet zum Login.jsp weiter
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -104,9 +105,9 @@ public class MainServlet extends HttpServlet
     }
 
     /**
-     * Handles the HTTP <code>POST</code> method.
-     * Je nach auf dem request vorhandene Parameter werden
-     * Methoden aufgerufen
+     * Handles the HTTP <code>POST</code> method. Je nach auf dem request
+     * vorhandene Parameter werden Methoden aufgerufen
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -222,7 +223,7 @@ public class MainServlet extends HttpServlet
                 {
                     System.out.println("session deleted");
                 }
-                
+
                 request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
                 return;
             }
@@ -232,16 +233,16 @@ public class MainServlet extends HttpServlet
     }
 
     /**
-     * Überprüft die eingegebenen Login Daten:
-     * Falls die Daten korrekt sind werden die Berechtigungen 
-     * geladen und zum Login.jsp weiter geletet bzw. falls der User nur
-     * eine Berechtigung hat gleich zum vordfiniert.jsp
-     * Falls die Daten inkorrekt sind wird eine Error Nachricht auf dem request
+     * Überprüft die eingegebenen Login Daten: Falls die Daten korrekt sind
+     * werden die Berechtigungen geladen und zum Login.jsp weiter geletet bzw.
+     * falls der User nur eine Berechtigung hat gleich zum vordfiniert.jsp Falls
+     * die Daten inkorrekt sind wird eine Error Nachricht auf dem request
      * gespeichert und zurück zum Login.jsp geleitet
+     *
      * @param request
      * @param response
      * @throws ServletException
-     * @throws IOException 
+     * @throws IOException
      */
     private void loginUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
@@ -295,10 +296,11 @@ public class MainServlet extends HttpServlet
 
     /**
      * Holt sich die benötigten Informationen zur ausgewählten Berechtigung
+     *
      * @param request
      * @param response
      * @param session
-     * @throws Exception 
+     * @throws Exception
      */
     private void getBerechtigungsinformationen(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception
     {
@@ -318,11 +320,12 @@ public class MainServlet extends HttpServlet
 
     /**
      * Setz je nach ausgewählter Sicht die Berechtigungen
+     *
      * @param request
      * @param response
      * @param session
      * @param aktBerechtigung
-     * @throws Exception 
+     * @throws Exception
      */
     private void generiereBerechtigungVorschau(HttpServletRequest request, HttpServletResponse response, HttpSession session, Berechtigung aktBerechtigung) throws Exception
     {
@@ -374,12 +377,13 @@ public class MainServlet extends HttpServlet
     }
 
     /**
-     * Lädt je nach im request vorhandenen Bericht die benötigten
-     * Daten und speichert sie auf dem request
+     * Lädt je nach im request vorhandenen Bericht die benötigten Daten und
+     * speichert sie auf dem request
+     *
      * @param request
      * @param response
      * @throws ServletException
-     * @throws IOException 
+     * @throws IOException
      */
     private void generiereVorschau(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
@@ -468,6 +472,11 @@ public class MainServlet extends HttpServlet
                 String strBisDatum = request.getParameter("input_bis_datum");
 
                 String strKennzeichen1 = request.getParameter("input_kennzeichen");
+                if (strKennzeichen1.trim().isEmpty())
+                {
+                    request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
+                    return;
+                }
 //                System.out.println("Kennzeichen: " + strKennzeichen1);
 //                String strKennzeichen = "HB-2-FXE";
 
@@ -497,13 +506,14 @@ public class MainServlet extends HttpServlet
     /**
      * Erstellt den HTML String für die zweite Tabelle die bei der Kurstatistik
      * benötigt wird
+     *
      * @param intBereichnr
      * @param intAbschnittnr
      * @param strFubwehr
      * @param strVonDatum
      * @param strBisDatum
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     private String generiereKurstatistikZusatzTable(int intBereichnr, int intAbschnittnr, String strFubwehr, String strVonDatum, String strBisDatum) throws Exception
     {
@@ -527,9 +537,10 @@ public class MainServlet extends HttpServlet
     /**
      * Erstellt ein Objekt, dass den HTML String für den dynamischen Bericht
      * enthält
+     *
      * @param request
      * @param response
-     * @param session 
+     * @param session
      */
     private void generiereDynamischeVorschau(HttpServletRequest request, HttpServletResponse response, HttpSession session)
     {
@@ -583,13 +594,14 @@ public class MainServlet extends HttpServlet
     }
 
     /**
-     * Falls der Name der Vorlage noch nicht vorhanden ist
-     * erstellt diese Mehtode eine neue Vorlage
-     * Falls der Name schon vorhanden ist sendet er diese Information
-     * an das dynamisch.jsp in dem die Informationen verwertet werden
+     * Falls der Name der Vorlage noch nicht vorhanden ist erstellt diese
+     * Mehtode eine neue Vorlage Falls der Name schon vorhanden ist sendet er
+     * diese Information an das dynamisch.jsp in dem die Informationen verwertet
+     * werden
+     *
      * @param request
      * @param response
-     * @param session 
+     * @param session
      */
     private void erstelleDynamischeVorlage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
     {
@@ -630,10 +642,12 @@ public class MainServlet extends HttpServlet
     }
 
     /**
-     * Ladet eine dynamische Vorlage und speichert die notwendigen Daten auf dem request
+     * Ladet eine dynamische Vorlage und speichert die notwendigen Daten auf dem
+     * request
+     *
      * @param request
      * @param response
-     * @param session 
+     * @param session
      */
     private void ladeDynamischeVorlage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
     {
@@ -655,9 +669,10 @@ public class MainServlet extends HttpServlet
 
     /**
      * Löscht eine dynamische Vorlage von dem ServletContext
+     *
      * @param request
      * @param response
-     * @param session 
+     * @param session
      */
     private void loescheDynamischeVorlage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
     {
@@ -672,8 +687,9 @@ public class MainServlet extends HttpServlet
 
     /**
      * Ladet alle Kenzeichen von der momentanten Sicht
+     *
      * @param request
-     * @throws Exception 
+     * @throws Exception
      */
     private void ladeKennzeichen(HttpServletRequest request) throws Exception
     {
@@ -688,8 +704,9 @@ public class MainServlet extends HttpServlet
 
     /**
      * Ladet alle Mitglieder von der momentanten Sicht
+     *
      * @param request
-     * @throws Exception 
+     * @throws Exception
      */
     private void ladeMitgliederFuerStundenauswertung(HttpServletRequest request) throws Exception
     {
@@ -713,8 +730,9 @@ public class MainServlet extends HttpServlet
 
     /**
      * Wird beim erstmaligen Starten des Servlets aufgerufen
+     *
      * @param config
-     * @throws ServletException 
+     * @throws ServletException
      */
     @Override
     public void init(ServletConfig config) throws ServletException
@@ -759,7 +777,7 @@ public class MainServlet extends HttpServlet
 
     /**
      * Liest Informationen über Berichte von einem .csv File
-     * 
+     *
      * @throws UnsupportedEncodingException
      * @throws IOException
      */
@@ -797,10 +815,11 @@ public class MainServlet extends HttpServlet
 
     /**
      * Liest benötigte Daten für das dynamisch.jsp aus einem .csv File
+     *
      * @param strPfad
      * @throws FileNotFoundException
      * @throws UnsupportedEncodingException
-     * @throws IOException 
+     * @throws IOException
      */
     public void leseTypenDynamisch(String strPfad) throws FileNotFoundException, UnsupportedEncodingException, IOException
     {
@@ -820,13 +839,14 @@ public class MainServlet extends HttpServlet
 
         this.getServletContext().setAttribute("Typen", liTypen);
     }
-    
+
     /**
      * Liest benötigte Daten für das dynamisch.jsp aus einem .csv File
+     *
      * @param strPfad
      * @throws FileNotFoundException
      * @throws UnsupportedEncodingException
-     * @throws IOException 
+     * @throws IOException
      */
     public void leseTypenAusgabeDynamisch(String strPfad) throws FileNotFoundException, UnsupportedEncodingException, IOException
     {
@@ -846,13 +866,14 @@ public class MainServlet extends HttpServlet
 
         this.getServletContext().setAttribute("TypenAusgabe", liTypenAusgabe);
     }
-    
+
     /**
      * Liest benötigte Daten für das dynamisch.jsp aus einem .csv File
+     *
      * @param strPfad
      * @throws FileNotFoundException
      * @throws UnsupportedEncodingException
-     * @throws IOException 
+     * @throws IOException
      */
     public void leseOperatorenDynamisch(String strPfad) throws FileNotFoundException, UnsupportedEncodingException, IOException
     {

@@ -216,7 +216,7 @@
                                     <legend><b>Kennzeichen</b></legend>
                                     <div class="ui search">
                                         <div class="ui input" style="width: 100%">
-                                            <input id="input_kennzeichen" class="prompt" style="border-radius: .28571429rem;" name="input_kennzeichen" placeholder="Kennzeichen" type="text" 
+                                            <input id="input_kennzeichen" class="prompt" style="border-radius: .28571429rem;" name="input_kennzeichen" placeholder="Kennzeichen" autocomplete="off" type="text" 
                                                    <%=request.getParameter("input_kennzeichen") != null ? "value='" + request.getParameter("input_kennzeichen") + "'" : ""%>>
                                             <button type="submit" class="ui button styleGruen" name="button_ladeKennzeichen" title="Lade Kennzeichen">+</button>
                                         </div>
