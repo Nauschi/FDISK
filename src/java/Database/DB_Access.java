@@ -282,14 +282,15 @@ public class DB_Access {
         int intBezirksnummer;
         String strBezirksname;
 
-        LinkedList<Integer> liAbschnittnummern = new LinkedList();
-        LinkedList<Abschnitt> liAbschnitte = new LinkedList<>();
+        LinkedList<Integer> liAbschnittnummern;
 
         while (rs.next()) {
-
+            LinkedList<Abschnitt> liAbschnitte = new LinkedList<>();
             intBezirksnummer = rs.getInt("Bezirksnummer");
             strBezirksname = rs.getString("Bezirksname");
+
             liAbschnittnummern = getAbschnittNummernFuerBereich(intBezirksnummer);
+            System.out.println("ABSCHNITTNUMMERN SIZE: " + liAbschnittnummern.size());
             for (Integer abschnittnummer : liAbschnittnummern) {
                 liAbschnitte.add(getAbschnitt(abschnittnummer));
             }
@@ -4022,10 +4023,9 @@ public class DB_Access {
         LinkedList<Mitglied> liMitglied = new LinkedList<>();
 
         //liMitglied = theInstance.getEinfacheMitgliederliste(40, 4001, "-2");
-        int i = 0;
-        for (Mitglied mitglied : liMitglied) {
-            //   System.out.println(mitglied.toString());
-            i++;
+        LinkedList<Bezirk> liBezirke = theInstance.getAllBezirke();
+        for (Bezirk bezirk : liBezirke) {
+            System.out.println("Bezirk: " + bezirk.getStrName() + " / size Abschnitt: " + bezirk.getLiAbschnitte().size());
         }
         // System.out.println("COUNT: " + i);
 
