@@ -308,7 +308,6 @@ public class MainServlet extends HttpServlet
         Berechtigung aktBerechtigung = null;
         for (Berechtigung berechtigung : liBerechtigungen)
         {
-            System.out.println(berechtigung.getStrBerechtigung() + " equals " + strBerechtigung);
             if (strBerechtigung.equals(berechtigung.getStrBerechtigung()))
             {
                 aktBerechtigung = berechtigung;
@@ -330,6 +329,7 @@ public class MainServlet extends HttpServlet
         System.out.println("//////////////////generiereBerechtigungVorschau");
         if (aktBerechtigung.getIntIDGruppe() == 1)
         {
+            System.out.println("//////////////////generiereBerechtigungVorschau in 1");
             System.out.println("MainServlet.generiereBerechtigungVorschau: id=1");
             session.setAttribute("alleBezirke", access.getAllBezirke());
             session.setAttribute("bezirk", null);
@@ -369,6 +369,7 @@ public class MainServlet extends HttpServlet
             session.setAttribute("abschnittName", null);
             session.setAttribute("feuerwehr", null);
         }
+        System.out.println("//////////////////generiereBerechtigungVorschau forward");
         request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
     }
 

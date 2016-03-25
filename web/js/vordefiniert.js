@@ -260,8 +260,9 @@ function bezirkChanged(select_bezirk, strLetzteAbschnitt)
     //alert("Bezirk_value: "+select_bezirk.value);
     if (select_bezirk.value != -1 && select_bezirk.value != -2)
     {
-        //alert("IN bezirk changed");
+//        alert("IN bezirk changed");
         var strAbschnittOptions = document.getElementById("div_" + select_bezirk.value).innerHTML;
+//        alert(strAbschnittOptions);
         if (strLetzteAbschnitt != null)
         {
             strAbschnittOptions = strAbschnittOptions.replace('value="' + strLetzteAbschnitt + '"', 'value="' + strLetzteAbschnitt + '" selected');
