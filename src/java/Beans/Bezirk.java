@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -12,7 +13,7 @@ import java.util.Objects;
  *
  * @author Corinna
  */
-public class Bezirk
+public class Bezirk implements Serializable
 {
 
     private String strName;
@@ -68,6 +69,12 @@ public class Bezirk
     public String toString()
     {
         String strHTML = "<option value='" + intBezirksNummer + "'>" + strName+"</option>";
+        return strHTML;
+    }
+    
+    public String toSelectedString()
+    {
+        String strHTML = "<option value='" + intBezirksNummer + "' selected>" + strName+"</option>";
         return strHTML;
     }
     

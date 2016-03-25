@@ -5,13 +5,14 @@
  */
 package Beans;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author Corinna
  */
-public class Feuerwehr
+public class Feuerwehr implements Serializable
 {
     private String strName;
     private String strFeuerwehrNummer;

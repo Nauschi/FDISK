@@ -127,12 +127,12 @@
                 <fieldset id="fieldset_bezirk">
                     <legend><b>Bezirk</b></legend>
                     <select  name="select_bezirk"  class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
-                        <%=generiereBezirk(session)%>
+                        <%=generiereBezirk(session,request)%>
                     </select>
                 </fieldset>
             </div>
             <%
-                if (intIDGruppe == 5)
+                if (intIDGruppe == 5||intIDGruppe==1)
                 {
                     out.println(generiereHiddenBezirkDiv(session));
                 }
@@ -147,7 +147,7 @@
             </div>
 
             <%
-                if (intIDGruppe == 15 || intIDGruppe == 5)
+                if (intIDGruppe == 15 || intIDGruppe == 5||intIDGruppe==1)
                 {
                     out.println(generiereHiddenAbschnittDiv(session));
                 }
@@ -763,11 +763,12 @@
 
     private String generiereHiddenAbschnittDiv(HttpSession session)
     {
+        String strAusgabe = "";
         if (intIDGruppe == 15)
         {
             Abschnitt abschnitt = (Abschnitt) session.getAttribute("abschnitt");
-            return abschnitt.generiereHiddenDiv();
-        } else
+            strAusgabe = abschnitt.generiereHiddenDiv();
+        } else if (intIDGruppe == 5)
         {
             String strAbschnittDivs = "";
             Bezirk bezirk = (Bezirk) session.getAttribute("bezirk");
@@ -776,28 +777,79 @@
             {
                 strAbschnittDivs += abschnitt.generiereHiddenDiv();
             }
-            return strAbschnittDivs;
+            strAusgabe = strAbschnittDivs;
+        } else if (intIDGruppe == 1)
+        {
+            String strAbschnittDivs = "";
+            LinkedList<Bezirk> liBezirke = (LinkedList<Bezirk>) session.getAttribute("alleBezirke");
+            for (Bezirk bezirk : liBezirke)
+            {
+                LinkedList<Abschnitt> liAbschnitte = bezirk.getLiAbschnitte();
+                for (Abschnitt abschnitt : liAbschnitte)
+                {
+                    strAbschnittDivs += abschnitt.generiereHiddenDiv();
+                }
+            }
+            strAusgabe = strAbschnittDivs;
         }
+
+        return strAusgabe;
     }
 
     private String generiereHiddenBezirkDiv(HttpSession session)
     {
-        Bezirk bezirk = (Bezirk) session.getAttribute("bezirk");
-        return bezirk.generiereHiddenDiv();
+        String strAusgabe = "";
+        if (intIDGruppe == 1)
+        {
+            LinkedList<Bezirk> liBezirke = (LinkedList<Bezirk>) session.getAttribute("alleBezirke");
+            for (Bezirk bezirk : liBezirke)
+            {
+                strAusgabe += bezirk.generiereHiddenDiv();
+            }
+        } else if (intIDGruppe == 5)
+        {
+            Bezirk bezirk = (Bezirk) session.getAttribute("bezirk");
+            strAusgabe += bezirk.generiereHiddenDiv();
+        }
+
+        return strAusgabe;
     }
 
-    private String generiereBezirk(HttpSession session)
+    private String generiereBezirk(HttpSession session,HttpServletRequest request)
     {
-        if (session.getAttribute("bezirk") != null)
+        int intLetzerBezirk=-1000;
+        if(request.getParameter("hidden_berechtigungs_info")!=null)
+        {
+            intLetzerBezirk = Integer.parseInt(request.getParameter("hidden_berechtigungs_info").split(";")[0]);
+        }
+        System.out.println("Bezirk: "+intLetzerBezirk);
+        String strAusgabe = "";
+        if (session.getAttribute("alleBezirke") != null)
+        {
+            intIDGruppe = 1;
+            LinkedList<Bezirk> liBezirke = (LinkedList<Bezirk>) session.getAttribute("alleBezirke");
+            for (Bezirk bezirk : liBezirke)
+            {
+                if(bezirk.getIntBezirksNummer()== intLetzerBezirk)
+                {
+                    strAusgabe+=bezirk.toSelectedString();
+                }else
+                {
+                    strAusgabe += bezirk.toString();
+                }
+                
+            }
+        } else if (session.getAttribute("bezirk") != null)
         {
             intIDGruppe = 5;
             Bezirk bezirk = (Bezirk) session.getAttribute("bezirk");
-            return bezirk.toString();
+            strAusgabe = bezirk.toString();
         } else
         {
             String strName = (String) session.getAttribute("bezirkName");
-            return "<option value='-1'>" + strName + "</option>";
+            strAusgabe = "<option value='-1'>" + strName + "</option>";
         }
+        return strAusgabe;
     }
 
     private String generiereAbschnitt(HttpSession session)

@@ -103,7 +103,7 @@
                                 <fieldset id="fieldset_bezirk">
                                     <legend><b>Bezirk</b></legend>
                                     <select  name="select_bezirk"  class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
-                                        <%=generiereBezirk(session)%>
+                                        <%=generiereBezirk(session,request)%>
                                     </select>
                                 </fieldset>
                             </div>
@@ -182,7 +182,7 @@
 
                             <div class="eleven wide column" id="div_select_jahr" style="display: none">
                                 <fieldset id="fieldset_jahr">
-                                    <legend><b>Jahr</b></legend>
+                                    <legend id="legend_jahr"><b>Jahr</b></legend>
                                     <select name="select_jahr" class="ui fluid dropdown" id="select_jahr">
                                         <%
 
@@ -462,13 +462,13 @@
                         }
                     }
                 }
-                if (request.getParameter("select_abschnitt") != null && intIDGruppe == 5)
+                if (request.getParameter("select_abschnitt") != null && (intIDGruppe == 5||intIDGruppe==1))
                 {
             %>
                         bezirkChanged(document.getElementById("select_bezirk"),<%=request.getParameter("select_abschnitt")%>);
             <%
                 }
-                if (request.getParameter("select_feuerwehr") != null && (intIDGruppe == 15 || intIDGruppe == 5))
+                if (request.getParameter("select_feuerwehr") != null && (intIDGruppe == 15 || intIDGruppe == 5||intIDGruppe==1))
                 {
             %>
                         abschittChanged(document.getElementById("select_abschnitt"),<%=request.getParameter("select_feuerwehr")%>);
@@ -579,8 +579,17 @@
         return strAusgabe;
     }
 
-    private String generiereBezirk(HttpSession session)
+    private String generiereBezirk(HttpSession session,HttpServletRequest request)
     {
+        int intLetzerBezirk=-1000;
+        if(request.getParameter("select_bezirk")!=null)
+        {
+            intLetzerBezirk = Integer.parseInt(request.getParameter("select_bezirk"));
+        }else if(request.getParameter("hidden_berechtigungs_info")!=null)
+        {
+            intLetzerBezirk = Integer.parseInt(request.getParameter("hidden_berechtigungs_info").split(";")[0]);
+        }
+        System.out.println("Bezirk: "+intLetzerBezirk);
         String strAusgabe = "";
         if (session.getAttribute("alleBezirke") != null)
         {
@@ -588,7 +597,14 @@
             LinkedList<Bezirk> liBezirke = (LinkedList<Bezirk>) session.getAttribute("alleBezirke");
             for (Bezirk bezirk : liBezirke)
             {
-                strAusgabe += bezirk.toString();
+                if(bezirk.getIntBezirksNummer()== intLetzerBezirk)
+                {
+                    strAusgabe+=bezirk.toSelectedString();
+                }else
+                {
+                    strAusgabe += bezirk.toString();
+                }
+                
             }
         } else if (session.getAttribute("bezirk") != null)
         {

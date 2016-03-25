@@ -102,7 +102,18 @@ function onChangeTypeOfDateUI(intTypeOfDateUI)
         document.getElementById("div_kennzeichen").style.display = "none";
         document.getElementById("div_mitglied").style.display = "block";
         document.getElementById("div_hidden_hilfe").style.display = "none";
-    }    
+    }
+
+
+    var strBerichtname = document.getElementById("input_hidden").value;
+    if (strBerichtname == "Dienstzeitliste")
+    {
+        document.getElementById("legend_jahr").innerHTML = "<b>Dienstalter im Jahr</b>";
+    } else if (strBerichtname == "Geburtstagsliste")
+    {
+        document.getElementById("legend_jahr").innerHTML = "<b>Alter im Jahr</b>";
+    }
+
 }
 
 //Wird aufgerufen wenn bei der Liste ein anderer Bericht ausgewählt wird
@@ -126,10 +137,11 @@ function onListItemClicked(item)
     var strTable = item.getElementsByTagName("div")[0].innerHTML;
     var strBerichtname = item.getElementsByTagName("span")[0].innerHTML;
     var intTypeOfDateUI = item.getElementsByTagName("div")[1].innerHTML;
-    onChangeTypeOfDateUI(intTypeOfDateUI);
+
     document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = strBerichtname;
     document.getElementById("input_hidden").value = strBerichtname;
     document.getElementById("div_table").innerHTML = strTable;
+    onChangeTypeOfDateUI(intTypeOfDateUI);
     if (document.getElementById("div_zusatzDaten") == null && strBerichtname == 'Kursstatistik')
     {
         document.getElementById("div_kursstatistik").style.display = "block";
@@ -175,15 +187,15 @@ function saveDataForPDF()
 function saveDataForCSV()
 {
     var strName = document.getElementById("h2_bericht").innerHTML;
-    if(strName=="Stundenauswertung je Mitglied je Instanz")
+    if (strName == "Stundenauswertung je Mitglied je Instanz")
     {
         document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Diese  Funktion ist für diesen Bericht nicht verfügbar";
         $('#modal_fehler').modal('show');
         return;
     }
-    
+
     var strTable = document.getElementById("div_table").innerHTML;
-    
+
     if (document.getElementById("div_zusatzDaten") != null)
     {
         var strZusatzDaten = document.getElementById("div_zusatzDaten").innerHTML;
@@ -192,7 +204,7 @@ function saveDataForCSV()
     {
         document.getElementById("hidden_CSVData").value = strName + "###" + strTable;
     }
-    
+
     document.formCSV.submit();
 }
 
@@ -258,6 +270,7 @@ function bezirkChanged(select_bezirk, strLetzteAbschnitt)
         resetSelectMitglieder();
     }
     //alert("Bezirk_value: "+select_bezirk.value);
+//    alert(select_bezirk.value);
     if (select_bezirk.value != -1 && select_bezirk.value != -2)
     {
 //        alert("IN bezirk changed");

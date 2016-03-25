@@ -343,6 +343,7 @@ public class MainServlet extends HttpServlet
         } else if (aktBerechtigung.getIntIDGruppe() == 5)
         {
             System.out.println("MainServlet.generiereBerechtigungVorschau: id=5");
+            session.setAttribute("alleBezirke", null);
             session.setAttribute("bezirk", access.getBezirk(aktBerechtigung.getIntBereich()));
             session.setAttribute("bezirkName", null);
             session.setAttribute("abschnitt", null);
@@ -351,6 +352,7 @@ public class MainServlet extends HttpServlet
         } else if (aktBerechtigung.getIntIDGruppe() == 15)
         {
             System.out.println("MainServlet.generiereBerechtigungVorschau: id=15");
+            session.setAttribute("alleBezirke", null);
             session.setAttribute("bezirk", null);
             session.setAttribute("bezirkName", access.getBereichsnameFuerBereichnnummer(aktBerechtigung.getIntBereich()));
             session.setAttribute("abschnitt", access.getAbschnitt(aktBerechtigung.getIntAbschnitt()));
@@ -359,6 +361,7 @@ public class MainServlet extends HttpServlet
         } else if (aktBerechtigung.getIntIDGruppe() == 9 || aktBerechtigung.getIntIDGruppe() == 0)
         {
             System.out.println("MainServlet.generiereBerechtigungVorschau: id=9/0");
+            session.setAttribute("alleBezirke", null);
             session.setAttribute("bezirk", null);
             session.setAttribute("bezirkName", access.getBereichsnameFuerBereichnnummer(aktBerechtigung.getIntBereich()));
             session.setAttribute("abschnitt", null);

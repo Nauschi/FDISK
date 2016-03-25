@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -12,7 +13,7 @@ import java.util.Objects;
  *
  * @author Corinna
  */
-public class Abschnitt {
+public class Abschnitt implements Serializable{
 
     private String strName;
     private int intAbschnittsNummer;
