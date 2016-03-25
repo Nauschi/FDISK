@@ -228,10 +228,10 @@
 
                             <div class="eleven wide column" id="div_mitglied" style="display: none">
                                 <fieldset>
-                                    <legend><b>Mitglied</b></legend>
+                                    <legend><b>Mitglied</b> <i class="info circle link icon" title="Info" onclick="$('#modal_mitglieder_info').modal('show');"></i></legend>
                                     <div id="div_select_mitglieder" style="width: 90%;float:left">
                                         <select name="select_mitglied" class="ui fluid dropdown" id="select_mitglied">
-                                            <option value="-2">Alle Mitglieder</option>
+                                            <option value="-2###Alle Mitglieder">Alle Mitglieder</option>
                                             <%
                                                 if (request.getAttribute("select_mitglieder_hs") != null)
                                                 {
@@ -240,9 +240,14 @@
                                                     for (int key : setKeys)
                                                     {
                                             %>
-                                            <option value="<%=key + ""%>"><%=hsMitglieder.get(key)%></option>
+                                            <option value="<%=key + "###" + hsMitglieder.get(key)%>"><%=hsMitglieder.get(key)%></option>
                                             <%
-                                                    }
+                                                }
+                                            } else if (request.getParameter("select_mitglied") != null && !request.getParameter("select_mitglied").equals("-2###Alle Mitglieder"))
+                                            {
+                                            %>
+                                            <option value="<%=request.getParameter("select_mitglied")%>" selected><%=request.getParameter("select_mitglied").split("###")[1]%></option>
+                                            <%
                                                 }
                                             %>
                                         </select>
@@ -337,6 +342,17 @@
                 </div>
             </div>
         </div>
+
+        <div class="ui small modal" id="modal_mitglieder_info">
+            <div class="header">Info: Mitglieder</div>
+            <div class="content">
+                <p>Text Einfügen</p>
+            </div>
+            <div class="actions">
+                <button type="button" onClick="$('#modal_mitglieder_info').modal('hide');" class="ui button styleGrau"  style="width: 20%;">OK</button>
+            </div>
+        </div>
+
         <br/>
 
         <script src="js/jquery-2.1.1.min.js"></script>
@@ -348,30 +364,30 @@
         <script src="tablesorter/jquery.tablesorter.js"></script> 
         <!--  <script src="tablesorter/jquery.tablesorter.min.js"></script>  -->
         <script>
-                                            $(document).ready(function ()
-                                    {
+                            $(document).ready(function ()
+                    {
             <%
                 if (request.getParameter("input_aktbericht") == null)
                 {
             %>
-                                    var item = document.getElementById("div_liste").getElementsByTagName("a")[0];
+                    var item = document.getElementById("div_liste").getElementsByTagName("a")[0];
             <%
             } else
             {
             %>
-                                    var item = document.getElementById("<%=request.getParameter("input_aktbericht")%>");
+                    var item = document.getElementById("<%=request.getParameter("input_aktbericht")%>");
             <%
                 }
             %>
 
-                                    item.className = "item active";
-                                            var strBerichtname = item.getElementsByTagName("span")[0].innerHTML;
-                                            document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = strBerichtname;
-                                            document.getElementById("input_hidden").value = strBerichtname;
-                                            var strTable = item.getElementsByTagName("div")[0].innerHTML;
-                                            document.getElementById("div_table").innerHTML = strTable;
-                                            var intTypeOfDateUI = item.getElementsByTagName("div")[1].innerHTML;
-                                            onChangeTypeOfDateUI(intTypeOfDateUI);
+                    item.className = "item active";
+                            var strBerichtname = item.getElementsByTagName("span")[0].innerHTML;
+                            document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = strBerichtname;
+                            document.getElementById("input_hidden").value = strBerichtname;
+                            var strTable = item.getElementsByTagName("div")[0].innerHTML;
+                            document.getElementById("div_table").innerHTML = strTable;
+                            var intTypeOfDateUI = item.getElementsByTagName("div")[1].innerHTML;
+                            onChangeTypeOfDateUI(intTypeOfDateUI);
             <%
                 if (request.getAttribute("liste") != null)
                 {
@@ -430,18 +446,18 @@
                         }
             %>
 
-                                    document.getElementById("hidden_pdfData").value = "<%=request.getParameter("input_aktbericht")%>###<%=strHTML%>###<%=strZusatzHTML%>";
-                                                document.formPDF.submit();
+                    document.getElementById("hidden_pdfData").value = "<%=request.getParameter("input_aktbericht")%>###<%=strHTML%>###<%=strZusatzHTML%>";
+                                document.formPDF.submit();
             <%
             } else
             {
                 if (strHTML.split("<tr>").length > 1)
                 {
             %>
-                                        document.getElementById("div_csv_pdf").style.display = "block";
-                                                document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
+                        document.getElementById("div_csv_pdf").style.display = "block";
+                                document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
             <%=setzeTablesort(request)%>
-                                        $('.sort').popup();
+                        $('.sort').popup();
             <%
                         }
                     }
@@ -449,61 +465,61 @@
                 if (request.getParameter("select_abschnitt") != null && intIDGruppe == 5)
                 {
             %>
-                                        bezirkChanged(document.getElementById("select_bezirk"),<%=request.getParameter("select_abschnitt")%>);
+                        bezirkChanged(document.getElementById("select_bezirk"),<%=request.getParameter("select_abschnitt")%>);
             <%
                 }
                 if (request.getParameter("select_feuerwehr") != null && (intIDGruppe == 15 || intIDGruppe == 5))
                 {
             %>
-                                        abschittChanged(document.getElementById("select_abschnitt"),<%=request.getParameter("select_feuerwehr")%>);
+                        abschittChanged(document.getElementById("select_abschnitt"),<%=request.getParameter("select_feuerwehr")%>);
             <%
                 }
                 if (request.getParameter("hidden_berechtigungs_info") != null)
                 {
             %>
-                                        bezirkChanged(document.getElementById("select_bezirk"),<%=request.getParameter("hidden_berechtigungs_info").split(";")[1]%>);
-                                                abschittChanged(document.getElementById("select_abschnitt"),<%=request.getParameter("hidden_berechtigungs_info").split(";")[2]%>);
+                        bezirkChanged(document.getElementById("select_bezirk"),<%=request.getParameter("hidden_berechtigungs_info").split(";")[1]%>);
+                                abschittChanged(document.getElementById("select_abschnitt"),<%=request.getParameter("hidden_berechtigungs_info").split(";")[2]%>);
             <%
                 }
                 if (request.getParameter("input_aktbericht") != null && request.getParameter("input_aktbericht").equals("Digitales Fahrtenbuch"))
                 {
             %>
-                                        if (document.getElementById("div_zusatzDaten") == null)
-                                        {
-                                        document.getElementById("div_fahrtenbuch").style.display = "block";
-                                        }
+                        if (document.getElementById("div_zusatzDaten") == null)
+                        {
+                        document.getElementById("div_fahrtenbuch").style.display = "block";
+                        }
             <%
                 }
             %>
-                                        document.getElementById("div_loader").className = "ui disabled loader";
-                                                fixDropdowns("select_bezirk");
-                                                fixDropdowns("select_abschnitt");
-                                                fixDropdowns("select_feuerwehr");
-                                                fixDropdowns("select_mitglied");
+                        document.getElementById("div_loader").className = "ui disabled loader";
+                                fixDropdowns("select_bezirk");
+                                fixDropdowns("select_abschnitt");
+                                fixDropdowns("select_feuerwehr");
+                                fixDropdowns("select_mitglied");
             <%
                 if (request.getAttribute("select_kennzeichen_liste") != null)
                 {
             %>
-                                        $('.ui.search').search({minCharacters : 0, searchFullText: false, source: [
+                        $('.ui.search').search({minCharacters : 0, searchFullText: false, source: [
             <%
                 LinkedList<String> liKennzeichen = (LinkedList<String>) request.getAttribute("select_kennzeichen_liste");
                 for (String kennzeichen : liKennzeichen)
                 {
             %>
-                                        {title: '<%=kennzeichen%>'}<%=kennzeichen.equals(liKennzeichen.getLast()) ? "" : ","%>
+                        {title: '<%=kennzeichen%>'}<%=kennzeichen.equals(liKennzeichen.getLast()) ? "" : ","%>
             <%
                 }
             %>
-                                        ], error : {noResults   : 'Keine Ergebnisse'}});
+                        ], error : {noResults   : 'Keine Ergebnisse'}});
             <%
             } else if (request.getAttribute("select_mitglieder_hs") != null)
             {
             %>
-                                        setDeleteOnChange();
+                        setDeleteOnChange();
             <%
                 }
             %>
-                                        });
+                        });
         </script>        
     </body>
 </html>

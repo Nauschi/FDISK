@@ -169,13 +169,13 @@
                     <legend><b>Vorlage</b></legend>
                     <div class="ui equal width grid">
                         <div class="column">
-                            <button type="button" onclick="showLoeschenModal();" class="ui button styleRot" title="Vorlage löschen" style="width: 100%;"><p><i class="remove icon"></i></p></button>
+                            <button type="button" onclick="showLoeschenModal();" class="ui button styleRot" title="Vorlage löschen" style="width: 100%;"><p><i class="remove circle icon"></i></p></button>
                         </div>                        
                         <div class="column">
                             <button type="button" onclick="showLadenModal();" class="ui button styleGrau" title="Vorlage laden" style="width: 100%"><p><i class="folder open outline icon"></i></p></button>
                         </div>
                         <div class="column">
-                            <button type="button" onclick="showErstellenModal();" class="ui button styleGruen" title="Vorlage erstellen" style="width: 100%;"><p><i class="plus icon"></i></p></button>
+                            <button type="button" onclick="showErstellenModal();" class="ui button styleGruen" title="Vorlage erstellen" style="width: 100%;"><p><i class="save icon"></i></p></button>
                         </div>
                     </div>
                 </fieldset>
@@ -322,7 +322,7 @@
 
             </form>
             <div style="background-color:#C00518;color:white;" class="ui segment">
-                <b>Ausgabe</b> <i class="help circle link icon" title="Hilfe" onclick="$('#modal_ausgabe_hilfe').modal('show');"></i>
+                <b>Ausgabe</b> <i class="info circle link icon" title="Info" onclick="$('#modal_ausgabe_info').modal('show');"></i>
 
             </div>
             <div id="div_typen_auswahl"  class="ui grid">
@@ -395,8 +395,8 @@
             %>
         </div>
         </br></br>
-        <div class="ui small modal" id="modal_ausgabe_hilfe">
-            <div class="header">Hilfe: Ausgabe</div>
+        <div class="ui small modal" id="modal_ausgabe_info">
+            <div class="header">Info: Ausgabe</div>
             <div class="content">
                 <p>In diesem Bereich können Sie auswählen welche Spalten Sie später in Ihrem Bericht angezeigt haben wollen</p>
                 Automatisch ausgegeben werden:
@@ -409,7 +409,7 @@
                 <p>Es können maximal 6 zusätzliche Spalten ausgewählt werden.</p>
             </div>
             <div class="actions">
-                <button type="button" onClick="$('#modal_ausgabe_hilfe').modal('hide');" class="ui button styleGrau"  style="width: 20%;">OK</button>
+                <button type="button" onClick="$('#modal_ausgabe_info').modal('hide');" class="ui button styleGrau"  style="width: 20%;">OK</button>
             </div>
         </div>
 
