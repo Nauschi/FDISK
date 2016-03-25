@@ -329,8 +329,8 @@ public class DB_Access
             }
             liBezirke.add(new Bezirk(strBezirksname, intBezirksnummer, liAbschnitte));
         }
-
-        return liBezirke;
+        connPool.releaseConnection(conn);
+        return liBezirke; 
     }
 
     public Bezirk getBezirk(int bereichnummer) throws Exception
