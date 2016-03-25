@@ -6,13 +6,14 @@
 package Beans;
 
 import Database.DB_Access;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author Yvonne
  */
-public class LeerberichtMitglied
+public class LeerberichtMitglied implements Serializable
 {
 
     private int intId_Personen;

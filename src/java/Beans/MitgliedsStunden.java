@@ -6,13 +6,14 @@
 package Beans;
 
 import Database.DB_Access;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author philipp
  */
-public class MitgliedsStunden extends Mitglied
+public class MitgliedsStunden extends Mitglied implements Serializable
 {
 
     int intMinuten;

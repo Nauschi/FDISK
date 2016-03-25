@@ -5,13 +5,14 @@
  */
 package Beans;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
  *
  * @author Marcel Schmidt
  */
-public class Rohbericht
+public class Rohbericht implements Serializable
 {
 
     private String strBerichtname;

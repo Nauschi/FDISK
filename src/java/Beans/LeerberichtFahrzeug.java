@@ -1,13 +1,14 @@
 package Beans;
 
 import Database.DB_Access;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author Yvonne
  */
-public class LeerberichtFahrzeug
+public class LeerberichtFahrzeug implements Serializable
 {
 
     private String strFahrzeugTyp;

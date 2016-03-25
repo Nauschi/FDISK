@@ -6,6 +6,7 @@
 package Beans;
 
 import Database.DB_Access;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,7 +16,7 @@ import java.util.Objects;
  *
  * @author kinco_000
  */
-public class MitgliedsDienstzeit extends Mitglied
+public class MitgliedsDienstzeit extends Mitglied implements Serializable
 {
 
     private Date dateGeburtsdatum;

@@ -5,11 +5,13 @@
  */
 package Beans;
 
+import java.io.Serializable;
+
 /**
  *
  * @author philipp
  */
-public class Berechtigung {
+public class Berechtigung implements Serializable{
     private String strBerechtigung;
     private int intIDGruppe;
     private String strFubwehr;

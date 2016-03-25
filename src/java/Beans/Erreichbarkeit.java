@@ -5,13 +5,14 @@
  */
 package Beans;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author kinco_000
  */
-public class Erreichbarkeit {
+public class Erreichbarkeit implements Serializable{
 
     private String strErreichbarkeitsArt;
 

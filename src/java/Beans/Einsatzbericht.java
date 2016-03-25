@@ -6,6 +6,7 @@
 package Beans;
 
 import Database.DB_Access;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
@@ -14,7 +15,7 @@ import java.util.Objects;
  *
  * @author Yvonne
  */
-public class Einsatzbericht
+public class Einsatzbericht implements Serializable
 {
 
     private int intId_StmkEinsatzberichte;

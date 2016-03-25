@@ -6,13 +6,14 @@
 package Beans;
 
 import Database.DB_Access;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author kinco_000
  */
-public class Mitglied
+public class Mitglied implements Serializable
 {
 
     private int intId_Personen;

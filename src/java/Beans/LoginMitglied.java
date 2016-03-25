@@ -5,13 +5,14 @@
  */
 package Beans;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author Yvonne
  */
-public class LoginMitglied
+public class LoginMitglied implements Serializable
 {
 
     int intId_User;
