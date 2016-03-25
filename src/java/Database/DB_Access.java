@@ -477,6 +477,7 @@ public class DB_Access {
         while (rs.next()) {
             bereichname = rs.getString("Bereichname");
         }
+        connPool.releaseConnection(conn);
         return bereichname;
     }
 
@@ -489,6 +490,7 @@ public class DB_Access {
         while (rs.next()) {
             abschnittname = rs.getString("Abschnittname");
         }
+        connPool.releaseConnection(conn);
         return abschnittname;
     }
 
@@ -501,6 +503,7 @@ public class DB_Access {
         while (rs.next()) {
             liAbschnittnummern.add(rs.getInt("Abschnittnr"));
         }
+        connPool.releaseConnection(conn);
         return liAbschnittnummern;
     }
 
@@ -513,6 +516,7 @@ public class DB_Access {
         while (rs.next()) {
             liFubwehrnummern.add(rs.getString("Fubwehr"));
         }
+        connPool.releaseConnection(conn);
         return liFubwehrnummern;
     }
 

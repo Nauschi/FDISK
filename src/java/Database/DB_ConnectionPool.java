@@ -19,7 +19,7 @@ import java.util.LinkedList;
  */
 public class DB_ConnectionPool {
     private LinkedList<Connection> connections = new LinkedList<>();
-    private static final int MAX_CONN = 1000;
+    private static final int MAX_CONN = 100;
     private int num_conn = 0;
 
     private static DB_ConnectionPool theInstance = null; 
