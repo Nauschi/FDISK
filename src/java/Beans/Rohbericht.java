@@ -78,8 +78,16 @@ public class Rohbericht implements Serializable
             if(strSpalte.equals("Bemerkung")||strSpalte.equals("-"))
             {
                 strHTML += "<th>" + strSpalte + "</th>";
-            }
-            else
+            }else if(strSpalte.equals("STB"))
+            {
+                 strHTML += "<th data-content='nach "+strSpalte+" sortieren' class='sort STB' >" + strSpalte + "</th>";
+            }else if(strSpalte.equals("DGR"))
+            {
+                 strHTML += "<th data-content='nach "+strSpalte+" sortieren' class='sort DGR' >" + strSpalte + "</th>";
+            }else if(strSpalte.equals("Titel"))
+            {
+                 strHTML += "<th data-content='nach "+strSpalte+" sortieren' class='sort titel' >" + strSpalte + "</th>";
+            }else
             {
                 strHTML += "<th data-content='nach "+strSpalte+" sortieren' class='sort' >" + strSpalte + "</th>";
             }

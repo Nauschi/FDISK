@@ -201,8 +201,8 @@ public class MitgliedsAdresse extends Mitglied implements Serializable
         strStrasse = theInstance.formatiereAusgabe(strStrasse);
         strOrt = theInstance.formatiereAusgabe(strOrt);
 
-        String strHtml = "<tr><td class='STB'>"
-                + strStammblattnummer + "</td><td class='DGR'>"
+        String strHtml = "<tr><td>"
+                + strStammblattnummer + "</td><td>"
                 + strDienstgrad + "</td><td>"
                 + strTitel + "</td><td>"
                 + strVorname + "</td><td>"

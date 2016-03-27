@@ -121,8 +121,8 @@ public class MitgliedsErreichbarkeit extends Mitglied implements Serializable
             strVorname = theInstance.formatiereAusgabe(strVorname);
             strZuname = theInstance.formatiereAusgabe(strZuname);
 
-            String strHtml = "<tr><td class='STB'>"
-                    + strStammblattnummer + "</td><td class='DGR'>"
+            String strHtml = "<tr><td>"
+                    + strStammblattnummer + "</td><td>"
                     + strDienstgrad + "</td><td class='titel'>"
                     + strTitel + "</td><td>"
                     + strVorname + "</td><td>"
