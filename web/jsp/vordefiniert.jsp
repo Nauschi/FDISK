@@ -697,7 +697,7 @@
         } else if (request.getParameter("input_aktbericht") != null
                 && request.getParameter("input_aktbericht").equals("Stundenauswertung je Mitglied je Instanz"))
         {
-            return "";
+            return "$('.tablesorter').tablesorter({headers: {1: {sorter: 'levels'},6: {sorter: 'stundenauswertung'}}});";
         } else
         {
             return "$('.tablesorter').tablesorter();";

@@ -1191,6 +1191,31 @@
             type: 'text'
           });
           
+          
+          ts.addParser({
+              
+            id: 'stundenauswertung',
+            is: function(s) {
+                    return false;
+            },
+            format: function(s) { 
+//              alert(s);
+              var text = s.split('min')[0];
+              var splitText = text.split('h ');
+              var retValue = 0;
+              if(splitText.length>1)
+              {
+                  retValue=+ parseInt(splitText[0]*60)+parseInt(splitText[1]);
+              }else
+              {
+                  retValue=+ parseInt(text);
+              }
+              return retValue;
+            },
+            type: 'number'
+          });
+          
+          
     ts.addParser({
         id: "time",
         is: function (s) {

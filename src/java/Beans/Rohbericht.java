@@ -75,7 +75,7 @@ public class Rohbericht implements Serializable
         for (int i = 0; i < liBerichtSpalten.size(); i++)
         {
             String strSpalte = liBerichtSpalten.get(i);
-            if(strSpalte.equals("Bemerkung")||strSpalte.equals("-") || strBerichtname.equals("Stundenauswertung je Mitglied je Instanz"))
+            if(strSpalte.equals("Bemerkung")||strSpalte.equals("-"))
             {
                 strHTML += "<th>" + strSpalte + "</th>";
             }
