@@ -589,7 +589,6 @@
         {
             intLetzerBezirk = Integer.parseInt(request.getParameter("hidden_berechtigungs_info").split(";")[0]);
         }
-        System.out.println("Bezirk: "+intLetzerBezirk);
         String strAusgabe = "";
         if (session.getAttribute("alleBezirke") != null)
         {
@@ -641,13 +640,11 @@
 
         if (session.getAttribute("feuerwehr") != null)
         {
-            System.out.println("vordefiniert.generiereFeuerwehr: if");
             intIDGruppe = 9;
             Feuerwehr feuerwehr = (Feuerwehr) session.getAttribute("feuerwehr");
             return feuerwehr.toString();
         } else
         {
-            System.out.println("vordefiniert.generiereFeuerwehr: if");
             return "";
         }
     }

@@ -119,7 +119,6 @@ public class PDFServlet extends HttpServlet
         request.setCharacterEncoding("UTF-8");
         String strData = request.getParameter("hidden_pdfData");
         String[] strSplitData = strData.split("###");
-        System.out.println("size: " + strSplitData.length);
         String strBerichtname;
         String strTable;
 
@@ -181,7 +180,6 @@ public class PDFServlet extends HttpServlet
         String strFontPath = strContextPath + File.separator + "res" + File.separator + "Cambria.ttf";
 
         Rectangle rect;
-
         try
         {
             Document document;
@@ -194,20 +192,16 @@ public class PDFServlet extends HttpServlet
                 document = new Document(PageSize.A4.rotate(), 36, 36, 70, 54);
                 rect = new Rectangle(36, 54, 805, 559);
             }
-
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PdfWriter writer = PdfWriter.getInstance(document, baos);
-
             PDF_KopfFußzeile event = new PDF_KopfFußzeile(strFontPath, writer);
             writer.setBoxSize("pageRect", rect);
             writer.setPageEvent(event);
-
             document.open();
             HtmlPipelineContext htmlContext = new HtmlPipelineContext(null);
             htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
             CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(false);
-
-            //hier das (falls benötigt) CSS File einbinden für die .pdf Datei
+            //hier werden die CSS files eingebunden
             cssResolver.addCssFile(strCSSPath1, true);
 
             if (liBerHochformat.contains(strBerichtname))
@@ -219,7 +213,6 @@ public class PDFServlet extends HttpServlet
             }
             if (!boolLeerbericht)
             {
-
                 cssResolver.addCssFile(strCSSPath1.replace("Simpel", "StandartBericht"), true);
             } else
             {
@@ -304,7 +297,7 @@ public class PDFServlet extends HttpServlet
             }
         } catch (Exception ex)
         {
-//            System.out.println(ex.toString());
+            //Muss leer abgefangen werden
         }
         
         String ausgabe = "";
@@ -333,7 +326,6 @@ public class PDFServlet extends HttpServlet
                 Integer.parseInt(splitData[0]), Integer.parseInt(splitData[1]), Integer.parseInt(splitData[2]));
         msp.addInstanzname(splitAktRow[5]);
         msp.addStundenSumme(splitAktRow[6]);
-        System.out.println("");
         return msp;
     }
 
@@ -347,11 +339,9 @@ public class PDFServlet extends HttpServlet
      */
     public String generiereAusgabeTaetigkeitsberichtLeer(String strTableMitglieder, String strTableFahrzeuge)
     {
-        System.out.println("generiereAusgabeTaetigkeitsberichtLeer: " + strTableMitglieder);
         String strHTMLOutput = strTaetigkeitsbericht;
         strHTMLOutput = strHTMLOutput.replace("##FahrzeugData##", strTableFahrzeuge);
         strHTMLOutput = strHTMLOutput.replace("##MitgliedData##", strTableMitglieder);
-        System.out.println("strHTMLOutput: " + strHTMLOutput);
         return strHTMLOutput;
     }
 

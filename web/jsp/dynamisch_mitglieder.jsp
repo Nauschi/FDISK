@@ -175,7 +175,7 @@
                             <button type="button" onclick="showLadenModal();" class="ui button styleGrau" title="Vorlage laden" style="width: 100%"><p><i class="folder open outline icon"></i></p></button>
                         </div>
                         <div class="column">
-                            <button type="button" onclick="showErstellenModal();" class="ui button styleGruen" title="Vorlage erstellen" style="width: 100%;"><p><i class="save icon"></i></p></button>
+                            <button type="button" onclick="showErstellenModal();" class="ui button styleGruen" title="Vorlage speichern" style="width: 100%;"><p><i class="save icon"></i></p></button>
                         </div>
                     </div>
                 </fieldset>
@@ -443,7 +443,6 @@
         <%
             if (request.getAttribute("dynamisch_vorlage_vorhanden") != null)
             {
-                System.out.println("Vorlage vorhanden");
         %>
         <div class="ui small modal" id="modal_vorhanden">
             <div class="header">Name bereits vorhanden</div>
@@ -696,7 +695,6 @@
 <%!
     private String initialisiereTableSorter(String strTable)
     {
-//        System.out.println(strTable);
         String output = "$('.sortable').tablesorter({headers: {1: {sorter: 'levels'}";
         int index1 = strTable.indexOf("<th ");
         int index2 = strTable.lastIndexOf("</th>");
@@ -822,7 +820,6 @@
         {
             intLetzerBezirk = Integer.parseInt(request.getParameter("hidden_berechtigungs_info").split(";")[0]);
         }
-        System.out.println("Bezirk: "+intLetzerBezirk);
         String strAusgabe = "";
         if (session.getAttribute("alleBezirke") != null)
         {
@@ -874,13 +871,11 @@
 
         if (session.getAttribute("feuerwehr") != null)
         {
-            System.out.println("vordefiniert.generiereFeuerwehr: if");
             intIDGruppe = 9;
             Feuerwehr feuerwehr = (Feuerwehr) session.getAttribute("feuerwehr");
             return feuerwehr.toString();
         } else
         {
-            System.out.println("vordefiniert.generiereFeuerwehr: if");
             return "";
         }
     }

@@ -182,9 +182,12 @@ function initialisiereCBFilter(strTyp, strID, strLastFilter)
         {
 
             var opt = document.createElement('option');
-            if (strLastFilter.trim() == strSplitFilter[i].trim())
+            if (strLastFilter != null)
             {
-                opt.setAttribute('selected', 'selected');
+                if (strLastFilter.trim() == strSplitFilter[i].trim())
+                {
+                    opt.setAttribute('selected', 'selected');
+                }
             }
             var opt_value = replaceAll(strSplitFilter[i], '"', "###")
 
@@ -292,105 +295,105 @@ function getValueOfFilterObject(index)
 }
 
 function onActionSubmit(intZaehler, strButton)
-        {
-        if (strButton == "minus")
-        {
+{
+    if (strButton == "minus")
+    {
         if (intZaehler == 1)
         {
-        return;
+            return;
         }
         intZaehler--;
-        } else if (strButton == "plus")
+    } else if (strButton == "plus")
+    {
+        if (intZaehler == 5)
         {
-            if(intZaehler == 5)
-            {
-                return;
-            }
-        }else if (strButton == "vorschau")
-        {
+            return;
+        }
+    } else if (strButton == "vorschau")
+    {
         var boolIsCorrect = onVorschau(intZaehler);
-                if (boolIsCorrect == false)
+        if (boolIsCorrect == false)
         {
-        return;
+            return;
         }
-        } else if (strButton == "erstelle_vorlage" || strButton == "erstelle_vorlage_2")
-        {
+    } else if (strButton == "erstelle_vorlage" || strButton == "erstelle_vorlage_2")
+    {
         var boolIsCorrect = onErstelleNeueVorlage();
-                if (boolIsCorrect == false)
+        if (boolIsCorrect == false)
         {
-        return;
+            return;
         }
-        }
-        var strTypen = "";
-                for (var i = 0; i < intCountTypen; i++)
-        {
+    }
+    var strTypen = "";
+    for (var i = 0; i < intCountTypen; i++)
+    {
         strTypen += document.getElementById("select_typ_ausgabe_" + i).value + ";";
-        }
+    }
 
-        document.getElementById("hidden_typen_daten").value = strTypen;
-                for (var i = 1; i <= intZaehler; i++)
-        {
+    document.getElementById("hidden_typen_daten").value = strTypen;
+    for (var i = 1; i <= intZaehler; i++)
+    {
         var div_element = document.getElementById("div_element_" + i);
-                var strKlammerAuf_value = document.getElementById("select_klammer_" + i).value;
-                var strTyp_value = document.getElementById("select_typ_" + i).value;
-                var strOperator_value = document.getElementById("select_operator_" + i).value;
-                var strFilter_value = getValueOfFilterObject(i);
-                var strKlammerZu_value = document.getElementById("select_klammer_zu_" + i).value;
-                var strVerknuefung_value = document.getElementById("select_verknuepfung_" + i).value;
-                var strHTML = "<input type='hidden' name='hidden_element_data_" + i + "' value='" + strKlammerAuf_value + ';' + strTyp_value + ';' + strOperator_value + ';' + strFilter_value + ';' + strKlammerZu_value + ';' + strVerknuefung_value + "'>";
-                div_element.innerHTML = div_element.innerHTML + strHTML;
-        }
-        var strBezirk = document.getElementById("select_bezirk").value;
-                var strAbschnitt = document.getElementById("select_abschnitt").value;
-                var strFeuerwehr = document.getElementById("select_feuerwehr").value;
-                var strBerechtigung = strBezirk + ";" + strAbschnitt + ";" + strFeuerwehr;
-                document.getElementById("hidden_berechtigungs_info").value = strBerechtigung;
-                strHTML = '<input type="hidden" name="hidden_action" value="' + strButton + '">';
-                div_element.innerHTML = div_element.innerHTML + strHTML;
-                document.form_plus_minus_vorschau.submit();
-                }
+        var strKlammerAuf_value = document.getElementById("select_klammer_" + i).value;
+        var strTyp_value = document.getElementById("select_typ_" + i).value;
+        var strOperator_value = document.getElementById("select_operator_" + i).value;
+        var strFilter_value = getValueOfFilterObject(i);
+        var strKlammerZu_value = document.getElementById("select_klammer_zu_" + i).value;
+        var strVerknuefung_value = document.getElementById("select_verknuepfung_" + i).value;
+        var strHTML = "<input type='hidden' name='hidden_element_data_" + i + "' value='" + strKlammerAuf_value + ';' + strTyp_value + ';' + strOperator_value + ';' + strFilter_value + ';' + strKlammerZu_value + ';' + strVerknuefung_value + "'>";
+        div_element.innerHTML = div_element.innerHTML + strHTML;
+    }
+    var strBezirk = document.getElementById("select_bezirk").value;
+    var strAbschnitt = document.getElementById("select_abschnitt").value;
+    var strFeuerwehr = document.getElementById("select_feuerwehr").value;
+    var strBerechtigung = strBezirk + ";" + strAbschnitt + ";" + strFeuerwehr;
+    document.getElementById("hidden_berechtigungs_info").value = strBerechtigung;
+    strHTML = '<input type="hidden" name="hidden_action" value="' + strButton + '">';
+    div_element.innerHTML = div_element.innerHTML + strHTML;
+    document.form_plus_minus_vorschau.submit();
+}
 
 function onErstelleNeueVorlage()
-        {
-        var strVorlageName = document.getElementById("input_neueVorlage").value;
-                if (strVorlageName != "")
-        {
+{
+    var strVorlageName = document.getElementById("input_neueVorlage").value;
+    if (strVorlageName != "")
+    {
         document.getElementById("hidden_vorlage_name").value = strVorlageName;
-                return true;
-        } else
-        {
+        return true;
+    } else
+    {
         alert("Eingabefeld leer");
-                return false;
-        }
-        }
+        return false;
+    }
+}
 
 
 /*
  * Leitet zum PDFServlet weiter um eine PDF zu erstellen, anzuzeigen und herunterzuladen
  */
 function saveDataForPDF()
-        {
-        var name = document.getElementById("input_stetze_name").value;
-                if (name.trim() == "")
-        {
+{
+    var name = document.getElementById("input_stetze_name").value;
+    if (name.trim() == "")
+    {
         name = "Dynamisch"
-        }
-        var strTable = document.getElementById("div_table").innerHTML;
-                document.getElementById("hidden_pdfData").value = name + "###" + strTable;
-                document.getElementById("input_stetze_name").value = "";
-                $('#modal_setze_name').modal('hide');
-                document.formPDF.submit();
-                }
+    }
+    var strTable = document.getElementById("div_table").innerHTML;
+    document.getElementById("hidden_pdfData").value = name + "###" + strTable;
+    document.getElementById("input_stetze_name").value = "";
+    $('#modal_setze_name').modal('hide');
+    document.formPDF.submit();
+}
 
 /*
  * Leitet zum CSVServlet weiter um eine CSV zu erstellen und herunterzuladen
  */
 function saveDataForCSV()
-        {
-        var strTable = document.getElementById("div_table").innerHTML;
-                document.getElementById("hidden_CSVData").value = strTable;
-                document.formCSV.submit();
-                }
+{
+    var strTable = document.getElementById("div_table").innerHTML;
+    document.getElementById("hidden_CSVData").value = strTable;
+    document.formCSV.submit();
+}
 
 /**
  * Öffnet das Modal verantwortlich für das erstellen
@@ -398,9 +401,9 @@ function saveDataForCSV()
  * @returns {undefined}
  */
 function showErstellenModal()
-        {
-        $('#modal_erstelle_vorlage').modal('show');
-                }
+{
+    $('#modal_erstelle_vorlage').modal('show');
+}
 
 /**
  * Öffnet das Modal verantwortlich für das laden
@@ -409,16 +412,16 @@ function showErstellenModal()
  * @returns {undefined}
  */
 function showLadenModal()
-        {
-        if (document.getElementById("modal_lade_vorlage") != null)
-        {
+{
+    if (document.getElementById("modal_lade_vorlage") != null)
+    {
         $('#modal_lade_vorlage').modal('show');
-        } else
-        {
+    } else
+    {
         document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Keine Vorlagen gefunden";
-                $('#modal_fehler').modal('show');
-        }
-        }
+        $('#modal_fehler').modal('show');
+    }
+}
 /**
  * Öffnet das Modal verantwortlich für das löschen
  * von Vorlagen, falls keine Vorlagen vorhanden sind
@@ -426,79 +429,79 @@ function showLadenModal()
  * @returns {undefined}
  */
 function showLoeschenModal()
-        {
-        if (document.getElementById("modal_loesche_vorlage") != null)
-        {
+{
+    if (document.getElementById("modal_loesche_vorlage") != null)
+    {
         $('#modal_loesche_vorlage').modal('show');
-        } else
-        {
+    } else
+    {
         document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Keine Vorlagen gefunden";
-                $('#modal_fehler').modal('show');
-        }
-        }
+        $('#modal_fehler').modal('show');
+    }
+}
 
 
 
 function abschittChanged(select_abschnitt, strLetzteFW)
-        {
-        //alert("Abschnitt_value: "+select_abschnitt.value);
-        if (select_abschnitt.value != - 1 && select_abschnitt.value != - 2)
-        {
+{
+    //alert("Abschnitt_value: "+select_abschnitt.value);
+    if (select_abschnitt.value != -1 && select_abschnitt.value != -2)
+    {
         var strFeuerwehrOptions = document.getElementById("div_" + select_abschnitt.value).innerHTML;
-                if (strLetzteFW != null)
+        if (strLetzteFW != null)
         {
-        strFeuerwehrOptions = strFeuerwehrOptions.replace('value="' + strLetzteFW + '"', 'value="' + strLetzteFW + '" selected');
+            strFeuerwehrOptions = strFeuerwehrOptions.replace('value="' + strLetzteFW + '"', 'value="' + strLetzteFW + '" selected');
         }
         document.getElementById("fieldset_feuerwehr").innerHTML = '<legend><b>Feuerwehr</b></legend><select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr"></select>';
-                if (strFeuerwehrOptions.split('<option').length > 1)
+        if (strFeuerwehrOptions.split('<option').length > 1)
         {
-        document.getElementById("select_feuerwehr").innerHTML = "<option value='-2'>Alle Feuerwehren</option>" + strFeuerwehrOptions;
+            document.getElementById("select_feuerwehr").innerHTML = "<option value='-2'>Alle Feuerwehren</option>" + strFeuerwehrOptions;
         } else
         {
-        document.getElementById("select_feuerwehr").innerHTML = strFeuerwehrOptions;
+            document.getElementById("select_feuerwehr").innerHTML = strFeuerwehrOptions;
         }
 
         $('#select_feuerwehr').dropdown();
-                //alert(strFeuerwehrOptions);
-        } else if (select_abschnitt.value == - 2)
-        {
+        //alert(strFeuerwehrOptions);
+    } else if (select_abschnitt.value == -2)
+    {
         document.getElementById("fieldset_feuerwehr").innerHTML = '<legend><b>Feuerwehr</b></legend><select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr"></select>';
-                document.getElementById("select_feuerwehr").innerHTML = "<option value='-2'>Alle Feuerwehren</option>"
-                $('#select_feuerwehr').dropdown();
-                fixDropdowns("select_feuerwehr");
-        }
-        }
+        document.getElementById("select_feuerwehr").innerHTML = "<option value='-2'>Alle Feuerwehren</option>"
+        $('#select_feuerwehr').dropdown();
+        fixDropdowns("select_feuerwehr");
+    }
+}
 
 function bezirkChanged(select_bezirk, strLetzteAbschnitt)
-        {
-        //alert("Bezirk_value: "+select_bezirk.value);
-        if (select_bezirk.value != - 1 && select_bezirk.value != - 2)
-        {
+{
+    //alert("Bezirk_value: "+select_bezirk.value);
+    if (select_bezirk.value != -1 && select_bezirk.value != -2)
+    {
         //alert("IN bezirk changed");
         var strAbschnittOptions = document.getElementById("div_" + select_bezirk.value).innerHTML;
-                if (strLetzteAbschnitt != null)
+        if (strLetzteAbschnitt != null)
         {
-        strAbschnittOptions = strAbschnittOptions.replace('value="' + strLetzteAbschnitt + '"', 'value="' + strLetzteAbschnitt + '" selected');
+            strAbschnittOptions = strAbschnittOptions.replace('value="' + strLetzteAbschnitt + '"', 'value="' + strLetzteAbschnitt + '" selected');
         }
 
         document.getElementById("fieldset_abschnitt").innerHTML = '<legend><b>Abschnitt</b></legend><select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)"></select>';
-                if (strAbschnittOptions.split('<option').length > 1)
+        if (strAbschnittOptions.split('<option').length > 1)
         {
-        document.getElementById("select_abschnitt").innerHTML = "<option value='-2'>Alle Abschnitte</option>" + strAbschnittOptions;
+            document.getElementById("select_abschnitt").innerHTML = "<option value='-2'>Alle Abschnitte</option>" + strAbschnittOptions;
         } else
         {
-        document.getElementById("select_abschnitt").innerHTML = strAbschnittOptions;
+            document.getElementById("select_abschnitt").innerHTML = strAbschnittOptions;
         }
         $('#select_abschnitt').dropdown();
-                //alert(strAbschnittOptions);
-        } else if (select_bezirk.value == - 2)
-        {
+        //alert(strAbschnittOptions);
+    } else if (select_bezirk.value == -2)
+    {
         document.getElementById("fieldset_abschnitt").innerHTML = '<legend><b>Abschnitt</b></legend><select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)"></select>';
-                document.getElementById("select_abschnitt").innerHTML = "<option value='-2'>Alle Abschnitte</option>"
-                $('#select_abschnitt').dropdown();
-                fixDropdowns("select_feuerwehr");
-        }
-        }
+        document.getElementById("select_abschnitt").innerHTML = "<option value='-2'>Alle Abschnitte</option>"
+        $('#select_abschnitt').dropdown();
+        fixDropdowns("select_feuerwehr");
+    }
+}
 
 /**
  * Überprüft ob in einem Dropdown nur ein Wert
@@ -507,33 +510,33 @@ function bezirkChanged(select_bezirk, strLetzteAbschnitt)
  * @returns {undefined}
  */
 function fixDropdowns(id)
-        {
-        //alert("Fix: "+id);
-        var lenght = document.getElementById(id).getElementsByTagName("option").length;
-                if (lenght == 1)
-        {
+{
+    //alert("Fix: "+id);
+    var lenght = document.getElementById(id).getElementsByTagName("option").length;
+    if (lenght == 1)
+    {
         //alert("Add disabled");
         $("#" + id).parent("div").addClass("disabled");
-        } else
-        {
+    } else
+    {
         //alert("remove disabled");
         $("#" + id).parent("div").removeClass("disabled");
-        }
-        }
+    }
+}
 
 /**
  * Leitet zum Vordefiniert.jsp weiter
  * @returns {undefined}
  */
 function zuVordefiniertWeiterleiten()
-        {
-        var strBezirk = document.getElementById("select_bezirk").value;
-                var strAbschnitt = document.getElementById("select_abschnitt").value;
-                var strFeuerwehr = document.getElementById("select_feuerwehr").value;
-                var strBerechtigung = strBezirk + ";" + strAbschnitt + ";" + strFeuerwehr;
-                document.getElementById("hidden_berechtigungs_info_2").value = strBerechtigung;
-                document.form_vordefiniert.submit();
-                }
+{
+    var strBezirk = document.getElementById("select_bezirk").value;
+    var strAbschnitt = document.getElementById("select_abschnitt").value;
+    var strFeuerwehr = document.getElementById("select_feuerwehr").value;
+    var strBerechtigung = strBezirk + ";" + strAbschnitt + ";" + strFeuerwehr;
+    document.getElementById("hidden_berechtigungs_info_2").value = strBerechtigung;
+    document.form_vordefiniert.submit();
+}
 
 
 

@@ -90,18 +90,8 @@ public class MainServlet extends HttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-//        HttpSession session = request.getSession(false);
-//        if (session == null || session.getAttribute("lastPage") == null)
-//        {
-//            System.out.println("MainServlet.doPost: session = null");
-
         request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
         return;
-
-//        }
-//        String strLastPage = (String) session.getAttribute("lastPage");
-//        request.getRequestDispatcher("jsp/" + strLastPage + ".jsp").forward(request, response);
-//        return;
     }
 
     /**
@@ -127,7 +117,6 @@ public class MainServlet extends HttpServlet
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("loggedIn") == null)
         {
-            System.out.println("MainServlet.doPost: session = null");
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
             return;
         } else
@@ -144,7 +133,6 @@ public class MainServlet extends HttpServlet
                 }
             } else if (request.getParameter("dynamisch") != null)
             {
-                System.out.println("MainServlet.doPost: dynamisch");
                 try
                 {
                     session.setAttribute("hashMap_typ", access.getMethodeFuerTyp());
@@ -166,7 +154,7 @@ public class MainServlet extends HttpServlet
                     ladeMitgliederFuerStundenauswertung(request);
                 } catch (Exception ex)
                 {
-                    System.out.println("ladeMitglieder.exception: " + ex.toString());
+                    System.out.println(ex.toString());
                 }
                 request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
                 return;
@@ -187,20 +175,12 @@ public class MainServlet extends HttpServlet
                 return;
             } else if (request.getParameter("hidden_action") != null) //Dynamisch bei fast allen aktionen
             {
-
-                System.out.println("//////////MainServlet.doPost.hidden_action");
-                System.out.println("" + request.getParameter("hidden_berechtigungs_info"));
                 if (request.getParameter("hidden_action").equals("vorschau"))
                 {
-                    System.out.println("MainServlet.doPost: hidden_action: in vorschau");
                     generiereDynamischeVorschau(request, response, session);
                 } else if (request.getParameter("hidden_action").equals("erstelle_vorlage") || request.getParameter("hidden_action").equals("erstelle_vorlage_2"))
                 {
                     erstelleDynamischeVorlage(request, response, session);
-                } else
-                {
-                    System.out.println("MainServlet.doPost: hidden_action: in plus-minus");
-
                 }
                 request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
                 return;
@@ -216,19 +196,11 @@ public class MainServlet extends HttpServlet
                 return;
             } else if (request.getParameter("logout") != null)
             {
-                System.out.println("MainServlet.doPost: logout");
-
                 session.invalidate();
-                if (request.getSession(false) == null)
-                {
-                    System.out.println("session deleted");
-                }
-
                 request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
                 return;
             }
         }
-
         request.getRequestDispatcher("jsp/error.jsp").forward(request, response);
     }
 
@@ -246,12 +218,8 @@ public class MainServlet extends HttpServlet
      */
     private void loginUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        System.out.println("MainServlet.loginUser: button_Login");
         String strBenutzername = request.getParameter("input_benutzername");
         String strKennwort = request.getParameter("input_kennwort");
-//        System.out.println("Benutzername: " + strBenutzername);
-//        System.out.println("Kennwort: " + strKennwort);
-
         //UserID zu login Daten bekommen
         int intIDUser = -1;
         try
@@ -259,7 +227,7 @@ public class MainServlet extends HttpServlet
             intIDUser = access.getUserID(strBenutzername, strKennwort);
         } catch (Exception ex)
         {
-            System.out.println("MainServlet.doPost: login:" + ex.toString());
+            System.out.println(ex.toString());
             request.setAttribute("db_error", ex.toString());
         }
         if (intIDUser != -1) //if (true)
@@ -269,16 +237,13 @@ public class MainServlet extends HttpServlet
             {
                 session.setAttribute("loggedIn", true);
                 session.setAttribute("intUserID", intIDUser);
-                System.out.println("Bla1");
                 LinkedList<Berechtigung> liBerechtigung = access.getBerechtigungen(intIDUser);
-                System.out.println("Bla2");
                 request.setAttribute("berechtigungen", liBerechtigung);
                 if (liBerechtigung.size() == 1)
                 {
                     generiereBerechtigungVorschau(request, response, session, liBerechtigung.get(0));
                     return;
                 }
-                System.out.println("Berechtigungen gesetzt");
             } catch (Exception ex)
             {
                 Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -329,11 +294,8 @@ public class MainServlet extends HttpServlet
      */
     private void generiereBerechtigungVorschau(HttpServletRequest request, HttpServletResponse response, HttpSession session, Berechtigung aktBerechtigung) throws Exception
     {
-        System.out.println("//////////////////generiereBerechtigungVorschau");
         if (aktBerechtigung.getIntIDGruppe() == 1)
         {
-            System.out.println("//////////////////generiereBerechtigungVorschau in 1");
-            System.out.println("MainServlet.generiereBerechtigungVorschau: id=1");
             session.setAttribute("alleBezirke", access.getAllBezirke());
             session.setAttribute("bezirk", null);
             session.setAttribute("bezirkName", null);
@@ -342,7 +304,6 @@ public class MainServlet extends HttpServlet
             session.setAttribute("feuerwehr", null);
         } else if (aktBerechtigung.getIntIDGruppe() == 5)
         {
-            System.out.println("MainServlet.generiereBerechtigungVorschau: id=5");
             session.setAttribute("alleBezirke", null);
             session.setAttribute("bezirk", access.getBezirk(aktBerechtigung.getIntBereich()));
             session.setAttribute("bezirkName", null);
@@ -351,7 +312,6 @@ public class MainServlet extends HttpServlet
             session.setAttribute("feuerwehr", null);
         } else if (aktBerechtigung.getIntIDGruppe() == 15)
         {
-            System.out.println("MainServlet.generiereBerechtigungVorschau: id=15");
             session.setAttribute("alleBezirke", null);
             session.setAttribute("bezirk", null);
             session.setAttribute("bezirkName", access.getBereichsnameFuerBereichnnummer(aktBerechtigung.getIntBereich()));
@@ -360,7 +320,6 @@ public class MainServlet extends HttpServlet
             session.setAttribute("feuerwehr", null);
         } else if (aktBerechtigung.getIntIDGruppe() == 9 || aktBerechtigung.getIntIDGruppe() == 0)
         {
-            System.out.println("MainServlet.generiereBerechtigungVorschau: id=9/0");
             session.setAttribute("alleBezirke", null);
             session.setAttribute("bezirk", null);
             session.setAttribute("bezirkName", access.getBereichsnameFuerBereichnnummer(aktBerechtigung.getIntBereich()));
@@ -375,7 +334,6 @@ public class MainServlet extends HttpServlet
             session.setAttribute("abschnittName", null);
             session.setAttribute("feuerwehr", null);
         }
-        System.out.println("//////////////////generiereBerechtigungVorschau forward");
         request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
     }
 
@@ -390,13 +348,10 @@ public class MainServlet extends HttpServlet
      */
     private void generiereVorschau(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        System.out.println("MainServlet.generiereVorschau: button_vorschau");
         try
         {
-
             LinkedList<Rohbericht> liRohberichte = (LinkedList<Rohbericht>) this.getServletContext().getAttribute("rohberichte");
             String strBericht = request.getParameter("input_aktbericht");
-
             int intBereichNr = Integer.parseInt(request.getParameter("select_bezirk"));
             int intAbschnittNr = Integer.parseInt(request.getParameter("select_abschnitt"));
             String strFeuerwehr = request.getParameter("select_feuerwehr");
@@ -408,7 +363,6 @@ public class MainServlet extends HttpServlet
                 request.setAttribute("liste", access.getErreichbarkeitsliste(intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals("Adressliste"))//Adressliste
             {
-
                 request.setAttribute("liste", access.getAdressliste(intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals("Geburtstagsliste"))//Geburtstagsliste
             {
@@ -420,12 +374,11 @@ public class MainServlet extends HttpServlet
                 request.setAttribute("liste", access.getDienstzeitListe(intJahr, intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals("Stundenauswertung je Mitglied je Instanz"))//Stundenauswertung je Mitglied je Instanz
             {
-                //request.setAttribute("liste", );
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
                 int intPersID = Integer.parseInt(request.getParameter("select_mitglied").split("###")[0]);
-                request.setAttribute("liste", access.getStundenauswertungProMitgliedProInstanz(strVonDatum, strBisDatum, intBereichNr, intAbschnittNr, strFeuerwehr, intPersID));
-
+                request.setAttribute("liste", access.getStundenauswertungProMitgliedProInstanz(strVonDatum, strBisDatum, intBereichNr, 
+                        intAbschnittNr, strFeuerwehr, intPersID));
             } else if (strBericht.equals("Tätigkeitsbericht leer"))//Tätigkeitsbericht leer
             {
                 request.setAttribute("liste", access.getLeerberichtMitglied(intBereichNr, intAbschnittNr, strFeuerwehr));
@@ -442,26 +395,21 @@ public class MainServlet extends HttpServlet
             {
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
-                System.out.println("MainServler.generiereVorschau: " + strVonDatum + " bis " + strBisDatum);
-                //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
                 request.setAttribute("liste", access.getEinsatzbericht(strVonDatum, strBisDatum, intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals("Liste aller Tätigkeitsberichte"))//Liste aller Tätigkeitsberichte
             {
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
-                //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
                 request.setAttribute("liste", access.getTaetigkeitsbericht(strVonDatum, strBisDatum, intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals("Liste aller Übungsberichte"))//Liste aller Übungsberichte
             {
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
-                //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
                 request.setAttribute("liste", access.getUebungsbericht(strVonDatum, strBisDatum, intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals("Liste aller Berichte"))//Liste aller Berichte
             {
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
-                //!!Bitte das gewählte Datum als String übergeben (strVon, strBis)
                 request.setAttribute("liste", access.getAlleBerichte(strVonDatum, strBisDatum, intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals("Kursstatistik"))//Kursstatistik
             {
@@ -473,37 +421,25 @@ public class MainServlet extends HttpServlet
             {
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
-
                 String strKennzeichen1 = request.getParameter("input_kennzeichen");
                 if (strKennzeichen1.trim().isEmpty())
                 {
                     request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
                     return;
                 }
-//                System.out.println("Kennzeichen: " + strKennzeichen1);
-//                String strKennzeichen = "HB-2-FXE";
-
-                //Login für Farhetnbuch implementiert, also können die Übergabeparameter da dazu gemacht werden lg nauschi
-                //System.out.println(access.getFahrtenbuch("", "", strKennzeichen).toString());
                 LinkedList<Fahrzeug> liFahrzeuge = access.getFahrtenbuch(intBereichNr, intAbschnittNr, strFeuerwehr, strVonDatum, strBisDatum, strKennzeichen1);
                 String strDetails = access.getDetailsFuerFahrtenbuchFahrzeug(liFahrzeuge);
                 request.setAttribute("zusatz_informationen", strDetails.isEmpty() ? null : strDetails);
                 request.setAttribute("liste", liFahrzeuge);
             } else if (strBericht.equals("Einsatztaugliche Atemschutzgeräteträger"))
             {
-
                 request.setAttribute("liste", access.getGereatetraegerMitglied(intBereichNr, intAbschnittNr, strFeuerwehr));
-
-            } else
-            {
-                System.out.println("MainServlet.generiereVorschau: last else");
             }
         } catch (Exception ex)
         {
-            Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.toString());
         }
         request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
-        return;
     }
 
     /**
@@ -520,9 +456,7 @@ public class MainServlet extends HttpServlet
      */
     private String generiereKurstatistikZusatzTable(int intBereichnr, int intAbschnittnr, String strFubwehr, String strVonDatum, String strBisDatum) throws Exception
     {
-        System.out.println("/////////////generiereKurstatistikZusatzTable//////////////");
         LinkedList<Kurs> liKurse = access.getKursstatistikkurse(intBereichnr, intAbschnittnr, strFubwehr, strVonDatum, strBisDatum);
-        System.out.println(liKurse.size());
         String strZusatzInfo = "<table class='tablesorter ui celled table'><thead>";
         strZusatzInfo += "<tr>"
                 + "<th data-content='nach Kursbezeichnung sortieren' class='sort'>Kursbezeichnung</th>"
@@ -547,18 +481,13 @@ public class MainServlet extends HttpServlet
      */
     private void generiereDynamischeVorschau(HttpServletRequest request, HttpServletResponse response, HttpSession session)
     {
-        System.out.println("//////////////generiereDynamischeVorschau////////////");
         String strTypen = request.getParameter("hidden_typen_daten");
-        System.out.println("Typen: " + strTypen);
         int intZaehler = Integer.parseInt(request.getParameter("hidden_zaehler"));
-        System.out.println("MainServlet.doPost: hidden_action: zaehler: " + intZaehler);
         String[][] strDaten = new String[intZaehler][6];
         for (int i = 0; i < intZaehler; i++)
         {
             String strZeile = request.getParameter("hidden_element_data_" + (i + 1));
-            System.out.println("MainServlet.generiereDynamischeVorschau: zeile: " + strZeile);
             String[] splitString = strZeile.split(";");
-            System.out.println("MainServlet.generiereDynamischeVorschau: splitString size: " + splitString.length);
             for (int j = 0; j < 7; j++)
             {
                 if (splitString[j].isEmpty())
@@ -588,7 +517,6 @@ public class MainServlet extends HttpServlet
             //Test
             //-2 --> alles
             StringBuilder sbDynHTML = access.getDynamischerBericht(strDaten, strTypen, intBezirk, intAbschnitt, strFeuerwehr);
-            System.out.println("MainServlet.erstelleDynamischenBericht: sbDynHTML: " + sbDynHTML);
             request.setAttribute("dyn_table", sbDynHTML);
         } catch (Exception ex)
         {
@@ -608,7 +536,6 @@ public class MainServlet extends HttpServlet
      */
     private void erstelleDynamischeVorlage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
     {
-        System.out.println("/////////////MainServlet.erstelleDynamischeVorlage///////////////");
         String strVorlageName = request.getParameter("hidden_vorlage_name");
         String strTypen = request.getParameter("hidden_typen_daten");
         int intUserID = (int) session.getAttribute("intUserID");
@@ -622,7 +549,6 @@ public class MainServlet extends HttpServlet
                 if (hsVorlagen.get(strVorlageName) != null && request.getParameter("hidden_action").equals("erstelle_vorlage"))
                 {
                     request.setAttribute("dynamisch_vorlage_vorhanden", true);
-                    System.out.println("///Shit///");
                     return;
                 } else if (hsVorlagen.get(strVorlageName) != null && request.getParameter("hidden_action").equals("erstelle_vorlage_2"))
                 {
@@ -640,8 +566,6 @@ public class MainServlet extends HttpServlet
         }
         hsVorlagen.put(strVorlageName, liDaten);
         sc.setAttribute("userid_" + intUserID + "_vorlagen", hsVorlagen);
-
-        System.out.println("HS: " + hsVorlagen.size());
     }
 
     /**
@@ -654,7 +578,6 @@ public class MainServlet extends HttpServlet
      */
     private void ladeDynamischeVorlage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
     {
-        System.out.println("/////////////MainServlet.ladeDynamischeVorlage///////////////");
         ServletContext sc = this.getServletContext();
         String strVorlageName = request.getParameter("select_lade_vorlage");
         int intUserID = (int) session.getAttribute("intUserID");
@@ -667,7 +590,6 @@ public class MainServlet extends HttpServlet
             String strZeile = liDaten.get(i);
             request.setAttribute("hidden_element_data_" + i, strZeile);
         }
-        System.out.println("Li.size: " + liDaten.size());
     }
 
     /**
@@ -679,7 +601,6 @@ public class MainServlet extends HttpServlet
      */
     private void loescheDynamischeVorlage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
     {
-        System.out.println("/////////////MainServlet.loescheDynamischeVorlage///////////////");
         ServletContext sc = this.getServletContext();
         String strVorlageName = request.getParameter("select_loesche_vorlage");
         int intUserID = (int) session.getAttribute("intUserID");
@@ -696,12 +617,10 @@ public class MainServlet extends HttpServlet
      */
     private void ladeKennzeichen(HttpServletRequest request) throws Exception
     {
-        System.out.println("////////////////Lade Kennzeichen/////////////");
         int intBereichNr = Integer.parseInt(request.getParameter("select_bezirk"));
         int intAbschnittNr = Integer.parseInt(request.getParameter("select_abschnitt"));
         String strFeuerwehr = request.getParameter("select_feuerwehr");
         LinkedList<String> liTest = access.getFahrtenbuchKennzeichen(intBereichNr, intAbschnittNr, strFeuerwehr);
-        System.out.println(liTest.size() + "----------------------------");
         request.setAttribute("select_kennzeichen_liste", liTest);
     }
 
@@ -713,7 +632,6 @@ public class MainServlet extends HttpServlet
      */
     private void ladeMitgliederFuerStundenauswertung(HttpServletRequest request) throws Exception
     {
-        System.out.println("////////////////Lade Kennzeichen/////////////");
         int intBereichNr = Integer.parseInt(request.getParameter("select_bezirk"));
         int intAbschnittNr = Integer.parseInt(request.getParameter("select_abschnitt"));
         String strFeuerwehr = request.getParameter("select_feuerwehr");
@@ -762,18 +680,7 @@ public class MainServlet extends HttpServlet
             leseOperatorenDynamisch(strPath + File.separator + "TypenDynamischOperatoren.csv");
         } catch (IOException ex)
         {
-//            try
-//            {
-//                strPath = System.getProperty("user.dir")
-//                        + File.separator + "web"
-//                        + File.separator + "res"
-//                        + File.separator + "Rohberichte.csv";
-//
-//                leseRohberichte(strPath);
-//            } catch (IOException ex1)
-//            {
-//                Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex1);
-//            }
+            System.out.println(ex.toString());
         }
 
     }
