@@ -398,13 +398,13 @@
         <div class="ui small modal" id="modal_ausgabe_info">
             <div class="header">Info: Ausgabe</div>
             <div class="content">
-                <p>In diesem Bereich können Sie auswählen welche Spalten Sie später in Ihrem Bericht angezeigt haben wollen</p>
+                <p>In diesem Bereich können Sie auswählen, welche Spalten Sie später in Ihrem Bericht angezeigt haben wollen.</p>
                 Automatisch ausgegeben werden:
                 <ul>
-                    <li>die Standesbuchnummer</li>
-                    <li>der Dienstgrad</li>
-                    <li>der Vorname</li>
-                    <li>der Zuname</li>
+                    <li>Standesbuchnummer</li>
+                    <li>Dienstgrad</li>
+                    <li>Vorname</li>
+                    <li>Zuname</li>
                 </ul>
                 <p>Es können maximal 6 zusätzliche Spalten ausgewählt werden.</p>
             </div>

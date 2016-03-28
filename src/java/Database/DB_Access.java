@@ -3131,7 +3131,7 @@ public class DB_Access {
      * Generiert aus einem 2-dimensionalen Eingabearray und den spezifizierten
      * Ausgabespalten das Statement und gibt den daraus erhaltenen fertigen
      * Bericht als HTML-Tabelle zurück (berücksichtigt die Berechtigungen des
-     * Users) HTML-Tabelle zurück
+     * Users) zurück
      *
      * @param strEingabe
      * @param strSelectedColumns
@@ -3395,10 +3395,6 @@ public class DB_Access {
         liDoppelteFunktionsbezeichnung.addAll(liDoppelteFunktionsinstanz);
         liDoppelteLeistungsabzeichenStufe.addAll(liDoppelteLeistungsabzeichenbezeichnung);
 
-        for (int i = 0; i < liDoppelteLeistungsabzeichenbezeichnung.size(); i++) {
-            System.out.println(liDoppelteLeistungsabzeichenbezeichnung.get(i));
-        }
-
         for (int i = 0; i < intRows; i++) {
             strSpaltenUeberschrift = strEingabe[i][1];
 
@@ -3508,7 +3504,7 @@ public class DB_Access {
         sbSqlString.append("FROM FDISK.dbo.stmkmitglieder m ");
         if (liDoppelteDienstgrad.size() > 0) {
             for (Integer i : liDoppelteDienstgrad) {
-                sbSqlString.append(" INNER JOIN FDISK.dbo.stmkmitglieder m" + i + " ON(m.id_personen = m" + i + ".id_personen) ");
+                sbSqlString.append(" INNER JOIN FDISK.dbo.stmkmitglieder m").append(i).append(" ON(m.id_personen = m").append(i).append(".id_personen) ");
             }
         }
         if (boAdresse == true) {
@@ -3518,8 +3514,8 @@ public class DB_Access {
         if (boAuszeichnung == true) {
             if (liDoppelteAuszeichnungsart.size() > 0) {
                 for (Integer i : liDoppelteAuszeichnungsart) {
-                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkauszeichnungenmitglieder auszm" + i + " ON(auszm" + i + ".id_personen = m.id_personen) ")
-                            .append(" INNER JOIN FDISK.dbo.stmkauszeichnungen ausz" + i + " ON(auszm" + i + ".id_auszeichnungen = ausz" + i + ".id_auszeichnungen) ");
+                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkauszeichnungenmitglieder auszm").append(i).append(" ON(auszm").append(i).append(".id_personen = m.id_personen) ").append(" INNER JOIN FDISK.dbo.stmkauszeichnungen ausz").append(i).append(" ON(auszm").append(i).append(".id_auszeichnungen = ausz").append(i)
+                            .append(".id_auszeichnungen) ");
                 }
 
             } else {
@@ -3532,8 +3528,8 @@ public class DB_Access {
         if (boLeistungsabzeichen == true) {
             if (liDoppelteLeistungsabzeichenStufe.size() > 0) {
                 for (Integer i : liDoppelteLeistungsabzeichenStufe) {
-                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkleistungsabzeichenmitglieder lam" + i + " ON(m.id_personen = lam" + i + ".id_personen) ")
-                            .append(" INNER JOIN FDISK.dbo.stmkleistungsabzeichen la" + i + " ON(la" + i + ".id_leistungsabzeichen = lam" + i + ".id_leistungsabzeichen) ");
+                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkleistungsabzeichenmitglieder lam").append(i).append(" ON(m.id_personen = lam").append(i).append(".id_personen) ").append(" INNER JOIN FDISK.dbo.stmkleistungsabzeichen la").append(i).append(" ON(la").append(i).append(".id_leistungsabzeichen = lam").append(i)
+                            .append(".id_leistungsabzeichen) ");
                 }
 
             } else {
@@ -3546,8 +3542,8 @@ public class DB_Access {
         if (boKurse == true) {
             if (liDoppelteKursbezeichnung.size() > 0) {
                 for (Integer i : liDoppelteKursbezeichnung) {
-                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkkursemitglieder km" + i + " ON(m.id_personen = km" + i + ".id_mitgliedschaften) ")
-                            .append(" INNER JOIN FDISK.dbo.stmkkurse k" + i + " ON (k" + i + ".id_kurse = km" + i + ".id_kurse) ");
+                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkkursemitglieder km").append(i).append(" ON(m.id_personen = km").append(i).append(".id_mitgliedschaften) ").append(" INNER JOIN FDISK.dbo.stmkkurse k").append(i).append(" ON (k").append(i).append(".id_kurse = km").append(i)
+                            .append(".id_kurse) ");
                 }
 
             } else {
@@ -3559,7 +3555,7 @@ public class DB_Access {
         if (boErreichbarkeiten == true) {
             if (liDoppelteErreichbarkeitsart.size() > 0) {
                 for (Integer i : liDoppelteErreichbarkeitsart) {
-                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkerreichbarkeiten e" + i + " ON(m.id_personen = e" + i + ".id_personen) ");
+                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkerreichbarkeiten e").append(i).append(" ON(m.id_personen = e").append(i).append(".id_personen) ");
                 }
 
             } else {
@@ -3570,7 +3566,7 @@ public class DB_Access {
         if (boFahrgenehmigungen == true) {
             if (liDoppelteFuehrerscheinklasse.size() > 0) {
                 for (Integer i : liDoppelteFuehrerscheinklasse) {
-                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkgesetzl_fahrgenehmigungen gf" + i + " ON(m.id_personen = gf" + i + ".fdisk_personen_id) ");
+                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkgesetzl_fahrgenehmigungen gf").append(i).append(" ON(m.id_personen = gf").append(i).append(".fdisk_personen_id) ");
                 }
             } else {
                 sbSqlString.append(" INNER JOIN FDISK.dbo.stmkgesetzl_fahrgenehmigungen gf ON(m.id_personen = gf.fdisk_personen_id) ");
@@ -3580,8 +3576,8 @@ public class DB_Access {
         if (boFunktionen == true) {
             if (liDoppelteFunktionsbezeichnung.size() > 0) {
                 for (Integer i : liDoppelteFunktionsbezeichnung) {
-                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkfunktionenmitglieder fm" + i + " ON(m.id_personen = fm" + i + ".id_mitgliedschaften) ")
-                            .append(" INNER JOIN FDISK.dbo.stmkfunktionen f" + i + " ON(f" + i + ".id_funktionen = fm" + i + ".id_funktionen) ");
+                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkfunktionenmitglieder fm" + i + " ON(m.id_personen = fm" + i + ".id_mitgliedschaften) ").append(" INNER JOIN FDISK.dbo.stmkfunktionen f").append(i).append(" ON(f").append(i).append(".id_funktionen = fm").append(i)
+                            .append(".id_funktionen) ");
                 }
             } else {
                 sbSqlString.append(" INNER JOIN FDISK.dbo.stmkfunktionenmitglieder fm ON(m.id_personen = fm.id_mitgliedschaften) ")
@@ -3592,7 +3588,7 @@ public class DB_Access {
         if (boUntersuchungen == true) {
             if (liDoppelteUntersuchungsart.size() > 0) {
                 for (Integer i : liDoppelteUntersuchungsart) {
-                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkuntersuchungenmitglieder u" + i + " ON(m.id_mitgliedschaften = u" + i + ".id_mitgliedschaften) ");
+                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkuntersuchungenmitglieder u").append(i).append(" ON(m.id_mitgliedschaften = u").append(i).append(".id_mitgliedschaften) ");
                 }
             } else {
                 sbSqlString.append(" INNER JOIN FDISK.dbo.stmkuntersuchungenmitglieder u ON(m.id_mitgliedschaften = u.id_mitgliedschaften) ");
