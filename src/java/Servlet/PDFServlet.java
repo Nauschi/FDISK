@@ -5,7 +5,6 @@
  */
 package Servlet;
 
-import Beans.MitgliedsStunden;
 import Beans.MitgliedsStundenPDF;
 import Enum.EnLeerberichte;
 import PDF.PDF_KopfFußzeile;
@@ -102,8 +101,6 @@ public class PDFServlet extends HttpServlet
         request.getRequestDispatcher("jsp/error.jsp").forward(request, response);
     }
 
-    //style='page-break-after: always'
-    //style="display: none" colspan="?"
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -244,6 +241,13 @@ public class PDFServlet extends HttpServlet
 
     }
 
+    /**
+     * Wird nur bei dem Bericht "Stundenauswertung Je Mitglied Je Instanz"
+     * verwendet und wandelt den übegebenen String in das gewünschte 
+     * Format um
+     * @param strTemp
+     * @return 
+     */
     public String generiereStundenauswertungJeMitgliedJeInstanz(String strTemp)
     {    
         strTemp = strTemp.replace("<table class=\"tablesorter ui celled table\">", "");
@@ -255,6 +259,7 @@ public class PDFServlet extends HttpServlet
         intIndex2 = strTemp.lastIndexOf("</tbody>");
         String strTRs = strTemp.substring(intIndex1, intIndex2);
         int intIndex = -1;
+        //Struktur der TableRow
         //<tr>
         //<td></td>
         //<td></td>
@@ -301,7 +306,6 @@ public class PDFServlet extends HttpServlet
         }
         
         String ausgabe = "";
-        
         for (int i = 0; i < liPDFMit.size(); i++)
         {
             ausgabe+=liPDFMit.get(i).toString();
@@ -309,11 +313,17 @@ public class PDFServlet extends HttpServlet
         return ausgabe;
     }
 
+    /**
+     * Zerlegt den übergebenen String und filtert alle wichtigen Daten
+     * für ein neues MitgliederStundenPDF Objekt herraus.
+     * Das neue erstellt Objekt wird zurückgegeben
+     * @param strOriginalAktRow
+     * @return 
+     */
     public MitgliedsStundenPDF getMitgliedVonString(String strOriginalAktRow)
     {
         String strData = strOriginalAktRow.substring(strOriginalAktRow.indexOf("<div >"), strOriginalAktRow.indexOf("</div>") + 6);
         String strAktRow = strOriginalAktRow.replace(strData, "");
-        
         strData = strData.replace("<div >", "");
         strData = strData.replace("</div>", "");
         strAktRow = strAktRow.replace("<tr>", "");
@@ -321,7 +331,6 @@ public class PDFServlet extends HttpServlet
         strAktRow = strAktRow.replaceAll("\\<td[^>]*>", "");
         String[] splitAktRow = strAktRow.split("</td>");
         String [] splitData = strData.split(";");
-        
         MitgliedsStundenPDF msp = new MitgliedsStundenPDF(splitAktRow[0], splitAktRow[1], splitAktRow[2], splitAktRow[3], splitAktRow[4], 
                 Integer.parseInt(splitData[0]), Integer.parseInt(splitData[1]), Integer.parseInt(splitData[2]));
         msp.addInstanzname(splitAktRow[5]);
@@ -330,9 +339,9 @@ public class PDFServlet extends HttpServlet
     }
 
     /**
-     * Generiert einen Tätigkeitsbericht mit Hilfe des übergebenen Strings
-     * strTable ist der HTML String der Zeilen des Tables
-     * (<tr>...</tr><tr>...</tr><tr>...</tr>....)
+     * Generiert einen Tätigkeitsbericht mit Hilfe des übergebenen Strings.
+     * strTable ist der HTML String der die Zeilen des Tables beinhaltet
+     * "<tr>...</tr><tr>...</tr><tr>...</tr>...."
      *
      * @param strTable
      * @return
@@ -346,9 +355,9 @@ public class PDFServlet extends HttpServlet
     }
 
     /**
-     * Generiert einen Uebungsbericht mit Hilfe des übergebenen Strings strTable
-     * ist der HTML String der Zeilen des Tables
-     * (<tr>...</tr><tr>...</tr><tr>...</tr>....)
+     * Generiert einen Uebungsbericht mit Hilfe des übergebenen Strings.
+     * strTable ist der HTML String der die Zeilen des Tables beinhaltet
+     * "<tr>...</tr><tr>...</tr><tr>...</tr>...."
      *
      * @param strTable
      * @return
@@ -363,9 +372,9 @@ public class PDFServlet extends HttpServlet
     }
 
     /**
-     * Generiert einen Einsatzbericht mit Hilfe des übergebenen Strings strTable
-     * ist der HTML String der Zeilen des Tables
-     * (<tr>...</tr><tr>...</tr><tr>...</tr>....)
+     * Generiert einen Einsatzbericht mit Hilfe des übergebenen Strings.
+     * strTable ist der HTML String der die Zeilen des Tables beinhaltet
+     * "<tr>...</tr><tr>...</tr><tr>...</tr>...."
      *
      * @param strTable
      * @return
@@ -379,6 +388,12 @@ public class PDFServlet extends HttpServlet
         return strHTMLOutput;
     }
 
+    /**
+     * Wird beim Starten des Servlets aufgerufen und initialisiert eine
+     * Liste mit den Namen der Berichte die im Hochformat sind
+     * @param config
+     * @throws ServletException 
+     */
     @Override
     public void init(ServletConfig config) throws ServletException
     {

@@ -248,7 +248,6 @@ public class MainServlet extends HttpServlet
             {
                 Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
             return;
         } else
@@ -284,7 +283,8 @@ public class MainServlet extends HttpServlet
     }
 
     /**
-     * Setz je nach ausgewählter Sicht die Berechtigungen
+     * Setzt je nach ausgewählter Berechtigung die Werte für die drei Dropdowns
+     * zur Auswahl der aktuellen Sicht.
      *
      * @param request
      * @param response
