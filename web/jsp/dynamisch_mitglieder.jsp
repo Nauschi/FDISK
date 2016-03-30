@@ -120,19 +120,18 @@
         <br/>
         <div style="background-color: #C00518;color: white; margin: 0 auto; width: 90%;" class="ui segment">
             <b>Basis Optionen</b>
-
         </div>
         <div id="div_vorlage" class="ui equal width grid">
             <div class="column" id="div_bezirk">
                 <fieldset id="fieldset_bezirk">
                     <legend><b>Bezirk</b></legend>
                     <select  name="select_bezirk"  class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
-                        <%=generiereBezirk(session,request)%>
+                        <%=generiereBezirk(session, request)%>
                     </select>
                 </fieldset>
             </div>
             <%
-                if (intIDGruppe == 5||intIDGruppe==1)
+                if (intIDGruppe == 5 || intIDGruppe == 1)
                 {
                     out.println(generiereHiddenBezirkDiv(session));
                 }
@@ -147,7 +146,7 @@
             </div>
 
             <%
-                if (intIDGruppe == 15 || intIDGruppe == 5||intIDGruppe==1)
+                if (intIDGruppe == 15 || intIDGruppe == 5 || intIDGruppe == 1)
                 {
                     out.println(generiereHiddenAbschnittDiv(session));
                 }
@@ -160,8 +159,6 @@
                     </select>
                 </fieldset>
             </div>
-
-
 
             <div class="column">
                 <fieldset id="fieldset_vorlage">
@@ -181,7 +178,11 @@
                 </fieldset>
             </div>
         </div>
+
         <div id="dyn_main_div" >
+            <div style="background-color: #C00518;color: white;" class="ui segment">
+                <b>Abfragen</b> <i class="large info circle link icon" style="float: right" title="Info" onclick="$('#modal_abfragen_info').modal('show');"></i>
+            </div>
             <div class="ui grid" id="div_dyn_headers">
                 <div class="two wide column" style="width: 100%;">
                     <b>Klammer auf</b>
@@ -322,7 +323,7 @@
 
             </form>
             <div style="background-color:#C00518;color:white;" class="ui segment">
-                <b>Ausgabe</b> <i class="info circle link icon" title="Info" onclick="$('#modal_ausgabe_info').modal('show');"></i>
+                <b>Ausgabe</b> <i class="large info circle link icon" style="float: right" title="Info" onclick="$('#modal_ausgabe_info').modal('show');"></i>
 
             </div>
             <div id="div_typen_auswahl"  class="ui grid">
@@ -413,6 +414,17 @@
             </div>
         </div>
 
+        <div class="ui small modal" id="modal_abfragen_info">
+            <div class="header">Info: Abfragen</div>
+            <div class="content">
+                <p>In diesem Bereich können Sie Abfragen zum Filtern der Daten machen</p>
+                <p>Es können höchstens 5 Abfragen getätigt werden und falls ein Typ mehr als
+                    2 mal verwendet wird, wirkt sich das stark auf die Antwortszeit aus</p>
+            </div>
+            <div class="actions">
+                <button type="button" onClick="$('#modal_abfragen_info').modal('hide');" class="ui button styleGrau"  style="width: 20%;">OK</button>
+            </div>
+        </div>
 
         <div class="ui small modal" id="modal_erstelle_vorlage">
             <div class="header">Neue Vorlage</div>
@@ -704,9 +716,9 @@
 
         for (int i = 4; i < strSplit.length; i++)
         {
-            if(strSplit[i].toUpperCase().contains("DATUM"))
+            if (strSplit[i].toUpperCase().contains("DATUM"))
             {
-                output+=","+i+": {sorter: 'berichtdate'}";
+                output += "," + i + ": {sorter: 'berichtdate'}";
             }
         }
         output += "}});";
@@ -813,10 +825,10 @@
         return strAusgabe;
     }
 
-    private String generiereBezirk(HttpSession session,HttpServletRequest request)
+    private String generiereBezirk(HttpSession session, HttpServletRequest request)
     {
-        int intLetzerBezirk=-1000;
-        if(request.getParameter("hidden_berechtigungs_info")!=null)
+        int intLetzerBezirk = -1000;
+        if (request.getParameter("hidden_berechtigungs_info") != null)
         {
             intLetzerBezirk = Integer.parseInt(request.getParameter("hidden_berechtigungs_info").split(";")[0]);
         }
@@ -827,14 +839,14 @@
             LinkedList<Bezirk> liBezirke = (LinkedList<Bezirk>) session.getAttribute("alleBezirke");
             for (Bezirk bezirk : liBezirke)
             {
-                if(bezirk.getIntBezirksNummer()== intLetzerBezirk)
+                if (bezirk.getIntBezirksNummer() == intLetzerBezirk)
                 {
-                    strAusgabe+=bezirk.toSelectedString();
-                }else
+                    strAusgabe += bezirk.toSelectedString();
+                } else
                 {
                     strAusgabe += bezirk.toString();
                 }
-                
+
             }
         } else if (session.getAttribute("bezirk") != null)
         {
