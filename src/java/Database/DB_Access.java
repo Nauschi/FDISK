@@ -89,6 +89,18 @@ public class DB_Access {
      /*                       LOGIN                                                   *
      /*                                                                               *
      /**********************************************************************************/
+    
+    
+    /**
+     * Gibt eine LinkedList mit allen Berechtigungen des Users mit der
+     * übergebenen UserID zurück.
+     * 
+     * @param intUserID
+     * @return LinkedList
+     * @throws Exception 
+     * @see Berechtigung
+     * @see LinkedList
+     */
     public LinkedList<Berechtigung> getBerechtigungen(int intUserID) throws Exception {
         LinkedList<Berechtigung> liBerechtigungen = new LinkedList<>();
         LinkedList<LoginMitglied> liLoginBerechtigung = new LinkedList<>();
@@ -156,7 +168,7 @@ public class DB_Access {
     }
 
     /**
-     * Gibt die UserID für den jeweiligen Username zurück
+     * Gibt die UserID für den jeweiligen Username und Passwort zurück
      *
      * @param strUsername
      * @param strPasswort
@@ -231,6 +243,14 @@ public class DB_Access {
         return liMitglieder;
     }
 
+    /**
+     * Gibt eine LinkedList mit allen Bezirken aus der gesamten Datenbank zurück.
+     * 
+     * @return LinkedList
+     * @throws Exception 
+     * @see Bezirk
+     * @see LinkedList
+     */
     public LinkedList<Bezirk> getAllBezirke() throws Exception {
         LinkedList<Bezirk> liBezirke = new LinkedList<>();
 
@@ -257,9 +277,18 @@ public class DB_Access {
             liBezirke.add(new Bezirk(strBezirksname, intBezirksnummer, liAbschnitte));
         }
         connPool.releaseConnection(conn);
+        
         return liBezirke;
     }
 
+    /**
+     * Gibt einen Bezirk einer bestimmten Bereichsnummer zurück.
+     * 
+     * @param bereichnummer
+     * @return Bezirk
+     * @throws Exception 
+     * @see Bezirk
+     */
     public Bezirk getBezirk(int bereichnummer) throws Exception {
         LinkedList<Integer> liAbschnittnummern;
         liAbschnittnummern = getAbschnittNummernFuerBereich(bereichnummer);
@@ -271,6 +300,14 @@ public class DB_Access {
         return bezirk;
     }
 
+    /**
+     * Gibt einen Abschnitt einer bestimmten Abschnittsnummer zurück.
+     * 
+     * @param abschnittnummer
+     * @return Abschnitt
+     * @throws Exception 
+     * @see Abschnitt
+     */
     public Abschnitt getAbschnitt(int abschnittnummer) throws Exception {
         LinkedList<String> liFeuerwehrnummern;
         liFeuerwehrnummern = getFubwehrNummernFuerAbschnitt(abschnittnummer);
@@ -282,16 +319,25 @@ public class DB_Access {
         return abschnitt;
     }
 
+    /**
+     * Gibt eine Feuerwehr einer bestimmten Feuerwehrnummer zurück.
+     * 
+     * @param feuerwehrnummer
+     * @return Feuerwehr
+     * @throws Exception 
+     * @see Feuerwehr
+     */
     public Feuerwehr getFeuerwehr(String feuerwehrnummer) throws Exception {
         Feuerwehr feuerwehr = new Feuerwehr(getNameFuerFubwehr(feuerwehrnummer), feuerwehrnummer);
         return feuerwehr;
     }
 
     /**
-     * Gibt die zugehörige Fubwehr einer UserID zurück.
+     * Gibt die zugehörige Fubwehr einer UserID aus der Tabelle "benutzerdetails"
+     * zurück.
      *
      * @param intUserID
-     * @return
+     * @return String
      * @throws SQLException
      * @throws Exception
      */
@@ -317,7 +363,7 @@ public class DB_Access {
      * Gibt die zugehörige Abschnittsnummer einer Fubwehr zurück.
      *
      * @param strFubwehr
-     * @return
+     * @return int
      * @throws SQLException
      * @throws Exception
      */
@@ -343,10 +389,10 @@ public class DB_Access {
     }
 
     /**
-     * Gibt den Namen einer Fubwehr zurück. (z.B. FF Wagrain)
+     * Gibt den Namen einer Fubwehr/Feuerwehrnummer zurück. (z.B. FF Wagrain)
      *
      * @param strFubwehr
-     * @return
+     * @return String
      * @throws SQLException
      * @throws Exception
      */
@@ -366,10 +412,10 @@ public class DB_Access {
     }
 
     /**
-     * Gibt den zugehörigen Abschnittsnamen für die Fubwehr zurück
+     * Gibt den zugehörigen Abschnittsnamen für eine Fubwehr/Feuerwehrnummer zurück.
      *
      * @param strFubwehr
-     * @return
+     * @return String
      * @throws SQLException
      * @throws Exception
      */
@@ -389,10 +435,10 @@ public class DB_Access {
     }
 
     /**
-     * Gibt den zugehörigen Bereichsnamen einer Fubwehr zurück
+     * Gibt den zugehörigen Bereichsnamen einer Fubwehr/Feuerwehrnummer zurück.
      *
      * @param strFubwehr
-     * @return
+     * @return String
      * @throws SQLException
      * @throws Exception
      */
@@ -412,6 +458,15 @@ public class DB_Access {
         return strName;
     }
 
+    /**
+     * Gibt die Bereichsnummer des Bereichs, in der die Feuerwehr der übergegebenen
+     * Fubwehr/Feuerwehrnummer liegt, zurück.
+     * 
+     * @param strFubwehr
+     * @return int
+     * @throws SQLException
+     * @throws Exception 
+     */
     public int getBereichsnummerFuerFubwehr(String strFubwehr) throws SQLException, Exception {
         Connection conn = connPool.getConnection();
         PreparedStatement prepStat = conn.prepareStatement(EnStaticStatements.getBereichsnummerFuerFubwehr.toString());
@@ -428,6 +483,13 @@ public class DB_Access {
         return intNummer;
     }
 
+    /**
+     * Gibt den zugehörigen Bereichsnamen einer Bereichsnummer zurück.
+     * 
+     * @param bereichnummer
+     * @return String
+     * @throws Exception 
+     */
     public String getBereichsnameFuerBereichnnummer(int bereichnummer) throws Exception {
         String bereichname = " - ";
         Connection conn = connPool.getConnection();
@@ -442,6 +504,13 @@ public class DB_Access {
         return bereichname;
     }
 
+    /**
+     * Gibt den zugehörigen Abschnittsnamen einer Abschnittsnummer zurück.
+     * 
+     * @param abschnittnummer
+     * @return String
+     * @throws Exception 
+     */
     public String getAbschnittsnameFuerAbschnittsnummer(int abschnittnummer) throws Exception {
         String abschnittname = " - ";
         Connection conn = connPool.getConnection();
@@ -455,6 +524,14 @@ public class DB_Access {
         return abschnittname;
     }
 
+    /**
+     * Gibt eine LinkedList aller Abschnittnummern eines Bereichs zurück.
+     * 
+     * @param bereichnummer
+     * @return LinkedList
+     * @throws Exception 
+     * @see LinkedList
+     */
     public LinkedList<Integer> getAbschnittNummernFuerBereich(int bereichnummer) throws Exception {
         LinkedList<Integer> liAbschnittnummern = new LinkedList<>();
         Connection conn = connPool.getConnection();
@@ -468,6 +545,14 @@ public class DB_Access {
         return liAbschnittnummern;
     }
 
+    /**
+     * Gibt eine LinkedList aller Fubwehrnummern eines Abschnitts zurück.
+     * 
+     * @param abschnittnummer
+     * @return LinkedList
+     * @throws Exception 
+     * @see LinkedList
+     */
     public LinkedList<String> getFubwehrNummernFuerAbschnitt(int abschnittnummer) throws Exception {
         LinkedList<String> liFubwehrnummern = new LinkedList<>();
         Connection conn = connPool.getConnection();
