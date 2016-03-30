@@ -198,9 +198,7 @@ function saveDataForCSV()
         $('#modal_fehler').modal('show');
         return;
     }
-
     var strTable = document.getElementById("div_table").innerHTML;
-
     if (document.getElementById("div_zusatzDaten") != null)
     {
         var strZusatzDaten = document.getElementById("div_zusatzDaten").innerHTML;
@@ -209,7 +207,6 @@ function saveDataForCSV()
     {
         document.getElementById("hidden_CSVData").value = strName + "###" + strTable;
     }
-
     document.formCSV.submit();
 }
 
@@ -248,7 +245,6 @@ function abschittChanged(select_abschnitt, strLetzteFW)
         $('.ui.search').search();
         resetSelectMitglieder();
     }
-    //alert("Abschnitt_value: "+select_abschnitt.value);
     if (select_abschnitt.value != -1 && select_abschnitt.value != -2)
     {
         var strFeuerwehrOptions = document.getElementById("div_" + select_abschnitt.value).innerHTML;
@@ -266,7 +262,6 @@ function abschittChanged(select_abschnitt, strLetzteFW)
         }
 
         $('#select_feuerwehr').dropdown();
-        //alert(strFeuerwehrOptions);
     } else if (select_abschnitt.value == -2)
     {
         document.getElementById("fieldset_feuerwehr").innerHTML = '<legend><b>Feuerwehr</b></legend><select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr" onchange="feuerwehrChanged(this)"></select>';
@@ -293,14 +288,11 @@ function bezirkChanged(select_bezirk, strLetzteAbschnitt)
     }
     if (select_bezirk.value != -1 && select_bezirk.value != -2)
     {
-//        alert("IN bezirk changed");
         var strAbschnittOptions = document.getElementById("div_" + select_bezirk.value).innerHTML;
-//        alert(strAbschnittOptions);
         if (strLetzteAbschnitt != null)
         {
             strAbschnittOptions = strAbschnittOptions.replace('value="' + strLetzteAbschnitt + '"', 'value="' + strLetzteAbschnitt + '" selected');
         }
-
         document.getElementById("fieldset_abschnitt").innerHTML = '<legend><b>Abschnitt</b></legend><select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)"></select>';
         if (strAbschnittOptions.split('<option').length > 1)
         {
@@ -310,7 +302,6 @@ function bezirkChanged(select_bezirk, strLetzteAbschnitt)
             document.getElementById("select_abschnitt").innerHTML = strAbschnittOptions;
         }
         $('#select_abschnitt').dropdown();
-        //alert(strAbschnittOptions);
     } else if (select_bezirk.value == -2)
     {
         document.getElementById("fieldset_abschnitt").innerHTML = '<legend><b>Abschnitt</b></legend><select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)"></select>';
@@ -343,15 +334,12 @@ function feuerwehrChanged(select_feuerwehr)
  */
 function fixDropdowns(id)
 {
-    //alert("Fix: "+id);
     var lenght = document.getElementById(id).getElementsByTagName("option").length;
     if (lenght == 1)
     {
-        //alert("Add disabled");
         $("#" + id).parent("div").addClass("disabled");
     } else
     {
-        //alert("remove disabled");
         $("#" + id).parent("div").removeClass("disabled");
     }
 }

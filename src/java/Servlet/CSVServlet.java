@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.Iterator;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -130,20 +128,14 @@ public class CSVServlet extends HttpServlet
             strCSV = strCSV.replaceAll("<fieldset><legend><b>Fahrzeugdaten</b></legend>", "");
             strCSV = strCSV.replaceAll("</fieldset>", "");
             strCSV = strCSV.replaceAll("<table class=\"tablesorter ui celled table\">", "</tr>");
-//            strCSV = strCSV.replaceAll("<table class=\"ui celled table\">", "");
         }
-//        strCSV = strCSV.replaceAll("<table class=\"tablesorter ui celled table\">", "");
-        
-        strCSV = strCSV.replaceAll("\\<table[^>]*>", ""); //Wie funktioniert das??
-//        strCSV = strCSV.replaceAll("<table class='sortable ui celled table' id='dyn_table'>", "");
-//        strCSV = strCSV.replaceAll("<table class='ui celled table'>", "");
-//        strCSV = strCSV.replaceAll("<table class=\"tablesorter2 ui celled table\">", "");
+        strCSV = strCSV.replaceAll("\\<table[^>]*>", ""); 
         strCSV = strCSV.replaceAll("<thead>", "");
         strCSV = strCSV.replaceAll("</thead><tbody>", "");
         strCSV = strCSV.replaceAll("</tbody></table>", "");
-        strCSV = strCSV.replaceAll("\\<th[^>]*>", ""); //Wie funktioniert das??
+        strCSV = strCSV.replaceAll("\\<th[^>]*>", "");
         strCSV = strCSV.replaceAll("</th>", ";");
-        strCSV = strCSV.replaceAll("\\<td[^>]*>", ""); //Wie funktioniert das??
+        strCSV = strCSV.replaceAll("\\<td[^>]*>", "");
         strCSV = strCSV.replaceAll("</td>", ";");
         strCSV = strCSV.replaceAll("<tr>", "");
         strCSV = strCSV.replaceAll("<b>", "");

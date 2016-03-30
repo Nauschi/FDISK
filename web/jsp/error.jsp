@@ -23,5 +23,8 @@
         </div>
         <br>
         <h1 style="text-align: left; margin-left: 5%;">Es ist ein unerwarteter Fehler aufgetreten</h1>
+        <form action="MainServlet" method="get">
+            <button type="submit" name="button_login" style="margin-left: 5%;" class="ui button styleGruen">Zurück zum Login</button>
+        </form>
     </body>
 </html>

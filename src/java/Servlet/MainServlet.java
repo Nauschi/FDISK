@@ -19,11 +19,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -44,9 +40,7 @@ import javax.servlet.http.HttpSession;
         })
 public class MainServlet extends HttpServlet
 {
-
     private DB_Access access;
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -91,7 +85,6 @@ public class MainServlet extends HttpServlet
             throws ServletException, IOException
     {
         request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
-        return;
     }
 
     /**
@@ -113,7 +106,6 @@ public class MainServlet extends HttpServlet
             loginUser(request, response);
             return;
         }
-
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("loggedIn") == null)
         {
@@ -138,7 +130,7 @@ public class MainServlet extends HttpServlet
                     session.setAttribute("hashMap_typ", access.getMethodeFuerTyp());
                 } catch (Exception ex)
                 {
-                    Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println(ex.toString());
                 }
                 request.getRequestDispatcher("jsp/dynamisch_mitglieder.jsp").forward(request, response);
                 return;
@@ -165,7 +157,7 @@ public class MainServlet extends HttpServlet
                     ladeKennzeichen(request);
                 } catch (Exception ex)
                 {
-                    Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println(ex.toString());
                 }
                 request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
                 return;
@@ -246,7 +238,7 @@ public class MainServlet extends HttpServlet
                 }
             } catch (Exception ex)
             {
-                Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex.toString());
             }
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
             return;
@@ -520,7 +512,7 @@ public class MainServlet extends HttpServlet
             request.setAttribute("dyn_table", sbDynHTML);
         } catch (Exception ex)
         {
-            Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.toString());
         }
     }
 
@@ -667,7 +659,7 @@ public class MainServlet extends HttpServlet
 
         } catch (ClassNotFoundException ex)
         {
-            Logger.getLogger(MainServlet.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.toString());
         }
         String strPath = "";
         try
