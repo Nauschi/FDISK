@@ -62,6 +62,11 @@ public class PDF_KopfFußzeile extends PdfPageEventHelper
         pagenumber++;
     }
 
+    /**
+     * Wird zum erstellen der Kopf- und Fußzeile verwendet
+     * @param writer
+     * @param document 
+     */
     @Override
     public void onEndPage(PdfWriter writer, Document document)
     {

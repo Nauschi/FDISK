@@ -111,17 +111,18 @@
     </body>
 </html>
 
-<%!    public String generiereBerechtigungen()
+<%!    /**
+     * Generiert die Optionen für das Berechtigungs Dropdown
+     */
+    public String generiereBerechtigungen()
     {
         String strAusgabe = "";
         if (liBerechtigungen != null)
         {
-
             for (Berechtigung ber : liBerechtigungen)
             {
                 strAusgabe += "<option value='" + ber.getStrBerechtigung() + "'>" + ber.getStrBerechtigung() + "</option>";
             }
-
         }
         return strAusgabe;
     }

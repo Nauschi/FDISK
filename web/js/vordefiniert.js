@@ -55,9 +55,11 @@ function dateUmwandeln(selected)
 }
 
 
-//Wird von onListItemClicked aufgerufen
-/*
- * Andert je nach Bericht die Informationen die angegeben werden müssen
+/**
+ * Wird von onListItemClicked aufgerufen
+ * Ändert je nach Bericht die Objekte die der User sieht
+ * @param {type} intTypeOfDateUI
+ * @returns {undefined}
  */
 function onChangeTypeOfDateUI(intTypeOfDateUI)
 {
@@ -116,9 +118,11 @@ function onChangeTypeOfDateUI(intTypeOfDateUI)
 
 }
 
-//Wird aufgerufen wenn bei der Liste ein anderer Bericht ausgewählt wird
-/*
- * ändert die angezeigten Informationen je nach Bericht
+/**
+ * Wird aufgerufen wenn bei der Liste auf der Linken Seite ein anderer Bericht ausgewählt wird.
+ * Ändert die angezeigten Informationen je nach Bericht
+ * @param {type} item
+ * @returns {undefined}
  */
 function onListItemClicked(item)
 {
@@ -162,8 +166,9 @@ function onListItemClicked(item)
 
 
 
-/*
+/**
  * Leitet zum PDFServlet weiter um eine PDF zu erstellen, anzuzeigen und herunterzuladen
+ * @returns {undefined}
  */
 function saveDataForPDF()
 {
@@ -177,12 +182,12 @@ function saveDataForPDF()
     {
         document.getElementById("hidden_pdfData").value = strName + "###" + strTable;
     }
-
     document.formPDF.submit();
 }
 
-/*
+/**
  * Leitet zum CSVServlet weiter um eine CSV zu erstellen und herunterzuladen
+ * @returns {undefined}
  */
 function saveDataForCSV()
 {
@@ -208,6 +213,10 @@ function saveDataForCSV()
     document.formCSV.submit();
 }
 
+/**
+ * Setzt das Mitglieder Dropdown zurück zum Default.
+ * @returns {undefined}
+ */
 function resetSelectMitglieder()
 {
     var lenght = document.getElementById("select_mitglied").getElementsByTagName("option").length;
@@ -225,7 +234,13 @@ function resetSelectMitglieder()
     }
 }
 
-
+/**
+ * Wird aufgerufen wenn sich im Abschnitt Dropdown die Value ändert und aktualisiert
+ * das Feuerwehr Dropdown
+ * @param {type} select_abschnitt
+ * @param {type} strLetzteFW
+ * @returns {undefined}
+ */
 function abschittChanged(select_abschnitt, strLetzteFW)
 {
     if (boolDeleteOnChange == true)
@@ -262,6 +277,13 @@ function abschittChanged(select_abschnitt, strLetzteFW)
     }
 }
 
+/**
+ * Wird aufgerufen wenn sich im Bezirk Dropdown die Value ändert und aktualisiert
+ * das Abschnitt Dropdown
+ * @param {type} select_bezirk
+ * @param {type} strLetzteAbschnitt
+ * @returns {undefined}
+ */
 function bezirkChanged(select_bezirk, strLetzteAbschnitt)
 {
     if (boolDeleteOnChange == true)
@@ -269,8 +291,6 @@ function bezirkChanged(select_bezirk, strLetzteAbschnitt)
         $('.ui.search').search();
         resetSelectMitglieder();
     }
-    //alert("Bezirk_value: "+select_bezirk.value);
-//    alert(select_bezirk.value);
     if (select_bezirk.value != -1 && select_bezirk.value != -2)
     {
 //        alert("IN bezirk changed");
@@ -300,7 +320,12 @@ function bezirkChanged(select_bezirk, strLetzteAbschnitt)
     }
 }
 
-
+/**
+ * Wird aufgerufen wenn sich die Value des Feuerwehr Dropdowns verändert
+ * und löscht daten die nur für die Vorherige Sicht waren. 
+ * @param {type} select_feuerwehr
+ * @returns {undefined}
+ */
 function feuerwehrChanged(select_feuerwehr)
 {
     if (boolDeleteOnChange == true)
@@ -310,6 +335,12 @@ function feuerwehrChanged(select_feuerwehr)
     }
 }
 
+/**
+ * Überprüft ob in einem Dropdown nur ein Wert
+ * vorhanden ist. Wenn ja wird es auf disabled gesetzt.
+ * @param {type} id
+ * @returns {undefined}
+ */
 function fixDropdowns(id)
 {
     //alert("Fix: "+id);
@@ -325,7 +356,13 @@ function fixDropdowns(id)
     }
 }
 
-
+/**
+ * Löscht die Value des übergebenen Datepicker Objekt und aktualisiert min
+ * und max Date.
+ * @param {type} idDiv
+ * @param {type} idDatepicker
+ * @returns {undefined}
+ */
 function removeDateAndSetDivHidden(idDiv, idDatepicker)
 {
     document.getElementById(idDiv).style.display = "none";
@@ -339,11 +376,19 @@ function removeDateAndSetDivHidden(idDiv, idDatepicker)
     }
 }
 
+/**
+ * Verändert eine Instanzvariable die erst auf true gesetz wird wenn die ganze 
+ * Seite fertig geladen ist.
+ * @returns {undefined}
+ */
 function setDeleteOnChange()
 {
     boolDeleteOnChange = true;
 }
-
+/**
+ * Leitet zum dynamisch_mitglieder.jsp weiter
+ * @returns {undefined}
+ */
 function zuDynamischWeiterleiten()
 {
     var strBezirk = document.getElementById("select_bezirk").value;

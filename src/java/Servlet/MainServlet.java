@@ -338,7 +338,7 @@ public class MainServlet extends HttpServlet
     }
 
     /**
-     * Lädt je nach im request vorhandenen Bericht die benötigten Daten und
+     * Lädt je nach im request vorhandenen statischen Bericht die benötigten Daten und
      * speichert sie auf dem request
      *
      * @param request
@@ -526,7 +526,7 @@ public class MainServlet extends HttpServlet
 
     /**
      * Falls der Name der Vorlage noch nicht vorhanden ist erstellt diese
-     * Mehtode eine neue Vorlage Falls der Name schon vorhanden ist sendet er
+     * Methode eine neue Vorlage. Falls der Name schon vorhanden ist sendet er
      * diese Information an das dynamisch.jsp in dem die Informationen verwertet
      * werden
      *
@@ -650,7 +650,9 @@ public class MainServlet extends HttpServlet
     }// </editor-fold>
 
     /**
-     * Wird beim erstmaligen Starten des Servlets aufgerufen
+     * Wird beim erstmaligen Starten des Servlets aufgerufen. Sie initialisiert
+     * wichtige Variablen und ruft die methoden auf die für das Auslesen
+     * der CSVs zuständig ist
      *
      * @param config
      * @throws ServletException

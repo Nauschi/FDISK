@@ -705,6 +705,9 @@
 
 
 <%!
+    /**
+     * Setzt den Tablesorter abhängig von den ausgewählten Daten
+     */
     private String initialisiereTableSorter(String strTable)
     {
         String output = "$('.sortable').tablesorter({headers: {1: {sorter: 'levels'}";
@@ -725,6 +728,9 @@
         return output;
     }
 
+    /**
+     * Erzeugt jeweils eine Option für jede vorhandene Vorlage
+     */
     private String leseVorhandeneVorlagen(ServletContext application, HttpSession session)
     {
         String strHTML = "";
@@ -771,6 +777,10 @@
         }
     }
 
+    /**
+     * Erstellt einen HTML String der aus Divs besteht. Diese Divs enthalten
+     * relevante Daten über die Feuerwehren
+     */
     private String generiereHiddenAbschnittDiv(HttpSession session)
     {
         String strAusgabe = "";
@@ -806,6 +816,10 @@
         return strAusgabe;
     }
 
+    /**
+     * Erstellt einen HTML String der aus Divs besteht. Diese Divs enthalten
+     * relevante Daten über die Abschnitte
+     */
     private String generiereHiddenBezirkDiv(HttpSession session)
     {
         String strAusgabe = "";
@@ -825,6 +839,9 @@
         return strAusgabe;
     }
 
+    /**
+     * Erzeugung der Optionen für das Bezirk Dropdown
+     */
     private String generiereBezirk(HttpSession session, HttpServletRequest request)
     {
         int intLetzerBezirk = -1000;
@@ -861,6 +878,9 @@
         return strAusgabe;
     }
 
+    /**
+     * Erzeugung der Optionen für das Abschnitt Dropdown
+     */
     private String generiereAbschnitt(HttpSession session)
     {
         if (session.getAttribute("abschnitt") != null)
@@ -878,9 +898,11 @@
         }
     }
 
+    /**
+     * Erzeugung der Optionen für das Feuerwehr Dropdown
+     */
     private String generiereFeuerwehr(HttpSession session)
     {
-
         if (session.getAttribute("feuerwehr") != null)
         {
             intIDGruppe = 9;

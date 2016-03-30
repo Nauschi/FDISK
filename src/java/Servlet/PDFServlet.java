@@ -406,7 +406,6 @@ public class PDFServlet extends HttpServlet
         liBerHochformat.add("Dienstzeitliste");
         liBerHochformat.add("Geburtstagsliste");
         liBerHochformat.add("Kursstatistik");
-        
     }
 
     /**

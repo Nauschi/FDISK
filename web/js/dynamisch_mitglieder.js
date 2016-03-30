@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-var map = {'Test': 'anushgjk'};
+var map = {'Test': 'Test1'};
 var mapOperatoren = {'##Test##': 'Test1'};
 var liTypen = ["Test"];
 var intCountTypen = 0;
@@ -31,10 +31,13 @@ function setTypen(liTypen2)
     liTypen2.sort();
     liTypen = liTypen2;
 }
-//<div class="four wide column displayTypSelection">
-//                    s
-//                </div>
 
+
+/**
+ * Fügt im Ausgabe Bereich der GUI ein neues Dropdown mit allen Typen hinzu
+ * @param {type} lastType
+ * @returns {undefined}
+ */
 function addTypenAuswahl(lastType)//Für die typen die man ausgeben will
 {
     if (intCountTypen < 6)
@@ -53,15 +56,12 @@ function addTypenAuswahl(lastType)//Für die typen die man ausgeben will
             opt.innerHTML = liTypen[i];
             if (lastType == liTypen[i])
             {
-                //alert("Beide gleich");
                 opt.setAttribute('selected', 'selected');
             }
             new_select.appendChild(opt);
         }
         new_div.appendChild(new_select);
         $('#div_typen_panel').before(new_div);
-
-        //div_typen_auswahl.appendChild(new_div);
         $('.ui.dropdown.displayType').dropdown();
     } else
     {
@@ -71,6 +71,10 @@ function addTypenAuswahl(lastType)//Für die typen die man ausgeben will
 
 }
 
+/**
+ * Löscht das letzte Dropdown im Ausgabe Bereich
+ * @returns {undefined}
+ */
 function deleteTypenAuswahl()
 {
     if (intCountTypen > 0)
@@ -124,18 +128,14 @@ function onTypChanged(select_typ, strLastFilter, strLastOperator)
             document.getElementById("input_filter_datepicker_" + strID).value = strLastFilter;
         }
     }
-
-
     var operatorFeld = ["=", "<>", "<=", ">=", "<", ">"];
     if (mapOperatoren[strTyp.toUpperCase()] != undefined)
     {
         operatorFeld = mapOperatoren[strTyp.toUpperCase()].split(";");
     }
-
     aktualisiereOperator(strID, operatorFeld, strLastOperator);
-
-
 }
+
 /**
  * Aktualisiert das Operator dropdown an der Stelle strID
  * @param {type} strID
@@ -144,17 +144,14 @@ function onTypChanged(select_typ, strLastFilter, strLastOperator)
  */
 function aktualisiereOperator(strID, operatorFeld, strLastOperator)
 {
-    //alert("aktualisiereOperator: " + strLastOperator);
     var div_operator = document.getElementById("div_operator_" + strID);
     div_operator.innerHTML = '<select name="select_operator_' + strID + '" class="ui fluid dropdown" id="select_operator_' + strID + '">';
     var select_operator = document.getElementById("select_operator_" + strID);
-
     for (var i = 0; i < operatorFeld.length; i++)
     {
         var opt = document.createElement('option');
         if (strLastOperator == operatorFeld[i])
         {
-            //alert("Beide gleich");
             opt.setAttribute('selected', 'selected');
         }
         opt.value = operatorFeld[i];
@@ -164,17 +161,20 @@ function aktualisiereOperator(strID, operatorFeld, strLastOperator)
     $('#select_operator_' + strID).dropdown();
 }
 
-
+/**
+ * Initialisiert je nach Typ die richtigen Optionen für das Filter Dropdown
+ * @param {type} strTyp
+ * @param {type} strID
+ * @param {type} strLastFilter
+ * @returns {undefined}
+ */
 function initialisiereCBFilter(strTyp, strID, strLastFilter)
 {
-    //alert("initialisiereCBFilter");
     if (map[strTyp.toUpperCase()] != undefined)
     {
         var div_filter = document.getElementById("div_filter_cb_" + strID);
-
         div_filter.innerHTML = '<select name="select_filter_cb_' + strID + '>" class="ui fluid dropdown" id="select_filter_cb_' + strID + '"></select>';
         var select_filter = document.getElementById("select_filter_cb_" + strID);
-
         var strHTMLFilter = map[strTyp.toUpperCase()];
         var strSplitFilter = strHTMLFilter.split(';');
         var opt1 = document.createElement('option');
@@ -199,6 +199,13 @@ function initialisiereCBFilter(strTyp, strID, strLastFilter)
     }
 }
 
+/**
+ * Replaced alle jedes 'find' im 'str' mit 'replace'
+ * @param {type} str
+ * @param {type} find
+ * @param {type} replace
+ * @returns {unresolved}
+ */
 function replaceAll(str, find, replace) {
     return str.replace(new RegExp(find, 'g'), replace);
 }
@@ -241,18 +248,15 @@ function onVorschau(intZahler)
             boolCorrect = false;
         }
         var filterValue = getValueOfFilterObject(i);
-
         if (filterValue == "")
         {
             boolCorrect = false;
         }
-
     }
     if (getValueOfFilterObject(intZahler) == "")
     {
         boolCorrect = false;
     }
-
     if (boolCorrect == true)
     {
         var strWertVonLetztemSelect = document.getElementById("select_verknuepfung_" + intZahler).value;
@@ -260,7 +264,6 @@ function onVorschau(intZahler)
         {
             document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Letzte Verknüpfung muss leer sein";
             $('#modal_fehler').modal('show');
-//        $('.ui.dropdown').dropdown();
             return false;
         } else
         {
@@ -275,7 +278,11 @@ function onVorschau(intZahler)
     }
 }
 
-
+/**
+ * Liefert die Value vom Filter am übergebenen Index zurück
+ * @param {type} index
+ * @returns {unresolved}
+ */
 function getValueOfFilterObject(index)
 {
     var strBoxArt = document.getElementById("select_typ_" + index).value.split(";")[1];
@@ -294,6 +301,13 @@ function getValueOfFilterObject(index)
     return strFilter_value.trim();
 }
 
+/**
+ * Wird beim drücken fast jedes Buttons aufgerufen und speichert die benötigen Daten
+ * in auslesbare Objekte
+ * @param {type} intZaehler
+ * @param {type} strButton
+ * @returns {undefined}
+ */
 function onActionSubmit(intZaehler, strButton)
 {
     if (strButton == "minus")
@@ -353,6 +367,10 @@ function onActionSubmit(intZaehler, strButton)
     document.form_plus_minus_vorschau.submit();
 }
 
+/**
+ * Überprüft ob das Erstellen der neuen Vorlage möglich ist
+ * @returns {Boolean}
+ */
 function onErstelleNeueVorlage()
 {
     var strVorlageName = document.getElementById("input_neueVorlage").value;
@@ -441,10 +459,15 @@ function showLoeschenModal()
 }
 
 
-
+/**
+ * Wird aufgerufen wenn sich im Abschnitt Dropdown die Value ändert und aktualisiert
+ * das Feuerwehr Dropdown
+ * @param {type} select_abschnitt
+ * @param {type} strLetzteFW
+ * @returns {undefined}
+ */
 function abschittChanged(select_abschnitt, strLetzteFW)
 {
-    //alert("Abschnitt_value: "+select_abschnitt.value);
     if (select_abschnitt.value != -1 && select_abschnitt.value != -2)
     {
         var strFeuerwehrOptions = document.getElementById("div_" + select_abschnitt.value).innerHTML;
@@ -462,7 +485,6 @@ function abschittChanged(select_abschnitt, strLetzteFW)
         }
 
         $('#select_feuerwehr').dropdown();
-        //alert(strFeuerwehrOptions);
     } else if (select_abschnitt.value == -2)
     {
         document.getElementById("fieldset_feuerwehr").innerHTML = '<legend><b>Feuerwehr</b></legend><select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr"></select>';
@@ -471,19 +493,22 @@ function abschittChanged(select_abschnitt, strLetzteFW)
         fixDropdowns("select_feuerwehr");
     }
 }
-
+/**
+ * Wird aufgerufen wenn sich im Bezirk Dropdown die Value ändert und aktualisiert
+ * das Abschnitt Dropdown
+ * @param {type} select_bezirk
+ * @param {type} strLetzteAbschnitt
+ * @returns {undefined}
+ */
 function bezirkChanged(select_bezirk, strLetzteAbschnitt)
 {
-    //alert("Bezirk_value: "+select_bezirk.value);
     if (select_bezirk.value != -1 && select_bezirk.value != -2)
     {
-        //alert("IN bezirk changed");
         var strAbschnittOptions = document.getElementById("div_" + select_bezirk.value).innerHTML;
         if (strLetzteAbschnitt != null)
         {
             strAbschnittOptions = strAbschnittOptions.replace('value="' + strLetzteAbschnitt + '"', 'value="' + strLetzteAbschnitt + '" selected');
         }
-
         document.getElementById("fieldset_abschnitt").innerHTML = '<legend><b>Abschnitt</b></legend><select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)"></select>';
         if (strAbschnittOptions.split('<option').length > 1)
         {
@@ -493,7 +518,6 @@ function bezirkChanged(select_bezirk, strLetzteAbschnitt)
             document.getElementById("select_abschnitt").innerHTML = strAbschnittOptions;
         }
         $('#select_abschnitt').dropdown();
-        //alert(strAbschnittOptions);
     } else if (select_bezirk.value == -2)
     {
         document.getElementById("fieldset_abschnitt").innerHTML = '<legend><b>Abschnitt</b></legend><select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)"></select>';
@@ -511,15 +535,12 @@ function bezirkChanged(select_bezirk, strLetzteAbschnitt)
  */
 function fixDropdowns(id)
 {
-    //alert("Fix: "+id);
     var lenght = document.getElementById(id).getElementsByTagName("option").length;
     if (lenght == 1)
     {
-        //alert("Add disabled");
         $("#" + id).parent("div").addClass("disabled");
     } else
     {
-        //alert("remove disabled");
         $("#" + id).parent("div").removeClass("disabled");
     }
 }

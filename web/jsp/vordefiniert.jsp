@@ -103,7 +103,7 @@
                                 <fieldset id="fieldset_bezirk">
                                     <legend><b>Bezirk</b></legend>
                                     <select  name="select_bezirk"  class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
-                                        <%=generiereBezirk(session,request)%>
+                                        <%=generiereBezirk(session, request)%>
                                     </select>
                                 </fieldset>
                             </div>
@@ -462,13 +462,13 @@
                         }
                     }
                 }
-                if (request.getParameter("select_abschnitt") != null && (intIDGruppe == 5||intIDGruppe==1))
+                if (request.getParameter("select_abschnitt") != null && (intIDGruppe == 5 || intIDGruppe == 1))
                 {
             %>
                         bezirkChanged(document.getElementById("select_bezirk"),<%=request.getParameter("select_abschnitt")%>);
             <%
                 }
-                if (request.getParameter("select_feuerwehr") != null && (intIDGruppe == 15 || intIDGruppe == 5||intIDGruppe==1))
+                if (request.getParameter("select_feuerwehr") != null && (intIDGruppe == 15 || intIDGruppe == 5 || intIDGruppe == 1))
                 {
             %>
                         abschittChanged(document.getElementById("select_abschnitt"),<%=request.getParameter("select_feuerwehr")%>);
@@ -525,6 +525,10 @@
 </html>
 
 <%!
+    /**
+     * Erstellt einen HTML String der aus Divs besteht. Diese Divs enthalten
+     * relevante Daten über die Feuerwehren
+     */
     private String generiereHiddenAbschnittDiv(HttpSession session)
     {
         String strAusgabe = "";
@@ -560,6 +564,10 @@
         return strAusgabe;
     }
 
+    /**
+     * Erstellt einen HTML String der aus Divs besteht. Diese Divs enthalten
+     * relevante Daten über die Abschnitte
+     */
     private String generiereHiddenBezirkDiv(HttpSession session)
     {
         String strAusgabe = "";
@@ -579,13 +587,16 @@
         return strAusgabe;
     }
 
-    private String generiereBezirk(HttpSession session,HttpServletRequest request)
+    /**
+     * Erzeugung der Optionen für das Bezirk Dropdown
+     */
+    private String generiereBezirk(HttpSession session, HttpServletRequest request)
     {
-        int intLetzerBezirk=-1000;
-        if(request.getParameter("select_bezirk")!=null)
+        int intLetzerBezirk = -1000;
+        if (request.getParameter("select_bezirk") != null)
         {
             intLetzerBezirk = Integer.parseInt(request.getParameter("select_bezirk"));
-        }else if(request.getParameter("hidden_berechtigungs_info")!=null)
+        } else if (request.getParameter("hidden_berechtigungs_info") != null)
         {
             intLetzerBezirk = Integer.parseInt(request.getParameter("hidden_berechtigungs_info").split(";")[0]);
         }
@@ -596,14 +607,14 @@
             LinkedList<Bezirk> liBezirke = (LinkedList<Bezirk>) session.getAttribute("alleBezirke");
             for (Bezirk bezirk : liBezirke)
             {
-                if(bezirk.getIntBezirksNummer()== intLetzerBezirk)
+                if (bezirk.getIntBezirksNummer() == intLetzerBezirk)
                 {
-                    strAusgabe+=bezirk.toSelectedString();
-                }else
+                    strAusgabe += bezirk.toSelectedString();
+                } else
                 {
                     strAusgabe += bezirk.toString();
                 }
-                
+
             }
         } else if (session.getAttribute("bezirk") != null)
         {
@@ -618,6 +629,9 @@
         return strAusgabe;
     }
 
+    /**
+     * Erzeugung der Optionen für das Abschnitt Dropdown
+     */
     private String generiereAbschnitt(HttpSession session)
     {
         if (session.getAttribute("abschnitt") != null)
@@ -635,6 +649,9 @@
         }
     }
 
+    /**
+     * Erzeugung der Optionen für das Feuerwehr Dropdown
+     */
     private String generiereFeuerwehr(HttpSession session)
     {
 
@@ -649,6 +666,9 @@
         }
     }
 
+    /**
+     * Setzt je nach ausgewähltem Bericht den Tablesort
+     */
     private String setzeTablesort(HttpServletRequest request)
     {
         if (request.getParameter("input_aktbericht") != null
