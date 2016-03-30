@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import BL.BL;
 import Database.DB_Access;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -35,7 +36,7 @@ public class Uebungsbericht implements Serializable
     private String strFehlalarm;
 
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
-    private DB_Access theInstance;
+    private BL bl = new BL(); 
 
     public Uebungsbericht(int intId_StmkUebungsberichte, int intInstanznummer, String strName, String strUebungsart, String strUebungsunterart, String strNummer, Date dateBeginn, Date dateEnde, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, String strMeldung, String strFehlalarm) throws ClassNotFoundException
     {
@@ -55,7 +56,6 @@ public class Uebungsbericht implements Serializable
         this.strMeldung = strMeldung;
         this.strFehlalarm = strFehlalarm;
 
-        theInstance = DB_Access.getInstance();
     }
 
     public int getIntId_StmkUebungsberichte()
@@ -327,10 +327,10 @@ public class Uebungsbericht implements Serializable
             strOrt = "";
         }
 
-        strUebungsart = theInstance.formatiereAusgabe(strUebungsart);
-        strUebungsunterart = theInstance.formatiereAusgabe(strUebungsunterart);
-        strStrasse = theInstance.formatiereAusgabe(strStrasse);
-        strOrt = theInstance.formatiereAusgabe(strOrt);
+        strUebungsart = bl.formatiereAusgabe(strUebungsart);
+        strUebungsunterart = bl.formatiereAusgabe(strUebungsunterart);
+        strStrasse = bl.formatiereAusgabe(strStrasse);
+        strOrt = bl.formatiereAusgabe(strOrt);
 
         String strHtml = "<tr><td>"
                 + strUebungsart + "</td><td>"

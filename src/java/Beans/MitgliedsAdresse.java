@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import BL.BL;
 import Database.DB_Access;
 import java.io.Serializable;
 import java.util.Objects;
@@ -24,7 +25,7 @@ public class MitgliedsAdresse extends Mitglied implements Serializable
     private String strOrt;
     private boolean boBemerkung;
 
-    private DB_Access theInstance;
+    private BL bl = new BL(); 
 
     public MitgliedsAdresse(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, int intId_Adressen, String strStrasse, String intNummer, String strStiege, int intPLZ, String strOrt, boolean boBemerkung) throws ClassNotFoundException
     {
@@ -37,7 +38,6 @@ public class MitgliedsAdresse extends Mitglied implements Serializable
         this.strOrt = strOrt;
         this.boBemerkung = boBemerkung;
 
-        theInstance = DB_Access.getInstance();
     }
 
     public int getIntId_Adressen()
@@ -196,10 +196,10 @@ public class MitgliedsAdresse extends Mitglied implements Serializable
             strOrt = "";
         }
 
-        strZuname = theInstance.formatiereAusgabe(strZuname);
-        strVorname = theInstance.formatiereAusgabe(strVorname);
-        strStrasse = theInstance.formatiereAusgabe(strStrasse);
-        strOrt = theInstance.formatiereAusgabe(strOrt);
+        strZuname = bl.formatiereAusgabe(strZuname);
+        strVorname = bl.formatiereAusgabe(strVorname);
+        strStrasse = bl.formatiereAusgabe(strStrasse);
+        strOrt = bl.formatiereAusgabe(strOrt);
 
         String strHtml = "<tr><td>"
                 + strStammblattnummer + "</td><td>"

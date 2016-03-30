@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import BL.BL;
 import Database.DB_Access;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -21,15 +22,13 @@ public class MitgliedsGeburtstag extends Mitglied implements Serializable
     private Date dateGeburtsdatum;
     private int intZielalter;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-    private DB_Access theInstance;
+    private BL bl = new BL(); 
 
     public MitgliedsGeburtstag(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, Date dateGeburtsdatum, int intAlter) throws ClassNotFoundException
     {
         super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
         this.dateGeburtsdatum = dateGeburtsdatum;
         this.intZielalter = intAlter;
-
-        theInstance = DB_Access.getInstance();
     }
 
     public Date getDateGeburtsdatum()
@@ -109,8 +108,8 @@ public class MitgliedsGeburtstag extends Mitglied implements Serializable
         {
         }
         
-        strZuname = theInstance.formatiereAusgabe(strZuname);
-        strVorname = theInstance.formatiereAusgabe(strVorname);
+        strZuname = bl.formatiereAusgabe(strZuname);
+        strVorname = bl.formatiereAusgabe(strVorname);
 
         String strHtml = ""; 
         if(intZielalter%10 == 0)

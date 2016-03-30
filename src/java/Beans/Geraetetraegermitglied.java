@@ -1,5 +1,6 @@
 package Beans;
 
+import BL.BL;
 import Database.DB_Access;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -23,7 +24,7 @@ public class Geraetetraegermitglied extends Mitglied implements Serializable
     
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
      private SimpleDateFormat sdfGebDate = new SimpleDateFormat("dd.MM.yyyy");
-    private DB_Access theInstance;
+   private BL bl = new BL(); 
 
     public Geraetetraegermitglied(int intInstanznr, Date dateGeb, Date dateUntersuchung, Date dateNaechsteUntersuchung, int intIdInstanzen, int intAnzahl, int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, String strInstanzname) throws ClassNotFoundException
     {
@@ -37,7 +38,6 @@ public class Geraetetraegermitglied extends Mitglied implements Serializable
         this.intAnzahl = intAnzahl;
         this.strInstanzname = strInstanzname; 
 
-        theInstance = DB_Access.getInstance();
     }
 
     public Geraetetraegermitglied(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname) throws ClassNotFoundException
@@ -165,13 +165,10 @@ public class Geraetetraegermitglied extends Mitglied implements Serializable
         {
             return false;
         }
-        if (!Objects.equals(this.theInstance, other.theInstance))
-        {
-            return false;
-        }
         return true;
     }
 
+ 
     
     
     @Override
@@ -198,8 +195,8 @@ public class Geraetetraegermitglied extends Mitglied implements Serializable
             strZuname = "";
         }
 
-        strZuname = theInstance.formatiereAusgabe(strZuname);
-        strVorname = theInstance.formatiereAusgabe(strVorname);
+        strZuname = bl.formatiereAusgabe(strZuname);
+        strVorname = bl.formatiereAusgabe(strVorname);
 
         String strHtml = "<tr><td class='STB'>"
                 + strStammblattnummer + "</td><td class='DGR'>"

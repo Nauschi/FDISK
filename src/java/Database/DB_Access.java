@@ -5,6 +5,7 @@
  */
 package Database;
 
+import BL.BL;
 import Enum.EnFilterStatements;
 import Beans.Abschnitt;
 import Beans.Berechtigung;
@@ -66,6 +67,7 @@ public class DB_Access {
     private static DB_Access theInstance = null;
     private final HashMap<String, String> haNamesTypes = new HashMap<>();
     private boolean boAnrede = false;
+    private BL bl = new BL(); 
 
     public static DB_Access getInstance() throws ClassNotFoundException {
         if (theInstance == null) {
@@ -78,49 +80,7 @@ public class DB_Access {
         connPool = DB_ConnectionPool.getInstance();
     }
 
-    public String formatiereAusgabe(String strFormat) {
-        if (strFormat == null || strFormat.equals("") || strFormat.isEmpty() || strFormat.equals(" ")) {
-            return "";
-        }
-        String[] strFormatTeile = strFormat.split("(?<= )|(?<=\\/)|(?<=-)|(?<=,)|(?<=\")");
-        StringBuilder strNeuesFormat = new StringBuilder("");
-
-        if (strFormatTeile.length > 1) {
-            for (String word : strFormatTeile) {
-
-                if (word.length() > 1) {
-
-                    if (word.equals("bis") || word.equals("zum") || word.equals("von")
-                            || word.equals("bei") || word.equals("und")
-                            || word.equals("zum") || word.equals("für")
-                            || word.equals("beim") || word.equals("bei")
-                            || word.equals("und") || word.equals("an")
-                            || word.equals("der") || word.equals("die")) {
-                        strNeuesFormat.append(word.toLowerCase());
-                    } else if (word.equals("FWZS")) {
-                        strNeuesFormat.append(word.toUpperCase());
-                    } else {
-                        strNeuesFormat.append(word.substring(0, 1).toUpperCase());
-                        strNeuesFormat.append(word.substring(1).toLowerCase());
-                    }
-
-                } else {
-                    strNeuesFormat.append(word);
-                }
-
-            }
-        } else if (strFormatTeile.length == 1) {
-            if (strFormat.length() > 1) {
-                strNeuesFormat.append(strFormat.substring(0, 1).toUpperCase());
-                strNeuesFormat.append(strFormat.substring(1).toLowerCase());
-            } else {
-                strNeuesFormat.append(strFormat);
-            }
-
-        }
-
-        return strNeuesFormat.toString();
-    }
+   
 
     /**
      * *******************************************************************************
@@ -1319,8 +1279,8 @@ public class DB_Access {
             intPersID = rs.getInt("PersID");
             strDGR = rs.getString("DGR");
             strTitel = rs.getString("Titel");
-            strVorname = formatiereAusgabe(rs.getString("Vorname"));
-            strZuname = formatiereAusgabe(rs.getString("Zuname"));
+            strVorname = bl.formatiereAusgabe(rs.getString("Vorname"));
+            strZuname = bl.formatiereAusgabe(rs.getString("Zuname"));
             gebDat = new Date(rs.getDate("GebDat").getTime());
 
             hmMitgliedsMap.put(intPersID, strDGR + " " + strVorname + " " + strZuname + " (" + sdf.format(gebDat) + ")");

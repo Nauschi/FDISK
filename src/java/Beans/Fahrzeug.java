@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import BL.BL;
 import Database.DB_Access;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -37,7 +38,7 @@ public class Fahrzeug implements Serializable
     private Date dateBeginn;
     private Date dateEnde;
 
-    private DB_Access theInstance;
+    private BL bl = new BL(); 
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
 
     public Fahrzeug()
@@ -65,7 +66,6 @@ public class Fahrzeug implements Serializable
         this.dateBeginn = dateBeginn;
         this.dateEnde = dateEnde;
 
-        theInstance = DB_Access.getInstance();
     }
 
     public String getStrFahrzeugTyp()
@@ -339,12 +339,11 @@ public class Fahrzeug implements Serializable
         {
             return false;
         }
-        if (!Objects.equals(this.theInstance, other.theInstance))
-        {
-            return false;
-        }
         return true;
     }
+
+
+    
 
     @Override
     public String toString()
@@ -354,8 +353,8 @@ public class Fahrzeug implements Serializable
             strArt = "";
         }
 
-        strArt = theInstance.formatiereAusgabe(strArt);
-        strFahrzeugart = theInstance.formatiereAusgabe(strFahrzeugart);
+        strArt = bl.formatiereAusgabe(strArt);
+        strFahrzeugart = bl.formatiereAusgabe(strFahrzeugart);
         
         String strHtml = "<tr><td>"
                 + strArt + "</td><td>"

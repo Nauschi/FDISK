@@ -1,5 +1,6 @@
 package Beans;
 
+import BL.BL;
 import Database.DB_Access;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -24,7 +25,7 @@ public class Kurstaetigkeit implements Serializable
     private Date dateBegin;
     private Date dateEnde;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
-    private DB_Access theInstance;
+    private BL bl = new BL(); 
 
     public Kurstaetigkeit(int intIdBerichte, int intTeilnehmer, double doKm, int intInstanznummer, String strInstanzname, String strTaetigkeitsart, String strTaetigkeitsunterart, String strNummer, Date dateBeginn, Date dateEnde) throws ClassNotFoundException
     {
@@ -38,7 +39,6 @@ public class Kurstaetigkeit implements Serializable
         this.strNummer = strNummer;
         this.dateBegin = dateBeginn;
         this.dateEnde = dateEnde;
-        theInstance = DB_Access.getInstance();
     }
 
     public int getIntIdBerichte()
@@ -217,8 +217,8 @@ public class Kurstaetigkeit implements Serializable
             strTaetigkeitsunterart = "";
         }
 
-        strTaetigkeitsart = theInstance.formatiereAusgabe(strTaetigkeitsart);
-        strTaetigkeitsunterart = theInstance.formatiereAusgabe(strTaetigkeitsunterart);
+        strTaetigkeitsart = bl.formatiereAusgabe(strTaetigkeitsart);
+        strTaetigkeitsunterart = bl.formatiereAusgabe(strTaetigkeitsunterart);
 
         String strHtml = "<tr><td>"
                 + intTeilnehmer + "</td><td>"

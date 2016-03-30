@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import BL.BL;
 import Database.DB_Access;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -16,30 +17,16 @@ import java.util.Objects;
  */
 public class MitgliedsErreichbarkeit extends Mitglied implements Serializable
 {
-//    private int intId_Erreichbarkeiten;
-//    private String strErreichbarkeitsArt;
-//    private String strSichtbarkeit;
-//    private String strCode;
 
     LinkedList<Erreichbarkeit> liErreichbarkeiten;
     private boolean boBemerkung;
 
-    private DB_Access theInstance;
-
-//    public MitgliedsErreichbarkeit(int intId_Erreichbarkeiten, String strErreichbarkeitsArt, String strSichtbarkeit, String strCode, boolean boBemerkung, int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname) {
-//        super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
-//        this.intId_Erreichbarkeiten = intId_Erreichbarkeiten;
-//        this.strErreichbarkeitsArt = strErreichbarkeitsArt;
-//        this.strSichtbarkeit = strSichtbarkeit;
-//        this.strCode = strCode;
-//        this.boBemerkung = boBemerkung;
-//    }
+    private BL bl = new BL(); 
     public MitgliedsErreichbarkeit(boolean boBemerkung, int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname) throws ClassNotFoundException
     {
         super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
         this.boBemerkung = boBemerkung;
 
-        theInstance = DB_Access.getInstance();
     }
 
     public LinkedList<Erreichbarkeit> getLiErreichbarkeiten()
@@ -118,8 +105,8 @@ public class MitgliedsErreichbarkeit extends Mitglied implements Serializable
                 strZuname = "";
             }
 
-            strVorname = theInstance.formatiereAusgabe(strVorname);
-            strZuname = theInstance.formatiereAusgabe(strZuname);
+            strVorname = bl.formatiereAusgabe(strVorname);
+            strZuname = bl.formatiereAusgabe(strZuname);
 
             String strHtml = "<tr><td>"
                     + strStammblattnummer + "</td><td>"
@@ -130,7 +117,7 @@ public class MitgliedsErreichbarkeit extends Mitglied implements Serializable
 
             for (Erreichbarkeit erreichbarkeit : liErreichbarkeiten)
             {
-                String str = theInstance.formatiereAusgabe(erreichbarkeit.getStrErreichbarkeitsArt());
+                String str = bl.formatiereAusgabe(erreichbarkeit.getStrErreichbarkeitsArt());
                  strHtml +=  "<div>"+str + ": " + erreichbarkeit.getStrCode() + "</div>";
             }
             strHtml += "</td><td class='bemerkung'></td></tr>";

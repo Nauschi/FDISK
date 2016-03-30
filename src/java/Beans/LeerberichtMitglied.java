@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import BL.BL;
 import Database.DB_Access;
 import java.io.Serializable;
 import java.util.Objects;
@@ -22,7 +23,7 @@ public class LeerberichtMitglied implements Serializable
     public String strTitel;
     public String strVorname;
     public String strZuname;
-    private DB_Access theInstance;
+    private BL bl = new BL(); 
 
     public LeerberichtMitglied(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname) throws ClassNotFoundException
     {
@@ -33,7 +34,6 @@ public class LeerberichtMitglied implements Serializable
         this.strVorname = strVorname;
         this.strZuname = strZuname;
 
-        theInstance = DB_Access.getInstance();
     }
 
     public int getIntId_Personen()
@@ -164,7 +164,7 @@ public class LeerberichtMitglied implements Serializable
             strZuname = "";
         }
 
-        strVorname = theInstance.formatiereAusgabe(strVorname);
+        strVorname = bl.formatiereAusgabe(strVorname);
 
 
         if (strTitel != null && !strTitel.isEmpty())

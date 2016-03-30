@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import BL.BL;
 import Database.DB_Access;
 import java.io.Serializable;
 import java.util.Objects;
@@ -23,7 +24,7 @@ public class Mitglied implements Serializable
     public String strVorname;
     public String strZuname;
     
-    private DB_Access theInstance;
+    private BL bl = new BL(); 
 
     public Mitglied(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname) throws ClassNotFoundException
     {
@@ -33,8 +34,6 @@ public class Mitglied implements Serializable
         this.strTitel = strTitel;
         this.strVorname = strVorname;
         this.strZuname = strZuname;
-
-        theInstance = DB_Access.getInstance();
     }
 
     public int getIntId_Personen()
@@ -168,8 +167,8 @@ public class Mitglied implements Serializable
             strZuname = "";
         }
 
-        strZuname = theInstance.formatiereAusgabe(strZuname);
-        strVorname = theInstance.formatiereAusgabe(strVorname);
+        strZuname = bl.formatiereAusgabe(strZuname);
+        strVorname = bl.formatiereAusgabe(strVorname);
 
         String strHtml = "<tr><td>"
                 + strStammblattnummer + "</td><td>"

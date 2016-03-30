@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import BL.BL;
 import Database.DB_Access;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -35,7 +36,7 @@ public class Einsatzbericht implements Serializable
     private String strZuname;
     private String strMeldung;
     private String strFehlalarm;
-    private DB_Access theInstance; 
+    private BL bl = new BL(); 
 
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
 
@@ -58,7 +59,6 @@ public class Einsatzbericht implements Serializable
         this.strZuname = strZuname;
         this.strMeldung = strMeldung;
         this.strFehlalarm = strFehlalarm;
-         theInstance = DB_Access.getInstance();
          
     }
 
@@ -364,7 +364,7 @@ public class Einsatzbericht implements Serializable
         }
 
              
-        strEinsatzart = theInstance.formatiereAusgabe(strEinsatzart); 
+        strEinsatzart = bl.formatiereAusgabe(strEinsatzart); 
 
         String strHtml = "<tr><td>"
                 + strEinsatzart + "</td><td>"

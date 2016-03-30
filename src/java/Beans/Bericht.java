@@ -1,5 +1,6 @@
 package Beans;
 
+import BL.BL;
 import Database.DB_Access;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -29,7 +30,7 @@ public class Bericht implements Serializable
     private String strFehlalarm;
     private String strBerichtart; 
 
-    private DB_Access theInstance;
+    private BL bl = new BL(); 
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
 
     public Bericht(int intId_Berichte, int intInstanznummer, String strName, String strArt, String strNummer, Date dateBeginn, Date dateEnde, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, String strMeldung, String strFehlalarm, String strBerichtart) throws ClassNotFoundException
@@ -49,7 +50,6 @@ public class Bericht implements Serializable
         this.strMeldung = strMeldung;
         this.strFehlalarm = strFehlalarm;
         this.strBerichtart = strBerichtart; 
-        theInstance = DB_Access.getInstance();
     }
 
     public int getIntId_Berichte()
@@ -295,7 +295,7 @@ public class Bericht implements Serializable
             strArt = "";
         }
 
-        strArt = theInstance.formatiereAusgabe(strArt);
+        strArt = bl.formatiereAusgabe(strArt);
 
         String strHtml = "<tr><td>"
                 + sdf.format(dateBeginn) + "</td><td>"

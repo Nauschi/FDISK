@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import BL.BL;
 import Database.DB_Access;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -26,7 +27,7 @@ public class MitgliedsDienstzeit extends Mitglied implements Serializable
     private double doVordienstzeit; 
     
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-    private DB_Access theInstance;
+    private BL bl = new BL(); 
 
     public MitgliedsDienstzeit(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, Date dateGeburtsdatum, double doubleDienstalter, int intInstanznummer, Date dateEntrittsdatum, double doVordienstzeit) throws ClassNotFoundException
     {
@@ -36,7 +37,6 @@ public class MitgliedsDienstzeit extends Mitglied implements Serializable
         this.dateEintrittsdatum = dateEntrittsdatum; 
         this.intInstanznummer = intInstanznummer; 
         this.doVordienstzeit = doVordienstzeit; 
-        theInstance = DB_Access.getInstance();
     }
 
     public double getDoVordienstzeit()
@@ -167,8 +167,8 @@ public class MitgliedsDienstzeit extends Mitglied implements Serializable
         }
 
 
-        strZuname = theInstance.formatiereAusgabe(strZuname);
-        strVorname = theInstance.formatiereAusgabe(strVorname);
+        strZuname = bl.formatiereAusgabe(strZuname);
+        strVorname = bl.formatiereAusgabe(strVorname);
         
 
         String strHtml = ""; 

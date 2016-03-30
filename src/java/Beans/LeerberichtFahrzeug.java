@@ -1,5 +1,6 @@
 package Beans;
 
+import BL.BL;
 import Database.DB_Access;
 import java.io.Serializable;
 import java.util.Objects;
@@ -20,7 +21,7 @@ public class LeerberichtFahrzeug implements Serializable
     private String strBezeichnung;
     private String strFahrzeugmarke;
     private int intInstanznummer;
-    private DB_Access theInstance; 
+    private BL bl = new BL(); 
 
     public LeerberichtFahrzeug(String strFahrzeugTyp, String strKennzeichen, int intBaujahr, String strAufbaufirma, String strTaktischeBezeichnung, int intId_fahrzeuge, String strBezeichnung, String strFahrzeugmarke, int intInstanznummer) throws ClassNotFoundException
     {
@@ -33,7 +34,6 @@ public class LeerberichtFahrzeug implements Serializable
         this.strBezeichnung = strBezeichnung;
         this.strFahrzeugmarke = strFahrzeugmarke;
         this.intInstanznummer = intInstanznummer;
-         theInstance = DB_Access.getInstance();
     }
 
     public String getStrFahrzeugTyp()
@@ -124,7 +124,7 @@ public class LeerberichtFahrzeug implements Serializable
             return ""; 
         }
         
-        strBezeichnung = theInstance.formatiereAusgabe(strBezeichnung); 
+        strBezeichnung = bl.formatiereAusgabe(strBezeichnung); 
 
         String strHtml = "<td>&Omicron;&nbsp;" + strBezeichnung + "</td>";
         return strHtml;
