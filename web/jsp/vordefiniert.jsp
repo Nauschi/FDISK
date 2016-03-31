@@ -346,7 +346,9 @@
         <div class="ui small modal" id="modal_mitglieder_info">
             <div class="header">Info: Mitglieder</div>
             <div class="content">
-                <p>Text Einfügen</p>
+                <p>Wird hier "Alle Mitglieder" ausgewählt, wird die Stundenauswertung 
+                   aller Mitglieder dieser Feuerwehr/dieses Abschnitts/dieses Bereichs angezeigt.</p>
+                <p>Wird ein spezifisches Mitglied ausgewählt, werden die Stunden aller Instanzen dieses Mitglieds angezeigt.</p>
             </div>
             <div class="actions">
                 <button type="button" onClick="$('#modal_mitglieder_info').modal('hide');" class="ui button styleGrau"  style="width: 20%;">OK</button>

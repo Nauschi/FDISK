@@ -417,9 +417,12 @@
         <div class="ui small modal" id="modal_abfragen_info">
             <div class="header">Info: Abfragen</div>
             <div class="content">
-                <p>In diesem Bereich können Sie Abfragen zum Filtern der Daten machen</p>
-                <p>Es können höchstens 5 Abfragen getätigt werden und falls ein Typ mehr als
-                    2 mal verwendet wird, wirkt sich das stark auf die Antwortszeit aus</p>
+                <p>In diesem Bereich können Sie Bedingungen zum Filtern der Daten angeben (Maximal 5 möglich)</p>
+                
+                <ul>
+                    <li>Mit Klick auf das "+" Symbol können neue Bedingungen hinzugefügt werden</li>
+                    <li>Mit Klick auf das "-" Symbol wird immer die unterste Bedingung gelöscht</li></ul>
+              
             </div>
             <div class="actions">
                 <button type="button" onClick="$('#modal_abfragen_info').modal('hide');" class="ui button styleGrau"  style="width: 20%;">OK</button>
