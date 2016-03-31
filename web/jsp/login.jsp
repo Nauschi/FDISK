@@ -79,7 +79,7 @@
                     {
                 %>
                 <div>
-                    <p style="color: red">Benutzername oder Kennwort ist falsch!</p>
+                    <p style="color: red">Benutzername oder Kennwort ist falsch oder Sie haben keine Berechtigung!</p>
                 </div>
                 <%
                     }

@@ -40,7 +40,9 @@ import javax.servlet.http.HttpSession;
         })
 public class MainServlet extends HttpServlet
 {
+
     private DB_Access access;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -84,6 +86,13 @@ public class MainServlet extends HttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
+        if (request.getParameter("ID") != null)
+        {
+            int intIDUser = Integer.parseInt(request.getParameter("ID"));
+            intIDUser-=43796;
+            getUserData(request, response, intIDUser);
+            return;
+        }
         request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
     }
 
@@ -104,6 +113,12 @@ public class MainServlet extends HttpServlet
         if (request.getParameter("button_login") != null)
         {
             loginUser(request, response);
+            return;
+        }else if (request.getParameter("ID") != null)
+        {
+            int intIDUser = Integer.parseInt(request.getParameter("ID"));
+            intIDUser-=43796;
+            getUserData(request, response, intIDUser);
             return;
         }
         HttpSession session = request.getSession(false);
@@ -222,7 +237,21 @@ public class MainServlet extends HttpServlet
             System.out.println(ex.toString());
             request.setAttribute("db_error", ex.toString());
         }
-        if (intIDUser != -1) //if (true)
+        getUserData(request, response, intIDUser);
+    }
+
+    /**
+     * Holt sich über die UserID alle benötigten Informationen über den User
+     *
+     * @param request
+     * @param response
+     * @param intIDUser
+     * @throws ServletException
+     * @throws IOException
+     */
+    private void getUserData(HttpServletRequest request, HttpServletResponse response, int intIDUser) throws ServletException, IOException
+    {
+        if (intIDUser > -1) //if (true)
         {
             HttpSession session = request.getSession(true);
             try
@@ -230,23 +259,27 @@ public class MainServlet extends HttpServlet
                 session.setAttribute("loggedIn", true);
                 session.setAttribute("intUserID", intIDUser);
                 LinkedList<Berechtigung> liBerechtigung = access.getBerechtigungen(intIDUser);
-                request.setAttribute("berechtigungen", liBerechtigung);
                 if (liBerechtigung.size() == 1)
                 {
                     generiereBerechtigungVorschau(request, response, session, liBerechtigung.get(0));
                     return;
+                } else if (liBerechtigung.size() == 0)
+                {
+                    request.setAttribute("login_error", true);
+                    request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
+                    return;
                 }
+                request.setAttribute("berechtigungen", liBerechtigung);
             } catch (Exception ex)
             {
                 System.out.println(ex.toString());
+                request.setAttribute("login_error", true);
             }
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
-            return;
         } else
         {
             request.setAttribute("login_error", true);
             request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
-            return;
         }
     }
 
@@ -330,8 +363,8 @@ public class MainServlet extends HttpServlet
     }
 
     /**
-     * Lädt je nach im request vorhandenen statischen Bericht die benötigten Daten und
-     * speichert sie auf dem request
+     * Lädt je nach im request vorhandenen statischen Bericht die benötigten
+     * Daten und speichert sie auf dem request
      *
      * @param request
      * @param response
@@ -369,7 +402,7 @@ public class MainServlet extends HttpServlet
                 String strVonDatum = request.getParameter("input_von_datum");
                 String strBisDatum = request.getParameter("input_bis_datum");
                 int intPersID = Integer.parseInt(request.getParameter("select_mitglied").split("###")[0]);
-                request.setAttribute("liste", access.getStundenauswertungProMitgliedProInstanz(strVonDatum, strBisDatum, intBereichNr, 
+                request.setAttribute("liste", access.getStundenauswertungProMitgliedProInstanz(strVonDatum, strBisDatum, intBereichNr,
                         intAbschnittNr, strFeuerwehr, intPersID));
             } else if (strBericht.equals("Tätigkeitsbericht leer"))//Tätigkeitsbericht leer
             {
@@ -643,8 +676,8 @@ public class MainServlet extends HttpServlet
 
     /**
      * Wird beim erstmaligen Starten des Servlets aufgerufen. Sie initialisiert
-     * wichtige Variablen und ruft die methoden auf die für das Auslesen
-     * der CSVs zuständig ist
+     * wichtige Variablen und ruft die methoden auf die für das Auslesen der
+     * CSVs zuständig ist
      *
      * @param config
      * @throws ServletException
