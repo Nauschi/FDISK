@@ -124,7 +124,7 @@
         <div id="div_vorlage" class="ui equal width grid">
             <div class="column" id="div_bezirk">
                 <fieldset id="fieldset_bezirk">
-                    <legend><b>Bezirk</b></legend>
+                    <legend><b>Bereich</b></legend>
                     <select  name="select_bezirk"  class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
                         <%=generiereBezirk(session, request)%>
                     </select>

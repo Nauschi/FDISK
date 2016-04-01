@@ -101,7 +101,7 @@
 
                             <div class="column" id="div_bezirk">
                                 <fieldset id="fieldset_bezirk">
-                                    <legend><b>Bezirk</b></legend>
+                                    <legend><b>Bereich</b></legend>
                                     <select  name="select_bezirk"  class="ui fluid dropdown" id="select_bezirk" onchange="bezirkChanged(this)">
                                         <%=generiereBezirk(session, request)%>
                                     </select>
@@ -190,7 +190,7 @@
                                             if (request.getParameter("select_jahr") != null)
                                             {
                                                 int intLastSelectedYear = Integer.parseInt(request.getParameter("select_jahr"));
-                                                for (int i = -1; i < 2; i++)
+                                                for (int i = -1; i < 3; i++)
                                                 {
                                         %>
                                         <option value="<%=(intYear + i)%>" <%=((intYear + i) == intLastSelectedYear) ? "selected" : ""%>><%=(intYear + i)%></option>
@@ -198,7 +198,7 @@
                                             }
                                         } else
                                         {
-                                            for (int i = -1; i < 2; i++)
+                                            for (int i = -1; i < 3; i++)
                                             {
                                         %>
                                         <option value="<%=(intYear + i)%>" <%=(i == 0) ? "selected" : ""%>><%=(intYear + i)%></option>
