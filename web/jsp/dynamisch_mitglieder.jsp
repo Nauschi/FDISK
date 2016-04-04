@@ -38,7 +38,7 @@
             intIDGruppe = -1;
             String[] strFeldKlammerAuf =
             {
-                "N/A", "(", "[", "{"
+                "N/A", "("
             };
             String[] strFeldKlammerZu =
             {
