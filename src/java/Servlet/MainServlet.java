@@ -321,7 +321,7 @@ public class MainServlet extends HttpServlet
     {
         if (aktBerechtigung.getIntIDGruppe() == 1)
         {
-            session.setAttribute("alleBezirke", access.getAllBezirke());
+            session.setAttribute("alleBezirke", access.getAlleBereiche());
             session.setAttribute("bezirk", null);
             session.setAttribute("bezirkName", null);
             session.setAttribute("abschnitt", null);
