@@ -1034,7 +1034,7 @@ public class DB_Access {
                 + "FROM [FDISK].[dbo].stmktaetigkeitsberichtemitglieder t INNER JOIN FDISK.dbo.stmkmitglieder m ON(t.id_personen = m.id_personen) "
                 + "INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = t.instanznummer) "
                 + "INNER JOIN FDISK.dbo.stmktaetigkeitsberichte tb ON(t.id_berichte = tb.id_berichte)";
-        if (intIDPerson == -2) {
+        if (intIDPerson == -2) { 
             if (intAbschnittnr == -2) {
                 sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
             } else {
