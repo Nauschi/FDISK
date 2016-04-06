@@ -24,31 +24,17 @@ public class MitgliedsDienstzeit extends Mitglied implements Serializable
     private double doubleDienstalter;
     private Date dateEintrittsdatum; 
     private int intInstanznummer; 
-    private double doVordienstzeit; 
     
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
     private BL bl = new BL(); 
 
-    public MitgliedsDienstzeit(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, Date dateGeburtsdatum, double doubleDienstalter, int intInstanznummer, Date dateEntrittsdatum, double doVordienstzeit) throws ClassNotFoundException
+    public MitgliedsDienstzeit(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, boolean boCheckbox, Date dateGeburtsdatum, double doubleDienstalter, int intInstanznummer, Date dateEintrittsdatum) throws ClassNotFoundException
     {
         super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
         this.dateGeburtsdatum = dateGeburtsdatum;
         this.doubleDienstalter = doubleDienstalter;
-        this.dateEintrittsdatum = dateEntrittsdatum; 
-        this.intInstanznummer = intInstanznummer; 
-        this.doVordienstzeit = doVordienstzeit; 
-    }
-
-    public double getDoVordienstzeit()
-    {
-        return doVordienstzeit;
-    }
-
-    public void setDoVordienstzeit(double doVordienstzeit)
-    {
-        this.doVordienstzeit = doVordienstzeit;
-    }
-
+        this.dateEintrittsdatum = dateEintrittsdatum; 
+        this.intInstanznummer = intInstanznummer;     }
     
     public Date getDateGeburtsdatum()
     {
@@ -83,7 +69,7 @@ public class MitgliedsDienstzeit extends Mitglied implements Serializable
         this.dateGeburtsdatum = dateGeburtsdatum;
     }
 
-    public double getDoublleDienstalter()
+    public double getDoubleDienstalter()
     {
         return doubleDienstalter;
     }
@@ -125,10 +111,6 @@ public class MitgliedsDienstzeit extends Mitglied implements Serializable
             return false;
         }
         if (this.intInstanznummer != other.intInstanznummer)
-        {
-            return false;
-        }
-        if (Double.doubleToLongBits(this.doVordienstzeit) != Double.doubleToLongBits(other.doVordienstzeit))
         {
             return false;
         }

@@ -699,59 +699,23 @@ public class DB_Access {
         String sqlString;
 
         if (intAbschnittnr == -2) {
-            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', m.vordienstzeit 'Vordienstzeit', SUM(z.VD_ZEIT) 'VD_ZEIT', m.id_instanzen 'Instanzen'"
-                    + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_VD_ZEIT z ON(m.id_personen = z.id_personen)"
+            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen' "
+                    + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
                     + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(m.instanznummer = f.instanznummer)"
                     + " WHERE f.Bereich_Nr = " + intBereichnr
-                    + " AND m.datum_abgemeldet IS NULL "
-                    + " GROUP BY "
-                    + " m.id_personen, "
-                    + " m.standesbuchnummer, "
-                    + " m.dienstgrad, "
-                    + " m.titel, "
-                    + " m.vorname, "
-                    + " m.zuname, "
-                    + " m.geburtsdatum, "
-                    + " m.datum_abgemeldet, "
-                    + " m.eintrittsdatum, "
-                    + " m.vordienstzeit, "
-                    + " m.id_instanzen";
+                    + " AND m.datum_abgemeldet IS NULL ";
         } else {
             if (strFubwehr.equals("-2")) {
-                sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', m.vordienstzeit 'Vordienstzeit', SUM(z.VD_ZEIT) 'VD_ZEIT', m.id_instanzen 'Instanzen'"
-                        + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_VD_ZEIT z ON(m.id_personen = z.id_personen)"
+            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen' "
+                        + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
                         + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(m.instanznummer = f.instanznummer)"
                         + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr
-                        + " AND m.datum_abgemeldet IS NULL "
-                        + " GROUP BY "
-                        + " m.id_personen, "
-                        + " m.standesbuchnummer, "
-                        + " m.dienstgrad, "
-                        + " m.titel, "
-                        + " m.vorname, "
-                        + " m.zuname, "
-                        + " m.geburtsdatum, "
-                        + " m.datum_abgemeldet, "
-                        + " m.eintrittsdatum, "
-                        + " m.vordienstzeit, "
-                        + " m.id_instanzen";
+                        + " AND m.datum_abgemeldet IS NULL ";
             } else {
-                sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', m.vordienstzeit 'Vordienstzeit', SUM(z.VD_ZEIT) 'VD_ZEIT', m.id_instanzen 'Instanzen'"
-                        + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_VD_ZEIT z ON(m.id_personen = z.id_personen)"
+            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen' "
+                        + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
                         + " WHERE m.instanznummer = '" + strFubwehr + "'"
-                        + " AND m.datum_abgemeldet IS NULL "
-                        + " GROUP BY "
-                        + " m.id_personen, "
-                        + " m.standesbuchnummer, "
-                        + " m.dienstgrad, "
-                        + " m.titel, "
-                        + " m.vorname, "
-                        + " m.zuname, "
-                        + " m.geburtsdatum, "
-                        + " m.datum_abgemeldet, "
-                        + " m.eintrittsdatum,"
-                        + " m.vordienstzeit, "
-                        + " m.id_instanzen";
+                        + " AND m.datum_abgemeldet IS NULL ";
             }
         }
 
@@ -765,8 +729,10 @@ public class DB_Access {
         int intPersID;
         Date dateGeburtsdatum;
         Date dateEintrittsdatum;
-        double doVordienstzeit;
+        double doDienstzeit;
         int intInstanznummer;
+        int intCurrentYear = Calendar.getInstance().get(Calendar.YEAR);
+        int intYearDifference = intJahr - intCurrentYear;
 
         while (rs.next()) {
             intPersID = rs.getInt("PersID");
@@ -785,22 +751,10 @@ public class DB_Access {
                 dateEintrittsdatum = null;
             }
 
-            doVordienstzeit = rs.getDouble("VD_ZEIT");
-            double doDienstzeit;
+            doDienstzeit = rs.getDouble("DIENSTZEIT");
+            doDienstzeit+=intYearDifference;
 
-            if (dateEintrittsdatum != null) {
-                long loDifference = new Date().getTime() - dateEintrittsdatum.getTime();
-                Calendar cal = Calendar.getInstance();
-                cal.setTimeInMillis(loDifference);
-                doDienstzeit = doVordienstzeit + cal.get(Calendar.YEAR) - 1970;
-
-                int intAktJahr = intJahr - LocalDate.now().getYear();
-                doDienstzeit += intAktJahr;
-
-            } else {
-                doDienstzeit = doVordienstzeit;
-            }
-            MitgliedsDienstzeit mitgliedsDienst = new MitgliedsDienstzeit(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true, dateGeburtsdatum, doDienstzeit, intInstanznummer, dateEintrittsdatum, doVordienstzeit);
+            MitgliedsDienstzeit mitgliedsDienst = new MitgliedsDienstzeit(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true, dateGeburtsdatum, doDienstzeit, intInstanznummer, dateEintrittsdatum);
             liMitgliedsDienstzeiten.add(mitgliedsDienst);
 
         }
@@ -3247,18 +3201,6 @@ public class DB_Access {
                     case "N/A":
                         strEingabe[i][j] = "";
                         break;
-                    case "[":
-                        strEingabe[i][j] = "(";
-                        break;
-                    case "]":
-                        strEingabe[i][j] = ")";
-                        break;
-                    case "{":
-                        strEingabe[i][j] = "(";
-                        break;
-                    case "}":
-                        strEingabe[i][j] = ")";
-                        break;
                     case "NACHNAME":
                         strEingabe[i][j] = "Zuname";
                         break;
@@ -3653,6 +3595,7 @@ public class DB_Access {
             }
         }
 
+        System.out.println(sbSqlString);
         StringBuilder sbHtml = createDynamicReportGeneratorOutput(sbSqlString.toString(), strSelectedCols);
         return sbHtml;
     }
