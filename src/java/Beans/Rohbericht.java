@@ -68,7 +68,6 @@ public class Rohbericht implements Serializable
            
          + "<span>" + strBerichtname + "</span>"
                 + "<div style='display:none'>"
-               // + "<table id='table' class='ui sortable celled table'>"
                 + "<table class='tablesorter ui celled table'>"
                 + " <thead>"
                 + "     <tr>";

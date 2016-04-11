@@ -1,7 +1,6 @@
 package Beans;
 
 import BL.BL;
-import Database.DB_Access;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -190,7 +189,7 @@ public class Kurstaetigkeit implements Serializable
         {
             return false;
         }
-        if (this.strNummer != other.strNummer)
+        if (this.strNummer == null ? other.strNummer != null : !this.strNummer.equals(other.strNummer))
         {
             return false;
         }
@@ -198,11 +197,7 @@ public class Kurstaetigkeit implements Serializable
         {
             return false;
         }
-        if (!Objects.equals(this.dateEnde, other.dateEnde))
-        {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.dateEnde, other.dateEnde);
     }
 
     @Override

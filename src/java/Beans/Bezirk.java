@@ -7,7 +7,6 @@ package Beans;
 
 import java.io.Serializable;
 import java.util.LinkedList;
-import java.util.Objects;
 
 /**
  *
@@ -80,11 +79,9 @@ public class Bezirk implements Serializable
     
     public String generiereHiddenDiv()
     {
-        System.out.println("Bezirk.generiereHiddenDiv: start");
         String strHTML = "<div style='display:none' id='div_"+intBezirksNummer+"' >";
         if (liAbschnitte != null)
         {
-            System.out.println("Bezirk.generiereHiddenDiv: if+ size="+liAbschnitte.size());
             for (Abschnitt abschnitt : liAbschnitte)
             {
                 strHTML+=abschnitt.toString();

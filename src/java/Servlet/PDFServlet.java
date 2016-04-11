@@ -343,7 +343,8 @@ public class PDFServlet extends HttpServlet
      * strTable ist der HTML String der die Zeilen des Tables beinhaltet
      * "<tr>...</tr><tr>...</tr><tr>...</tr>...."
      *
-     * @param strTable
+     * @param strTableMitglieder
+     * @param strTableFahrzeuge
      * @return
      */
     public String generiereAusgabeTaetigkeitsberichtLeer(String strTableMitglieder, String strTableFahrzeuge)
@@ -359,7 +360,8 @@ public class PDFServlet extends HttpServlet
      * strTable ist der HTML String der die Zeilen des Tables beinhaltet
      * "<tr>...</tr><tr>...</tr><tr>...</tr>...."
      *
-     * @param strTable
+     * @param strTableMitglieder
+     * @param strTableFahrzeuge
      * @return
      */
     public String generiereAusgabeUebungsberichtLeer(String strTableMitglieder, String strTableFahrzeuge)
@@ -376,7 +378,8 @@ public class PDFServlet extends HttpServlet
      * strTable ist der HTML String der die Zeilen des Tables beinhaltet
      * "<tr>...</tr><tr>...</tr><tr>...</tr>...."
      *
-     * @param strTable
+     * @param strTableMitglieder
+     * @param strTableFahrzeuge
      * @return
      */
     public String generiereAusgabeEinsatzberichtLeer(String strTableMitglieder, String strTableFahrzeuge)

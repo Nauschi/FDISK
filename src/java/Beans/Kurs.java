@@ -1,10 +1,8 @@
 package Beans;
 
 import BL.BL;
-import Database.DB_Access;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Objects;
 
 /**

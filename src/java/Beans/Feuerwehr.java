@@ -6,7 +6,6 @@
 package Beans;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  *
@@ -44,7 +43,6 @@ public class Feuerwehr implements Serializable
     @Override
     public String toString()
     {
-//        return "Feuerwehr{" + "strName=" + strName + ", strFeuerwehrNummer=" + strFeuerwehrNummer + '}';
         String strHTML = "<option value='" + strFeuerwehrNummer + "'>" + strName+"</option>";
         return strHTML;
     }

@@ -117,6 +117,7 @@ public class CSVServlet extends HttpServlet
      * durch einen Strichpunkt
      *
      * @param strTable
+     * @param boolExtraTable
      * @return
      */
     public String[] erstelleCSVString(String strTable, boolean boolExtraTable)

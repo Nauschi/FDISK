@@ -7,7 +7,6 @@ package Beans;
 
 import java.io.Serializable;
 import java.util.LinkedList;
-import java.util.Objects;
 
 /**
  *
@@ -59,17 +58,7 @@ public class Abschnitt implements Serializable{
 
     @Override
     public String toString() {
-//        return "Abschnitt{" + "strName=" + strName + ", intAbschnittsNummer=" + intAbschnittsNummer + ", liFeuerwehren=" + liFeuerwehren + '}';
         String strHTML = "<option value='" + intAbschnittsNummer + "'>" + strName;
-//        strHTML += "<div style='display:none'>";
-//        if (liFeuerwehren != null)
-//        {
-//            for (Feuerwehr feuerwehr : liFeuerwehren)
-//            {
-//                strHTML+=feuerwehr.toString();
-//            }
-//        }
-//        strHTML += "</div></option>";
         strHTML +="</option>";
         return strHTML;
     }
