@@ -607,6 +607,7 @@
         {
             intIDGruppe = 1;
             LinkedList<Bezirk> liBezirke = (LinkedList<Bezirk>) session.getAttribute("alleBezirke");
+            strAusgabe+="<option value='-2'>Alle Bereiche</option>";
             for (Bezirk bezirk : liBezirke)
             {
                 if (bezirk.getIntBezirksNummer() == intLetzerBezirk)

@@ -305,9 +305,10 @@ function bezirkChanged(select_bezirk, strLetzteAbschnitt)
     } else if (select_bezirk.value == -2)
     {
         document.getElementById("fieldset_abschnitt").innerHTML = '<legend><b>Abschnitt</b></legend><select name="select_abschnitt" class="ui fluid dropdown" id="select_abschnitt" onchange="abschittChanged(this)"></select>';
-        document.getElementById("select_abschnitt").innerHTML = "<option value='-2'>Alle Abschnitte</option>"
+        document.getElementById("select_abschnitt").innerHTML = "<option value='-2'>Alle Abschnitte</option>";
         $('#select_abschnitt').dropdown();
-        fixDropdowns("select_feuerwehr");
+        fixDropdowns("select_abschnitt");
+        
     }
 }
 
