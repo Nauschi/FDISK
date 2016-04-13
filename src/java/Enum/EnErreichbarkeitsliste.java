@@ -9,9 +9,12 @@ package Enum;
  *
  * @author Corinna
  */
-public enum EnErreichbarkeitsliste
-{
+public enum EnErreichbarkeitsliste {
 
+    getErreichbarkeitslisteAlle("SELECT DISTINCT sm.id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname', se.erreichbarkeitsart 'Erreichbarkeitsart', se.code 'Code'"
+            + " FROM FDISK.dbo.stmkmitglieder sm INNER JOIN FDISK.dbo.stmkerreichbarkeiten se ON(sm.id_personen = se.id_personen)"
+            + " WHERE (sm.abgemeldet = 0) AND (NOT (LEFT(sm.instanznummer, 2) = 'GA')) AND (NOT (LEFT(sm.instanzname, 7) = 'FW GAST'))"
+            + " ORDER BY sm.id_personen"),
     getErreichbarkeitslisteBereich("SELECT DISTINCT sm.id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname', se.erreichbarkeitsart 'Erreichbarkeitsart', se.code 'Code'"
             + " FROM FDISK.dbo.stmkmitglieder sm INNER JOIN FDISK.dbo.stmkerreichbarkeiten se ON(sm.id_personen = se.id_personen)"
             + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(sm.instanznummer = f.instanznummer)"
@@ -32,14 +35,12 @@ public enum EnErreichbarkeitsliste
 
     private final String strStatement;
 
-    private EnErreichbarkeitsliste(String strStatement)
-    {
+    private EnErreichbarkeitsliste(String strStatement) {
         this.strStatement = strStatement;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return strStatement;
     }
 }
