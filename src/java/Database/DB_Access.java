@@ -74,16 +74,8 @@ public class DB_Access {
         connPool = DB_ConnectionPool.getInstance();
     }
 
+    //Login
     /**
-     * ******************************************************************************
-     *                                                                               *
-     *                                                                               *
-     * LOGIN * *
-     * /********************************************************************************
-     *
-     *
-     *
-     * /**
      * Gibt eine LinkedList mit allen Berechtigungen des Users mit der
      * übergebenen UserID zurück.
      *
@@ -117,7 +109,6 @@ public class DB_Access {
         }
         abschnitt = getAbschnittsnameFuerFubwehr(fubwehr);
         bereich = getBereichsnameFuerFubwehr(fubwehr);
-
         String strBerechtigung;
 
         if (liLoginBerechtigung.isEmpty()) {
@@ -142,7 +133,7 @@ public class DB_Access {
                         strBerechtigung = bezeichnung + " - " + abschnitt;
                         break;
                     default:
-                        strBerechtigung = "nice! A fail";
+                        strBerechtigung = "Error";
                 }
                 Berechtigung berechtigung;
                 if (!fubwehr.equals("-1")) {
@@ -243,7 +234,6 @@ public class DB_Access {
         LinkedList<Bezirk> liBezirke = new LinkedList<>();
 
         Connection conn = connPool.getConnection();
-        Statement stat = conn.createStatement();
         PreparedStatement prepStat = conn.prepareStatement(EnStaticStatements.getAlleBereiche.toString());
         ResultSet rs = prepStat.executeQuery();
         int intBezirksnummer;
@@ -539,14 +529,8 @@ public class DB_Access {
         return liFubwehrnummern;
     }
 
+    //Statische Berichte
     /**
-     * ******************************************************************************
-     *                                                                               *
-     *                                                                               *
-     * STATISCHE BERICHTE * *
-     * /********************************************************************************
-     *
-     * /**
      * Gibt eine LinkedList mit allen Mitgliedern (je nach Berechtigung eines
      * Users) zurück
      *
@@ -564,19 +548,15 @@ public class DB_Access {
         PreparedStatement prepStat;
         if (intBereichnr == -2) {
             prepStat = conn.prepareStatement(EnEinfacheMitgliederliste.getEinfacheMitgliederlisteAlle.toString());
+        } else if (intAbschnittnr == -2) {
+            prepStat = conn.prepareStatement(EnEinfacheMitgliederliste.getEinfacheMitgliederlisteBereich.toString());
+            prepStat.setInt(1, intBereichnr);
+        } else if (strFubwehr.equals("-2")) {
+            prepStat = conn.prepareStatement(EnEinfacheMitgliederliste.getEinfacheMitgliederlisteAbschnitt.toString());
+            prepStat.setInt(1, intAbschnittnr);
         } else {
-            if (intAbschnittnr == -2) {
-                prepStat = conn.prepareStatement(EnEinfacheMitgliederliste.getEinfacheMitgliederlisteBereich.toString());
-                prepStat.setInt(1, intBereichnr);
-            } else {
-                if (strFubwehr.equals("-2")) {
-                    prepStat = conn.prepareStatement(EnEinfacheMitgliederliste.getEinfacheMitgliederlisteAbschnitt.toString());
-                    prepStat.setInt(1, intAbschnittnr);
-                } else {
-                    prepStat = conn.prepareStatement(EnEinfacheMitgliederliste.getEinfacheMitgliederlisteFubwehr.toString());
-                    prepStat.setString(1, strFubwehr);
-                }
-            }
+            prepStat = conn.prepareStatement(EnEinfacheMitgliederliste.getEinfacheMitgliederlisteFubwehr.toString());
+            prepStat.setString(1, strFubwehr);
         }
 
         ResultSet rs = prepStat.executeQuery();
@@ -627,19 +607,15 @@ public class DB_Access {
 
         if (intBereichnr == -2) {
             prepStat = conn.prepareStatement(EnGeburtstagsliste.getGeburtstagslisteAlle.toString());
+        } else if (intAbschnittnr == -2) {
+            prepStat = conn.prepareStatement(EnGeburtstagsliste.getGeburtstagslisteBereich.toString());
+            prepStat.setInt(1, intBereichnr);
+        } else if (strFubwehr.equals("-2")) {
+            prepStat = conn.prepareStatement(EnGeburtstagsliste.getGeburtstagslisteAbschnitt.toString());
+            prepStat.setInt(1, intAbschnittnr);
         } else {
-            if (intAbschnittnr == -2) {
-                prepStat = conn.prepareStatement(EnGeburtstagsliste.getGeburtstagslisteBereich.toString());
-                prepStat.setInt(1, intBereichnr);
-            } else {
-                if (strFubwehr.equals("-2")) {
-                    prepStat = conn.prepareStatement(EnGeburtstagsliste.getGeburtstagslisteAbschnitt.toString());
-                    prepStat.setInt(1, intAbschnittnr);
-                } else {
-                    prepStat = conn.prepareStatement(EnGeburtstagsliste.getGeburtstagslisteFubwehr.toString());
-                    prepStat.setString(1, strFubwehr);
-                }
-            }
+            prepStat = conn.prepareStatement(EnGeburtstagsliste.getGeburtstagslisteFubwehr.toString());
+            prepStat.setString(1, strFubwehr);
         }
 
         ResultSet rs = prepStat.executeQuery();
@@ -708,30 +684,26 @@ public class DB_Access {
                     + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
                     + " WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST'))"
                     + " AND m.datum_abgemeldet IS NULL ";
+        } else if (intAbschnittnr == -2) {
+            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen' "
+                    + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
+                    + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(m.instanznummer = f.instanznummer)"
+                    + " WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST'))"
+                    + " AND f.Bereich_Nr = " + intBereichnr
+                    + " AND m.datum_abgemeldet IS NULL ";
+        } else if (strFubwehr.equals("-2")) {
+            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen' "
+                    + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
+                    + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(m.instanznummer = f.instanznummer)"
+                    + " WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST'))"
+                    + " AND f.abschnitt_instanznummer = " + intAbschnittnr
+                    + " AND m.datum_abgemeldet IS NULL ";
         } else {
-            if (intAbschnittnr == -2) {
-                sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen' "
-                        + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
-                        + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(m.instanznummer = f.instanznummer)"
-                        + " WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST'))"
-                        + " AND f.Bereich_Nr = " + intBereichnr
-                        + " AND m.datum_abgemeldet IS NULL ";
-            } else {
-                if (strFubwehr.equals("-2")) {
-                    sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen' "
-                            + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
-                            + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(m.instanznummer = f.instanznummer)"
-                            + " WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST'))"
-                            + " AND f.abschnitt_instanznummer = " + intAbschnittnr
-                            + " AND m.datum_abgemeldet IS NULL ";
-                } else {
-                    sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen' "
-                            + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
-                            + " WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST'))"
-                            + " AND m.instanznummer = '" + strFubwehr + "'"
-                            + " AND m.datum_abgemeldet IS NULL ";
-                }
-            }
+            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen' "
+                    + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
+                    + " WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST'))"
+                    + " AND m.instanznummer = '" + strFubwehr + "'"
+                    + " AND m.datum_abgemeldet IS NULL ";
         }
 
         ResultSet rs = stat.executeQuery(sqlString);
@@ -801,19 +773,15 @@ public class DB_Access {
 
         if (intBereichnr == -2) {
             prepStat = conn.prepareStatement(EnAdressliste.getAdresslisteAlle.toString());
+        } else if (intAbschnittnr == -2) {
+            prepStat = conn.prepareStatement(EnAdressliste.getAdresslisteBereich.toString());
+            prepStat.setInt(1, intBereichnr);
+        } else if (strFubwehr.equals("-2")) {
+            prepStat = conn.prepareStatement(EnAdressliste.getAdresslisteAbschnitt.toString());
+            prepStat.setInt(1, intAbschnittnr);
         } else {
-            if (intAbschnittnr == -2) {
-                prepStat = conn.prepareStatement(EnAdressliste.getAdresslisteBereich.toString());
-                prepStat.setInt(1, intBereichnr);
-            } else {
-                if (strFubwehr.equals("-2")) {
-                    prepStat = conn.prepareStatement(EnAdressliste.getAdresslisteAbschnitt.toString());
-                    prepStat.setInt(1, intAbschnittnr);
-                } else {
-                    prepStat = conn.prepareStatement(EnAdressliste.getAdresslisteFubwehr.toString());
-                    prepStat.setString(1, strFubwehr);
-                }
-            }
+            prepStat = conn.prepareStatement(EnAdressliste.getAdresslisteFubwehr.toString());
+            prepStat.setString(1, strFubwehr);
         }
         ResultSet rs = prepStat.executeQuery();
 
@@ -887,16 +855,12 @@ public class DB_Access {
                 + " WHERE t.taetigkeitsart = 'Kursbesuch an der FWZS' ";
 
         if (intBereichnr == -2) {
+        } else if (intAbschnittnr == -2) {
+            sqlString += " AND fw.Bereich_Nr = " + intBereichnr;
+        } else if (strFubwehr.equals("-2")) {
+            sqlString += " AND fw.abschnitt_instanznummer = " + intAbschnittnr;
         } else {
-            if (intAbschnittnr == -2) {
-                sqlString += " AND fw.Bereich_Nr = " + intBereichnr;
-            } else {
-                if (strFubwehr.equals("-2")) {
-                    sqlString += " AND fw.abschnitt_instanznummer = " + intAbschnittnr;
-                } else {
-                    sqlString += " AND t.instanznummer = '" + strFubwehr + "'";
-                }
-            }
+            sqlString += " AND t.instanznummer = '" + strFubwehr + "'";
         }
 
         sqlString += getSqlDateString(strVon, strBis, 2, false);
@@ -978,12 +942,10 @@ public class DB_Access {
         } else {
             if (intAbschnittnr == -2) {
                 sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
+            } else if (strFubwehr.equals("-2")) {
+                sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
             } else {
-                if (strFubwehr.equals("-2")) {
-                    sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
-                } else {
-                    sqlString += " WHERE m.instanznummer = '" + 47030 + "'";
-                }
+                sqlString += " WHERE m.instanznummer = '" + 47030 + "'";
             }
             sqlString += getSqlDateString(strVon, strBis, 4, false);
         }
@@ -1053,25 +1015,25 @@ public class DB_Access {
         String strInstanznummer;
         int intBerichtId;
         String strInstanzname;
+        int intAnzahl;
 
-        String sqlString = "SELECT 1 'bereicht_id', t.id_personen PersID "
-                + ",t.vorname Vorname, t.zuname Zuname, t.instanznummer Instanznummer, m.standesbuchnummer STB, m.dienstgrad DGR, m.titel Titel "
-                + ",SUM(DATEDIFF(mi,einsatzzeit_von,einsatzzeit_bis)) Minuten, fw.instanzname Instanzname "
-                + "FROM [FDISK].[dbo].stmktaetigkeitsberichtemitglieder t INNER JOIN FDISK.dbo.stmkmitglieder m ON(t.id_personen = m.id_personen) "
+        String sqlString = "SELECT 1 'bereicht_id', PersID, vorname Vorname, zuname Zuname, instanznummer Instanznummer, STB, DGR, titel Titel ,SUM(DATEDIFF(mi,einsatzzeit_von,einsatzzeit_bis)) Minuten, instanzname Instanzname, COUNT(*) Anzahl "
+                + "FROM ( "
+                + "SELECT DISTINCT 1 'bereicht_id', t.id_personen PersID, t.vorname Vorname, t.zuname Zuname, t.instanznummer Instanznummer, m.standesbuchnummer STB, m.dienstgrad DGR, m.titel Titel, t.id_berichte, m.instanzname, einsatzzeit_von, einsatzzeit_bis "
+                + "FROM FDISK.dbo.stmktaetigkeitsberichtemitglieder t "
+                + "INNER JOIN FDISK.dbo.stmkmitglieder m ON(t.id_personen = m.id_personen AND t.instanznummer = m.instanznummer) "
                 + "INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = t.instanznummer) "
-                + "INNER JOIN FDISK.dbo.stmktaetigkeitsberichte tb ON(t.id_berichte = tb.id_berichte)";
+                + "INNER JOIN FDISK.dbo.stmktaetigkeitsberichte tb ON(t.id_berichte = tb.id_berichte) ";
         if (intIDPerson == -2) {
             if (intBereichnr == -2) {
                 sqlString += getSqlDateString(strVon, strBis, 2, true);
             } else {
                 if (intAbschnittnr == -2) {
                     sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
+                } else if (strFubwehr.equals("-2")) {
+                    sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
                 } else {
-                    if (strFubwehr.equals("-2")) {
-                        sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
-                    } else {
-                        sqlString += " WHERE t.instanznummer = '" + strFubwehr + "'";
-                    }
+                    sqlString += " WHERE t.instanznummer = '" + strFubwehr + "'";
                 }
                 sqlString += getSqlDateString(strVon, strBis, 2, false);
             }
@@ -1080,26 +1042,26 @@ public class DB_Access {
             sqlString += getSqlDateString(strVon, strBis, 2, false);
         }
 
-        sqlString += " GROUP BY t.id_personen, t.instanznummer, t.vorname, t.zuname, m.standesbuchnummer, m.dienstgrad, m.titel, fw.instanzname "
+        sqlString += " ) a GROUP BY PersID, instanznummer, vorname, zuname, stb, dgr, titel, instanzname "
                 + "UNION "
-                + "SELECT 2 'bereicht_id', u.id_personen PersID "
-                + ",u.vorname Vorname, u.zuname Zuname, u.instanznummer Instanznummer, m.standesbuchnummer STB, m.dienstgrad DGR, m.titel Titel "
-                + ",SUM(DATEDIFF(mi,einsatzzeit_von,einsatzzeit_bis)) Minuten, fw.instanzname Instanzname "
-                + "FROM FDISK.dbo.stmkuebungsberichtemitglieder u INNER JOIN FDISK.dbo.stmkmitglieder m ON(u.id_personen = m.id_personen) "
-                + "INNER JOIN FDISK.dbo.stmkuebungsberichte ub ON(u.id_berichte = ub.id_berichte) "
-                + "INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = u.instanznummer)";
+                + "SELECT 2 'bereicht_id', PersID, vorname Vorname, zuname Zuname, instanznummer Instanznummer, STB, DGR, titel Titel ,SUM(DATEDIFF(mi,einsatzzeit_von,einsatzzeit_bis)) Minuten, instanzname Instanzname, COUNT(*) Anzahl "
+                + "FROM ( "
+                + "SELECT DISTINCT 2 'bereicht_id', u.id_personen PersID, u.vorname Vorname, u.zuname Zuname, u.instanznummer Instanznummer, m.standesbuchnummer STB, m.dienstgrad DGR, m.titel Titel, u.id_berichte, m.instanzname, einsatzzeit_von, einsatzzeit_bis "
+                + "FROM FDISK.dbo.stmkuebungsberichtemitglieder u "
+                + "INNER JOIN FDISK.dbo.stmkmitglieder m ON(u.id_personen = m.id_personen AND u.instanznummer = m.instanznummer) "
+                + "INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = u.instanznummer) "
+                + "INNER JOIN FDISK.dbo.stmkuebungsberichte ub ON(u.id_berichte = ub.id_berichte) ";
+
         if (intIDPerson == -2) {
             if (intBereichnr == -2) {
                 sqlString += getSqlDateString(strVon, strBis, 3, true);
             } else {
                 if (intAbschnittnr == -2) {
                     sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
+                } else if (strFubwehr.equals("-2")) {
+                    sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
                 } else {
-                    if (strFubwehr.equals("-2")) {
-                        sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
-                    } else {
-                        sqlString += " WHERE u.instanznummer = '" + strFubwehr + "'";
-                    }
+                    sqlString += " WHERE u.instanznummer = '" + strFubwehr + "'";
                 }
                 sqlString += getSqlDateString(strVon, strBis, 3, false);
             }
@@ -1108,26 +1070,26 @@ public class DB_Access {
             sqlString += getSqlDateString(strVon, strBis, 3, false);
         }
 
-        sqlString += " GROUP BY u.id_personen, u.instanznummer, u.vorname, u.zuname, m.standesbuchnummer, m.dienstgrad, m.titel, fw.instanzname "
+        sqlString += " ) a GROUP BY PersID, instanznummer, vorname, zuname, stb, dgr, titel, instanzname "
                 + "UNION "
-                + "SELECT 3 'bereicht_id', e.id_personen PersID, "
-                + "e.vorname Vorname, e.zuname Zuname, e.instanznummer Instanznummer, m.standesbuchnummer STB, m.dienstgrad DGR, m.titel Titel "
-                + ",SUM(DATEDIFF(mi,einsatzzeit_von,einsatzzeit_bis)) Minuten, fw.instanzname Instanzname "
-                + "FROM FDISK.dbo.stmkeinsatzberichtemitglieder e INNER JOIN FDISK.dbo.stmkmitglieder m ON(e.id_personen = m.id_personen) "
+                + "SELECT 3 'bereicht_id', PersID, vorname Vorname, zuname Zuname, instanznummer Instanznummer, STB, DGR, titel Titel ,SUM(DATEDIFF(mi,einsatzzeit_von,einsatzzeit_bis)) Minuten, instanzname Instanzname, COUNT(*) Anzahl "
+                + "FROM ( "
+                + "SELECT DISTINCT 3 'bereicht_id', e.id_personen PersID, e.vorname Vorname, e.zuname Zuname, e.instanznummer Instanznummer, m.standesbuchnummer STB, m.dienstgrad DGR, m.titel Titel, e.id_berichte, m.instanzname, einsatzzeit_von, einsatzzeit_bis "
+                + "FROM FDISK.dbo.stmkeinsatzberichtemitglieder e "
+                + "INNER JOIN FDISK.dbo.stmkmitglieder m ON(e.id_personen = m.id_personen AND e.instanznummer = m.instanznummer) "
                 + "INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = e.instanznummer) "
-                + "INNER JOIN FDISK.dbo.stmkeinsatzberichte eb ON(e.id_berichte = eb.id_berichte)";
+                + "INNER JOIN FDISK.dbo.stmkeinsatzberichte eb ON(e.id_berichte = eb.id_berichte) ";
+
         if (intIDPerson == -2) {
             if (intBereichnr == -2) {
                 sqlString += getSqlDateString(strVon, strBis, 1, true);
             } else {
                 if (intAbschnittnr == -2) {
                     sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
+                } else if (strFubwehr.equals("-2")) {
+                    sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
                 } else {
-                    if (strFubwehr.equals("-2")) {
-                        sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
-                    } else {
-                        sqlString += " WHERE e.instanznummer = '" + strFubwehr + "'";
-                    }
+                    sqlString += " WHERE e.instanznummer = '" + strFubwehr + "'";
                 }
                 sqlString += getSqlDateString(strVon, strBis, 1, false);
             }
@@ -1136,8 +1098,11 @@ public class DB_Access {
             sqlString += getSqlDateString(strVon, strBis, 1, false);
         }
 
-        sqlString += " GROUP BY e.id_personen, e.instanznummer, e.vorname, e.zuname, m.standesbuchnummer, m.dienstgrad, m.titel, fw.instanzname "
+        sqlString += " ) a "
+                + "GROUP BY PersID, instanznummer, vorname, zuname, stb, dgr, titel, instanzname "
                 + "ORDER BY 'PersID'";
+
+        System.out.println("Gesamt SQL String: " + sqlString);
 
         ResultSet rs = stat.executeQuery(sqlString);
 
@@ -1155,6 +1120,7 @@ public class DB_Access {
             strInstanznummer = rs.getString("Instanznummer");
             intBerichtId = rs.getInt("bereicht_id");
             strInstanzname = rs.getString("Instanzname");
+            intAnzahl = rs.getInt("Anzahl");
 
             if (!liStunden.isEmpty()) {
                 for (int i = 0; i < liStunden.size(); i++) {
@@ -1164,12 +1130,15 @@ public class DB_Access {
                         switch (intBerichtId) {
                             case 1:
                                 liStunden.get(i).setIntMinutenTb(liStunden.get(i).getIntMinutenTb() + intMinuten);
+                                liStunden.get(i).setIntAnzTb(liStunden.get(i).getIntAnzTb() + intAnzahl);
                                 break;
                             case 2:
                                 liStunden.get(i).setIntMinutenUb(liStunden.get(i).getIntMinutenUb() + intMinuten);
+                                liStunden.get(i).setIntAnzUb(liStunden.get(i).getIntAnzUb() + intAnzahl);
                                 break;
                             case 3:
                                 liStunden.get(i).setIntMinutenEb(liStunden.get(i).getIntMinutenEb() + intMinuten);
+                                liStunden.get(i).setIntAnzEb(liStunden.get(i).getIntAnzEb() + intAnzahl);
                                 break;
                         }
                         break;
@@ -1179,13 +1148,13 @@ public class DB_Access {
                     MitgliedsStunden mitgliedsStunden = null;
                     switch (intBerichtId) {
                         case 1:
-                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, 0, intMinuten, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
+                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, 0, intAnzahl, 0, 0, intMinuten, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
                             break;
                         case 2:
-                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, intMinuten, 0, 0, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
+                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, intAnzahl, 0, 0, intMinuten, 0, 0, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
                             break;
                         case 3:
-                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, intMinuten, 0, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
+                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, intAnzahl, 0, 0, intMinuten, 0, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
                             break;
                     }
                     liStunden.add(mitgliedsStunden);
@@ -1196,13 +1165,13 @@ public class DB_Access {
                 MitgliedsStunden mitgliedsStunden = null;
                 switch (intBerichtId) {
                     case 1:
-                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, 0, intMinuten, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
+                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, 0, intAnzahl, 0, 0, intMinuten, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
                         break;
                     case 2:
-                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, intMinuten, 0, 0, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
+                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, intAnzahl, 0, 0, intMinuten, 0, 0, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
                         break;
                     case 3:
-                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, intMinuten, 0, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
+                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, intAnzahl, 0, 0, intMinuten, 0, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
                         break;
                 }
                 liStunden.add(mitgliedsStunden);
@@ -1224,16 +1193,12 @@ public class DB_Access {
                 + " WHERE m.abgemeldet = 0";
 
         if (intBereichnr == -2) {
+        } else if (intAbschnittnr == -2) {
+            sqlString += " AND fw.Bereich_Nr = " + intBereichnr;
+        } else if (strFubwehr.equals("-2")) {
+            sqlString += " AND fw.abschnitt_instanznummer = " + intAbschnittnr;
         } else {
-            if (intAbschnittnr == -2) {
-                sqlString += " AND fw.Bereich_Nr = " + intBereichnr;
-            } else {
-                if (strFubwehr.equals("-2")) {
-                    sqlString += " AND fw.abschnitt_instanznummer = " + intAbschnittnr;
-                } else {
-                    sqlString += " AND m.instanznummer = '" + strFubwehr + "'";
-                }
-            }
+            sqlString += " AND m.instanznummer = '" + strFubwehr + "'";
         }
 
         sqlString += " ORDER BY zuname";
@@ -1369,17 +1334,14 @@ public class DB_Access {
             sqlString += " AND UPPER(replace(replace(replace(replace(replace(f.kennzeichen,'+',''),'/',''),'.',''),' ',''),'-','')) = '" + strEingabeKennzeichen.toUpperCase() + "'";
         }
         if (intBereichnr == -2) {
+        } else if (intAbschnittnr == -2) {
+            sqlString += " AND fw.Bereich_Nr = " + intBereichnr;
+        } else if (strFubwehr.equals("-2")) {
+            sqlString += " AND fw.abschnitt_instanznummer = " + intAbschnittnr;
         } else {
-            if (intAbschnittnr == -2) {
-                sqlString += " AND fw.Bereich_Nr = " + intBereichnr;
-            } else {
-                if (strFubwehr.equals("-2")) {
-                    sqlString += " AND fw.abschnitt_instanznummer = " + intAbschnittnr;
-                } else {
-                    sqlString += " AND f.instanznummer = '" + strFubwehr + "'";
-                }
-            }
+            sqlString += " AND f.instanznummer = '" + strFubwehr + "'";
         }
+
         sqlString += " UNION ALL SELECT "
                 + "f.kennzeichen "
                 + ",f.id_fahrzeuge "
@@ -1415,16 +1377,12 @@ public class DB_Access {
 
         if (intBereichnr == -2) {
 
+        } else if (intAbschnittnr == -2) {
+            sqlString += " AND fw.Bereich_Nr = " + intBereichnr;
+        } else if (strFubwehr.equals("-2")) {
+            sqlString += " AND fw.abschnitt_instanznummer = " + intAbschnittnr;
         } else {
-            if (intAbschnittnr == -2) {
-                sqlString += " AND fw.Bereich_Nr = " + intBereichnr;
-            } else {
-                if (strFubwehr.equals("-2")) {
-                    sqlString += " AND fw.abschnitt_instanznummer = " + intAbschnittnr;
-                } else {
-                    sqlString += " AND f.instanznummer = '" + strFubwehr + "'";
-                }
-            }
+            sqlString += " AND f.instanznummer = '" + strFubwehr + "'";
         }
 
         sqlString += " UNION ALL SELECT "
@@ -1461,17 +1419,15 @@ public class DB_Access {
 
         if (intBereichnr == -2) {
 
+        } else if (intAbschnittnr == -2) {
+            sqlString += " AND fw.Bereich_Nr = " + intBereichnr;
+        } else if (strFubwehr.equals("-2")) {
+            sqlString += " AND fw.abschnitt_instanznummer = " + intAbschnittnr;
         } else {
-            if (intAbschnittnr == -2) {
-                sqlString += " AND fw.Bereich_Nr = " + intBereichnr;
-            } else {
-                if (strFubwehr.equals("-2")) {
-                    sqlString += " AND fw.abschnitt_instanznummer = " + intAbschnittnr;
-                } else {
-                    sqlString += " AND f.instanznummer = '" + strFubwehr + "'";
-                }
-            }
+            sqlString += " AND f.instanznummer = '" + strFubwehr + "'";
         }
+
+        sqlString += " ORDER BY 18";
 
         ResultSet rs = stat.executeQuery(sqlString);
 
@@ -1514,6 +1470,18 @@ public class DB_Access {
             dateBeginn = rs.getTimestamp("Beginn");
             dateEnde = rs.getTimestamp("Ende");
 
+            if (strAufbaufirma == null) {
+                strAufbaufirma = "-";
+            }
+
+            if (strFahrzeugmarke == null) {
+                strFahrzeugmarke = "-";
+            }
+            
+            if(strTreibstoff == null){
+                strTreibstoff = "-";
+            }
+
             Fahrzeug fahrzeug = new Fahrzeug(strFahrzeugTyp, strKennzeichen,
                     intBaujahr, strAufbaufirma, strTaktischeBezeichnung,
                     intId_fahrzeuge, strBezeichnung, strFahrzeugmarke,
@@ -1544,16 +1512,12 @@ public class DB_Access {
                 + " FROM FDISK.dbo.stmkfahrzeuge sf INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(sf.instanznummer = fw.instanznummer)";
 
         if (intBereichnr == -2) {
+        } else if (intAbschnittnr == -2) {
+            sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
+        } else if (strFubwehr.equals("-2")) {
+            sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
         } else {
-            if (intAbschnittnr == -2) {
-                sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
-            } else {
-                if (strFubwehr.equals("-2")) {
-                    sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
-                } else {
-                    sqlString += " WHERE sf.instanznummer = '" + strFubwehr + "'";
-                }
-            }
+            sqlString += " WHERE sf.instanznummer = '" + strFubwehr + "'";
         }
 
         ResultSet rs = stat.executeQuery(sqlString);
@@ -1597,19 +1561,15 @@ public class DB_Access {
 
         if (intBereichnr == -2) {
             prepStat = conn.prepareStatement(EnErreichbarkeitsliste.getErreichbarkeitslisteAlle.toString());
+        } else if (intAbschnittnr == -2) {
+            prepStat = conn.prepareStatement(EnErreichbarkeitsliste.getErreichbarkeitslisteBereich.toString());
+            prepStat.setInt(1, intBereichnr);
+        } else if (strFubwehr.equals("-2")) {
+            prepStat = conn.prepareStatement(EnErreichbarkeitsliste.getErreichbarkeitslisteAbschnitt.toString());
+            prepStat.setInt(1, intAbschnittnr);
         } else {
-            if (intAbschnittnr == -2) {
-                prepStat = conn.prepareStatement(EnErreichbarkeitsliste.getErreichbarkeitslisteBereich.toString());
-                prepStat.setInt(1, intBereichnr);
-            } else {
-                if (strFubwehr.equals("-2")) {
-                    prepStat = conn.prepareStatement(EnErreichbarkeitsliste.getErreichbarkeitslisteAbschnitt.toString());
-                    prepStat.setInt(1, intAbschnittnr);
-                } else {
-                    prepStat = conn.prepareStatement(EnErreichbarkeitsliste.getErreichbarkeitslisteFubwehr.toString());
-                    prepStat.setString(1, strFubwehr);
-                }
-            }
+            prepStat = conn.prepareStatement(EnErreichbarkeitsliste.getErreichbarkeitslisteFubwehr.toString());
+            prepStat.setString(1, strFubwehr);
         }
 
         ResultSet rs = prepStat.executeQuery();
@@ -1676,19 +1636,15 @@ public class DB_Access {
 
         if (intBereichnr == -2) {
             prepStat = conn.prepareStatement(EnLeerberichtMitglied.getLeerberichtMitgliedAlle.toString());
+        } else if (intAbschnittnr == -2) {
+            prepStat = conn.prepareStatement(EnLeerberichtMitglied.getLeerberichtMitgliedBereich.toString());
+            prepStat.setInt(1, intBereichnr);
+        } else if (strFubwehr.equals("-2")) {
+            prepStat = conn.prepareStatement(EnLeerberichtMitglied.getLeerberichtMitgliedAbschnitt.toString());
+            prepStat.setInt(1, intAbschnittnr);
         } else {
-            if (intAbschnittnr == -2) {
-                prepStat = conn.prepareStatement(EnLeerberichtMitglied.getLeerberichtMitgliedBereich.toString());
-                prepStat.setInt(1, intBereichnr);
-            } else {
-                if (strFubwehr.equals("-2")) {
-                    prepStat = conn.prepareStatement(EnLeerberichtMitglied.getLeerberichtMitgliedAbschnitt.toString());
-                    prepStat.setInt(1, intAbschnittnr);
-                } else {
-                    prepStat = conn.prepareStatement(EnLeerberichtMitglied.getLeerberichtMitgliedFubwehr.toString());
-                    prepStat.setString(1, strFubwehr);
-                }
-            }
+            prepStat = conn.prepareStatement(EnLeerberichtMitglied.getLeerberichtMitgliedFubwehr.toString());
+            prepStat.setString(1, strFubwehr);
         }
 
         ResultSet rs = prepStat.executeQuery();
@@ -1752,19 +1708,15 @@ public class DB_Access {
 
         if (intBereichnr == -2) {
             prepStat = conn.prepareStatement(EnLeerberichtFahrzeug.getLeerberichtFahrzeugAlle.toString());
+        } else if (intAbschnittnr == -2) {
+            prepStat = conn.prepareStatement(EnLeerberichtFahrzeug.getLeerberichtFahrzeugBereich.toString());
+            prepStat.setInt(1, intBereichnr);
+        } else if (strFubwehr.equals("-2")) {
+            prepStat = conn.prepareStatement(EnLeerberichtFahrzeug.getLeerberichtFahrzeugAbschnitt.toString());
+            prepStat.setInt(1, intAbschnittnr);
         } else {
-            if (intAbschnittnr == -2) {
-                prepStat = conn.prepareStatement(EnLeerberichtFahrzeug.getLeerberichtFahrzeugBereich.toString());
-                prepStat.setInt(1, intBereichnr);
-            } else {
-                if (strFubwehr.equals("-2")) {
-                    prepStat = conn.prepareStatement(EnLeerberichtFahrzeug.getLeerberichtFahrzeugAbschnitt.toString());
-                    prepStat.setInt(1, intAbschnittnr);
-                } else {
-                    prepStat = conn.prepareStatement(EnLeerberichtFahrzeug.getLeerberichtFahrzeugFubwehr.toString());
-                    prepStat.setString(1, strFubwehr);
-                }
-            }
+            prepStat = conn.prepareStatement(EnLeerberichtFahrzeug.getLeerberichtFahrzeugFubwehr.toString());
+            prepStat.setString(1, strFubwehr);
         }
 
         ResultSet rs = prepStat.executeQuery();
@@ -1896,8 +1848,8 @@ public class DB_Access {
         } else {
             if (intAbschnittnr == -2) {
                 sqlString = "SELECT DISTINCT id_berichte 'ID'"
-                        + " ,instanznummer 'Instanznummer'"
-                        + " ,instanzname 'Instanzname'"
+                        + " ,tb.instanznummer 'Instanznummer'"
+                        + " ,tb.instanzname 'Instanzname'"
                         + " ,taetigkeitsart 'Taetigkeitsart'"
                         + " ,taetigkeitsunterart 'Taetigkeitsunterart'"
                         + " ,nummer 'Nummer'"
@@ -1912,44 +1864,42 @@ public class DB_Access {
                         + " ,Fehlalarm 'Fehlalarm'"
                         + " FROM FDISK.dbo.stmktaetigkeitsberichte tb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(tb.instanznummer = f.instanznummer)"
                         + " WHERE f.Bereich_Nr = " + intBereichnr;
+            } else if (strFubwehr.equals("-2")) {
+                sqlString = "SELECT DISTINCT id_berichte 'ID'"
+                        + " ,tb.instanznummer 'Instanznummer'"
+                        + " ,tb.instanzname 'Instanzname'"
+                        + " ,taetigkeitsart 'Taetigkeitsart'"
+                        + " ,taetigkeitsunterart 'Taetigkeitsunterart'"
+                        + " ,nummer 'Nummer'"
+                        + " ,beginn 'Beginn'"
+                        + " ,ende 'Ende'"
+                        + " ,strasse 'Strasse'"
+                        + " ,nummeradr 'NummerAdr'"
+                        + " ,stiege 'Stiege'"
+                        + " ,plz 'PLZ'"
+                        + " ,ort 'Ort'"
+                        + " ,meldung 'Meldung'"
+                        + " ,Fehlalarm 'Fehlalarm'"
+                        + " FROM FDISK.dbo.stmktaetigkeitsberichte tb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(tb.instanznummer = f.instanznummer)"
+                        + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
             } else {
-                if (strFubwehr.equals("-2")) {
-                    sqlString = "SELECT DISTINCT id_berichte 'ID'"
-                            + " ,instanznummer 'Instanznummer'"
-                            + " ,instanzname 'Instanzname'"
-                            + " ,taetigkeitsart 'Taetigkeitsart'"
-                            + " ,taetigkeitsunterart 'Taetigkeitsunterart'"
-                            + " ,nummer 'Nummer'"
-                            + " ,beginn 'Beginn'"
-                            + " ,ende 'Ende'"
-                            + " ,strasse 'Strasse'"
-                            + " ,nummeradr 'NummerAdr'"
-                            + " ,stiege 'Stiege'"
-                            + " ,plz 'PLZ'"
-                            + " ,ort 'Ort'"
-                            + " ,meldung 'Meldung'"
-                            + " ,Fehlalarm 'Fehlalarm'"
-                            + " FROM FDISK.dbo.stmktaetigkeitsberichte tb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(tb.instanznummer = f.instanznummer)"
-                            + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
-                } else {
-                    sqlString = "SELECT DISTINCT id_berichte 'ID'"
-                            + " ,instanznummer 'Instanznummer'"
-                            + " ,instanzname 'Instanzname'"
-                            + " ,taetigkeitsart 'Taetigkeitsart'"
-                            + " ,taetigkeitsunterart 'Taetigkeitsunterart'"
-                            + " ,nummer 'Nummer'"
-                            + " ,beginn 'Beginn'"
-                            + " ,ende 'Ende'"
-                            + " ,strasse 'Strasse'"
-                            + " ,nummeradr 'NummerAdr'"
-                            + " ,stiege 'Stiege'"
-                            + " ,plz 'PLZ'"
-                            + " ,ort 'Ort'"
-                            + " ,meldung 'Meldung'"
-                            + " ,Fehlalarm 'Fehlalarm'"
-                            + " FROM FDISK.dbo.stmktaetigkeitsberichte"
-                            + " WHERE instanznummer = '" + strFubwehr + "'";
-                }
+                sqlString = "SELECT DISTINCT id_berichte 'ID'"
+                        + " ,instanznummer 'Instanznummer'"
+                        + " ,instanzname 'Instanzname'"
+                        + " ,taetigkeitsart 'Taetigkeitsart'"
+                        + " ,taetigkeitsunterart 'Taetigkeitsunterart'"
+                        + " ,nummer 'Nummer'"
+                        + " ,beginn 'Beginn'"
+                        + " ,ende 'Ende'"
+                        + " ,strasse 'Strasse'"
+                        + " ,nummeradr 'NummerAdr'"
+                        + " ,stiege 'Stiege'"
+                        + " ,plz 'PLZ'"
+                        + " ,ort 'Ort'"
+                        + " ,meldung 'Meldung'"
+                        + " ,Fehlalarm 'Fehlalarm'"
+                        + " FROM FDISK.dbo.stmktaetigkeitsberichte"
+                        + " WHERE instanznummer = '" + strFubwehr + "'";
             }
             sqlString += getSqlDateString(strVon, strBis, 2, false);
         }
@@ -2039,7 +1989,7 @@ public class DB_Access {
         } else {
             if (intAbschnittnr == -2) {
                 sqlString = "SELECT DISTINCT id_berichte 'ID'"
-                        + " ,instanznummer 'Instanznummer'"
+                        + " ,eb.instanznummer 'Instanznummer'"
                         + " ,name 'Name'"
                         + " ,einsatzart 'Art'"
                         + " ,nummer 'Nr'"
@@ -2057,48 +2007,46 @@ public class DB_Access {
                         + " ,Fehlalarm 'Fehlalarm'"
                         + " FROM FDISK.dbo.stmkeinsatzberichte eb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(eb.instanznummer = f.instanznummer) "
                         + " WHERE f.Bereich_Nr = " + intBereichnr;
+            } else if (strFubwehr.equals("-2")) {
+                sqlString = "SELECT DISTINCT id_berichte 'ID'"
+                        + " ,eb.instanznummer 'Instanznummer'"
+                        + " ,name 'Name'"
+                        + " ,einsatzart 'Art'"
+                        + " ,nummer 'Nr'"
+                        + " ,uhrzeit_alarmierung 'Uhrzeit_Alarmierung'"
+                        + " ,uhrzeit_rueckkehr 'Uhrzeit_Rueckkehr'"
+                        + " ,strasse 'Strasse'"
+                        + " ,nummeradr 'Nummeradr'"
+                        + " ,stiege 'Stiege'"
+                        + " ,plz 'PLZ'"
+                        + " ,ort 'Ort'"
+                        + " ,standesbuchnummer 'SBN'"
+                        + " ,vorname 'Vorname'"
+                        + " ,zuname 'Zuname'"
+                        + " ,meldung 'Meldung'"
+                        + " ,Fehlalarm 'Fehlalarm'"
+                        + " FROM FDISK.dbo.stmkeinsatzberichte eb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(eb.instanznummer = f.instanznummer) "
+                        + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
             } else {
-                if (strFubwehr.equals("-2")) {
-                    sqlString = "SELECT DISTINCT id_berichte 'ID'"
-                            + " ,instanznummer 'Instanznummer'"
-                            + " ,name 'Name'"
-                            + " ,einsatzart 'Art'"
-                            + " ,nummer 'Nr'"
-                            + " ,uhrzeit_alarmierung 'Uhrzeit_Alarmierung'"
-                            + " ,uhrzeit_rueckkehr 'Uhrzeit_Rueckkehr'"
-                            + " ,strasse 'Strasse'"
-                            + " ,nummeradr 'Nummeradr'"
-                            + " ,stiege 'Stiege'"
-                            + " ,plz 'PLZ'"
-                            + " ,ort 'Ort'"
-                            + " ,standesbuchnummer 'SBN'"
-                            + " ,vorname 'Vorname'"
-                            + " ,zuname 'Zuname'"
-                            + " ,meldung 'Meldung'"
-                            + " ,Fehlalarm 'Fehlalarm'"
-                            + " FROM FDISK.dbo.stmkeinsatzberichte eb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(eb.instanznummer = f.instanznummer) "
-                            + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
-                } else {
-                    sqlString = "SELECT DISTINCT id_berichte 'ID'"
-                            + " ,instanznummer 'Instanznummer'"
-                            + " ,name 'Name'"
-                            + " ,einsatzart 'Art'"
-                            + " ,nummer 'Nr'"
-                            + " ,uhrzeit_alarmierung 'Uhrzeit_Alarmierung'"
-                            + " ,uhrzeit_rueckkehr 'Uhrzeit_Rueckkehr'"
-                            + " ,strasse 'Strasse'"
-                            + " ,nummeradr 'Nummeradr'"
-                            + " ,stiege 'Stiege'"
-                            + " ,plz 'PLZ'"
-                            + " ,ort 'Ort'"
-                            + " ,standesbuchnummer 'SBN'"
-                            + " ,vorname 'Vorname'"
-                            + " ,zuname 'Zuname'"
-                            + " ,meldung 'Meldung'"
-                            + " ,Fehlalarm 'Fehlalarm'"
-                            + " FROM FDISK.dbo.stmkeinsatzberichte"
-                            + " WHERE instanznummer = '" + strFubwehr + "'";
-                }
+                sqlString = "SELECT DISTINCT id_berichte 'ID'"
+                        + " ,instanznummer 'Instanznummer'"
+                        + " ,name 'Name'"
+                        + " ,einsatzart 'Art'"
+                        + " ,nummer 'Nr'"
+                        + " ,uhrzeit_alarmierung 'Uhrzeit_Alarmierung'"
+                        + " ,uhrzeit_rueckkehr 'Uhrzeit_Rueckkehr'"
+                        + " ,strasse 'Strasse'"
+                        + " ,nummeradr 'Nummeradr'"
+                        + " ,stiege 'Stiege'"
+                        + " ,plz 'PLZ'"
+                        + " ,ort 'Ort'"
+                        + " ,standesbuchnummer 'SBN'"
+                        + " ,vorname 'Vorname'"
+                        + " ,zuname 'Zuname'"
+                        + " ,meldung 'Meldung'"
+                        + " ,Fehlalarm 'Fehlalarm'"
+                        + " FROM FDISK.dbo.stmkeinsatzberichte"
+                        + " WHERE instanznummer = '" + strFubwehr + "'";
             }
             sqlString += getSqlDateString(strVon, strBis, 1, false);
         }
@@ -2193,7 +2141,7 @@ public class DB_Access {
         } else {
             if (intAbschnittnr == -2) {
                 sqlString = "SELECT DISTINCT id_berichte 'ID'"
-                        + " ,instanznummer 'Instanznummer'"
+                        + " ,ub.instanznummer 'Instanznummer'"
                         + " ,name 'Instanzname'"
                         + " ,uebungsart 'Uebungsart'"
                         + " ,uebungsunterart 'Uebungsunterart'"
@@ -2209,44 +2157,42 @@ public class DB_Access {
                         + " ,Fehlalarm 'Fehlalarm'"
                         + " FROM FDISK.dbo.stmkuebungsberichte ub INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(ub.instanznummer = f.instanznummer)"
                         + " WHERE f.Bereich_Nr = " + intBereichnr;
+            } else if (strFubwehr.equals("-2")) {
+                sqlString = "SELECT DISTINCT id_berichte 'ID'"
+                        + " ,ub.instanznummer 'Instanznummer'"
+                        + " ,name 'Instanzname'"
+                        + " ,uebungsart 'Uebungsart'"
+                        + " ,uebungsunterart 'Uebungsunterart'"
+                        + " ,nummer 'Nummer'"
+                        + " ,beginn 'Beginn'"
+                        + " ,ende 'Ende'"
+                        + " ,strasse 'Strasse'"
+                        + " ,nummeradr 'NummerAdr'"
+                        + " ,stiege 'Stiege'"
+                        + " ,plz 'PLZ'"
+                        + " ,ort 'Ort'"
+                        + " ,meldung 'Meldung'"
+                        + " ,Fehlalarm 'Fehlalarm'"
+                        + " FROM FDISK.dbo.stmkuebungsberichte ub INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(ub.instanznummer = f.instanznummer)"
+                        + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
             } else {
-                if (strFubwehr.equals("-2")) {
-                    sqlString = "SELECT DISTINCT id_berichte 'ID'"
-                            + " ,instanznummer 'Instanznummer'"
-                            + " ,name 'Instanzname'"
-                            + " ,uebungsart 'Uebungsart'"
-                            + " ,uebungsunterart 'Uebungsunterart'"
-                            + " ,nummer 'Nummer'"
-                            + " ,beginn 'Beginn'"
-                            + " ,ende 'Ende'"
-                            + " ,strasse 'Strasse'"
-                            + " ,nummeradr 'NummerAdr'"
-                            + " ,stiege 'Stiege'"
-                            + " ,plz 'PLZ'"
-                            + " ,ort 'Ort'"
-                            + " ,meldung 'Meldung'"
-                            + " ,Fehlalarm 'Fehlalarm'"
-                            + " FROM FDISK.dbo.stmkuebungsberichte ub INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(ub.instanznummer = f.instanznummer)"
-                            + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
-                } else {
-                    sqlString = "SELECT DISTINCT id_berichte 'ID'"
-                            + " ,instanznummer 'Instanznummer'"
-                            + " ,name 'Instanzname'"
-                            + " ,uebungsart 'Uebungsart'"
-                            + " ,uebungsunterart 'Uebungsunterart'"
-                            + " ,nummer 'Nummer'"
-                            + " ,beginn 'Beginn'"
-                            + " ,ende 'Ende'"
-                            + " ,strasse 'Strasse'"
-                            + " ,nummeradr 'NummerAdr'"
-                            + " ,stiege 'Stiege'"
-                            + " ,plz 'PLZ'"
-                            + " ,ort 'Ort'"
-                            + " ,meldung 'Meldung'"
-                            + " ,Fehlalarm 'Fehlalarm'"
-                            + " FROM FDISK.dbo.stmkuebungsberichte "
-                            + " WHERE instanznummer = '" + strFubwehr + "'";
-                }
+                sqlString = "SELECT DISTINCT id_berichte 'ID'"
+                        + " ,instanznummer 'Instanznummer'"
+                        + " ,name 'Instanzname'"
+                        + " ,uebungsart 'Uebungsart'"
+                        + " ,uebungsunterart 'Uebungsunterart'"
+                        + " ,nummer 'Nummer'"
+                        + " ,beginn 'Beginn'"
+                        + " ,ende 'Ende'"
+                        + " ,strasse 'Strasse'"
+                        + " ,nummeradr 'NummerAdr'"
+                        + " ,stiege 'Stiege'"
+                        + " ,plz 'PLZ'"
+                        + " ,ort 'Ort'"
+                        + " ,meldung 'Meldung'"
+                        + " ,Fehlalarm 'Fehlalarm'"
+                        + " FROM FDISK.dbo.stmkuebungsberichte "
+                        + " WHERE instanznummer = '" + strFubwehr + "'";
             }
             sqlString += getSqlDateString(strVon, strBis, 3, false);
         }
@@ -2338,7 +2284,7 @@ public class DB_Access {
         } else {
             if (intAbschnittnr == -2) {
                 sqlString.append(" SELECT DISTINCT id_berichte 'ID'")
-                        .append(" ,instanznummer 'Instanznummer'")
+                        .append(" ,ub.instanznummer 'Instanznummer'")
                         .append(" ,name 'Instanzname'")
                         .append(" ,uebungsart 'Art'")
                         .append(" ,nummer 'Nummer'")
@@ -2355,47 +2301,45 @@ public class DB_Access {
                         .append(" FROM FDISK.dbo.stmkuebungsberichte ub INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(ub.instanznummer = f.instanznummer)")
                         .append(" WHERE f.Bereich_Nr = ")
                         .append(intBereichnr);
+            } else if (strFubwehr.equals("-2")) {
+                sqlString.append(" SELECT DISTINCT id_berichte 'ID'")
+                        .append(" ,ub.instanznummer 'Instanznummer'")
+                        .append(" ,name 'Instanzname'")
+                        .append(" ,uebungsart 'Art'")
+                        .append(" ,nummer 'Nummer'")
+                        .append(" ,beginn 'Beginn'")
+                        .append(" ,ende 'Ende'")
+                        .append(" ,strasse 'Strasse'")
+                        .append(" ,nummeradr 'NummerAdr'")
+                        .append(" ,stiege 'Stiege'")
+                        .append(" ,plz 'PLZ'")
+                        .append(" ,ort 'Ort'")
+                        .append(" ,meldung 'Meldung'")
+                        .append(" ,Fehlalarm 'Fehlalarm'")
+                        .append(" , 'Übungsbericht' 'BArt'")
+                        .append(" FROM FDISK.dbo.stmkuebungsberichte ub INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(ub.instanznummer = f.instanznummer)")
+                        .append(" WHERE f.abschnitt_instanznummer = ")
+                        .append(intAbschnittnr);
             } else {
-                if (strFubwehr.equals("-2")) {
-                    sqlString.append(" SELECT DISTINCT id_berichte 'ID'")
-                            .append(" ,instanznummer 'Instanznummer'")
-                            .append(" ,name 'Instanzname'")
-                            .append(" ,uebungsart 'Art'")
-                            .append(" ,nummer 'Nummer'")
-                            .append(" ,beginn 'Beginn'")
-                            .append(" ,ende 'Ende'")
-                            .append(" ,strasse 'Strasse'")
-                            .append(" ,nummeradr 'NummerAdr'")
-                            .append(" ,stiege 'Stiege'")
-                            .append(" ,plz 'PLZ'")
-                            .append(" ,ort 'Ort'")
-                            .append(" ,meldung 'Meldung'")
-                            .append(" ,Fehlalarm 'Fehlalarm'")
-                            .append(" , 'Übungsbericht' 'BArt'")
-                            .append(" FROM FDISK.dbo.stmkuebungsberichte ub INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(ub.instanznummer = f.instanznummer)")
-                            .append(" WHERE f.abschnitt_instanznummer = ")
-                            .append(intAbschnittnr);
-                } else {
-                    sqlString.append(" SELECT DISTINCT id_berichte 'ID'")
-                            .append(" ,instanznummer 'Instanznummer'")
-                            .append(" ,name 'Instanzname'")
-                            .append(" ,uebungsart 'Art'")
-                            .append(" ,nummer 'Nummer'")
-                            .append(" ,beginn 'Beginn'")
-                            .append(" ,ende 'Ende'")
-                            .append(" ,strasse 'Strasse'")
-                            .append(" ,nummeradr 'NummerAdr'")
-                            .append(" ,stiege 'Stiege'")
-                            .append(" ,plz 'PLZ'")
-                            .append(" ,ort 'Ort'")
-                            .append(" ,meldung 'Meldung'")
-                            .append(" ,Fehlalarm 'Fehlalarm'")
-                            .append(" , 'Übungsbericht' 'BArt'")
-                            .append(" FROM FDISK.dbo.stmkuebungsberichte")
-                            .append(" WHERE instanznummer = '")
-                            .append(strFubwehr)
-                            .append("'");
-                }
+                sqlString.append(" SELECT DISTINCT id_berichte 'ID'")
+                        .append(" ,instanznummer 'Instanznummer'")
+                        .append(" ,name 'Instanzname'")
+                        .append(" ,uebungsart 'Art'")
+                        .append(" ,nummer 'Nummer'")
+                        .append(" ,beginn 'Beginn'")
+                        .append(" ,ende 'Ende'")
+                        .append(" ,strasse 'Strasse'")
+                        .append(" ,nummeradr 'NummerAdr'")
+                        .append(" ,stiege 'Stiege'")
+                        .append(" ,plz 'PLZ'")
+                        .append(" ,ort 'Ort'")
+                        .append(" ,meldung 'Meldung'")
+                        .append(" ,Fehlalarm 'Fehlalarm'")
+                        .append(" , 'Übungsbericht' 'BArt'")
+                        .append(" FROM FDISK.dbo.stmkuebungsberichte")
+                        .append(" WHERE instanznummer = '")
+                        .append(strFubwehr)
+                        .append("'");
             }
             sqlString.append(getSqlDateString(strVon, strBis, 3, false));
         }
@@ -2421,7 +2365,7 @@ public class DB_Access {
         } else {
             if (intAbschnittnr == -2) {
                 sqlString.append(" UNION SELECT DISTINCT id_berichte 'ID'")
-                        .append(" ,instanznummer 'Instanznummer'")
+                        .append(" ,eb.instanznummer 'Instanznummer'")
                         .append(" ,name 'Name'")
                         .append(" ,einsatzart 'Art'")
                         .append(" ,nummer 'Nr'")
@@ -2438,47 +2382,45 @@ public class DB_Access {
                         .append(" FROM FDISK.dbo.stmkeinsatzberichte eb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(eb.instanznummer = f.instanznummer) ")
                         .append(" WHERE f.Bereich_Nr = ")
                         .append(intBereichnr);
+            } else if (strFubwehr.equals("-2")) {
+                sqlString.append(" UNION SELECT DISTINCT id_berichte 'ID'")
+                        .append(" ,eb.instanznummer 'Instanznummer'")
+                        .append(" ,name 'Name'")
+                        .append(" ,einsatzart 'Art'")
+                        .append(" ,nummer 'Nr'")
+                        .append(" ,uhrzeit_alarmierung 'Uhrzeit_Alarmierung'")
+                        .append(" ,uhrzeit_rueckkehr 'Uhrzeit_Rueckkehr'")
+                        .append(" ,strasse 'Strasse'")
+                        .append(" ,nummeradr 'Nummeradr'")
+                        .append(" ,stiege 'Stiege'")
+                        .append(" ,plz 'PLZ'")
+                        .append(" ,ort 'Ort'")
+                        .append(" ,meldung 'Meldung'")
+                        .append(" ,Fehlalarm 'Fehlalarm'")
+                        .append(" , 'Einsatzbericht' 'BArt'")
+                        .append(" FROM FDISK.dbo.stmkeinsatzberichte eb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(eb.instanznummer = f.instanznummer) ")
+                        .append(" WHERE f.abschnitt_instanznummer = ")
+                        .append(intAbschnittnr);
             } else {
-                if (strFubwehr.equals("-2")) {
-                    sqlString.append(" UNION SELECT DISTINCT id_berichte 'ID'")
-                            .append(" ,instanznummer 'Instanznummer'")
-                            .append(" ,name 'Name'")
-                            .append(" ,einsatzart 'Art'")
-                            .append(" ,nummer 'Nr'")
-                            .append(" ,uhrzeit_alarmierung 'Uhrzeit_Alarmierung'")
-                            .append(" ,uhrzeit_rueckkehr 'Uhrzeit_Rueckkehr'")
-                            .append(" ,strasse 'Strasse'")
-                            .append(" ,nummeradr 'Nummeradr'")
-                            .append(" ,stiege 'Stiege'")
-                            .append(" ,plz 'PLZ'")
-                            .append(" ,ort 'Ort'")
-                            .append(" ,meldung 'Meldung'")
-                            .append(" ,Fehlalarm 'Fehlalarm")
-                            .append(" ,'Einsatzbericht' 'BArt'")
-                            .append(" FROM FDISK.dbo.stmkeinsatzberichte eb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(eb.instanznummer = f.instanznummer) ")
-                            .append(" WHERE f.abschnitt_instanznummer = ")
-                            .append(intAbschnittnr);
-                } else {
-                    sqlString.append(" UNION SELECT DISTINCT id_berichte 'ID'")
-                            .append(" ,instanznummer 'Instanznummer'")
-                            .append(" ,name 'Name'")
-                            .append(" ,einsatzart 'Art'")
-                            .append(" ,nummer 'Nr'")
-                            .append(" ,uhrzeit_alarmierung 'Uhrzeit_Alarmierung'")
-                            .append(" ,uhrzeit_rueckkehr 'Uhrzeit_Rueckkehr'")
-                            .append(" ,strasse 'Strasse'")
-                            .append(" ,nummeradr 'Nummeradr'")
-                            .append(" ,stiege 'Stiege'")
-                            .append(" ,plz 'PLZ'")
-                            .append(" ,ort 'Ort'")
-                            .append(" ,meldung 'Meldung'")
-                            .append(" ,Fehlalarm 'Fehlalarm'")
-                            .append(" , 'Einsatzbericht' 'BArt'")
-                            .append(" FROM FDISK.dbo.stmkeinsatzberichte")
-                            .append(" WHERE instanznummer = '")
-                            .append(strFubwehr)
-                            .append("'");
-                }
+                sqlString.append(" UNION SELECT DISTINCT id_berichte 'ID'")
+                        .append(" ,instanznummer 'Instanznummer'")
+                        .append(" ,name 'Name'")
+                        .append(" ,einsatzart 'Art'")
+                        .append(" ,nummer 'Nr'")
+                        .append(" ,uhrzeit_alarmierung 'Uhrzeit_Alarmierung'")
+                        .append(" ,uhrzeit_rueckkehr 'Uhrzeit_Rueckkehr'")
+                        .append(" ,strasse 'Strasse'")
+                        .append(" ,nummeradr 'Nummeradr'")
+                        .append(" ,stiege 'Stiege'")
+                        .append(" ,plz 'PLZ'")
+                        .append(" ,ort 'Ort'")
+                        .append(" ,meldung 'Meldung'")
+                        .append(" ,Fehlalarm 'Fehlalarm'")
+                        .append(" , 'Einsatzbericht' 'BArt'")
+                        .append(" FROM FDISK.dbo.stmkeinsatzberichte")
+                        .append(" WHERE instanznummer = '")
+                        .append(strFubwehr)
+                        .append("'");
             }
             sqlString.append(getSqlDateString(strVon, strBis, 1, false));
         }
@@ -2504,8 +2446,8 @@ public class DB_Access {
         } else {
             if (intAbschnittnr == -2) {
                 sqlString.append(" UNION SELECT DISTINCT id_berichte 'ID'")
-                        .append(" ,instanznummer 'Instanznummer'")
-                        .append(" ,instanzname 'Instanzname'")
+                        .append(" ,tb.instanznummer 'Instanznummer'")
+                        .append(" ,tb.instanzname 'Instanzname'")
                         .append(" ,taetigkeitsart 'Taetigkeitsart'")
                         .append(" ,nummer 'Nummer'")
                         .append(" ,beginn 'Beginn'")
@@ -2521,47 +2463,45 @@ public class DB_Access {
                         .append(" FROM FDISK.dbo.stmktaetigkeitsberichte tb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(tb.instanznummer = f.instanznummer)")
                         .append(" WHERE f.Bereich_Nr = ")
                         .append(intBereichnr);
+            } else if (strFubwehr.equals("-2")) {
+                sqlString.append(" UNION SELECT DISTINCT id_berichte 'ID'")
+                        .append(" ,tb.instanznummer 'Instanznummer'")
+                        .append(" ,tb.instanzname 'Instanzname'")
+                        .append(" ,taetigkeitsart 'Taetigkeitsart'")
+                        .append(" ,nummer 'Nummer'")
+                        .append(" ,beginn 'Beginn'")
+                        .append(" ,ende 'Ende'")
+                        .append(" ,strasse 'Strasse'")
+                        .append(" ,nummeradr 'NummerAdr'")
+                        .append(" ,stiege 'Stiege'")
+                        .append(" ,plz 'PLZ'")
+                        .append(" ,ort 'Ort'")
+                        .append(" ,meldung 'Meldung'")
+                        .append(" ,Fehlalarm 'Fehlalarm'")
+                        .append(" , 'Tätigkeitsbericht' 'BArt'")
+                        .append(" FROM FDISK.dbo.stmktaetigkeitsberichte tb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(tb.instanznummer = f.instanznummer)")
+                        .append(" WHERE f.abschnitt_instanznummer = ")
+                        .append(intAbschnittnr);
             } else {
-                if (strFubwehr.equals("-2")) {
-                    sqlString.append(" UNION SELECT DISTINCT id_berichte 'ID'")
-                            .append(" ,instanznummer 'Instanznummer'")
-                            .append(" ,instanzname 'Instanzname'")
-                            .append(" ,taetigkeitsart 'Taetigkeitsart'")
-                            .append(" ,nummer 'Nummer'")
-                            .append(" ,beginn 'Beginn'")
-                            .append(" ,ende 'Ende'")
-                            .append(" ,strasse 'Strasse'")
-                            .append(" ,nummeradr 'NummerAdr'")
-                            .append(" ,stiege 'Stiege'")
-                            .append(" ,plz 'PLZ'")
-                            .append(" ,ort 'Ort'")
-                            .append(" ,meldung 'Meldung'")
-                            .append(" ,Fehlalarm 'Fehlalarm'")
-                            .append(" , 'Tätigkeitsbericht' 'BArt'")
-                            .append(" FROM FDISK.dbo.stmktaetigkeitsberichte tb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(tb.instanznummer = f.instanznummer)")
-                            .append(" WHERE f.abschnitt_instanznummer = ")
-                            .append(intAbschnittnr);
-                } else {
-                    sqlString.append(" UNION SELECT DISTINCT id_berichte 'ID'")
-                            .append(" ,instanznummer 'Instanznummer'")
-                            .append(" ,instanzname 'Instanzname'")
-                            .append(" ,taetigkeitsart 'Taetigkeitsart'")
-                            .append(" ,nummer 'Nummer'")
-                            .append(" ,beginn 'Beginn'")
-                            .append(" ,ende 'Ende'")
-                            .append(" ,strasse 'Strasse'")
-                            .append(" ,nummeradr 'NummerAdr'")
-                            .append(" ,stiege 'Stiege'")
-                            .append(" ,plz 'PLZ'")
-                            .append(" ,ort 'Ort'")
-                            .append(" ,meldung 'Meldung'")
-                            .append(" ,Fehlalarm 'Fehlalarm'")
-                            .append(" , 'Tätigkeitsbericht' 'BArt'")
-                            .append(" FROM FDISK.dbo.stmktaetigkeitsberichte")
-                            .append(" WHERE instanznummer = '")
-                            .append(strFubwehr)
-                            .append("'");
-                }
+                sqlString.append(" UNION SELECT DISTINCT id_berichte 'ID'")
+                        .append(" ,instanznummer 'Instanznummer'")
+                        .append(" ,instanzname 'Instanzname'")
+                        .append(" ,taetigkeitsart 'Taetigkeitsart'")
+                        .append(" ,nummer 'Nummer'")
+                        .append(" ,beginn 'Beginn'")
+                        .append(" ,ende 'Ende'")
+                        .append(" ,strasse 'Strasse'")
+                        .append(" ,nummeradr 'NummerAdr'")
+                        .append(" ,stiege 'Stiege'")
+                        .append(" ,plz 'PLZ'")
+                        .append(" ,ort 'Ort'")
+                        .append(" ,meldung 'Meldung'")
+                        .append(" ,Fehlalarm 'Fehlalarm'")
+                        .append(" , 'Tätigkeitsbericht' 'BArt'")
+                        .append(" FROM FDISK.dbo.stmktaetigkeitsberichte")
+                        .append(" WHERE instanznummer = '")
+                        .append(strFubwehr)
+                        .append("'");
             }
             sqlString.append(getSqlDateString(strVon, strBis, 2, false));
         }
@@ -2651,16 +2591,12 @@ public class DB_Access {
                 + " ON(p.instanznummer = fw.instanznummer)";
 
         if (intBereichnr == -2) {
+        } else if (intAbschnittnr == -2) {
+            strStatement += " WHERE fw.Bereich_Nr = " + intBereichnr;
+        } else if (strFubwehr.equals("-2")) {
+            strStatement += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
         } else {
-            if (intAbschnittnr == -2) {
-                strStatement += " WHERE fw.Bereich_Nr = " + intBereichnr;
-            } else {
-                if (strFubwehr.equals("-2")) {
-                    strStatement += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
-                } else {
-                    strStatement += " WHERE p.instanznummer = '" + strFubwehr + "'";
-                }
-            }
+            strStatement += " WHERE p.instanznummer = '" + strFubwehr + "'";
         }
 
         StringBuilder sqlString = new StringBuilder();
@@ -2705,16 +2641,8 @@ public class DB_Access {
         return liGeraetetraeger;
     }
 
+    //Dynamischer Berichtegenerator
     /**
-     * *******************************************************************************
-     *                                                                               *
-     *                                                                               *
-     * DYNAMSCHER BERICHTEGENERATOR * *
-     * /********************************************************************************
-     *
-     *
-     *
-     * /**
      * Ruft die richtige Methode für einen Typ Filter auf
      *
      * @return
@@ -3775,16 +3703,12 @@ public class DB_Access {
             sbSqlString.append(" ");
         }
         if (intBereichnr == -2) {
+        } else if (intAbschnittnr == -2) {
+            sbSqlString.append(" AND (fw.Bereich_Nr = ").append(intBereichnr).append(")");
+        } else if (strFubwehr.equals("-2")) {
+            sbSqlString.append(" AND (fw.abschnitt_instanznummer = ").append(intAbschnittnr).append(")");
         } else {
-            if (intAbschnittnr == -2) {
-                sbSqlString.append(" AND (fw.Bereich_Nr = ").append(intBereichnr).append(")");
-            } else {
-                if (strFubwehr.equals("-2")) {
-                    sbSqlString.append(" AND (fw.abschnitt_instanznummer = ").append(intAbschnittnr).append(")");
-                } else {
-                    sbSqlString.append(" AND (m.instanznummer = '").append(strFubwehr).append("')");
-                }
-            }
+            sbSqlString.append(" AND (m.instanznummer = '").append(strFubwehr).append("')");
         }
 
         StringBuilder sbHtml = createDynamicReportGeneratorOutput(sbSqlString.toString(), strSelectedCols);

@@ -12,11 +12,11 @@ package Database;
 public interface DB_Config {
 
     public static final String DB_NAME = "FDISK";
-    public static final String DB_USER = "Admin";
-    public static final String DB_PASSWD = "htlk";
-    public static final String DB_URL = "jdbc:sqlserver://localhost:30931;databaseName=FDISK";
-//    public static final String DB_USER = "sa";
-//    public static final String DB_PASSWD = "53411@lfv";
-//    public static final String DB_URL = "jdbc:sqlserver://172.16.1.18;instanceName=prometheus;databaseName=FDISK";
+//    public static final String DB_USER = "Admin";
+//    public static final String DB_PASSWD = "htlk";
+//    public static final String DB_URL = "jdbc:sqlserver://localhost:30931;databaseName=FDISK";
+    public static final String DB_USER = "sa";
+    public static final String DB_PASSWD = "53411@lfv";
+    public static final String DB_URL = "jdbc:sqlserver://172.16.1.18;instanceName=prometheus;databaseName=FDISK";
     public static final String DB_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 }

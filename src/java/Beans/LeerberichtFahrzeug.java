@@ -117,14 +117,14 @@ public class LeerberichtFahrzeug implements Serializable
     @Override
     public String toString()
     {
-        if(strBezeichnung == null)
+        if(strTaktischeBezeichnung == null)
         {
             return ""; 
         }
         
-        strBezeichnung = bl.formatiereAusgabe(strBezeichnung); 
+        strTaktischeBezeichnung = bl.formatiereAusgabe(strTaktischeBezeichnung); 
 
-        String strHtml = "<td>&Omicron;&nbsp;" + strBezeichnung + "</td>";
+        String strHtml = "<td>&Omicron;&nbsp;" + strTaktischeBezeichnung.toUpperCase() + "</td>";
         return strHtml;
     }
 }

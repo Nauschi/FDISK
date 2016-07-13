@@ -36,8 +36,7 @@
             private int intIDGruppe;
         %>
         <%
-            if (session == null || session.getAttribute("loggedIn") == null)
-            {
+            if (session == null || session.getAttribute("loggedIn") == null) {
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
             intIDGruppe = -1;
@@ -82,8 +81,7 @@
 
                     <%
                         LinkedList<Rohbericht> liRohberichte = (LinkedList<Rohbericht>) application.getAttribute("rohberichte");
-                        for (int i = 0; i < liRohberichte.size(); i++)
-                        {
+                        for (int i = 0; i < liRohberichte.size(); i++) {
                             Rohbericht rohbericht = liRohberichte.get(i);
                             out.println(rohbericht.toHTMLString());
                         }
@@ -108,8 +106,7 @@
                                 </fieldset>
                             </div>
                             <%
-                                if (intIDGruppe == 5 || intIDGruppe == 1)
-                                {
+                                if (intIDGruppe == 5 || intIDGruppe == 1) {
                                     out.println(generiereHiddenBezirkDiv(session));
                                 }
                             %>
@@ -123,8 +120,7 @@
                             </div>
 
                             <%
-                                if (intIDGruppe == 15 || intIDGruppe == 5 || intIDGruppe == 1)
-                                {
+                                if (intIDGruppe == 15 || intIDGruppe == 5 || intIDGruppe == 1) {
                                     out.println(generiereHiddenAbschnittDiv(session));
                                 }
                             %>
@@ -187,19 +183,15 @@
                                         <%
 
                                             int intYear = LocalDate.now().getYear();
-                                            if (request.getParameter("select_jahr") != null)
-                                            {
+                                            if (request.getParameter("select_jahr") != null) {
                                                 int intLastSelectedYear = Integer.parseInt(request.getParameter("select_jahr"));
-                                                for (int i = -1; i < 3; i++)
-                                                {
+                                                for (int i = -1; i < 3; i++) {
                                         %>
                                         <option value="<%=(intYear + i)%>" <%=((intYear + i) == intLastSelectedYear) ? "selected" : ""%>><%=(intYear + i)%></option>
                                         <%
                                             }
-                                        } else
-                                        {
-                                            for (int i = -1; i < 3; i++)
-                                            {
+                                        } else {
+                                            for (int i = -1; i < 3; i++) {
                                         %>
                                         <option value="<%=(intYear + i)%>" <%=(i == 0) ? "selected" : ""%>><%=(intYear + i)%></option>
                                         <%
@@ -233,18 +225,15 @@
                                         <select name="select_mitglied" class="ui fluid dropdown" id="select_mitglied">
                                             <option value="-2###Alle Mitglieder">Alle Mitglieder</option>
                                             <%
-                                                if (request.getAttribute("select_mitglieder_hs") != null)
-                                                {
+                                                if (request.getAttribute("select_mitglieder_hs") != null) {
                                                     LinkedHashMap<Integer, String> hsMitglieder = (LinkedHashMap<Integer, String>) request.getAttribute("select_mitglieder_hs");
                                                     Set<Integer> setKeys = hsMitglieder.keySet();
-                                                    for (int key : setKeys)
-                                                    {
+                                                    for (int key : setKeys) {
                                             %>
                                             <option value="<%=key + "###" + hsMitglieder.get(key)%>"><%=hsMitglieder.get(key)%></option>
                                             <%
                                                 }
-                                            } else if (request.getParameter("select_mitglied") != null && !request.getParameter("select_mitglied").equals("-2###Alle Mitglieder"))
-                                            {
+                                            } else if (request.getParameter("select_mitglied") != null && !request.getParameter("select_mitglied").equals("-2###Alle Mitglieder")) {
                                             %>
                                             <option value="<%=request.getParameter("select_mitglied")%>" selected><%=request.getParameter("select_mitglied").split("###")[1]%></option>
                                             <%
@@ -316,8 +305,7 @@
                         </fieldset>
                         </br>
                     </div>
-                    <%                        if (request.getAttribute("zusatz_informationen") != null)
-                        {
+                    <%                        if (request.getAttribute("zusatz_informationen") != null) {
                     %>
 
                     <div id="div_zusatzDaten">
@@ -347,7 +335,7 @@
             <div class="header">Info: Mitglieder</div>
             <div class="content">
                 <p>Wird hier "Alle Mitglieder" ausgewählt, wird die Stundenauswertung 
-                   aller Mitglieder dieser Feuerwehr/dieses Abschnitts/dieses Bereichs angezeigt.</p>
+                    aller Mitglieder dieser Feuerwehr/dieses Abschnitts/dieses Bereichs angezeigt.</p>
                 <p>Wird ein spezifisches Mitglied ausgewählt, werden die Stunden aller Instanzen dieses Mitglieds angezeigt.</p>
             </div>
             <div class="actions">
@@ -366,16 +354,14 @@
         <script src="tablesorter/jquery.tablesorter.js"></script> 
         <!--  <script src="tablesorter/jquery.tablesorter.min.js"></script>  -->
         <script>
-                            $(document).ready(function ()
+                    $(document).ready(function ()
                     {
             <%
-                if (request.getParameter("input_aktbericht") == null)
-                {
+                if (request.getParameter("input_aktbericht") == null) {
             %>
                     var item = document.getElementById("div_liste").getElementsByTagName("a")[0];
             <%
-            } else
-            {
+            } else {
             %>
                     var item = document.getElementById("<%=request.getParameter("input_aktbericht")%>");
             <%
@@ -383,108 +369,91 @@
             %>
 
                     item.className = "item active";
-                            var strBerichtname = item.getElementsByTagName("span")[0].innerHTML;
-                            document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = strBerichtname;
-                            document.getElementById("input_hidden").value = strBerichtname;
-                            var strTable = item.getElementsByTagName("div")[0].innerHTML;
-                            document.getElementById("div_table").innerHTML = strTable;
-                            var intTypeOfDateUI = item.getElementsByTagName("div")[1].innerHTML;
-                            onChangeTypeOfDateUI(intTypeOfDateUI);
+                    var strBerichtname = item.getElementsByTagName("span")[0].innerHTML;
+                    document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = strBerichtname;
+                    document.getElementById("input_hidden").value = strBerichtname;
+                    var strTable = item.getElementsByTagName("div")[0].innerHTML;
+                    document.getElementById("div_table").innerHTML = strTable;
+                    var intTypeOfDateUI = item.getElementsByTagName("div")[1].innerHTML;
+                    onChangeTypeOfDateUI(intTypeOfDateUI);
             <%
-                if (request.getAttribute("liste") != null)
-                {
+                if (request.getAttribute("liste") != null) {
                     LinkedList<Object> liBerichtDaten = (LinkedList<Object>) request.getAttribute("liste");
+                    for (Object daten : liBerichtDaten) {
+                    }
                     String strHTML = "";
                     int i = 0;
-                    while (i < liBerichtDaten.size())
-                    {
+                    while (i < liBerichtDaten.size()) {
 
-                        if (request.getParameter("input_aktbericht").contains(" leer") && i % 3 == 0)
-                        {
+                        if (request.getParameter("input_aktbericht").contains(" leer") && i % 3 == 0) {
                             strHTML += "<tr>";
                         }
 
                         Object zeile = liBerichtDaten.get(i);
                         String temp = zeile.toString();
 
-                        if (temp != null)
-                        {
+                        if (temp != null) {
                             strHTML += temp;
                         }
 
                         i++;
-                        if (request.getParameter("input_aktbericht").contains(" leer") && i % 3 == 0)
-                        {
+                        if (request.getParameter("input_aktbericht").contains(" leer") && i % 3 == 0) {
                             strHTML += "</tr>";
                         }
                     }
-                    if (request.getParameter("input_aktbericht").contains(" leer") && i % 3 != 0)
-                    {
+                    if (request.getParameter("input_aktbericht").contains(" leer") && i % 3 != 0) {
                         strHTML += "</tr>";
                     }
 
-                    if (request.getParameter("input_aktbericht") != null && request.getParameter("input_aktbericht").contains(" leer"))
-                    {
+                    if (request.getParameter("input_aktbericht") != null && request.getParameter("input_aktbericht").contains(" leer")) {
                         LinkedList<Object> liFahrzeug = (LinkedList<Object>) request.getAttribute("zusatz_liste");
                         String strZusatzHTML = "";
                         i = 0;
-                        while (i < liFahrzeug.size())
-                        {
-                            if (i % 3 == 0)
-                            {
+                        while (i < liFahrzeug.size()) {
+                            if (i % 3 == 0) {
                                 strZusatzHTML += "<tr>";
                             }
                             Object zeile = liFahrzeug.get(i);
                             strZusatzHTML += zeile.toString();
                             i++;
-                            if (i % 3 == 0)
-                            {
+                            if (i % 3 == 0) {
                                 strZusatzHTML += "</tr>";
                             }
                         }
-                        if (i % 3 != 0)
-                        {
+                        if (i % 3 != 0) {
                             strZusatzHTML += "</tr>";
                         }
             %>
 
                     document.getElementById("hidden_pdfData").value = "<%=request.getParameter("input_aktbericht")%>###<%=strHTML%>###<%=strZusatzHTML%>";
-                                document.formPDF.submit();
+                        document.formPDF.submit();
             <%
-            } else
-            {
-                if (strHTML.split("<tr>").length > 1)
-                {
+            } else if (strHTML.split("<tr>").length > 1) {
             %>
                         document.getElementById("div_csv_pdf").style.display = "block";
-                                document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
+                        document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
             <%=setzeTablesort(request)%>
                         $('.sort').popup();
             <%
-                        }
                     }
                 }
-                if (request.getParameter("select_abschnitt") != null && (intIDGruppe == 5 || intIDGruppe == 1))
-                {
+                if (request.getParameter("select_abschnitt") != null && (intIDGruppe == 5 || intIDGruppe == 1)) {
             %>
                         bezirkChanged(document.getElementById("select_bezirk"),<%=request.getParameter("select_abschnitt")%>);
             <%
                 }
-                if (request.getParameter("select_feuerwehr") != null && (intIDGruppe == 15 || intIDGruppe == 5 || intIDGruppe == 1))
-                {
+                if (request.getParameter("select_feuerwehr") != null && (intIDGruppe == 15 || intIDGruppe == 5 || intIDGruppe == 1)) {
             %>
                         abschittChanged(document.getElementById("select_abschnitt"),<%=request.getParameter("select_feuerwehr")%>);
             <%
                 }
-                if (request.getParameter("hidden_berechtigungs_info") != null)
-                {
+                if (request.getParameter("hidden_berechtigungs_info") != null) {
             %>
                         bezirkChanged(document.getElementById("select_bezirk"),<%=request.getParameter("hidden_berechtigungs_info").split(";")[1]%>);
-                                abschittChanged(document.getElementById("select_abschnitt"),<%=request.getParameter("hidden_berechtigungs_info").split(";")[2]%>);
+                        abschittChanged(document.getElementById("select_abschnitt"),<%=request.getParameter("hidden_berechtigungs_info").split(";")[2]%>);
             <%
                 }
-                if (request.getParameter("input_aktbericht") != null && request.getParameter("input_aktbericht").equals("Digitales Fahrtenbuch"))
-                {
+                if (request.getParameter("input_aktbericht") != null && request.getParameter("input_aktbericht").equals("Digitales Fahrtenbuch")) {
             %>
                         if (document.getElementById("div_zusatzDaten") == null)
                         {
@@ -494,19 +463,17 @@
                 }
             %>
                         document.getElementById("div_loader").className = "ui disabled loader";
-                                fixDropdowns("select_bezirk");
-                                fixDropdowns("select_abschnitt");
-                                fixDropdowns("select_feuerwehr");
-                                fixDropdowns("select_mitglied");
+                        fixDropdowns("select_bezirk");
+                        fixDropdowns("select_abschnitt");
+                        fixDropdowns("select_feuerwehr");
+                        fixDropdowns("select_mitglied");
             <%
-                if (request.getAttribute("select_kennzeichen_liste") != null)
-                {
+                if (request.getAttribute("select_kennzeichen_liste") != null) {
             %>
                         $('.ui.search').search({minCharacters : 0, searchFullText: false, source: [
             <%
                 LinkedList<String> liKennzeichen = (LinkedList<String>) request.getAttribute("select_kennzeichen_liste");
-                for (String kennzeichen : liKennzeichen)
-                {
+                for (String kennzeichen : liKennzeichen) {
             %>
                         {title: '<%=kennzeichen%>'}<%=kennzeichen.equals(liKennzeichen.getLast()) ? "" : ","%>
             <%
@@ -514,8 +481,7 @@
             %>
                         ], error : {noResults   : 'Keine Ergebnisse'}});
             <%
-            } else if (request.getAttribute("select_mitglieder_hs") != null)
-            {
+            } else if (request.getAttribute("select_mitglieder_hs") != null) {
             %>
                         setDeleteOnChange();
             <%
@@ -531,32 +497,25 @@
      * Erstellt einen HTML String der aus Divs besteht. Diese Divs enthalten
      * relevante Daten über die Feuerwehren
      */
-    private String generiereHiddenAbschnittDiv(HttpSession session)
-    {
+    private String generiereHiddenAbschnittDiv(HttpSession session) {
         String strAusgabe = "";
-        if (intIDGruppe == 15)
-        {
+        if (intIDGruppe == 15) {
             Abschnitt abschnitt = (Abschnitt) session.getAttribute("abschnitt");
             strAusgabe = abschnitt.generiereHiddenDiv();
-        } else if (intIDGruppe == 5)
-        {
+        } else if (intIDGruppe == 5) {
             String strAbschnittDivs = "";
             Bezirk bezirk = (Bezirk) session.getAttribute("bezirk");
             LinkedList<Abschnitt> liAbschnitte = bezirk.getLiAbschnitte();
-            for (Abschnitt abschnitt : liAbschnitte)
-            {
+            for (Abschnitt abschnitt : liAbschnitte) {
                 strAbschnittDivs += abschnitt.generiereHiddenDiv();
             }
             strAusgabe = strAbschnittDivs;
-        } else if (intIDGruppe == 1)
-        {
+        } else if (intIDGruppe == 1) {
             String strAbschnittDivs = "";
             LinkedList<Bezirk> liBezirke = (LinkedList<Bezirk>) session.getAttribute("alleBezirke");
-            for (Bezirk bezirk : liBezirke)
-            {
+            for (Bezirk bezirk : liBezirke) {
                 LinkedList<Abschnitt> liAbschnitte = bezirk.getLiAbschnitte();
-                for (Abschnitt abschnitt : liAbschnitte)
-                {
+                for (Abschnitt abschnitt : liAbschnitte) {
                     strAbschnittDivs += abschnitt.generiereHiddenDiv();
                 }
             }
@@ -570,18 +529,14 @@
      * Erstellt einen HTML String der aus Divs besteht. Diese Divs enthalten
      * relevante Daten über die Abschnitte
      */
-    private String generiereHiddenBezirkDiv(HttpSession session)
-    {
+    private String generiereHiddenBezirkDiv(HttpSession session) {
         String strAusgabe = "";
-        if (intIDGruppe == 1)
-        {
+        if (intIDGruppe == 1) {
             LinkedList<Bezirk> liBezirke = (LinkedList<Bezirk>) session.getAttribute("alleBezirke");
-            for (Bezirk bezirk : liBezirke)
-            {
+            for (Bezirk bezirk : liBezirke) {
                 strAusgabe += bezirk.generiereHiddenDiv();
             }
-        } else if (intIDGruppe == 5)
-        {
+        } else if (intIDGruppe == 5) {
             Bezirk bezirk = (Bezirk) session.getAttribute("bezirk");
             strAusgabe += bezirk.generiereHiddenDiv();
         }
@@ -592,40 +547,31 @@
     /**
      * Erzeugung der Optionen für das Bezirk Dropdown
      */
-    private String generiereBezirk(HttpSession session, HttpServletRequest request)
-    {
+    private String generiereBezirk(HttpSession session, HttpServletRequest request) {
         int intLetzerBezirk = -1000;
-        if (request.getParameter("select_bezirk") != null)
-        {
+        if (request.getParameter("select_bezirk") != null) {
             intLetzerBezirk = Integer.parseInt(request.getParameter("select_bezirk"));
-        } else if (request.getParameter("hidden_berechtigungs_info") != null)
-        {
+        } else if (request.getParameter("hidden_berechtigungs_info") != null) {
             intLetzerBezirk = Integer.parseInt(request.getParameter("hidden_berechtigungs_info").split(";")[0]);
         }
         String strAusgabe = "";
-        if (session.getAttribute("alleBezirke") != null)
-        {
+        if (session.getAttribute("alleBezirke") != null) {
             intIDGruppe = 1;
             LinkedList<Bezirk> liBezirke = (LinkedList<Bezirk>) session.getAttribute("alleBezirke");
-            strAusgabe+="<option value='-2'>Alle Bereiche</option>";
-            for (Bezirk bezirk : liBezirke)
-            {
-                if (bezirk.getIntBezirksNummer() == intLetzerBezirk)
-                {
+            strAusgabe += "<option value='-2'>Alle Bereiche</option>";
+            for (Bezirk bezirk : liBezirke) {
+                if (bezirk.getIntBezirksNummer() == intLetzerBezirk) {
                     strAusgabe += bezirk.toSelectedString();
-                } else
-                {
+                } else {
                     strAusgabe += bezirk.toString();
                 }
 
             }
-        } else if (session.getAttribute("bezirk") != null)
-        {
+        } else if (session.getAttribute("bezirk") != null) {
             intIDGruppe = 5;
             Bezirk bezirk = (Bezirk) session.getAttribute("bezirk");
             strAusgabe = bezirk.toString();
-        } else
-        {
+        } else {
             String strName = (String) session.getAttribute("bezirkName");
             strAusgabe = "<option value='-1'>" + strName + "</option>";
         }
@@ -635,18 +581,14 @@
     /**
      * Erzeugung der Optionen für das Abschnitt Dropdown
      */
-    private String generiereAbschnitt(HttpSession session)
-    {
-        if (session.getAttribute("abschnitt") != null)
-        {
+    private String generiereAbschnitt(HttpSession session) {
+        if (session.getAttribute("abschnitt") != null) {
             intIDGruppe = 15;
             Abschnitt abschnitt = (Abschnitt) session.getAttribute("abschnitt");
             return abschnitt.toString();
-        } else if (intIDGruppe != -1)
-        {
+        } else if (intIDGruppe != -1) {
             return "";
-        } else
-        {
+        } else {
             String strName = (String) session.getAttribute("abschnittName");
             return "<option value='-1'>" + strName + "</option>";
         }
@@ -655,16 +597,13 @@
     /**
      * Erzeugung der Optionen für das Feuerwehr Dropdown
      */
-    private String generiereFeuerwehr(HttpSession session)
-    {
+    private String generiereFeuerwehr(HttpSession session) {
 
-        if (session.getAttribute("feuerwehr") != null)
-        {
+        if (session.getAttribute("feuerwehr") != null) {
             intIDGruppe = 9;
             Feuerwehr feuerwehr = (Feuerwehr) session.getAttribute("feuerwehr");
             return feuerwehr.toString();
-        } else
-        {
+        } else {
             return "";
         }
     }
@@ -672,54 +611,42 @@
     /**
      * Setzt je nach ausgewähltem Bericht den Tablesort
      */
-    private String setzeTablesort(HttpServletRequest request)
-    {
+    private String setzeTablesort(HttpServletRequest request) {
         if (request.getParameter("input_aktbericht") != null
                 && (request.getParameter("input_aktbericht").equals("Geburtstagsliste")
                 || request.getParameter("input_aktbericht").equals("Dienstzeitliste")
                 || request.getParameter("input_aktbericht").equals("Einfache Mitgliederliste")
                 || request.getParameter("input_aktbericht").equals("Erreichbarkeitsliste")
-                || request.getParameter("input_aktbericht").equals("Adressliste")))
-        {
+                || request.getParameter("input_aktbericht").equals("Adressliste"))) {
             if (request.getParameter("input_aktbericht").equals("Geburtstagsliste")
-                    || request.getParameter("input_aktbericht").equals("Dienstzeitliste"))
-            {
+                    || request.getParameter("input_aktbericht").equals("Dienstzeitliste")) {
                 return "$('.tablesorter').tablesorter({headers: {1: {sorter: 'levels'},5: {sorter: 'germandate'}}});";
-            } else
-            {
+            } else {
                 return "$('.tablesorter').tablesorter({headers: {1: {sorter: 'levels'}}});";
             }
         } else if (request.getParameter("input_aktbericht") != null && (request.getParameter("input_aktbericht").equals("Liste aller Tätigkeitsberichte")
-                || request.getParameter("input_aktbericht").equals("Liste aller Übungsberichte")))
-        {
+                || request.getParameter("input_aktbericht").equals("Liste aller Übungsberichte"))) {
             return "$('.tablesorter').tablesorter({headers: {3: {sorter: 'berichtdate'},4: {sorter: 'berichtdate'}}});";
         } else if (request.getParameter("input_aktbericht") != null
-                && request.getParameter("input_aktbericht").equals("Liste aller Einsatzberichte"))
-        {
+                && request.getParameter("input_aktbericht").equals("Liste aller Einsatzberichte")) {
             return "$('.tablesorter').tablesorter({headers: {2: {sorter: 'berichtdate'},3: {sorter: 'berichtdate'}}});";
         } else if (request.getParameter("input_aktbericht") != null
-                && request.getParameter("input_aktbericht").equals("Liste aller Berichte"))
-        {
+                && request.getParameter("input_aktbericht").equals("Liste aller Berichte")) {
             return "$('.tablesorter').tablesorter({headers: {0: {sorter: 'berichtdate'},1: {sorter: 'berichtdate'}}});";
         } else if (request.getParameter("input_aktbericht") != null
-                && request.getParameter("input_aktbericht").equals("Kursstatistik"))
-        {
+                && request.getParameter("input_aktbericht").equals("Kursstatistik")) {
 //            return "$('.tablesorter2').tablesorter({headers: {3: {sorter: 'berichtdate'}}});"
             return "$('.tablesorter').tablesorter({headers: {4: {sorter: 'berichtdate'},5: {sorter: 'berichtdate'}}});";
         } else if (request.getParameter("input_aktbericht") != null
-                && request.getParameter("input_aktbericht").equals("Digitales Fahrtenbuch"))
-        {
+                && request.getParameter("input_aktbericht").equals("Digitales Fahrtenbuch")) {
             return "$('.tablesorter').tablesorter({headers: {1: {sorter: 'berichtdate'},2: {sorter: 'berichtdate'}}});";
         } else if (request.getParameter("input_aktbericht") != null
-                && request.getParameter("input_aktbericht").equals("Einsatztaugliche Atemschutzgeräteträger"))
-        {
+                && request.getParameter("input_aktbericht").equals("Einsatztaugliche Atemschutzgeräteträger")) {
             return "$('.tablesorter').tablesorter({headers: {1: {sorter: 'levels'},5: {sorter: 'germandate'},6: {sorter: 'berichtdate'},7: {sorter: 'berichtdate'}}});";
         } else if (request.getParameter("input_aktbericht") != null
-                && request.getParameter("input_aktbericht").equals("Stundenauswertung je Mitglied je Instanz"))
-        {
+                && request.getParameter("input_aktbericht").equals("Stundenauswertung je Mitglied je Instanz")) {
             return "$('.tablesorter').tablesorter({headers: {1: {sorter: 'levels'},6: {sorter: 'stundenauswertung'}}});";
-        } else
-        {
+        } else {
             return "$('.tablesorter').tablesorter();";
         }
     }

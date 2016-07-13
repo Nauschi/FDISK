@@ -16,11 +16,11 @@ public enum EnEinfacheMitgliederliste {
             + " WHERE (FDISK.dbo.stmkmitglieder.abgemeldet = 0) AND (NOT (LEFT(FDISK.dbo.stmkmitglieder.instanznummer, 2) = 'GA')) AND (NOT (LEFT(FDISK.dbo.stmkmitglieder.instanzname, 7) = 'FW GAST'))"),
     getEinfacheMitgliederlisteBereich("SELECT id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname' "
             + " FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer) "
-            + " WHERE (FDISK.dbo.stmkmitglieder.abgemeldet = 0) AND (NOT (LEFT(FDISK.dbo.stmkmitglieder.instanznummer, 2) = 'GA')) AND (NOT (LEFT(FDISK.dbo.stmkmitglieder.instanzname, 7) = 'FW GAST'))"
+            + " WHERE (s.abgemeldet = 0) AND (NOT (LEFT(s.instanznummer, 2) = 'GA')) AND (NOT (LEFT(s.instanzname, 7) = 'FW GAST'))"
             + " AND f.Bereich_Nr = ?"),
     getEinfacheMitgliederlisteAbschnitt("SELECT id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname' "
             + " FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer) "
-            + " WHERE (FDISK.dbo.stmkmitglieder.abgemeldet = 0) AND (NOT (LEFT(FDISK.dbo.stmkmitglieder.instanznummer, 2) = 'GA')) AND (NOT (LEFT(FDISK.dbo.stmkmitglieder.instanzname, 7) = 'FW GAST'))"
+            + " WHERE (s.abgemeldet = 0) AND (NOT (LEFT(s.instanznummer, 2) = 'GA')) AND (NOT (LEFT(s.instanzname, 7) = 'FW GAST'))"
             + " AND f.abschnitt_instanznummer = ?"),
     getEinfacheMitgliederlisteFubwehr("SELECT id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname' "
             + " FROM FDISK.dbo.stmkmitglieder "

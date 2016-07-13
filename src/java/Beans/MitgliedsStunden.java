@@ -14,8 +14,7 @@ import java.util.Objects;
  *
  * @author philipp
  */
-public class MitgliedsStunden extends Mitglied implements Serializable
-{
+public class MitgliedsStunden extends Mitglied implements Serializable {
 
     int intMinuten;
     String strInstanznummer;
@@ -23,10 +22,12 @@ public class MitgliedsStunden extends Mitglied implements Serializable
     int intMinutenEb;
     int intMinutenTb;
     String strInstanzname;
-    private BL bl = new BL(); 
+    int intAnzUb;
+    int intAnzEb;
+    int intAnzTb;
+    private BL bl = new BL();
 
-    public MitgliedsStunden(int intMinuten, String strInstanznummer, int intMinutenUb, int intMinutenEb, int intMinutenTb, int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, String strInstanzname) throws ClassNotFoundException
-    {
+    public MitgliedsStunden(int intMinuten, String strInstanznummer, int intAnzUb, int intAnzEb, int intAnzTb, int intMinutenUb, int intMinutenEb, int intMinutenTb, int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, String strInstanzname) throws ClassNotFoundException {
         super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
         this.intMinuten = intMinuten;
         this.strInstanznummer = strInstanznummer;
@@ -34,142 +35,156 @@ public class MitgliedsStunden extends Mitglied implements Serializable
         this.intMinutenEb = intMinutenEb;
         this.intMinutenTb = intMinutenTb;
         this.strInstanzname = strInstanzname;
+        this.intAnzEb = intAnzEb;
+        this.intAnzTb = intAnzTb;
+        this.intAnzUb = intAnzUb;
 
     }
 
-    public String getStrInstanzname()
-    {
+    public String getStrInstanzname() {
         return strInstanzname;
     }
 
-    public void setStrInstanzname(String strInstanzname)
-    {
+    public void setStrInstanzname(String strInstanzname) {
         this.strInstanzname = strInstanzname;
     }
 
-    public int getIntMinuten()
-    {
+    public int getIntMinuten() {
         return intMinuten;
     }
 
-    public void setIntMinuten(int intMinuten)
-    {
+    public void setIntMinuten(int intMinuten) {
         this.intMinuten = intMinuten;
     }
 
-    public String getStrInstanznummer()
-    {
+    public String getStrInstanznummer() {
         return strInstanznummer;
     }
 
-    public void setStrInstanznummer(String strInstanznummer)
-    {
+    public void setStrInstanznummer(String strInstanznummer) {
         this.strInstanznummer = strInstanznummer;
     }
 
-    public int getIntMinutenUb()
-    {
+    public int getIntMinutenUb() {
         return intMinutenUb;
     }
 
-    public void setIntMinutenUb(int intMinutenUb)
-    {
+    public void setIntMinutenUb(int intMinutenUb) {
         this.intMinutenUb = intMinutenUb;
     }
 
-    public int getIntMinutenEb()
-    {
+    public int getIntMinutenEb() {
         return intMinutenEb;
     }
 
-    public void setIntMinutenEb(int intMinutenEb)
-    {
+    public void setIntMinutenEb(int intMinutenEb) {
         this.intMinutenEb = intMinutenEb;
     }
 
-    public int getIntMinutenTb()
-    {
+    public int getIntMinutenTb() {
         return intMinutenTb;
     }
 
-    public void setIntMinutenTb(int intMinutenTb)
-    {
+    public void setIntMinutenTb(int intMinutenTb) {
         this.intMinutenTb = intMinutenTb;
     }
 
+    public int getIntAnzUb() {
+        return intAnzUb;
+    }
+
+    public void setIntAnzUb(int intAnzUb) {
+        this.intAnzUb = intAnzUb;
+    }
+
+    public int getIntAnzEb() {
+        return intAnzEb;
+    }
+
+    public void setIntAnzEb(int intAnzEb) {
+        this.intAnzEb = intAnzEb;
+    }
+
+    public int getIntAnzTb() {
+        return intAnzTb;
+    }
+
+    public void setIntAnzTb(int intAnzTb) {
+        this.intAnzTb = intAnzTb;
+    }
+
     @Override
-    public int hashCode()
-    {
-        int hash = 5;
-        hash = 23 * hash + this.intMinuten;
-        hash = 23 * hash + Objects.hashCode(this.strInstanznummer);
-        hash = 23 * hash + this.intMinutenUb;
-        hash = 23 * hash + this.intMinutenEb;
-        hash = 23 * hash + this.intMinutenTb;
-        hash = 23 * hash + Objects.hashCode(this.strInstanzname);
+    public int hashCode() {
+        int hash = 3;
+        hash = 29 * hash + this.intMinuten;
+        hash = 29 * hash + Objects.hashCode(this.strInstanznummer);
+        hash = 29 * hash + this.intMinutenUb;
+        hash = 29 * hash + this.intMinutenEb;
+        hash = 29 * hash + this.intMinutenTb;
+        hash = 29 * hash + Objects.hashCode(this.strInstanzname);
+        hash = 29 * hash + this.intAnzUb;
+        hash = 29 * hash + this.intAnzEb;
+        hash = 29 * hash + this.intAnzTb;
         return hash;
     }
 
     @Override
-    public boolean equals(Object obj)
-    {
-        if (obj == null)
-        {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass())
-        {
+        if (getClass() != obj.getClass()) {
             return false;
         }
         final MitgliedsStunden other = (MitgliedsStunden) obj;
-        if (this.intMinuten != other.intMinuten)
-        {
+        if (this.intMinuten != other.intMinuten) {
             return false;
         }
-        if (!Objects.equals(this.strInstanznummer, other.strInstanznummer))
-        {
+        if (this.intMinutenUb != other.intMinutenUb) {
             return false;
         }
-        if (this.intMinutenUb != other.intMinutenUb)
-        {
+        if (this.intMinutenEb != other.intMinutenEb) {
             return false;
         }
-        if (this.intMinutenEb != other.intMinutenEb)
-        {
+        if (this.intMinutenTb != other.intMinutenTb) {
             return false;
         }
-        if (this.intMinutenTb != other.intMinutenTb)
-        {
+        if (this.intAnzUb != other.intAnzUb) {
             return false;
         }
-        if (!Objects.equals(this.strInstanzname, other.strInstanzname))
-        {
+        if (this.intAnzEb != other.intAnzEb) {
+            return false;
+        }
+        if (this.intAnzTb != other.intAnzTb) {
+            return false;
+        }
+        if (!Objects.equals(this.strInstanznummer, other.strInstanznummer)) {
+            return false;
+        }
+        if (!Objects.equals(this.strInstanzname, other.strInstanzname)) {
             return false;
         }
         return true;
     }
 
     @Override
-    public String toString()
-    {
-        if (strStammblattnummer == null)
-        {
+    public String toString() {
+        if (strStammblattnummer == null) {
             strStammblattnummer = "";
         }
-        if (strDienstgrad == null)
-        {
+        if (strDienstgrad == null) {
             strDienstgrad = "";
         }
-        if (strTitel == null)
-        {
+        if (strTitel == null) {
             strTitel = "";
         }
-        if (strVorname == null)
-        {
+        if (strVorname == null) {
             strVorname = "";
         }
-        if (strZuname == null)
-        {
+        if (strZuname == null) {
             strZuname = "";
         }
 
@@ -185,7 +200,7 @@ public class MitgliedsStunden extends Mitglied implements Serializable
                 + strInstanzname + "</td><td>"
                 + ((intMinuten / 60 != 0) ? intMinuten / 60 + "h " : "") + intMinuten % 60 + "min"
                 + "<div style='display:none'>"
-                + intMinutenEb + ";" + intMinutenTb + ";" + intMinutenUb
+                + intMinutenEb + ";" + intMinutenTb + ";" + intMinutenUb + ";" + intAnzEb + ";" + intAnzTb + ";" + intAnzUb
                 + "</div></td>"
                 + "</tr>";
 
@@ -214,7 +229,6 @@ public class MitgliedsStunden extends Mitglied implements Serializable
 //                + "</tbody>"
 //                + "</table>"
 //                + "</tr>";
-
         return strHtml;
     }
 

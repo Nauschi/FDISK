@@ -44,12 +44,11 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Marcel Schmidt
  */
-@WebServlet(name = "PDFServlet", urlPatterns =
-{
-    "/PDFServlet"
-})
-public class PDFServlet extends HttpServlet
-{
+@WebServlet(name = "PDFServlet", urlPatterns
+        = {
+            "/PDFServlet"
+        })
+public class PDFServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -67,11 +66,9 @@ public class PDFServlet extends HttpServlet
     private LinkedList<String> liBerHochformat;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter())
-        {
+        try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -96,8 +93,7 @@ public class PDFServlet extends HttpServlet
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         request.getRequestDispatcher("jsp/error.jsp").forward(request, response);
     }
 
@@ -111,10 +107,10 @@ public class PDFServlet extends HttpServlet
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String strData = request.getParameter("hidden_pdfData");
+        System.out.println("strData_new --> " + strData);
         String[] strSplitData = strData.split("###");
         String strBerichtname;
         String strTable;
@@ -125,8 +121,7 @@ public class PDFServlet extends HttpServlet
         String strAusgabe = "Es ist ein unerwartetes Problem aufgetreten";
         boolean boolLeerbericht = true;
 
-        switch (strBerichtname)
-        {
+        switch (strBerichtname) {
             case "Einsatzbericht leer":
                 strAusgabe = generiereAusgabeEinsatzberichtLeer(strTable, strSplitData[2]);
                 break;
@@ -141,24 +136,19 @@ public class PDFServlet extends HttpServlet
                 boolLeerbericht = false;
                 break;
             case "Kursstatistik":
-                if (strTable.split("<td>").length > 1 && strSplitData[2].split("<td>").length > 1)
-                {
+                if (strTable.split("<td>").length > 1 && strSplitData[2].split("<td>").length > 1) {
                     strAusgabe = "<h1>" + strBerichtname + "</h1>" + strSplitData[2].replace("</br>", "") + "<p>&nbsp;</p>" + strTable;
-                } else if (strTable.split("<td>").length < 2)
-                {
+                } else if (strTable.split("<td>").length < 2) {
                     strAusgabe = "<h1>" + strBerichtname + "</h1>" + strSplitData[2].replace("</br>", "");
-                } else if (strSplitData[2].split("<td>").length < 2)
-                {
+                } else if (strSplitData[2].split("<td>").length < 2) {
                     strAusgabe = "<h1>" + strBerichtname + "</h1>" + strTable;
                 }
                 boolLeerbericht = false;
                 break;
             case "Digitales Fahrtenbuch":
-                if (strSplitData.length > 2)
-                {
+                if (strSplitData.length > 2) {
                     strAusgabe = "<h1>" + strBerichtname + "</h1>" + strSplitData[2] + "<p>&nbsp;</p>" + strTable;
-                } else
-                {
+                } else {
                     strAusgabe = "<h1>" + strBerichtname + "</h1>" + strTable;
                 }
                 boolLeerbericht = false;
@@ -177,15 +167,12 @@ public class PDFServlet extends HttpServlet
         String strFontPath = strContextPath + File.separator + "res" + File.separator + "Cambria.ttf";
 
         Rectangle rect;
-        try
-        {
+        try {
             Document document;
-            if (liBerHochformat.contains(strBerichtname))
-            {
+            if (liBerHochformat.contains(strBerichtname)) {
                 document = new Document(PageSize.A4, 36, 36, 100, 54);
                 rect = new Rectangle(36, 54, 559, 788);
-            } else
-            {
+            } else {
                 document = new Document(PageSize.A4.rotate(), 36, 36, 70, 54);
                 rect = new Rectangle(36, 54, 805, 559);
             }
@@ -201,18 +188,14 @@ public class PDFServlet extends HttpServlet
             //hier werden die CSS files eingebunden
             cssResolver.addCssFile(strCSSPath1, true);
 
-            if (liBerHochformat.contains(strBerichtname))
-            {
+            if (liBerHochformat.contains(strBerichtname)) {
                 cssResolver.addCssFile(strCSSPath1.replace("Simpel", "Hoch"), true);
-            } else
-            {
+            } else {
                 cssResolver.addCssFile(strCSSPath1.replace("Simpel", "Quer"), true);
             }
-            if (!boolLeerbericht)
-            {
+            if (!boolLeerbericht) {
                 cssResolver.addCssFile(strCSSPath1.replace("Simpel", "StandartBericht"), true);
-            } else
-            {
+            } else {
                 cssResolver.addCssFile(strCSSPath1.replace("Simpel", "Leerbericht"), true);
             }
             Pipeline<?> pipeline = new CssResolverPipeline(cssResolver, new HtmlPipeline(htmlContext, new PdfWriterPipeline(document, writer)));
@@ -231,11 +214,9 @@ public class PDFServlet extends HttpServlet
             baos.writeTo(os);
             os.flush();
             os.close();
-        } catch (DocumentException de)
-        {
+        } catch (DocumentException de) {
             throw new IOException(de.getMessage());
-        } catch (CssResolverException ex)
-        {
+        } catch (CssResolverException ex) {
             Logger.getLogger(PDFServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -243,13 +224,12 @@ public class PDFServlet extends HttpServlet
 
     /**
      * Wird nur bei dem Bericht "Stundenauswertung Je Mitglied Je Instanz"
-     * verwendet und wandelt den übegebenen String in das gewünschte 
-     * Format um
+     * verwendet und wandelt den übegebenen String in das gewünschte Format um
+     *
      * @param strTemp
-     * @return 
+     * @return
      */
-    public String generiereStundenauswertungJeMitgliedJeInstanz(String strTemp)
-    {    
+    public String generiereStundenauswertungJeMitgliedJeInstanz(String strTemp) {
         strTemp = strTemp.replace("<table class=\"tablesorter ui celled table\">", "");
         strTemp = strTemp.replaceAll("style=\"display:none\"", "");
         int intIndex1 = strTemp.indexOf("<thead>");
@@ -258,6 +238,7 @@ public class PDFServlet extends HttpServlet
         intIndex1 = strTemp.indexOf("<tbody>") + 7;
         intIndex2 = strTemp.lastIndexOf("</tbody>");
         String strTRs = strTemp.substring(intIndex1, intIndex2);
+        System.out.println("strTRs --> " + strTemp);
         int intIndex = -1;
         //Struktur der TableRow
         //<tr>
@@ -270,71 +251,70 @@ public class PDFServlet extends HttpServlet
         //<td><div></div></td>
         //</tr>
         LinkedList<MitgliedsStundenPDF> liPDFMit = new LinkedList<>();
-        try
-        {
-            while (true)
-            {
+        try {
+            while (true) {
                 intIndex = strTRs.indexOf("</tr>") + 5;
                 String strOriginalAktRow = strTRs.substring(0, intIndex);
+                System.out.println("strOriginalAktRow --> " + strOriginalAktRow);
                 MitgliedsStundenPDF msp = getMitgliedVonString(strOriginalAktRow);
                 msp.setStrHead(strThead);
                 boolean boolNeu = true;
-                for (int i = 0; i < liPDFMit.size(); i++)
-                {
-                    if(liPDFMit.get(i).equals(msp))
-                    {
+                for (int i = 0; i < liPDFMit.size(); i++) {
+                    if (liPDFMit.get(i).equals(msp)) {
                         boolNeu = false;
                         MitgliedsStundenPDF mspGleich = liPDFMit.get(i);
                         mspGleich.addInstanzname(msp.getLiInstanznamen().get(0));
                         mspGleich.addStundenSumme(msp.getLiStundenSumme().get(0));
-                        mspGleich.setIntMinutenEb(mspGleich.getIntMinutenEb()+msp.getIntMinutenEb());
-                        mspGleich.setIntMinutenTb(mspGleich.getIntMinutenTb()+msp.getIntMinutenTb());
-                        mspGleich.setIntMinutenUb(mspGleich.getIntMinutenUb()+msp.getIntMinutenUb());
+                        mspGleich.setIntMinutenEb(mspGleich.getIntMinutenEb() + msp.getIntMinutenEb());
+                        mspGleich.setIntMinutenTb(mspGleich.getIntMinutenTb() + msp.getIntMinutenTb());
+                        mspGleich.setIntMinutenUb(mspGleich.getIntMinutenUb() + msp.getIntMinutenUb());
+                        mspGleich.setIntAnzahlEb(mspGleich.getIntAnzahlEb() + msp.getIntAnzahlEb());
+                        mspGleich.setIntAnzahlTb(mspGleich.getIntAnzahlTb() + msp.getIntAnzahlTb());
+                        mspGleich.setIntAnzahlUb(mspGleich.getIntAnzahlUb() + msp.getIntAnzahlUb());
                         break;
                     }
                 }
-                
-                if(boolNeu)
-                {
+
+                if (boolNeu) {
                     liPDFMit.add(msp);
                 }
                 strTRs = strTRs.replace(strOriginalAktRow, "");
             }
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             //Muss leer abgefangen werden
         }
-        
+
         String ausgabe = "";
-        for (int i = 0; i < liPDFMit.size(); i++)
-        {
-            ausgabe+=liPDFMit.get(i).toString();
+        for (int i = 0; i < liPDFMit.size(); i++) {
+            ausgabe += liPDFMit.get(i).toString();
         }
         return ausgabe;
     }
 
     /**
-     * Zerlegt den übergebenen String und filtert alle wichtigen Daten
-     * für ein neues MitgliederStundenPDF Objekt herraus.
-     * Das neue erstellt Objekt wird zurückgegeben
+     * Zerlegt den übergebenen String und filtert alle wichtigen Daten für ein
+     * neues MitgliederStundenPDF Objekt herraus. Das neue erstellt Objekt wird
+     * zurückgegeben
+     *
      * @param strOriginalAktRow
-     * @return 
+     * @return
      */
-    public MitgliedsStundenPDF getMitgliedVonString(String strOriginalAktRow)
-    {
+    public MitgliedsStundenPDF getMitgliedVonString(String strOriginalAktRow) {
         String strData = strOriginalAktRow.substring(strOriginalAktRow.indexOf("<div >"), strOriginalAktRow.indexOf("</div>") + 6);
         String strAktRow = strOriginalAktRow.replace(strData, "");
         strData = strData.replace("<div >", "");
         strData = strData.replace("</div>", "");
         strAktRow = strAktRow.replace("<tr>", "");
-         strAktRow = strAktRow.replace("</tr>", "");
+        strAktRow = strAktRow.replace("</tr>", "");
         strAktRow = strAktRow.replaceAll("\\<td[^>]*>", "");
         String[] splitAktRow = strAktRow.split("</td>");
-        String [] splitData = strData.split(";");
-        MitgliedsStundenPDF msp = new MitgliedsStundenPDF(splitAktRow[0], splitAktRow[1], splitAktRow[2], splitAktRow[3], splitAktRow[4], 
-                Integer.parseInt(splitData[0]), Integer.parseInt(splitData[1]), Integer.parseInt(splitData[2]));
+        String[] splitData = strData.split(";");
+        MitgliedsStundenPDF msp = new MitgliedsStundenPDF(splitAktRow[0], splitAktRow[1], splitAktRow[2], splitAktRow[3], splitAktRow[4],
+                Integer.parseInt(splitData[0]), Integer.parseInt(splitData[1]), Integer.parseInt(splitData[2]), Integer.parseInt(splitData[3]), Integer.parseInt(splitData[4]), Integer.parseInt(splitData[5]));
         msp.addInstanzname(splitAktRow[5]);
         msp.addStundenSumme(splitAktRow[6]);
+        System.out.println("strAktRow --> " + strAktRow);
+        System.out.println("strData --> " + strData);
         return msp;
     }
 
@@ -347,8 +327,7 @@ public class PDFServlet extends HttpServlet
      * @param strTableFahrzeuge
      * @return
      */
-    public String generiereAusgabeTaetigkeitsberichtLeer(String strTableMitglieder, String strTableFahrzeuge)
-    {
+    public String generiereAusgabeTaetigkeitsberichtLeer(String strTableMitglieder, String strTableFahrzeuge) {
         String strHTMLOutput = strTaetigkeitsbericht;
         strHTMLOutput = strHTMLOutput.replace("##FahrzeugData##", strTableFahrzeuge);
         strHTMLOutput = strHTMLOutput.replace("##MitgliedData##", strTableMitglieder);
@@ -364,8 +343,7 @@ public class PDFServlet extends HttpServlet
      * @param strTableFahrzeuge
      * @return
      */
-    public String generiereAusgabeUebungsberichtLeer(String strTableMitglieder, String strTableFahrzeuge)
-    {
+    public String generiereAusgabeUebungsberichtLeer(String strTableMitglieder, String strTableFahrzeuge) {
         String strHTMLOutput = strUebungsbericht;
         strHTMLOutput = strHTMLOutput.replace("##FahrzeugData##", strTableFahrzeuge);
         strHTMLOutput = strHTMLOutput.replace("##MitgliedData##", strTableMitglieder);
@@ -382,9 +360,18 @@ public class PDFServlet extends HttpServlet
      * @param strTableFahrzeuge
      * @return
      */
-    public String generiereAusgabeEinsatzberichtLeer(String strTableMitglieder, String strTableFahrzeuge)
-    {
+    public String generiereAusgabeEinsatzberichtLeer(String strTableMitglieder, String strTableFahrzeuge) {
         String strHTMLOutput = strEinsatzbericht;
+
+        String[] fahrzeuge = strTableFahrzeuge.replaceAll("<tr>", "").replaceAll("</tr>", "").split("</td>");
+
+        String fahrzeugeFuerBericht = "";
+
+        for (String string : fahrzeuge) {
+            fahrzeugeFuerBericht += "<tr>" + string + "</td><td>Von:</td><td>Bis:</td><td>&Omicron;&nbsp;Verr.</td><td>km:</td><td>Pump.:</td></tr>";
+        }
+
+        strHTMLOutput = strHTMLOutput.replace("##FahrzeugeFuerBericht##", fahrzeugeFuerBericht);
         strHTMLOutput = strHTMLOutput.replace("##FahrzeugData##", strTableFahrzeuge);
         strHTMLOutput = strHTMLOutput.replace("##MitgliedData##", strTableMitglieder);
 
@@ -392,14 +379,14 @@ public class PDFServlet extends HttpServlet
     }
 
     /**
-     * Wird beim Starten des Servlets aufgerufen und initialisiert eine
-     * Liste mit den Namen der Berichte die im Hochformat sind
+     * Wird beim Starten des Servlets aufgerufen und initialisiert eine Liste
+     * mit den Namen der Berichte die im Hochformat sind
+     *
      * @param config
-     * @throws ServletException 
+     * @throws ServletException
      */
     @Override
-    public void init(ServletConfig config) throws ServletException
-    {
+    public void init(ServletConfig config) throws ServletException {
         super.init(config); //To change body of generated methods, choose Tools | Templates.
         liBerHochformat = new LinkedList<>();
         liBerHochformat.add("Tätigkeitsbericht leer");
@@ -417,8 +404,7 @@ public class PDFServlet extends HttpServlet
      * @return a String containing servlet description
      */
     @Override
-    public String getServletInfo()
-    {
+    public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 
