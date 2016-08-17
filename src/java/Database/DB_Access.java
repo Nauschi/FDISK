@@ -44,6 +44,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -163,13 +165,20 @@ public class DB_Access {
         prepStat.setString(2, strPasswort);
         ResultSet rs = prepStat.executeQuery();
 
+        
+        System.out.println("connPool size - before release: "+connPool.getSizeOfPool());
+        System.out.println("num connections: "+connPool.getNum_Conn());
         if (!rs.next()) {
             connPool.releaseConnection(conn);
             return -1;
         }
 
         int intIDUser = rs.getInt("IDUser");
+        
         connPool.releaseConnection(conn);
+        System.out.println("connPool size - after release: "+connPool.getSizeOfPool());
+        System.out.println("num connections: "+connPool.getNum_Conn());
+        
         return intIDUser;
     }
 
@@ -211,7 +220,10 @@ public class DB_Access {
             String strFubwehr = rs.getString("Fubwehr");
             int intIDGruppe = rs.getInt("IDGruppe");
             String strBezeichnung = rs.getString("Bezeichnung");
-            if (intIDGruppe == 1 || intIDGruppe == 5 || intIDGruppe == 9 || intIDGruppe == 15) {
+            if (intIDGruppe == 1 || intIDGruppe == 5 || intIDGruppe == 9 || intIDGruppe == 15 || intIDGruppe == 14) {
+                if(intIDGruppe == 14){
+                    intIDGruppe = 5;
+                }
                 LoginMitglied lm = new LoginMitglied(intUserID, strFubwehr, intIDGruppe, strBezeichnung);
                 liMitglieder.add(lm);
             }
@@ -683,27 +695,31 @@ public class DB_Access {
             sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen' "
                     + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
                     + " WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST'))"
-                    + " AND m.datum_abgemeldet IS NULL ";
+                    + " AND m.datum_abgemeldet IS NULL "
+                    + " ORDER BY m.zuname, m.vorname";
         } else if (intAbschnittnr == -2) {
             sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen' "
                     + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
                     + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(m.instanznummer = f.instanznummer)"
                     + " WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST'))"
                     + " AND f.Bereich_Nr = " + intBereichnr
-                    + " AND m.datum_abgemeldet IS NULL ";
+                    + " AND m.datum_abgemeldet IS NULL "
+                    + " ORDER BY m.zuname, m.vorname";
         } else if (strFubwehr.equals("-2")) {
             sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen' "
                     + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
                     + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(m.instanznummer = f.instanznummer)"
                     + " WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST'))"
                     + " AND f.abschnitt_instanznummer = " + intAbschnittnr
-                    + " AND m.datum_abgemeldet IS NULL ";
+                    + " AND m.datum_abgemeldet IS NULL "
+                    + " ORDER BY m.zuname, m.vorname";
         } else {
             sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen' "
                     + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
                     + " WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST'))"
                     + " AND m.instanznummer = '" + strFubwehr + "'"
-                    + " AND m.datum_abgemeldet IS NULL ";
+                    + " AND m.datum_abgemeldet IS NULL "
+                    + " ORDER BY m.zuname, m.vorname";
         }
 
         ResultSet rs = stat.executeQuery(sqlString);
@@ -1019,9 +1035,9 @@ public class DB_Access {
 
         String sqlString = "SELECT 1 'bereicht_id', PersID, vorname Vorname, zuname Zuname, instanznummer Instanznummer, STB, DGR, titel Titel ,SUM(DATEDIFF(mi,einsatzzeit_von,einsatzzeit_bis)) Minuten, instanzname Instanzname, COUNT(*) Anzahl "
                 + "FROM ( "
-                + "SELECT DISTINCT 1 'bereicht_id', t.id_personen PersID, t.vorname Vorname, t.zuname Zuname, t.instanznummer Instanznummer, m.standesbuchnummer STB, m.dienstgrad DGR, m.titel Titel, t.id_berichte, m.instanzname, einsatzzeit_von, einsatzzeit_bis "
+                + "SELECT DISTINCT 1 'bereicht_id', t.id_personen PersID, t.vorname Vorname, t.zuname Zuname, t.instanznummer Instanznummer, m.standesbuchnummer STB, m.dienstgrad DGR, m.titel Titel, t.id_berichte, tb.instanzname, einsatzzeit_von, einsatzzeit_bis "
                 + "FROM FDISK.dbo.stmktaetigkeitsberichtemitglieder t "
-                + "INNER JOIN FDISK.dbo.stmkmitglieder m ON(t.id_personen = m.id_personen AND t.instanznummer = m.instanznummer) "
+                + "INNER JOIN FDISK.dbo.stmkmitglieder m ON(t.id_mitgliedschaften = m.id_mitgliedschaften) "
                 + "INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = t.instanznummer) "
                 + "INNER JOIN FDISK.dbo.stmktaetigkeitsberichte tb ON(t.id_berichte = tb.id_berichte) ";
         if (intIDPerson == -2) {
@@ -1044,11 +1060,11 @@ public class DB_Access {
 
         sqlString += " ) a GROUP BY PersID, instanznummer, vorname, zuname, stb, dgr, titel, instanzname "
                 + "UNION "
-                + "SELECT 2 'bereicht_id', PersID, vorname Vorname, zuname Zuname, instanznummer Instanznummer, STB, DGR, titel Titel ,SUM(DATEDIFF(mi,einsatzzeit_von,einsatzzeit_bis)) Minuten, instanzname Instanzname, COUNT(*) Anzahl "
+                + "SELECT 2 'bereicht_id', PersID, vorname Vorname, zuname Zuname, instanznummer Instanznummer, STB, DGR, titel Titel ,SUM(DATEDIFF(mi,einsatzzeit_von,einsatzzeit_bis)) Minuten, name Instanzname, COUNT(*) Anzahl "
                 + "FROM ( "
-                + "SELECT DISTINCT 2 'bereicht_id', u.id_personen PersID, u.vorname Vorname, u.zuname Zuname, u.instanznummer Instanznummer, m.standesbuchnummer STB, m.dienstgrad DGR, m.titel Titel, u.id_berichte, m.instanzname, einsatzzeit_von, einsatzzeit_bis "
+                + "SELECT DISTINCT 2 'bereicht_id', u.id_personen PersID, u.vorname Vorname, u.zuname Zuname, u.instanznummer Instanznummer, m.standesbuchnummer STB, m.dienstgrad DGR, m.titel Titel, u.id_berichte, ub.name, einsatzzeit_von, einsatzzeit_bis "
                 + "FROM FDISK.dbo.stmkuebungsberichtemitglieder u "
-                + "INNER JOIN FDISK.dbo.stmkmitglieder m ON(u.id_personen = m.id_personen AND u.instanznummer = m.instanznummer) "
+                + "INNER JOIN FDISK.dbo.stmkmitglieder m ON(u.id_mitgliedschaften = m.id_mitgliedschaften) "
                 + "INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = u.instanznummer) "
                 + "INNER JOIN FDISK.dbo.stmkuebungsberichte ub ON(u.id_berichte = ub.id_berichte) ";
 
@@ -1070,13 +1086,13 @@ public class DB_Access {
             sqlString += getSqlDateString(strVon, strBis, 3, false);
         }
 
-        sqlString += " ) a GROUP BY PersID, instanznummer, vorname, zuname, stb, dgr, titel, instanzname "
+        sqlString += " ) a GROUP BY PersID, instanznummer, vorname, zuname, stb, dgr, titel, name "
                 + "UNION "
-                + "SELECT 3 'bereicht_id', PersID, vorname Vorname, zuname Zuname, instanznummer Instanznummer, STB, DGR, titel Titel ,SUM(DATEDIFF(mi,einsatzzeit_von,einsatzzeit_bis)) Minuten, instanzname Instanzname, COUNT(*) Anzahl "
+                + "SELECT 3 'bereicht_id', PersID, vorname Vorname, zuname Zuname, instanznummer Instanznummer, STB, DGR, titel Titel ,SUM(DATEDIFF(mi,einsatzzeit_von,einsatzzeit_bis)) Minuten, name Instanzname, COUNT(*) Anzahl "
                 + "FROM ( "
-                + "SELECT DISTINCT 3 'bereicht_id', e.id_personen PersID, e.vorname Vorname, e.zuname Zuname, e.instanznummer Instanznummer, m.standesbuchnummer STB, m.dienstgrad DGR, m.titel Titel, e.id_berichte, m.instanzname, einsatzzeit_von, einsatzzeit_bis "
+                + "SELECT DISTINCT 3 'bereicht_id', e.id_personen PersID, e.vorname Vorname, e.zuname Zuname, e.instanznummer Instanznummer, m.standesbuchnummer STB, m.dienstgrad DGR, m.titel Titel, e.id_berichte, eb.name, einsatzzeit_von, einsatzzeit_bis "
                 + "FROM FDISK.dbo.stmkeinsatzberichtemitglieder e "
-                + "INNER JOIN FDISK.dbo.stmkmitglieder m ON(e.id_personen = m.id_personen AND e.instanznummer = m.instanznummer) "
+                + "INNER JOIN FDISK.dbo.stmkmitglieder m ON(e.id_mitgliedschaften = m.id_mitgliedschaften) "
                 + "INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = e.instanznummer) "
                 + "INNER JOIN FDISK.dbo.stmkeinsatzberichte eb ON(e.id_berichte = eb.id_berichte) ";
 
@@ -1099,7 +1115,7 @@ public class DB_Access {
         }
 
         sqlString += " ) a "
-                + "GROUP BY PersID, instanznummer, vorname, zuname, stb, dgr, titel, instanzname "
+                + "GROUP BY PersID, instanznummer, vorname, zuname, stb, dgr, titel, name "
                 + "ORDER BY 'PersID'";
 
         System.out.println("Gesamt SQL String: " + sqlString);
@@ -1176,8 +1192,8 @@ public class DB_Access {
                 }
                 liStunden.add(mitgliedsStunden);
             }
-        }
-
+        } 
+        liStunden.sort(Comparator.comparing(MitgliedsStunden::getStrInstanzname));
         connPool.releaseConnection(conn);
         return liStunden;
     }
@@ -1300,7 +1316,6 @@ public class DB_Access {
         if (strEingabeKennzeichen != null && !strEingabeKennzeichen.isEmpty() && !strEingabeKennzeichen.equals(" ")) {
             strEingabeKennzeichen = strEingabeKennzeichen.replace("/", "").replace(".", " ").replace(" ", "").replace("+", "").replace("-", "");
         }
-
         String sqlString = "SELECT "
                 + "f.kennzeichen 'Kennzeichen' "
                 + ",f.id_fahrzeuge 'Id_Fahrzeuge' "
@@ -3995,4 +4010,5 @@ public class DB_Access {
 
         connPool.releaseConnection(conn);
     }
+    
 }

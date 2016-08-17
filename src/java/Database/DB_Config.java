@@ -12,11 +12,24 @@ package Database;
 public interface DB_Config {
 
     public static final String DB_NAME = "FDISK";
-//    public static final String DB_USER = "Admin";
-//    public static final String DB_PASSWD = "htlk";
-//    public static final String DB_URL = "jdbc:sqlserver://localhost:30931;databaseName=FDISK";
+    public static final String DB_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    
+    //Local Config (HTL)
+    //public static final String DB_USER = "Admin";
+    //public static final String DB_PASSWD = "htlk";
+    //public static final String DB_URL = "jdbc:sqlserver://localhost:30931;databaseName=FDISK";
+    
+    //Prometheus Config
     public static final String DB_USER = "sa";
     public static final String DB_PASSWD = "53411@lfv";
     public static final String DB_URL = "jdbc:sqlserver://172.16.1.18;instanceName=prometheus;databaseName=FDISK";
-    public static final String DB_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    
+    //hp370 Config - not working yet
+//    public static final String DB_USER = "application_fw_db";
+//    public static final String DB_PASSWD = "";
+//    public static final String DB_URL = "jdbc:sqlserver://172.16.1.11:1433;instanceName=hp370;databaseName=FW_DB_LIGHT";
+    
+  
+    
+    
 }

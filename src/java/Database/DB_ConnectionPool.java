@@ -51,4 +51,13 @@ public class DB_ConnectionPool {
     public synchronized void releaseConnection(Connection conn) {
         connections.offer(conn);
     }
+    
+    public synchronized int getSizeOfPool(){
+        return connections.size();
+    }
+    
+    public synchronized int getNum_Conn(){
+        return num_conn;
+    }
+    
 }

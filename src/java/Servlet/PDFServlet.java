@@ -232,6 +232,7 @@ public class PDFServlet extends HttpServlet {
     public String generiereStundenauswertungJeMitgliedJeInstanz(String strTemp) {
         strTemp = strTemp.replace("<table class=\"tablesorter ui celled table\">", "");
         strTemp = strTemp.replaceAll("style=\"display:none\"", "");
+        strTemp = strTemp.replaceAll("style=\"display: none;\"", "");
         int intIndex1 = strTemp.indexOf("<thead>");
         int intIndex2 = strTemp.indexOf("</thead>") + 8;
         String strThead = strTemp.substring(intIndex1, intIndex2);
@@ -260,7 +261,8 @@ public class PDFServlet extends HttpServlet {
                 msp.setStrHead(strThead);
                 boolean boolNeu = true;
                 for (int i = 0; i < liPDFMit.size(); i++) {
-                    if (liPDFMit.get(i).equals(msp)) {
+                    System.out.println(liPDFMit.get(i).toString());
+                    if (liPDFMit.get(i).toString().equals(msp.toString())) {
                         boolNeu = false;
                         MitgliedsStundenPDF mspGleich = liPDFMit.get(i);
                         mspGleich.addInstanzname(msp.getLiInstanznamen().get(0));
@@ -277,6 +279,7 @@ public class PDFServlet extends HttpServlet {
 
                 if (boolNeu) {
                     liPDFMit.add(msp);
+                    System.out.println(liPDFMit.get(0).toString());
                 }
                 strTRs = strTRs.replace(strOriginalAktRow, "");
             }

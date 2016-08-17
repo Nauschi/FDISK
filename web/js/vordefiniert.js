@@ -126,6 +126,9 @@ function onChangeTypeOfDateUI(intTypeOfDateUI)
  */
 function onListItemClicked(item)
 {
+
+
+
     var liItems = document.getElementById("div_liste").getElementsByTagName("a");
     var index;
 
@@ -137,6 +140,8 @@ function onListItemClicked(item)
         liItems[index].className = "item";
     }
     item.className = item.className + " active";
+    console.log("ListItemClicked");
+    document.getElementById("button_Search").style.display = "none";
     document.getElementById("div_csv_pdf").style.display = "none";
     var strTable = item.getElementsByTagName("div")[0].innerHTML;
     var strBerichtname = item.getElementsByTagName("span")[0].innerHTML;
@@ -163,7 +168,21 @@ function onListItemClicked(item)
     }
 }
 
+/**
+ * Filtert die Tabelle der Vorschau nach dem eingegebenen String
+ * @returns {undefined}
+ */
+function onSucheInTabelle(input) {
 
+    var $rows = $('#table tbody tr');
+    var val = $.trim(input).replace(/ +/g, '').toLowerCase();
+    $rows.show().filter(function () {
+        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+        return !~text.indexOf(val);
+    }).hide();
+    $('#modal_search').modal('hide');
+
+}
 
 
 /**
@@ -308,7 +327,7 @@ function bezirkChanged(select_bezirk, strLetzteAbschnitt)
         document.getElementById("select_abschnitt").innerHTML = "<option value='-2'>Alle Abschnitte</option>";
         $('#select_abschnitt').dropdown();
         fixDropdowns("select_abschnitt");
-        
+
     }
 }
 
@@ -387,3 +406,6 @@ function zuDynamischWeiterleiten()
     document.getElementById("hidden_berechtigungs_info").value = strBerechtigung;
     document.form_dynamisch.submit();
 }
+
+
+

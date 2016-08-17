@@ -9,14 +9,13 @@ package Enum;
  *
  * @author Corinna
  */
-public enum EnStaticStatements
-{
+public enum EnStaticStatements {
 
     getUserID("SELECT IDUser, username, passwort FROM FDISK.dbo.tbl_login_benutzer WHERE username = ? AND passwort = ?"),
     getLoginBerechtigung("SELECT fubwehr 'Fubwehr', gruppe.IDGruppe 'IDGruppe', Bezeichnung 'Bezeichnung' FROM FDISK.dbo.tbl_login_benutzerdetail benutzerdetail "
-            + "INNER JOIN FDISK.dbo.tbl_login_gruppenbenutzer gruppenbenutzer ON(benutzerdetail.IDUser = gruppenbenutzer.IDUser) "
-            + "INNER JOIN FDISK.dbo.tbl_login_gruppe gruppe ON(gruppe.IDGruppe = gruppenbenutzer.IDGruppe) "
-            + "WHERE benutzerdetail.IDUser = ?"),
+                + "INNER JOIN FDISK.dbo.tbl_login_gruppenbenutzer gruppenbenutzer ON(benutzerdetail.IDUser = gruppenbenutzer.IDUser) "
+                + "INNER JOIN FDISK.dbo.tbl_login_gruppe gruppe ON(gruppe.IDGruppe = gruppenbenutzer.IDGruppe) "
+                + "WHERE benutzerdetail.IDUser = ?"),
     getFubwehrForUserID("SELECT fubwehr 'Fubwehr' FROM FDISK.dbo.tbl_login_benutzerdetail WHERE IDUser = ?"),
     getNameFuerFubwehr("SELECT CONCAT(instanzart, ' ' , instanzname) 'Name', instanznummer FROM FDISK.dbo.qry_alle_feuerwehren "
             + "WHERE instanznummer = ?"),
@@ -46,14 +45,12 @@ public enum EnStaticStatements
 
     private final String strStatement;
 
-    private EnStaticStatements(String strStatement)
-    {
+    private EnStaticStatements(String strStatement) {
         this.strStatement = strStatement;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return strStatement;
     }
 

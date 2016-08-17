@@ -30,6 +30,7 @@
         <link rel="stylesheet" type="text/css" href="css/jquery-ui_1.css">
         <link rel="stylesheet" type="text/css" href="css/jquery-ui_2.css">
         <title>Vordefiniert</title>
+
     </head>
     <body>
         <%!
@@ -74,6 +75,7 @@
 
         <div class="ui grid" id="div_mitte">
             <div id="div_loader" class="ui active inverted dimmer">
+
                 <div class="ui large text loader">Loading..</div>
             </div>
             <div class="four wide column">
@@ -92,7 +94,7 @@
 
             <div class="twelve wide stretched column">
                 <div class="ui segment" id="div_daten">
-                    <form action="MainServlet" method="POST">
+                    <form id="form_MainServelt" action="MainServlet" method="POST">
                         <h2 id="h2_bericht"></h2>
                         <input type="hidden" name="input_aktbericht" id="input_hidden"/>
                         <div class="ui equal width grid">
@@ -174,7 +176,14 @@
 
                         </div>
                         <div class="ui grid">
-                            <div class="eleven wide column" id="div_hidden_hilfe"></div>
+                            <div class="eleven wide column" id="div_hidden_hilfe">
+                                <br/>
+                                <div class="ui input" style="width: 10%">
+                                    <fieldset>
+                                        <button id="button_Search" name="button_Search" type="button" class="ui button styleGrau" title="Suche" style="width: 100%;" onclick="$('#modal_search').modal('show');"><p><i class="search icon"></i></p></button>
+                                    </fieldset>
+                                </div>
+                            </div>
 
                             <div class="eleven wide column" id="div_select_jahr" style="display: none">
                                 <fieldset id="fieldset_jahr">
@@ -248,9 +257,9 @@
                             </div>
 
                             <div class="five wide column">
-                                <fieldset>
+                                <fieldset id="button_fieldset">
                                     <legend>&nbsp;</legend>
-                                    <button type="submit" name="button_vorschau" class="ui button styleGrau" onclick="document.getElementById('div_loader').className = 'ui active inverted dimmer';" title="Vorschau erstellen" style="width: 100%;">Vorschau</button>
+                                    <button type="submit" id="button_vorschau" name="button_vorschau" class="ui button styleGrau" onclick="document.getElementById('div_loader').className = 'ui active inverted dimmer';" title="Vorschau erstellen" style="width: 100%;">Vorschau</button>
                                 </fieldset>
                             </div>
                         </div>
@@ -343,6 +352,21 @@
             </div>
         </div>
 
+        <div class="ui small modal" id="modal_search">
+            <div class="header">Suche in Tabelle</div>
+            <div class="content">
+                <p>Nach was soll gesucht werden?</p>
+                <div class="ui input" style="width: 100%">
+                    <input placeholder="Eingabe" type="text" name="input_modal_search" id="input_modal_search"/>
+                </div>
+            </div>
+            <div class="actions">
+
+                <button id="button_modal_search" onclick="onSucheInTabelle(document.getElementById('input_modal_search').value);" type="button" class="ui button styleGruen"  style="width: 20%;">Suchen</button>
+                <button type="button" onClick="$('#modal_search').modal('hide');" class="ui button styleRot"  style="width: 20%;">Abbrechen</button>
+            </div>
+        </div>
+
         <br/>
 
         <script src="js/jquery-2.1.1.min.js"></script>
@@ -354,10 +378,32 @@
         <script src="tablesorter/jquery.tablesorter.js"></script> 
         <!--  <script src="tablesorter/jquery.tablesorter.min.js"></script>  -->
         <script>
+            <%if (request.getAttribute("para_button_search") != "true") {
+
+            %>
+                    console.log("Attribute: " +<%=request.getAttribute("para_button_search")%>)
+                            $("#button_Search").hide();
+            <% }%>
+
                     $(document).ready(function ()
                     {
-            <%
-                if (request.getParameter("input_aktbericht") == null) {
+
+                    $("#form_MainServelt").submit(function(e) {
+                    $("#button_Search").show();
+                    });
+                    $('#input_search').keyup(function() {
+
+                    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+                    console.log("Value: " + val)
+                            var $rows = $('#table tbody tr');
+                    $rows.show().filter(function() {
+
+                    var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+                    console.log(!~text.indexOf(val));
+                    return !~text.indexOf(val);
+                    }).hide();
+                    });
+            <%                if (request.getParameter("input_aktbericht") == null) {
             %>
                     var item = document.getElementById("div_liste").getElementsByTagName("a")[0];
             <%
