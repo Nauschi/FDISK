@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import sun.nio.cs.StandardCharsets;
 
 /**
  *
@@ -710,6 +711,7 @@ public class MainServlet extends HttpServlet {
         LinkedList<String> liTypenAusgabe = new LinkedList<>();
 
         FileInputStream fis = new FileInputStream(file);
+        //InputStreamReader isr = new InputStreamReader(fis, "ISO-8859-1");
         InputStreamReader isr = new InputStreamReader(fis, "ISO-8859-1");
         BufferedReader br = new BufferedReader(isr);
         String strReihe;

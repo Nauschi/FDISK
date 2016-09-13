@@ -165,20 +165,19 @@ public class DB_Access {
         prepStat.setString(2, strPasswort);
         ResultSet rs = prepStat.executeQuery();
 
-        
-        System.out.println("connPool size - before release: "+connPool.getSizeOfPool());
-        System.out.println("num connections: "+connPool.getNum_Conn());
+        System.out.println("connPool size - before release: " + connPool.getSizeOfPool());
+        System.out.println("num connections: " + connPool.getNum_Conn());
         if (!rs.next()) {
             connPool.releaseConnection(conn);
             return -1;
         }
 
         int intIDUser = rs.getInt("IDUser");
-        
+
         connPool.releaseConnection(conn);
-        System.out.println("connPool size - after release: "+connPool.getSizeOfPool());
-        System.out.println("num connections: "+connPool.getNum_Conn());
-        
+        System.out.println("connPool size - after release: " + connPool.getSizeOfPool());
+        System.out.println("num connections: " + connPool.getNum_Conn());
+
         return intIDUser;
     }
 
@@ -221,9 +220,7 @@ public class DB_Access {
             int intIDGruppe = rs.getInt("IDGruppe");
             String strBezeichnung = rs.getString("Bezeichnung");
             if (intIDGruppe == 1 || intIDGruppe == 5 || intIDGruppe == 9 || intIDGruppe == 15 || intIDGruppe == 14) {
-                if(intIDGruppe == 14){
-                    intIDGruppe = 5;
-                }
+                intIDGruppe = (intIDGruppe == 14) ? 5 : intIDGruppe;
                 LoginMitglied lm = new LoginMitglied(intUserID, strFubwehr, intIDGruppe, strBezeichnung);
                 liMitglieder.add(lm);
             }
@@ -275,7 +272,7 @@ public class DB_Access {
      * @param bereichnummer
      * @return Bereich
      * @throws Exception
-     * @see Bereich
+     * @see Bezirk
      */
     public Bezirk getBezirk(int bereichnummer) throws Exception {
         LinkedList<Integer> liAbschnittnummern;
@@ -1192,7 +1189,7 @@ public class DB_Access {
                 }
                 liStunden.add(mitgliedsStunden);
             }
-        } 
+        }
         liStunden.sort(Comparator.comparing(MitgliedsStunden::getStrInstanzname));
         connPool.releaseConnection(conn);
         return liStunden;
@@ -1492,8 +1489,8 @@ public class DB_Access {
             if (strFahrzeugmarke == null) {
                 strFahrzeugmarke = "-";
             }
-            
-            if(strTreibstoff == null){
+
+            if (strTreibstoff == null) {
                 strTreibstoff = "-";
             }
 
@@ -3482,9 +3479,11 @@ public class DB_Access {
                 case "STAATSBÜRGERSCHAFT":
                     strSelectedCols[i] = "Staatsbuergerschaft";
                     break;
-
                 case "ISCO-BERUF":
                     strSelectedCols[i] = "Beruf";
+                    break;
+                case "Instanzname":
+                    strSelectedCols[i] = "Instanzname";
                     break;
 
             }
@@ -3497,6 +3496,7 @@ public class DB_Access {
                     break;
                 default:
                     sbSqlString.append("m.").append(strSelectedCols[i]).append(",");
+                    System.out.println(sbSqlString.toString());
                     break;
             }
             if (!liSpaltenUeberschriften.contains(strSelectedCols[i])) {
@@ -3778,11 +3778,13 @@ public class DB_Access {
             sbHtml.append("<tr>");
 
             for (String str : strSelectedCols) {
-
+                if(str.equals("Instanzname")){
+                    System.out.println("do smth");
+                }
                 for (Map.Entry pair : haNamesTypes.entrySet()) {
                     if (pair.getKey().toString().toUpperCase().equals(str.toUpperCase())) {
                         String strValue = pair.getValue().toString();
-
+                            
                         OUTER:
                         switch (strValue) {
                             case "bit":
@@ -3929,6 +3931,7 @@ public class DB_Access {
         haNamesTypes.put("status", "bit");
         haNamesTypes.put("vordienstzeit", "big decimal");
         haNamesTypes.put("titel", "varchar");
+        haNamesTypes.put("instanzname", "varchar");
 
         //Tabelle stmkadressen
         haNamesTypes.put("ort", "varchar");
@@ -4010,5 +4013,5 @@ public class DB_Access {
 
         connPool.releaseConnection(conn);
     }
-    
+
 }
