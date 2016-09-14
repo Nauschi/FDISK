@@ -3608,16 +3608,19 @@ public class DB_Access {
 
         sbSqlString.append(" INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(m.instanznummer = fw.instanznummer) ");
 
-        sbSqlString.append(" WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST')) AND ");
+        sbSqlString.append(" WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST')) AND (");
 
         String strColLink = "";
+        String strBracketOpen = "";
+        String strBracketClose = "";
 
         for (int i = 0; i < intRows; i++) {
             String strColWhere = strEingabe[i][1];
             String strColSymbol = strEingabe[i][2];
             String strColValue = strEingabe[i][3];
             strColLink = strEingabe[i][5];
-
+            strBracketOpen = (strEingabe[i][0].equals("")) ? "" : "(";
+            strBracketClose = (strEingabe[i][4].equals("")) ? "" : ")";
             String strColWhereType = getDBTypeForValue(strColWhere);
 
             if (strColSymbol.equals("<>")) {
@@ -3648,7 +3651,7 @@ public class DB_Access {
                         strColValue = "w";
                         break;
                 }
-                sbSqlString.append(strColWhere).append(" ").append(strColSymbol).append(" '").append(strColValue).append("' ").append(strColLink).append(" ");
+                sbSqlString.append(strBracketOpen).append(strColWhere).append(" ").append(strColSymbol).append(" '").append(strColValue).append("' ").append(strBracketClose).append(strColLink).append(" ");
                 continue;
             }
 
@@ -3657,54 +3660,54 @@ public class DB_Access {
             } else if (!strColWhere.equals("Alter") && !strColWhere.equals("Status")) {
                 switch (strColWhereType) {
                     case "datetime":
-                        sbSqlString.append(strColWhere).append(" ").append(strColSymbol).append(" CAST('").append(strColValue).append("' AS datetime) ").append(strColLink).append(" ");
+                        sbSqlString.append(strBracketOpen).append(strColWhere).append(" ").append(strColSymbol).append(" CAST('").append(strColValue).append("' AS datetime) ").append(strBracketClose).append(strColLink).append(" ");
                         break;
                     case "varchar":
                         if (liDoppelteAuszeichnungsart.contains(i)) {
-                            sbSqlString.append("UPPER(").append("ausz").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
+                            sbSqlString.append(strBracketOpen).append("UPPER(").append("ausz").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strBracketClose).append(strColLink).append(" ");
                             break;
 
                         } else if (liDoppelteDienstgrad.contains(i)) {
-                            sbSqlString.append("UPPER(").append("m").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
+                            sbSqlString.append(strBracketOpen).append("UPPER(").append("m").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strBracketClose).append(strColLink).append(" ");
                             break;
                         } else if (liDoppelteErreichbarkeitsart.contains(i)) {
-                            sbSqlString.append("UPPER(").append("e").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
+                            sbSqlString.append(strBracketOpen).append("UPPER(").append("e").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strBracketClose).append(strColLink).append(" ");
                             break;
                         } else if (liDoppelteFuehrerscheinklasse.contains(i)) {
-                            sbSqlString.append("UPPER(").append("gf").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
+                            sbSqlString.append(strBracketOpen).append("UPPER(").append("gf").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strBracketClose).append(strColLink).append(" ");
                             break;
                         } else if (liDoppelteFunktionsbezeichnung.contains(i)) {
                             if (strColWhere.contains("f.")) {
-                                sbSqlString.append("UPPER(").append("f").append(i).append(".").append(strColWhere.substring(2)).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
+                                sbSqlString.append(strBracketOpen).append("UPPER(").append("f").append(i).append(".").append(strColWhere.substring(2)).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strBracketClose).append(strColLink).append(" ");
 
                             } else {
-                                sbSqlString.append("UPPER(").append("f").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
+                                sbSqlString.append(strBracketOpen).append("UPPER(").append("f").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strBracketClose).append(strColLink).append(" ");
 
                             }
                             break;
 
                         } else if (liDoppelteKursbezeichnung.contains(i)) {
-                            sbSqlString.append("UPPER(").append("k").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
+                            sbSqlString.append(strBracketOpen).append("UPPER(").append("k").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strBracketClose).append(strColLink).append(" ");
                             break;
                         } else if (liDoppelteLeistungsabzeichenStufe.contains(i)) {
-                            sbSqlString.append("UPPER(").append("la").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
+                            sbSqlString.append(strBracketOpen).append("UPPER(").append("la").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strBracketClose).append(strColLink).append(" ");
                             break;
                         } else if (liDoppelteUntersuchungsart.contains(i)) {
-                            sbSqlString.append("UPPER(").append("u").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
+                            sbSqlString.append(strBracketOpen).append("UPPER(").append("u").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strBracketClose).append(strColLink).append(" ");
                             break;
                         } else {
-                            sbSqlString.append("UPPER(").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strColLink).append(" ");
+                            sbSqlString.append(strBracketOpen).append("UPPER(").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strBracketClose).append(strColLink).append(" ");
                             break;
                         }
                     //default bei byte, tinyint, bigint, int
                     default:
-                        sbSqlString.append(strColWhere).append(" ").append(strColSymbol).append(" '").append(strColValue).append("' ").append(strColLink).append(" ");
+                        sbSqlString.append(strBracketOpen).append(strColWhere).append(" ").append(strColSymbol).append(" '").append(strColValue).append("' ").append(strBracketClose).append(strColLink).append(" ");
                         break;
                 }
             } else if (strColWhere.equals("Alter")) {
-                sbSqlString.append("(DATEDIFF(YY, geburtsdatum, GETDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum) > GETDATE() THEN 1 ELSE 0 END ) ").append(strColSymbol).append(" '").append(strColValue).append("' ").append(strColLink).append(" ");
+                sbSqlString.append(strBracketOpen).append("(DATEDIFF(YY, geburtsdatum, GETDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum) > GETDATE() THEN 1 ELSE 0 END ) ").append(strColSymbol).append(" '").append(strColValue).append("' ").append(strBracketClose).append(strColLink).append(" ");
             } else if (strColWhere.equals("Status")) {
-                sbSqlString.append(strColValue).append(" ").append(strColSymbol).append(" '1' ").append(strColLink).append(" ");
+                sbSqlString.append(strBracketOpen).append(strColValue).append(" ").append(strColSymbol).append(" '1' ").append(strBracketClose).append(strColLink).append(" ");
             }
         }
         int intIndex = -1;
@@ -3717,6 +3720,8 @@ public class DB_Access {
             sbSqlString.substring(0, intIndex);
             sbSqlString.append(" ");
         }
+        sbSqlString.append(" )");
+        System.out.println("SQL String: " + sbSqlString);
         if (intBereichnr == -2) {
         } else if (intAbschnittnr == -2) {
             sbSqlString.append(" AND (fw.Bereich_Nr = ").append(intBereichnr).append(")");
@@ -3725,7 +3730,7 @@ public class DB_Access {
         } else {
             sbSqlString.append(" AND (m.instanznummer = '").append(strFubwehr).append("')");
         }
-
+        System.out.println("SQL String: " + sbSqlString);
         StringBuilder sbHtml = createDynamicReportGeneratorOutput(sbSqlString.toString(), strSelectedCols);
         return sbHtml;
     }
@@ -3778,13 +3783,13 @@ public class DB_Access {
             sbHtml.append("<tr>");
 
             for (String str : strSelectedCols) {
-                if(str.equals("Instanzname")){
+                if (str.equals("Instanzname")) {
                     System.out.println("do smth");
                 }
                 for (Map.Entry pair : haNamesTypes.entrySet()) {
                     if (pair.getKey().toString().toUpperCase().equals(str.toUpperCase())) {
                         String strValue = pair.getValue().toString();
-                            
+
                         OUTER:
                         switch (strValue) {
                             case "bit":
