@@ -25,9 +25,9 @@ public interface DB_Config {
     public static final String DB_URL = "jdbc:sqlserver://172.16.1.18;instanceName=prometheus;databaseName=FDISK";
     
     //hp370 Config - not working yet
-//    public static final String DB_USER = "application_fw_db";
-//    public static final String DB_PASSWD = "";
-//    public static final String DB_URL = "jdbc:sqlserver://172.16.1.11:1433;instanceName=hp370;databaseName=FW_DB_LIGHT";
+    //public static final String DB_USER = "application_fw_db";
+    //public static final String DB_PASSWD = "";
+    //public static final String DB_URL = "jdbc:sqlserver://172.16.1.11:1433;instanceName=hp370;databaseName=FW_DB_LIGHT";
     
   
     

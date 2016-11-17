@@ -1052,11 +1052,23 @@ public class DB_Access {
                 sqlString += getSqlDateString(strVon, strBis, 2, true);
             } else {
                 if (intAbschnittnr == -2) {
-                    sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
+                    //sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
+                    sqlString += " WHERE  t.id_personen IN ( SELECT [id_personen] "
+                            + " FROM [FDISK].[dbo].[stmkmitglieder] sm "
+                            + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = sm.instanznummer) "
+                            + " where fw.Bereich_Nr = " + intBereichnr + " )";
                 } else if (strFubwehr.equals("-2")) {
-                    sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
+                    //sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
+                    sqlString += " WHERE  t.id_personen IN ( SELECT [id_personen] "
+                            + " FROM [FDISK].[dbo].[stmkmitglieder] sm "
+                            + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = sm.instanznummer) "
+                            + " where fw.abschnitt_instanznummer = " + intAbschnittnr + " )";
                 } else {
-                    sqlString += " WHERE t.instanznummer = '" + strFubwehr + "'";
+                    //sqlString += " WHERE t.instanznummer = '" + strFubwehr + "'";
+                    sqlString += " WHERE  t.id_personen IN ( SELECT [id_personen] "
+                            + " FROM [FDISK].[dbo].[stmkmitglieder] sm "
+                            + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = sm.instanznummer) "
+                            + " where fw.instanznummer = " + strFubwehr + " )";
                 }
                 sqlString += getSqlDateString(strVon, strBis, 2, false);
             }
@@ -1080,11 +1092,23 @@ public class DB_Access {
                 sqlString += getSqlDateString(strVon, strBis, 3, true);
             } else {
                 if (intAbschnittnr == -2) {
-                    sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
+                    //sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
+                    sqlString += " WHERE  u.id_personen IN ( SELECT [id_personen] "
+                            + " FROM [FDISK].[dbo].[stmkmitglieder] sm "
+                            + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = sm.instanznummer) "
+                            + " where fw.Bereich_Nr = " + intBereichnr + " )";
                 } else if (strFubwehr.equals("-2")) {
-                    sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
+                    //sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
+                    sqlString += " WHERE  u.id_personen IN ( SELECT [id_personen] "
+                            + " FROM [FDISK].[dbo].[stmkmitglieder] sm "
+                            + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = sm.instanznummer) "
+                            + " where fw.abschnitt_instanznummer = " + intAbschnittnr + " )";
                 } else {
-                    sqlString += " WHERE u.instanznummer = '" + strFubwehr + "'";
+                    //sqlString += " WHERE u.instanznummer = '" + strFubwehr + "'";
+                    sqlString += " WHERE  u.id_personen IN ( SELECT [id_personen] "
+                            + " FROM [FDISK].[dbo].[stmkmitglieder] sm "
+                            + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = sm.instanznummer) "
+                            + " where fw.instanznummer = " + strFubwehr + " )";
                 }
                 sqlString += getSqlDateString(strVon, strBis, 3, false);
             }
@@ -1108,11 +1132,23 @@ public class DB_Access {
                 sqlString += getSqlDateString(strVon, strBis, 1, true);
             } else {
                 if (intAbschnittnr == -2) {
-                    sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
+                    //sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
+                    sqlString += " WHERE  e.id_personen IN ( SELECT [id_personen] "
+                            + " FROM [FDISK].[dbo].[stmkmitglieder] sm "
+                            + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = sm.instanznummer) "
+                            + " where fw.Bereich_Nr = " + intBereichnr + " )";
                 } else if (strFubwehr.equals("-2")) {
-                    sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
+                    //sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
+                    sqlString += " WHERE  e.id_personen IN ( SELECT [id_personen] "
+                            + " FROM [FDISK].[dbo].[stmkmitglieder] sm "
+                            + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = sm.instanznummer) "
+                            + " where fw.abschnitt_instanznummer = " + intAbschnittnr + " )";
                 } else {
-                    sqlString += " WHERE e.instanznummer = '" + strFubwehr + "'";
+                    //sqlString += " WHERE e.instanznummer = '" + strFubwehr + "'";
+                    sqlString += " WHERE  e.id_personen IN ( SELECT [id_personen] "
+                            + " FROM [FDISK].[dbo].[stmkmitglieder] sm "
+                            + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(fw.instanznummer = sm.instanznummer) "
+                            + " where fw.instanznummer = " + strFubwehr + " )";
                 }
                 sqlString += getSqlDateString(strVon, strBis, 1, false);
             }
@@ -1123,7 +1159,8 @@ public class DB_Access {
 
         sqlString += " ) a "
                 + "GROUP BY PersID, instanznummer, vorname, zuname, stb, dgr, titel, name "
-                + "ORDER BY 'PersID'";
+                //+ "ORDER BY 'PersID'";
+                + "ORDER BY Zuname, Vorname";
 
         System.out.println("Gesamt SQL String: " + sqlString);
 
