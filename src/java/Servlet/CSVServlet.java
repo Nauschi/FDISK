@@ -20,12 +20,11 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Marcel Schmidt
  */
-@WebServlet(name = "CSVServlet", urlPatterns =
-{
-    "/CSVServlet"
-})
-public class CSVServlet extends HttpServlet
-{
+@WebServlet(name = "CSVServlet", urlPatterns
+        = {
+            "/CSVServlet"
+        })
+public class CSVServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,11 +36,9 @@ public class CSVServlet extends HttpServlet
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter())
-        {
+        try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -66,8 +63,7 @@ public class CSVServlet extends HttpServlet
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -81,25 +77,21 @@ public class CSVServlet extends HttpServlet
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String strData = request.getParameter("hidden_CSVData");
         String[] strSplitData = strData.split("###");
         String strBerichtname;
         String strTable1;
         boolean boolExtraTable = false;
-        if (strSplitData.length < 2)
-        {
+        if (strSplitData.length < 2) {
             strBerichtname = "Dynamisch";
             strTable1 = strData;
-        }else if(strSplitData.length > 2)
-        {
+        } else if (strSplitData.length > 2) {
             strBerichtname = strSplitData[0];
-            strTable1 = strSplitData[2]+strSplitData[1];
-            boolExtraTable=true;
-        }else
-        {
+            strTable1 = strSplitData[2] + strSplitData[1];
+            boolExtraTable = true;
+        } else {
             strBerichtname = strSplitData[0];
             strTable1 = strSplitData[1];
         }
@@ -107,7 +99,13 @@ public class CSVServlet extends HttpServlet
         strBerichtname = strBerichtname.replaceAll(" ", "_");
         response.setContentType("text/csv");
         response.setHeader("Content-Disposition", "attachment; filename=" + strBerichtname + ".csv");
-        String[] strRows = erstelleCSVString(strTable1,boolExtraTable);
+        String[] strRows = erstelleCSVString(strTable1, boolExtraTable);
+        if (strBerichtname.equals("Adressliste")) {
+            strRows[0] = strRows[0].split("Bemerkung")[0].replace("Adresse", "Straße") + "Haus Nr.;PLZ;Ort;Bemerkung" + strRows[0].split("Bemerkung")[1];
+        } else if (strBerichtname.equals("Erreichbarkeitsliste")) {
+            strRows[0] = strRows[0].split("Bemerkung")[0].replace("Erreichbarkeiten", "EMail;EMail dienstlich;EMail Domain;EMail Feuerwehr;EMail Feuerwehrhaus;EMail privat;Fax;Fax dienstlich;Fax Feuerwehrhaus;Fax privat;LLZ Alarm-Email;LLZ Alarm-Fax;LLZ Alarmierung Kommandant;LLZ Alarmierung Kommandant Stv;Mobil;Mobil dienstlich;Mobil Feuerwehr;Mobil privat;Telefon;Telefon dienstlich;Telefon Erziehungsberechtigte;Telefon Feuerwehrhaus;Telefon privat;Url Homepage Feuerwehr;Bemerkung") + strRows[0].split("Bemerkung")[1];
+            //breitere Spalten ToDo!
+        }
         writeCsv(strRows, response.getOutputStream());
     }
 
@@ -120,17 +118,15 @@ public class CSVServlet extends HttpServlet
      * @param boolExtraTable
      * @return
      */
-    public String[] erstelleCSVString(String strTable, boolean boolExtraTable)
-    {
+    public String[] erstelleCSVString(String strTable, boolean boolExtraTable) {
         String strCSV = strTable;
         strCSV = strCSV.replaceAll("<br>", "");
-        if(boolExtraTable)
-        {
+        if (boolExtraTable) {
             strCSV = strCSV.replaceAll("<fieldset><legend><b>Fahrzeugdaten</b></legend>", "");
             strCSV = strCSV.replaceAll("</fieldset>", "");
             strCSV = strCSV.replaceAll("<table class=\"tablesorter ui celled table\">", "</tr>");
         }
-        strCSV = strCSV.replaceAll("\\<table[^>]*>", ""); 
+        strCSV = strCSV.replaceAll("\\<table[^>]*>", "");
         strCSV = strCSV.replaceAll("<thead>", "");
         strCSV = strCSV.replaceAll("</thead><tbody>", "");
         strCSV = strCSV.replaceAll("</tbody></table>", "");
@@ -142,8 +138,9 @@ public class CSVServlet extends HttpServlet
         strCSV = strCSV.replaceAll("<b>", "");
         strCSV = strCSV.replaceAll("</b>", "");
         strCSV = strCSV.trim();
+        //strCSV = strCSV.replaceAll(" ", ";");
         String[] strRows = strCSV.split("</tr>");
-        
+
         return strRows;
     }
 
@@ -156,11 +153,9 @@ public class CSVServlet extends HttpServlet
      * @param output
      * @throws IOException
      */
-    public void writeCsv(String[] strRows, OutputStream output) throws IOException
-    {
+    public void writeCsv(String[] strRows, OutputStream output) throws IOException {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, "UTF-8"));
-        for (String strRow : strRows)
-        {
+        for (String strRow : strRows) {
             strRow = strRow.trim();
             writer.append(strRow);
             writer.newLine();
@@ -174,8 +169,7 @@ public class CSVServlet extends HttpServlet
      * @return a String containing servlet description
      */
     @Override
-    public String getServletInfo()
-    {
+    public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 

@@ -35,11 +35,12 @@ public class Einsatzbericht implements Serializable
     private String strZuname;
     private String strMeldung;
     private String strFehlalarm;
+    private int intAnzahl;
     private BL bl = new BL(); 
 
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
 
-    public Einsatzbericht(int intId_StmkEinsatzberichte, int intInstanznummer, String strName, String strEinsatzart, String strNummer, Date dateUhrzeit_Alarmierung, Date dateUhrzeit_Rueckkehr, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, int intStandesbuchnummer, String strVorname, String strZuname, String strMeldung, String strFehlalarm) throws ClassNotFoundException
+    public Einsatzbericht(int intId_StmkEinsatzberichte, int intInstanznummer, String strName, String strEinsatzart, String strNummer, Date dateUhrzeit_Alarmierung, Date dateUhrzeit_Rueckkehr, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, int intStandesbuchnummer, String strVorname, String strZuname, String strMeldung, String strFehlalarm, int intAnzahl) throws ClassNotFoundException
     {
         this.intId_StmkEinsatzberichte = intId_StmkEinsatzberichte;
         this.intInstanznummer = intInstanznummer;
@@ -58,8 +59,18 @@ public class Einsatzbericht implements Serializable
         this.strZuname = strZuname;
         this.strMeldung = strMeldung;
         this.strFehlalarm = strFehlalarm;
+        this.intAnzahl = intAnzahl;
          
     }
+
+    public int getIntAnzahl() {
+        return intAnzahl;
+    }
+
+    public void setIntAnzahl(int intAnzahl) {
+        this.intAnzahl = intAnzahl;
+    }
+    
 
     public int getIntId_StmkEinsatzberichte()
     {
@@ -318,6 +329,14 @@ public class Einsatzbericht implements Serializable
         {
             return false;
         }
+        if (!Objects.equals(this.intAnzahl, other.intAnzahl))
+        {
+            return false;
+        }
+        if (!Objects.equals(this.strFehlalarm, other.strFehlalarm))
+        {
+            return false;
+        }
         return true;
     }
 
@@ -361,6 +380,9 @@ public class Einsatzbericht implements Serializable
         {
             strZuname = "";
         }
+        if(strFehlalarm == null){
+            strFehlalarm = "";
+        }
 
              
         strEinsatzart = bl.formatiereAusgabe(strEinsatzart); 
@@ -370,7 +392,9 @@ public class Einsatzbericht implements Serializable
                 + strNummer + "</td><td>"
                 + sdf.format(dateUhrzeit_Alarmierung) + "</td><td>"
                 + sdf.format(dateUhrzeit_Rueckkehr) + "</td><td>"
-                + strStrasse + " " + strNummerAdr + " " + strStiege + " " + strPlz + " " + strOrt + "</td></tr>";
+                + strStrasse + " " + strNummerAdr + " " + strStiege + " " + strPlz + " " + strOrt + "</td><td>"
+                + intAnzahl + "</td><td>"
+                + strFehlalarm + "</td></tr>";
 
         return strHtml;
     }

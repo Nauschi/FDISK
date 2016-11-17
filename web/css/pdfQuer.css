@@ -10,7 +10,12 @@ and open the template in the editor.
 
 .STB
 {
-    width: 20px;
+    width: 30px;
+}
+
+.Wehr
+{
+    width: 40px;
 }
 
 .DGR
@@ -25,7 +30,7 @@ and open the template in the editor.
 
 .bemerkung
 {
-    width: 150px;
+    width: 125px;
 }
 
 .titel

@@ -576,6 +576,7 @@ public class DB_Access {
         String strVorname;
         String strZuname;
         int intPersID;
+        String strFubNr;
 
         while (rs.next()) {
             intPersID = rs.getInt("PersID");
@@ -584,8 +585,9 @@ public class DB_Access {
             strTitel = rs.getString("Titel");
             strVorname = rs.getString("Vorname");
             strZuname = rs.getString("Zuname");
+            strFubNr = rs.getString("Fubwehr");
 
-            Mitglied mitglied = new Mitglied(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname);
+            Mitglied mitglied = new Mitglied(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strFubNr);
             liMitglieder.add(mitglied);
         }
 
@@ -637,6 +639,7 @@ public class DB_Access {
         int intPersID;
         Date dateGeburtsdatum;
         int intZielalter;
+        String strFub;
 
         while (rs.next()) {
             intPersID = rs.getInt("PersID");
@@ -646,22 +649,25 @@ public class DB_Access {
             strVorname = rs.getString("Vorname");
             strZuname = rs.getString("Zuname");
             dateGeburtsdatum = new Date(rs.getDate("Geburtsdatum").getTime());
+            strFub = rs.getString("Instanznummer");
 
             Calendar calGeburtsdatum = new GregorianCalendar();
             Calendar current = new GregorianCalendar();
 
             calGeburtsdatum.setTime(dateGeburtsdatum);
-            int intCurrentYear = intJahr - 1;
+            //int intCurrentYear = intJahr - 1;
+            int intCurrentYear = intJahr;
             intZielalter = intCurrentYear - calGeburtsdatum.get(Calendar.YEAR);
 
             calGeburtsdatum.set(Calendar.YEAR, intCurrentYear);
 
-            if (current.after(calGeburtsdatum)) {
-                intZielalter++;
-                calGeburtsdatum.add(Calendar.YEAR, 1);
-            }
+            current.get(Calendar.YEAR);
 
-            MitgliedsGeburtstag mitgliedsGeb = new MitgliedsGeburtstag(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, false, dateGeburtsdatum, intZielalter);
+//            if (current.after(calGeburtsdatum)) {
+//                intZielalter++;
+//                calGeburtsdatum.add(Calendar.YEAR, 1);
+//            }
+            MitgliedsGeburtstag mitgliedsGeb = new MitgliedsGeburtstag(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, false, dateGeburtsdatum, intZielalter, strFub);
             liMitgliedsGeburtstage.add(mitgliedsGeb);
         }
         connPool.releaseConnection(conn);
@@ -689,13 +695,13 @@ public class DB_Access {
         String sqlString;
 
         if (intBereichnr == -2) {
-            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen' "
+            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen', m.instanznummer 'Instanznummer' "
                     + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
                     + " WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST'))"
                     + " AND m.datum_abgemeldet IS NULL "
                     + " ORDER BY m.zuname, m.vorname";
         } else if (intAbschnittnr == -2) {
-            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen' "
+            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen', m.instanznummer 'Instanznummer' "
                     + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
                     + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(m.instanznummer = f.instanznummer)"
                     + " WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST'))"
@@ -703,7 +709,7 @@ public class DB_Access {
                     + " AND m.datum_abgemeldet IS NULL "
                     + " ORDER BY m.zuname, m.vorname";
         } else if (strFubwehr.equals("-2")) {
-            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen' "
+            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen', m.instanznummer 'Instanznummer' "
                     + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
                     + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(m.instanznummer = f.instanznummer)"
                     + " WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST'))"
@@ -711,7 +717,7 @@ public class DB_Access {
                     + " AND m.datum_abgemeldet IS NULL "
                     + " ORDER BY m.zuname, m.vorname";
         } else {
-            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen' "
+            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen', m.instanznummer 'Instanznummer' "
                     + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
                     + " WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST'))"
                     + " AND m.instanznummer = '" + strFubwehr + "'"
@@ -733,6 +739,7 @@ public class DB_Access {
         int intInstanznummer;
         int intCurrentYear = Calendar.getInstance().get(Calendar.YEAR);
         int intYearDifference = intJahr - intCurrentYear;
+        String strFub;
 
         while (rs.next()) {
             intPersID = rs.getInt("PersID");
@@ -742,6 +749,7 @@ public class DB_Access {
             strVorname = rs.getString("Vorname");
             strZuname = rs.getString("Zuname");
             intInstanznummer = rs.getInt("Instanzen");
+            strFub = rs.getString("Instanznummer");
 
             dateGeburtsdatum = rs.getDate("Geburtsdatum");
 
@@ -754,7 +762,7 @@ public class DB_Access {
             doDienstzeit = rs.getDouble("DIENSTZEIT");
             doDienstzeit += intYearDifference;
 
-            MitgliedsDienstzeit mitgliedsDienst = new MitgliedsDienstzeit(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true, dateGeburtsdatum, doDienstzeit, intInstanznummer, dateEintrittsdatum);
+            MitgliedsDienstzeit mitgliedsDienst = new MitgliedsDienstzeit(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true, dateGeburtsdatum, doDienstzeit, intInstanznummer, dateEintrittsdatum, strFub);
             liMitgliedsDienstzeiten.add(mitgliedsDienst);
 
         }
@@ -810,6 +818,7 @@ public class DB_Access {
         String strStiege;
         int intPLZ;
         String strOrt;
+        String strFub;
 
         while (rs.next()) {
             intPersID = rs.getInt("PersID");
@@ -825,8 +834,9 @@ public class DB_Access {
             strStiege = rs.getString("Stiege");
             intPLZ = rs.getInt("PLZ");
             strOrt = rs.getString("Ort");
+            strFub = rs.getString("Instanznummer");
 
-            MitgliedsAdresse mitgliedsAdresse = new MitgliedsAdresse(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true, intId_Adressen, strStrasse, strNummer, strStiege, intPLZ, strOrt, true);
+            MitgliedsAdresse mitgliedsAdresse = new MitgliedsAdresse(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, true, intId_Adressen, strStrasse, strNummer, strStiege, intPLZ, strOrt, strFub, true);
             liMitgliedsAdressen.add(mitgliedsAdresse);
         }
         connPool.releaseConnection(conn);
@@ -1161,13 +1171,13 @@ public class DB_Access {
                     MitgliedsStunden mitgliedsStunden = null;
                     switch (intBerichtId) {
                         case 1:
-                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, 0, intAnzahl, 0, 0, intMinuten, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
+                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, 0, intAnzahl, 0, 0, intMinuten, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname, strInstanznummer);
                             break;
                         case 2:
-                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, intAnzahl, 0, 0, intMinuten, 0, 0, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
+                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, intAnzahl, 0, 0, intMinuten, 0, 0, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname, strInstanznummer);
                             break;
                         case 3:
-                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, intAnzahl, 0, 0, intMinuten, 0, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
+                            mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, intAnzahl, 0, 0, intMinuten, 0, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname, strInstanznummer);
                             break;
                     }
                     liStunden.add(mitgliedsStunden);
@@ -1178,13 +1188,13 @@ public class DB_Access {
                 MitgliedsStunden mitgliedsStunden = null;
                 switch (intBerichtId) {
                     case 1:
-                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, 0, intAnzahl, 0, 0, intMinuten, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
+                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, 0, intAnzahl, 0, 0, intMinuten, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname, strInstanznummer);
                         break;
                     case 2:
-                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, intAnzahl, 0, 0, intMinuten, 0, 0, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
+                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, intAnzahl, 0, 0, intMinuten, 0, 0, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname, strInstanznummer);
                         break;
                     case 3:
-                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, intAnzahl, 0, 0, intMinuten, 0, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
+                        mitgliedsStunden = new MitgliedsStunden(intMinuten, strInstanznummer, 0, intAnzahl, 0, 0, intMinuten, 0, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname, strInstanznummer);
                         break;
                 }
                 liStunden.add(mitgliedsStunden);
@@ -1596,6 +1606,7 @@ public class DB_Access {
         String strZuname;
         int intPersID = 0;
         int intLetztePersID = 0;
+        String strFubNr;
 
         LinkedList<Erreichbarkeit> liErreichbarkeiten = new LinkedList<>();
         while (rs.next()) {
@@ -1610,6 +1621,7 @@ public class DB_Access {
             strTitel = rs.getString("Titel");
             strVorname = rs.getString("Vorname");
             strZuname = rs.getString("Zuname");
+            strFubNr = rs.getString("Fubwehr");
 
             if (intPersID == intLetztePersID) {
                 if (!liErreichbarkeiten.contains(new Erreichbarkeit(strErreichbarkeitsart, strCode, intPersID))) {
@@ -1621,7 +1633,7 @@ public class DB_Access {
                     liErreichbarkeiten = new LinkedList<>();
                 }
                 intLetztePersID = intPersID;
-                liMitgliedsErreichbarkeiten.add(new MitgliedsErreichbarkeit(false, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname));
+                liMitgliedsErreichbarkeiten.add(new MitgliedsErreichbarkeit(false, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strFubNr));
                 liErreichbarkeiten.add(new Erreichbarkeit(strErreichbarkeitsart, strCode, intPersID));
             }
 
@@ -1640,22 +1652,38 @@ public class DB_Access {
      * @return
      * @throws Exception
      */
-    public LinkedList<LeerberichtMitglied> getLeerberichtMitglied(int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
+    public LinkedList<LeerberichtMitglied> getLeerberichtMitglied(int intBereichnr, int intAbschnittnr, String strFubwehr, boolean boEinsatz) throws Exception {
         LinkedList<LeerberichtMitglied> liLeerberichtMitglieder = new LinkedList<>();
 
         Connection conn = connPool.getConnection();
         PreparedStatement prepStat;
 
         if (intBereichnr == -2) {
-            prepStat = conn.prepareStatement(EnLeerberichtMitglied.getLeerberichtMitgliedAlle.toString());
+            if (boEinsatz) {
+                prepStat = conn.prepareStatement(EnLeerberichtMitglied.getLeerberichtMitgliedAlle.toString() + " AND jugend = 0");
+            } else {
+                prepStat = conn.prepareStatement(EnLeerberichtMitglied.getLeerberichtMitgliedAlle.toString());
+            }
         } else if (intAbschnittnr == -2) {
-            prepStat = conn.prepareStatement(EnLeerberichtMitglied.getLeerberichtMitgliedBereich.toString());
+            if (boEinsatz) {
+                prepStat = conn.prepareStatement(EnLeerberichtMitglied.getLeerberichtMitgliedBereich.toString() + " AND jugend = 0");
+            } else {
+                prepStat = conn.prepareStatement(EnLeerberichtMitglied.getLeerberichtMitgliedBereich.toString());
+            }
             prepStat.setInt(1, intBereichnr);
         } else if (strFubwehr.equals("-2")) {
-            prepStat = conn.prepareStatement(EnLeerberichtMitglied.getLeerberichtMitgliedAbschnitt.toString());
+            if (boEinsatz) {
+                prepStat = conn.prepareStatement(EnLeerberichtMitglied.getLeerberichtMitgliedAbschnitt.toString() + " AND jugend = 0");
+            } else {
+                prepStat = conn.prepareStatement(EnLeerberichtMitglied.getLeerberichtMitgliedAbschnitt.toString());
+            }
             prepStat.setInt(1, intAbschnittnr);
         } else {
-            prepStat = conn.prepareStatement(EnLeerberichtMitglied.getLeerberichtMitgliedFubwehr.toString());
+            if (boEinsatz) {
+                prepStat = conn.prepareStatement(EnLeerberichtMitglied.getLeerberichtMitgliedFubwehr.toString() + " AND jugend = 0 ORDER BY zuname");
+            } else {
+                prepStat = conn.prepareStatement(EnLeerberichtMitglied.getLeerberichtMitgliedFubwehr.toString() + " ORDER BY zuname");
+            }
             prepStat.setString(1, strFubwehr);
         }
 
@@ -1996,6 +2024,9 @@ public class DB_Access {
                     + " ,zuname 'Zuname'"
                     + " ,meldung 'Meldung'"
                     + " ,Fehlalarm 'Fehlalarm'"
+                    + " ,(SELECT Count(*)"
+                    + "  FROM   fdisk.dbo.stmkeinsatzberichtemitglieder mitglied"
+                    + "  WHERE  mitglied.id_berichte = eb.id_berichte) 'Anzahl'"
                     + " FROM FDISK.dbo.stmkeinsatzberichte";
             sqlString += getSqlDateString(strVon, strBis, 1, true);
         } else {
@@ -2017,6 +2048,9 @@ public class DB_Access {
                         + " ,zuname 'Zuname'"
                         + " ,meldung 'Meldung'"
                         + " ,Fehlalarm 'Fehlalarm'"
+                        + " ,(SELECT Count(*)"
+                        + "  FROM   fdisk.dbo.stmkeinsatzberichtemitglieder mitglied"
+                        + "  WHERE  mitglied.id_berichte = eb.id_berichte) 'Anzahl'"
                         + " FROM FDISK.dbo.stmkeinsatzberichte eb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(eb.instanznummer = f.instanznummer) "
                         + " WHERE f.Bereich_Nr = " + intBereichnr;
             } else if (strFubwehr.equals("-2")) {
@@ -2037,6 +2071,9 @@ public class DB_Access {
                         + " ,zuname 'Zuname'"
                         + " ,meldung 'Meldung'"
                         + " ,Fehlalarm 'Fehlalarm'"
+                        + " ,(SELECT Count(*)"
+                        + "  FROM   fdisk.dbo.stmkeinsatzberichtemitglieder mitglied"
+                        + "  WHERE  mitglied.id_berichte = eb.id_berichte) 'Anzahl'"
                         + " FROM FDISK.dbo.stmkeinsatzberichte eb INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(eb.instanznummer = f.instanznummer) "
                         + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
             } else {
@@ -2057,6 +2094,9 @@ public class DB_Access {
                         + " ,zuname 'Zuname'"
                         + " ,meldung 'Meldung'"
                         + " ,Fehlalarm 'Fehlalarm'"
+                        + " ,(SELECT Count(*)"
+                        + "  FROM   fdisk.dbo.stmkeinsatzberichtemitglieder mitglied"
+                        + "  WHERE  mitglied.id_berichte = eb.id_berichte) 'Anzahl'"
                         + " FROM FDISK.dbo.stmkeinsatzberichte"
                         + " WHERE instanznummer = '" + strFubwehr + "'";
             }
@@ -2082,6 +2122,7 @@ public class DB_Access {
         String strZuname;
         String strMeldung;
         String strFehlalarm;
+        int intAnzahl;
 
         while (rs.next()) {
             intIdBericht = rs.getInt("ID");
@@ -2101,12 +2142,13 @@ public class DB_Access {
             strZuname = rs.getString("Zuname");
             strMeldung = rs.getString("Meldung");
             strFehlalarm = rs.getString("Fehlalarm");
+            intAnzahl = rs.getInt("Anzahl");
 
             Einsatzbericht einsatzbericht = new Einsatzbericht(intIdBericht,
                     intInstanznummer, strName, strEinsatzart, strNummer,
                     dateUhrzeit_Alarmierung, dateUhrzeit_Rueckkehr, strStrasse,
                     strNummerAdr, strStiege, strPlz, strOrt, intStandesbuchnummer,
-                    strVorname, strZuname, strMeldung, strFehlalarm);
+                    strVorname, strZuname, strMeldung, strFehlalarm, intAnzahl);
             liEinsatzbericht.add(einsatzbericht);
         }
 
@@ -2645,7 +2687,7 @@ public class DB_Access {
             intAnzahl = rs.getInt("Anz");
             strInstanzname = rs.getString("Instanzname");
 
-            Geraetetraegermitglied gm = new Geraetetraegermitglied(intInstanznr, dateGeb, dateUntersuchung, dateNaechsteUntersuchung, intIdInstanzen, intAnzahl, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname);
+            Geraetetraegermitglied gm = new Geraetetraegermitglied(intInstanznr, dateGeb, dateUntersuchung, dateNaechsteUntersuchung, intIdInstanzen, intAnzahl, intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanzname, "" + intInstanznr);
             liGeraetetraeger.add(gm);
         }
 

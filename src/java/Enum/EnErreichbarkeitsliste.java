@@ -11,23 +11,23 @@ package Enum;
  */
 public enum EnErreichbarkeitsliste {
 
-    getErreichbarkeitslisteAlle("SELECT DISTINCT sm.id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname', se.erreichbarkeitsart 'Erreichbarkeitsart', se.code 'Code'"
+    getErreichbarkeitslisteAlle("SELECT DISTINCT sm.instanznummer 'Fubwehr', sm.id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname', se.erreichbarkeitsart 'Erreichbarkeitsart', se.code 'Code'"
             + " FROM FDISK.dbo.stmkmitglieder sm INNER JOIN FDISK.dbo.stmkerreichbarkeiten se ON(sm.id_personen = se.id_personen)"
             + " WHERE (sm.abgemeldet = 0) AND (NOT (LEFT(sm.instanznummer, 2) = 'GA')) AND (NOT (LEFT(sm.instanzname, 7) = 'FW GAST'))"
             + " ORDER BY sm.id_personen"),
-    getErreichbarkeitslisteBereich("SELECT DISTINCT sm.id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname', se.erreichbarkeitsart 'Erreichbarkeitsart', se.code 'Code'"
+    getErreichbarkeitslisteBereich("SELECT DISTINCT sm.instanznummer 'Fubwehr', sm.id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname', se.erreichbarkeitsart 'Erreichbarkeitsart', se.code 'Code'"
             + " FROM FDISK.dbo.stmkmitglieder sm INNER JOIN FDISK.dbo.stmkerreichbarkeiten se ON(sm.id_personen = se.id_personen)"
             + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(sm.instanznummer = f.instanznummer)"
             + " WHERE (sm.abgemeldet = 0) AND (NOT (LEFT(sm.instanznummer, 2) = 'GA')) AND (NOT (LEFT(sm.instanzname, 7) = 'FW GAST'))"
             + " AND f.Bereich_Nr = ? "
             + " ORDER BY sm.id_personen"),
-    getErreichbarkeitslisteAbschnitt("SELECT DISTINCT sm.id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname', se.erreichbarkeitsart 'Erreichbarkeitsart', se.code 'Code'"
+    getErreichbarkeitslisteAbschnitt("SELECT DISTINCT sm.instanznummer 'Fubwehr', sm.id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname', se.erreichbarkeitsart 'Erreichbarkeitsart', se.code 'Code'"
             + " FROM FDISK.dbo.stmkmitglieder sm INNER JOIN FDISK.dbo.stmkerreichbarkeiten se ON(sm.id_personen = se.id_personen)"
             + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(sm.instanznummer = f.instanznummer)"
             + " WHERE (sm.abgemeldet = 0) AND (NOT (LEFT(sm.instanznummer, 2) = 'GA')) AND (NOT (LEFT(sm.instanzname, 7) = 'FW GAST'))"
             + " AND f.abschnitt_instanznummer = ?"
             + " ORDER BY sm.id_personen"),
-    getErreichbarkeitslisteFubwehr("SELECT DISTINCT sm.id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname', se.erreichbarkeitsart 'Erreichbarkeitsart', se.code 'Code'"
+    getErreichbarkeitslisteFubwehr("SELECT DISTINCT sm.instanznummer 'Fubwehr', sm.id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname', se.erreichbarkeitsart 'Erreichbarkeitsart', se.code 'Code'"
             + " FROM FDISK.dbo.stmkmitglieder sm INNER JOIN FDISK.dbo.stmkerreichbarkeiten se ON(sm.id_personen = se.id_personen)"
             + " WHERE (sm.abgemeldet = 0) AND (NOT (LEFT(sm.instanznummer, 2) = 'GA')) AND (NOT (LEFT(sm.instanzname, 7) = 'FW GAST'))"
             + " AND sm.instanznummer = ?"

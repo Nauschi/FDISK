@@ -231,6 +231,7 @@ function getStyle(el, styleProp)
 
 //Wir aufgerufen wenn der Button vorschau gecklickt wird.
 /**
+ * Überprüft ob keine Klammer falsch gesetzt wurde. Wenn doch -> Fehlermeldung
  * Überprüft ob die letzte Verknüpfung leer ist, 
  * falls sie leer ist wird das div rot eingefärbt,
  * falls nicht....
@@ -239,20 +240,61 @@ function getStyle(el, styleProp)
  */
 function onVorschau(intZahler)
 {
+    console.log("Test");
     var boolCorrect = true;
+    var boolBracketsOpen = false;
+    var boolError = false;
     for (var i = 1; i < intZahler; i++)
     {
+
         var strWertVonVerknupfungSelect = document.getElementById("select_verknuepfung_" + i).value;
         if (strWertVonVerknupfungSelect == "N/A")
         {
             boolCorrect = false;
         }
         var filterValue = getValueOfFilterObject(i);
+        
         if (filterValue == "")
         {
             boolCorrect = false;
         }
+        
+//        if (document.getElementById("select_klammer_" + i).value == '(') {
+//            if (!boolBracketsOpen) {
+//                boolBracketsOpen = true;
+//                console.log("Open? correct: " + boolBracketsOpen);
+//            } else {
+//                //FEHLER
+//                document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Alle Klammern müssen richtig gesetzt sein!";
+//                $('#modal_fehler').modal('show');
+//                console.log("Open? error: " + boolBracketsOpen);
+//                return false;
+//            }
+//        }
+//        if (document.getElementById("select_klammer_zu" + i).value == ')') {
+//            if (boolBracketsOpen) {
+//                boolBracketsOpen = false;
+//                console.log("Open? correct: " + boolBracketsOpen);
+//            } else {
+//                //FEHLER
+//                document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Alle Klammern müssen richtig gesetzt sein!";
+//                $('#modal_fehler').modal('show');
+//                console.log("Open? error: " + boolBracketsOpen);
+//                return false;
+//            }
+//        }
+        
+
     }
+
+//    if (boolBracketsOpen) {
+//        //FEHLER
+//        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Alle Klammern müssen richtig gesetzt sein!";
+//        $('#modal_fehler').modal('show');
+//        console.log("Open? error down: " + boolBracketsOpen);
+//        return false;
+//    }
+
     if (getValueOfFilterObject(intZahler) == "")
     {
         boolCorrect = false;
@@ -271,7 +313,7 @@ function onVorschau(intZahler)
         }
     } else
     {
-        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Alle Verknüfungen, außer der letzten, müssen gesetzt sein"
+        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Alle Verknüpfungen, außer der letzten, müssen gesetzt sein"
                 + "<br/> Alle Filter müssen einen Wert besitzen";
         $('#modal_fehler').modal('show');
         return false;

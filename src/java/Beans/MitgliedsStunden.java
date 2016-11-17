@@ -25,10 +25,11 @@ public class MitgliedsStunden extends Mitglied implements Serializable {
     int intAnzUb;
     int intAnzEb;
     int intAnzTb;
+    String strFubwehr;
     private BL bl = new BL();
 
-    public MitgliedsStunden(int intMinuten, String strInstanznummer, int intAnzUb, int intAnzEb, int intAnzTb, int intMinutenUb, int intMinutenEb, int intMinutenTb, int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, String strInstanzname) throws ClassNotFoundException {
-        super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
+    public MitgliedsStunden(int intMinuten, String strInstanznummer, int intAnzUb, int intAnzEb, int intAnzTb, int intMinutenUb, int intMinutenEb, int intMinutenTb, int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, String strInstanzname, String strFubwehr) throws ClassNotFoundException {
+        super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname, strFubwehr);
         this.intMinuten = intMinuten;
         this.strInstanznummer = strInstanznummer;
         this.intMinutenUb = intMinutenUb;
@@ -38,9 +39,18 @@ public class MitgliedsStunden extends Mitglied implements Serializable {
         this.intAnzEb = intAnzEb;
         this.intAnzTb = intAnzTb;
         this.intAnzUb = intAnzUb;
+        this.strFubwehr = strFubwehr;
 
     }
 
+    public String getStrFubwehr() {
+        return strFubwehr;
+    }
+
+    public void setStrFubwehr(String strFubwehr) {
+        this.strFubwehr = strFubwehr;
+    }
+    
     public String getStrInstanzname() {
         return strInstanzname;
     }

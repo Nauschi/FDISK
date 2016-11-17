@@ -6,6 +6,7 @@
 package Servlet;
 
 import Beans.MitgliedsStundenPDF;
+import Database.DB_Access;
 import Enum.EnLeerberichte;
 import PDF.PDF_KopfFußzeile;
 import com.itextpdf.text.Document;
@@ -19,6 +20,7 @@ import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.itextpdf.tool.xml.exceptions.CssResolverException;
 import com.itextpdf.tool.xml.html.Tags;
 import com.itextpdf.tool.xml.parser.XMLParser;
+import com.itextpdf.tool.xml.parser.XMLParserListener;
 import com.itextpdf.tool.xml.pipeline.css.CSSResolver;
 import com.itextpdf.tool.xml.pipeline.css.CssResolverPipeline;
 import com.itextpdf.tool.xml.pipeline.end.PdfWriterPipeline;
@@ -39,6 +41,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -120,7 +123,7 @@ public class PDFServlet extends HttpServlet {
 
         String strAusgabe = "Es ist ein unerwartetes Problem aufgetreten";
         boolean boolLeerbericht = true;
-
+        HttpSession userSession = request.getSession();
         switch (strBerichtname) {
             case "Einsatzbericht leer":
                 strAusgabe = generiereAusgabeEinsatzberichtLeer(strTable, strSplitData[2]);
@@ -157,15 +160,25 @@ public class PDFServlet extends HttpServlet {
                 strAusgabe = "<h1>" + strBerichtname + "</h1>" + generiereStundenauswertungJeMitgliedJeInstanz(strTable);
                 boolLeerbericht = false;
                 break;
+            case "Geburtstagsliste":
+                strAusgabe = "<h1>" + strBerichtname + " " + userSession.getAttribute("attJahr") + "</h1>" + strTable;
+                boolLeerbericht = false;
+                break;
+            case "Dienstzeitliste":
+                strAusgabe = "<h1>" + strBerichtname + " " + userSession.getAttribute("attJahrDienst") + "</h1>" + strTable;
+                boolLeerbericht = false;
+                break;
             default:
                 strAusgabe = "<h1>" + strBerichtname + "</h1>" + strTable;
                 boolLeerbericht = false;
         }
-
         String strContextPath = this.getServletContext().getRealPath("/");
         String strCSSPath1 = strContextPath + File.separator + "css" + File.separator + "pdfSimpel.css";
         String strFontPath = strContextPath + File.separator + "res" + File.separator + "Cambria.ttf";
 
+
+        //FAIL - just ignore
+        //strAusgabe = strAusgabe.substring(0, pos+5) + ("<thead>" + strAusgabe.split("<thead>")[1].split("</thead>")[0] + "</thead>") + strAusgabe.substring(pos+5);
         Rectangle rect;
         try {
             Document document;
@@ -181,6 +194,7 @@ public class PDFServlet extends HttpServlet {
             PDF_KopfFußzeile event = new PDF_KopfFußzeile(strFontPath, writer);
             writer.setBoxSize("pageRect", rect);
             writer.setPageEvent(event);
+
             document.open();
             HtmlPipelineContext htmlContext = new HtmlPipelineContext(null);
             htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
@@ -203,6 +217,7 @@ public class PDFServlet extends HttpServlet {
             XMLWorker worker = new XMLWorker(pipeline, true);
             XMLParser p = new XMLParser(worker);
             p.parse(new StringReader(strAusgabe));
+
             document.close();
             writer.close();
             strBerichtname = strBerichtname.replaceAll(" ", "_");
@@ -381,6 +396,7 @@ public class PDFServlet extends HttpServlet {
         return strHTMLOutput;
     }
 
+    
     /**
      * Wird beim Starten des Servlets aufgerufen und initialisiert eine Liste
      * mit den Namen der Berichte die im Hochformat sind
@@ -396,7 +412,7 @@ public class PDFServlet extends HttpServlet {
         liBerHochformat.add("Übungsbericht leer");
         liBerHochformat.add("Einsatzbericht leer");
         liBerHochformat.add("Einfache Mitgliederliste");
-        liBerHochformat.add("Dienstzeitliste");
+        //liBerHochformat.add("Dienstzeitliste");
         liBerHochformat.add("Geburtstagsliste");
         liBerHochformat.add("Kursstatistik");
     }

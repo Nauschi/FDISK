@@ -22,12 +22,12 @@ public class Geraetetraegermitglied extends Mitglied implements Serializable
     private String strInstanzname; 
     
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
-     private SimpleDateFormat sdfGebDate = new SimpleDateFormat("dd.MM.yyyy");
+    private SimpleDateFormat sdfGebDate = new SimpleDateFormat("dd.MM.yyyy");
    private BL bl = new BL(); 
 
-    public Geraetetraegermitglied(int intInstanznr, Date dateGeb, Date dateUntersuchung, Date dateNaechsteUntersuchung, int intIdInstanzen, int intAnzahl, int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, String strInstanzname) throws ClassNotFoundException
+    public Geraetetraegermitglied(int intInstanznr, Date dateGeb, Date dateUntersuchung, Date dateNaechsteUntersuchung, int intIdInstanzen, int intAnzahl, int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, String strInstanzname, String strFubwehr) throws ClassNotFoundException
     {
-        super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
+        super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname, strFubwehr);
 
         this.intInstanznr = intInstanznr;
         this.dateGeb = dateGeb;
@@ -39,9 +39,9 @@ public class Geraetetraegermitglied extends Mitglied implements Serializable
 
     }
 
-    public Geraetetraegermitglied(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname) throws ClassNotFoundException
+    public Geraetetraegermitglied(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, String strFubwehr) throws ClassNotFoundException
     {
-        super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname);
+        super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname, strFubwehr);
     }
 
     public String getStrInstanzname()
@@ -197,7 +197,8 @@ public class Geraetetraegermitglied extends Mitglied implements Serializable
         strZuname = bl.formatiereAusgabe(strZuname);
         strVorname = bl.formatiereAusgabe(strVorname);
 
-        String strHtml = "<tr><td class='STB'>"
+        String strHtml = "<tr>"
+                + "<td id='multipleFb'>" + strFubwehr + "</td><td class='STB'>"
                 + strStammblattnummer + "</td><td class='DGR'>"
                 + strDienstgrad + "</td><td class='titel'>"
                 + strTitel + "</td><td>"

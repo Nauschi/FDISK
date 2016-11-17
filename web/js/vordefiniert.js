@@ -201,6 +201,7 @@ function saveDataForPDF()
     {
         document.getElementById("hidden_pdfData").value = strName + "###" + strTable;
     }
+    console.log("Select_Jahr output: "+ document.getElementById("select_jahr").value); 
     document.formPDF.submit();
 }
 
@@ -210,6 +211,7 @@ function saveDataForPDF()
  */
 function saveDataForCSV()
 {
+    
     var strName = document.getElementById("h2_bericht").innerHTML;
     if (strName == "Stundenauswertung je Mitglied je Instanz")
     {
@@ -218,15 +220,22 @@ function saveDataForCSV()
         return;
     }
     var strTable = document.getElementById("div_table").innerHTML;
+    var strCsvTable = document.getElementById("div_csvTable").innerHTML;
+    //window.alert(strTable);
+    //window.alert(strCsvTable);
+    //console.log("div_csvTable: "+document.getElementById("div_csvTable").innerHTML);
     if (document.getElementById("div_zusatzDaten") != null)
     {
         var strZusatzDaten = document.getElementById("div_zusatzDaten").innerHTML;
-        document.getElementById("hidden_CSVData").value = strName + "###" + strTable + "###" + strZusatzDaten;
+        //document.getElementById("hidden_CSVData").value = strName + "###" + strTable + "###" + strZusatzDaten;
+        document.getElementById("hidden_CSVData").value = strName + "###" + strCsvTable + "###" + strZusatzDaten;
     } else
     {
-        document.getElementById("hidden_CSVData").value = strName + "###" + strTable;
+        //document.getElementById("hidden_CSVData").value = strName + "###" + strTable;
+        document.getElementById("hidden_CSVData").value = strName + "###" + strCsvTable;
     }
     document.formCSV.submit();
+    
 }
 
 /**

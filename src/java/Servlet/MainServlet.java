@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 import sun.nio.cs.StandardCharsets;
 
 /**
@@ -86,6 +87,7 @@ public class MainServlet extends HttpServlet {
             int intIDUser = Integer.parseInt(request.getParameter("ID"));
             intIDUser -= 43796;
             getUserData(request, response, intIDUser);
+            HttpSession userSession = request.getSession(true);
             return;
         }
         request.getRequestDispatcher("jsp/login.jsp").forward(request, response);
@@ -336,21 +338,28 @@ public class MainServlet extends HttpServlet {
             String strFeuerwehr = request.getParameter("select_feuerwehr");
             if (strBericht.equals("Einfache Mitgliederliste"))//Einfache Mitgliederliste
             {
-                request.setAttribute("liste", access.getEinfacheMitgliederliste(intBereichNr, intAbschnittNr, strFeuerwehr));
+                    request.setAttribute("liste", access.getEinfacheMitgliederliste(intBereichNr, intAbschnittNr, strFeuerwehr));
+                
             } else if (strBericht.equals("Erreichbarkeitsliste"))//Erreichbarkeitsliste
             {
                 request.setAttribute("liste", access.getErreichbarkeitsliste(intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals("Adressliste"))//Adressliste
             {
                 request.setAttribute("liste", access.getAdressliste(intBereichNr, intAbschnittNr, strFeuerwehr));
+                //request.getAttribute("liste");
             } else if (strBericht.equals("Geburtstagsliste"))//Geburtstagsliste
             {
                 int intJahr = Integer.parseInt(request.getParameter("select_jahr"));
+                HttpSession userSession = request.getSession();
+                userSession.setAttribute("attJahr", " - Jahr " + request.getParameter("select_jahr"));
                 request.setAttribute("liste", access.getGeburtstagsliste(intJahr, intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals("Dienstzeitliste"))//Dienstzeitliste
             {
                 int intJahr = Integer.parseInt(request.getParameter("select_jahr"));
+                HttpSession userSession = request.getSession();
+                userSession.setAttribute("attJahrDienst", " - Jahr " + request.getParameter("select_jahr"));
                 request.setAttribute("liste", access.getDienstzeitListe(intJahr, intBereichNr, intAbschnittNr, strFeuerwehr));
+
             } else if (strBericht.equals("Stundenauswertung je Mitglied je Instanz"))//Stundenauswertung je Mitglied je Instanz
             {
                 String strVonDatum = request.getParameter("input_von_datum");
@@ -360,15 +369,15 @@ public class MainServlet extends HttpServlet {
                         intAbschnittNr, strFeuerwehr, intPersID));
             } else if (strBericht.equals("Tätigkeitsbericht leer"))//Tätigkeitsbericht leer
             {
-                request.setAttribute("liste", access.getLeerberichtMitglied(intBereichNr, intAbschnittNr, strFeuerwehr));
+                request.setAttribute("liste", access.getLeerberichtMitglied(intBereichNr, intAbschnittNr, strFeuerwehr, false));
                 request.setAttribute("zusatz_liste", access.getLeerberichtFahrzeug(intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals("Einsatzbericht leer"))//Einsatzbericht leer
             {
-                request.setAttribute("liste", access.getLeerberichtMitglied(intBereichNr, intAbschnittNr, strFeuerwehr));
+                request.setAttribute("liste", access.getLeerberichtMitglied(intBereichNr, intAbschnittNr, strFeuerwehr, true));
                 request.setAttribute("zusatz_liste", access.getLeerberichtFahrzeug(intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals("Übungsbericht leer"))//Übungsbericht leer
             {
-                request.setAttribute("liste", access.getLeerberichtMitglied(intBereichNr, intAbschnittNr, strFeuerwehr));
+                request.setAttribute("liste", access.getLeerberichtMitglied(intBereichNr, intAbschnittNr, strFeuerwehr, false));
                 request.setAttribute("zusatz_liste", access.getLeerberichtFahrzeug(intBereichNr, intAbschnittNr, strFeuerwehr));
             } else if (strBericht.equals("Liste aller Einsatzberichte"))//Liste aller Einsatzberichte
             {
@@ -459,7 +468,7 @@ public class MainServlet extends HttpServlet {
         String[][] strDaten = new String[intZaehler][6];
         for (int i = 0; i < intZaehler; i++) {
             String strZeile = request.getParameter("hidden_element_data_" + (i + 1));
-            System.out.println("strZeile: "+ strZeile);
+            System.out.println("strZeile: " + strZeile);
             String[] splitString = strZeile.split(";");
             for (int j = 0; j < 7; j++) {
                 if (splitString[j].isEmpty()) {
@@ -662,6 +671,7 @@ public class MainServlet extends HttpServlet {
             int intTypeOfDateUI;
             String[] strElemente = strReihe.split(";");
             strBerichtname = strElemente[0];
+            
             intTypeOfDateUI = Integer.parseInt(strElemente[strElemente.length - 1]);
             for (int i = 1; i < strElemente.length - 1; i++) {
                 liBerichtSpalten.add(strElemente[i]);

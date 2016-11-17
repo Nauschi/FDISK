@@ -326,6 +326,9 @@
                     %>
                     <div id="div_table">
                     </div>
+                    <div id="div_csvTable" style='display:none;'>
+
+                    </div>
                     <div id="div_csv_pdf" style="display:none" class="ui segment">
                         <div class="ui equal width grid">
                             <div class="column">
@@ -425,9 +428,12 @@
             <%
                 if (request.getAttribute("liste") != null) {
                     LinkedList<Object> liBerichtDaten = (LinkedList<Object>) request.getAttribute("liste");
+
                     for (Object daten : liBerichtDaten) {
+                        //((String) daten).replaceAll("(#)", ";");
                     }
                     String strHTML = "";
+                    String strCSVHtml = "";
                     int i = 0;
                     while (i < liBerichtDaten.size()) {
 
@@ -436,6 +442,7 @@
                         }
 
                         Object zeile = liBerichtDaten.get(i);
+                        //zeile = zeile.toString().replaceAll("</td><td id='remove'>", " ");
                         String temp = zeile.toString();
 
                         if (temp != null) {
@@ -469,37 +476,105 @@
                         if (i % 3 != 0) {
                             strZusatzHTML += "</tr>";
                         }
+
             %>
 
                     document.getElementById("hidden_pdfData").value = "<%=request.getParameter("input_aktbericht")%>###<%=strHTML%>###<%=strZusatzHTML%>";
                         document.formPDF.submit();
             <%
             } else if (strHTML.split("<tr>").length > 1) {
+
+                strCSVHtml = strHTML;
+
+                String[] strArrayErreichbarkeitsArten = {"EMail", "EMail dienstlich", "EMail Domain", "EMail Feuerwehr", "EMail Feuerwehrhaus", "EMail privat", "Fax", "Fax dienstlich", "Fax Feuerwehrhaus", "Fax privat", "LLZ Alarm-Email", "LLZ Alarm-Fax", "LLZ Alarmierung Kommandant", "LLZ Alarmierung Kommandant Stv", "Mobil", "Mobil dienstlich", "Mobil Feuerwehr", "Mobil privat", "Telefon", "Telefon dienstlich", "Telefon Erziehungsberechtigte", "Telefon Feuerwehrhaus", "Telefon privat", "Url Homepage Feuerwehr"};
+
+                //Änderungen am csv String der Adressliste und Erreichbarkeitsliste werden vorgenommen.
+                if ((request.getParameter("input_aktbericht").toLowerCase().contains("adressliste"))) {
+                    strHTML = strHTML.replaceAll("</td><td id='remove'>", " ");
+                } else if ((request.getParameter("input_aktbericht").toLowerCase().contains("erreichbarkeit"))) {
+                    strCSVHtml = strCSVHtml.replaceAll("<div>", "<td>");
+                    strCSVHtml = strCSVHtml.replaceAll("</div>", "</td>");
+                    String strNewCSVHtml = "";
+                    for (String zeile : strCSVHtml.split("<tr>")) {
+                        String[] strArrayTds = new String[strArrayErreichbarkeitsArten.length];
+                        if (!zeile.equals("")) {
+                            middlefor:
+                            for (String spalte : zeile.split("</td>")) {
+                                if (!spalte.equals("") && !spalte.equals("<td>") && !spalte.equals("</tr>")) {
+                                    System.out.println(spalte);
+                                    spalte = spalte.replace("<td class='erreichbarkeiten'>", "");
+                                    for (int index = 0; index < strArrayErreichbarkeitsArten.length; index++) {
+                                        if (spalte.contains(":")) {
+                                            if (spalte.contains(strArrayErreichbarkeitsArten[index] + ":")) {
+                                                if (strArrayTds[index] == null) {
+
+                                                    strArrayTds[index] = spalte + "</td>";
+                                                } else {
+                                                    spalte = spalte.replace("<td>", "");
+                                                    strArrayTds[index] = strArrayTds[index].replace("</td>", " | " + spalte + "</td>");
+                                                }
+                                                continue middlefor;
+                                            }
+                                        } else {
+                                            continue middlefor;
+                                        }
+                                    }
+                                }
+                            }
+                            String strAnhängen = "";
+                            for (int jndex = 0; jndex < strArrayTds.length; jndex++) {
+                                if (strArrayTds[jndex] == null) {
+                                    strArrayTds[jndex] = "<td></td>";
+                                }
+                                strAnhängen += strArrayTds[jndex];
+                            }
+                            zeile = "<tr>" + zeile.split("<td class='erreichbarkeiten'>")[0] + strAnhängen + "<td></td></tr>";
+                            strNewCSVHtml += zeile;
+                        }
+
+                    }
+                    //System.out.println(strCSVHtml + " | " + strNewCSVHtml);
+
+                    strCSVHtml = strNewCSVHtml;
+                    for (String strErreichbarkeit : strArrayErreichbarkeitsArten) {
+                        strCSVHtml = strCSVHtml.replaceAll(strErreichbarkeit + ":", "");
+                    }
+                }
             %>
                         document.getElementById("div_csv_pdf").style.display = "block";
                         document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
+                        document.getElementById("div_csvTable").innerHTML = document.getElementById("div_table").innerHTML;
+                        document.getElementById("div_csvTable").getElementsByTagName("tbody")[0].innerHTML = "<%=strCSVHtml%>";
             <%=setzeTablesort(request)%>
                         $('.sort').popup();
             <%
                     }
                 }
-                if (request.getParameter("select_abschnitt") != null && (intIDGruppe == 5 || intIDGruppe == 1)) {
+
+                if (request.getParameter(
+                        "select_abschnitt") != null && (intIDGruppe == 5 || intIDGruppe == 1)) {
             %>
                         bezirkChanged(document.getElementById("select_bezirk"),<%=request.getParameter("select_abschnitt")%>);
             <%
                 }
-                if (request.getParameter("select_feuerwehr") != null && (intIDGruppe == 15 || intIDGruppe == 5 || intIDGruppe == 1)) {
+
+                if (request.getParameter(
+                        "select_feuerwehr") != null && (intIDGruppe == 15 || intIDGruppe == 5 || intIDGruppe == 1)) {
             %>
                         abschittChanged(document.getElementById("select_abschnitt"),<%=request.getParameter("select_feuerwehr")%>);
             <%
                 }
-                if (request.getParameter("hidden_berechtigungs_info") != null) {
+
+                if (request.getParameter(
+                        "hidden_berechtigungs_info") != null) {
             %>
                         bezirkChanged(document.getElementById("select_bezirk"),<%=request.getParameter("hidden_berechtigungs_info").split(";")[1]%>);
                         abschittChanged(document.getElementById("select_abschnitt"),<%=request.getParameter("hidden_berechtigungs_info").split(";")[2]%>);
             <%
                 }
-                if (request.getParameter("input_aktbericht") != null && request.getParameter("input_aktbericht").equals("Digitales Fahrtenbuch")) {
+
+                if (request.getParameter(
+                        "input_aktbericht") != null && request.getParameter("input_aktbericht").equals("Digitales Fahrtenbuch")) {
             %>
                         if (document.getElementById("div_zusatzDaten") == null)
                         {
@@ -514,7 +589,8 @@
                         fixDropdowns("select_feuerwehr");
                         fixDropdowns("select_mitglied");
             <%
-                if (request.getAttribute("select_kennzeichen_liste") != null) {
+                if (request.getAttribute(
+                        "select_kennzeichen_liste") != null) {
             %>
                         $('.ui.search').search({minCharacters : 0, searchFullText: false, source: [
             <%
@@ -527,7 +603,8 @@
             %>
                         ], error : {noResults   : 'Keine Ergebnisse'}});
             <%
-            } else if (request.getAttribute("select_mitglieder_hs") != null) {
+            } else if (request.getAttribute(
+                    "select_mitglieder_hs") != null) {
             %>
                         setDeleteOnChange();
             <%
@@ -666,9 +743,9 @@
                 || request.getParameter("input_aktbericht").equals("Adressliste"))) {
             if (request.getParameter("input_aktbericht").equals("Geburtstagsliste")
                     || request.getParameter("input_aktbericht").equals("Dienstzeitliste")) {
-                return "$('.tablesorter').tablesorter({headers: {1: {sorter: 'levels'},5: {sorter: 'germandate'}}});";
+                return "$('.tablesorter').tablesorter({headers: {2: {sorter: 'levels'},6: {sorter: 'germandate'}}});";
             } else {
-                return "$('.tablesorter').tablesorter({headers: {1: {sorter: 'levels'}}});";
+                return "$('.tablesorter').tablesorter({headers: {2: {sorter: 'levels'}}});";
             }
         } else if (request.getParameter("input_aktbericht") != null && (request.getParameter("input_aktbericht").equals("Liste aller Tätigkeitsberichte")
                 || request.getParameter("input_aktbericht").equals("Liste aller Übungsberichte"))) {
@@ -688,7 +765,7 @@
             return "$('.tablesorter').tablesorter({headers: {1: {sorter: 'berichtdate'},2: {sorter: 'berichtdate'}}});";
         } else if (request.getParameter("input_aktbericht") != null
                 && request.getParameter("input_aktbericht").equals("Einsatztaugliche Atemschutzgeräteträger")) {
-            return "$('.tablesorter').tablesorter({headers: {1: {sorter: 'levels'},5: {sorter: 'germandate'},6: {sorter: 'berichtdate'},7: {sorter: 'berichtdate'}}});";
+            return "$('.tablesorter').tablesorter({headers: {2: {sorter: 'levels'},6: {sorter: 'germandate'},7: {sorter: 'berichtdate'},8: {sorter: 'berichtdate'}}});";
         } else if (request.getParameter("input_aktbericht") != null
                 && request.getParameter("input_aktbericht").equals("Stundenauswertung je Mitglied je Instanz")) {
             return "$('.tablesorter').tablesorter({headers: {1: {sorter: 'levels'},6: {sorter: 'stundenauswertung'}}});";

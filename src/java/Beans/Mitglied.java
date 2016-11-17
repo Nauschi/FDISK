@@ -22,10 +22,11 @@ public class Mitglied implements Serializable
     public String strTitel;
     public String strVorname;
     public String strZuname;
+    public String strFubwehr;
     
     private BL bl = new BL(); 
 
-    public Mitglied(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname) throws ClassNotFoundException
+    public Mitglied(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, String strFubwehr) throws ClassNotFoundException
     {
         this.intId_Personen = intId_Personen;
         this.strStammblattnummer = strStammblattnummer;
@@ -33,6 +34,15 @@ public class Mitglied implements Serializable
         this.strTitel = strTitel;
         this.strVorname = strVorname;
         this.strZuname = strZuname;
+        this.strFubwehr = strFubwehr;
+    }
+
+    public String getStrFubwehr() {
+        return strFubwehr;
+    }
+
+    public void setStrFubwehr(String strFubwehr) {
+        this.strFubwehr = strFubwehr;
     }
 
     public int getIntId_Personen()
@@ -96,46 +106,49 @@ public class Mitglied implements Serializable
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 5;
+        hash = 53 * hash + this.intId_Personen;
+        hash = 53 * hash + Objects.hashCode(this.strStammblattnummer);
+        hash = 53 * hash + Objects.hashCode(this.strDienstgrad);
+        hash = 53 * hash + Objects.hashCode(this.strTitel);
+        hash = 53 * hash + Objects.hashCode(this.strVorname);
+        hash = 53 * hash + Objects.hashCode(this.strZuname);
+        hash = 53 * hash + Objects.hashCode(this.strFubwehr);
         return hash;
     }
 
     @Override
-    public boolean equals(Object obj)
-    {
-        if (obj == null)
-        {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass())
-        {
+        if (getClass() != obj.getClass()) {
             return false;
         }
         final Mitglied other = (Mitglied) obj;
-        if (this.intId_Personen != other.intId_Personen)
-        {
+        if (this.intId_Personen != other.intId_Personen) {
             return false;
         }
-        if (!Objects.equals(this.strStammblattnummer, other.strStammblattnummer))
-        {
+        if (!Objects.equals(this.strStammblattnummer, other.strStammblattnummer)) {
             return false;
         }
-        if (!Objects.equals(this.strDienstgrad, other.strDienstgrad))
-        {
+        if (!Objects.equals(this.strDienstgrad, other.strDienstgrad)) {
             return false;
         }
-        if (!Objects.equals(this.strTitel, other.strTitel))
-        {
+        if (!Objects.equals(this.strTitel, other.strTitel)) {
             return false;
         }
-        if (!Objects.equals(this.strVorname, other.strVorname))
-        {
+        if (!Objects.equals(this.strVorname, other.strVorname)) {
             return false;
         }
-        if (!Objects.equals(this.strZuname, other.strZuname))
-        {
+        if (!Objects.equals(this.strZuname, other.strZuname)) {
+            return false;
+        }
+        if (!Objects.equals(this.strFubwehr, other.strFubwehr)) {
             return false;
         }
         return true;
@@ -165,11 +178,15 @@ public class Mitglied implements Serializable
         {
             strZuname = "";
         }
+        if(strFubwehr == null){
+            strFubwehr = "";
+        }
 
         strZuname = bl.formatiereAusgabe(strZuname);
         strVorname = bl.formatiereAusgabe(strVorname);
 
-        String strHtml = "<tr><td>"
+        String strHtml = "<tr><td id='multipleFb'>"
+                + strFubwehr + "</td><td>"
                 + strStammblattnummer + "</td><td>"
                 + strDienstgrad + "</td><td>"
                 + strTitel + "</td><td>"

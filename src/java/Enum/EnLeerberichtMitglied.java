@@ -25,8 +25,7 @@ public enum EnLeerberichtMitglied {
     getLeerberichtMitgliedFubwehr("SELECT id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname' "
             + " FROM FDISK.dbo.stmkmitglieder "
             + " WHERE (FDISK.dbo.stmkmitglieder.abgemeldet = 0) AND (NOT (LEFT(FDISK.dbo.stmkmitglieder.instanznummer, 2) = 'GA')) AND (NOT (LEFT(FDISK.dbo.stmkmitglieder.instanzname, 7) = 'FW GAST')) "
-            + " AND instanznummer = ?"
-            + " ORDER BY zuname");
+            + " AND instanznummer = ?");
 
     private final String strStatement;
 
