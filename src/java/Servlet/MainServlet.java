@@ -423,6 +423,7 @@ public class MainServlet extends HttpServlet {
             }
         } catch (Exception ex) {
             System.out.println(ex.toString());
+            System.out.println("test");
         }
         request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
     }
