@@ -501,7 +501,7 @@
                             middlefor:
                             for (String spalte : zeile.split("</td>")) {
                                 if (!spalte.equals("") && !spalte.equals("<td>") && !spalte.equals("</tr>")) {
-                                    System.out.println(spalte);
+                                    //System.out.println(spalte);
                                     spalte = spalte.replace("<td class='erreichbarkeiten'>", "");
                                     for (int index = 0; index < strArrayErreichbarkeitsArten.length; index++) {
                                         if (spalte.contains(":")) {

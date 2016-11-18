@@ -113,7 +113,7 @@ public class PDFServlet extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String strData = request.getParameter("hidden_pdfData");
-        System.out.println("strData_new --> " + strData);
+        //System.out.println("strData_new --> " + strData);
         String[] strSplitData = strData.split("###");
         String strBerichtname;
         String strTable;
@@ -254,7 +254,7 @@ public class PDFServlet extends HttpServlet {
         intIndex1 = strTemp.indexOf("<tbody>") + 7;
         intIndex2 = strTemp.lastIndexOf("</tbody>");
         String strTRs = strTemp.substring(intIndex1, intIndex2);
-        System.out.println("strTRs --> " + strTemp);
+        //System.out.println("strTRs --> " + strTemp);
         int intIndex = -1;
         //Struktur der TableRow
         //<tr>
@@ -271,12 +271,12 @@ public class PDFServlet extends HttpServlet {
             while (true) {
                 intIndex = strTRs.indexOf("</tr>") + 5;
                 String strOriginalAktRow = strTRs.substring(0, intIndex);
-                System.out.println("strOriginalAktRow --> " + strOriginalAktRow);
+                //System.out.println("strOriginalAktRow --> " + strOriginalAktRow);
                 MitgliedsStundenPDF msp = getMitgliedVonString(strOriginalAktRow);
                 msp.setStrHead(strThead);
                 boolean boolNeu = true;
                 for (int i = 0; i < liPDFMit.size(); i++) {
-                    System.out.println(liPDFMit.get(i).toString());
+                    //System.out.println(liPDFMit.get(i).toString());
                     if (liPDFMit.get(i).toString().equals(msp.toString())) {
                         boolNeu = false;
                         MitgliedsStundenPDF mspGleich = liPDFMit.get(i);
@@ -294,7 +294,7 @@ public class PDFServlet extends HttpServlet {
 
                 if (boolNeu) {
                     liPDFMit.add(msp);
-                    System.out.println(liPDFMit.get(0).toString());
+                    //System.out.println(liPDFMit.get(0).toString());
                 }
                 strTRs = strTRs.replace(strOriginalAktRow, "");
             }
@@ -331,8 +331,8 @@ public class PDFServlet extends HttpServlet {
                 Integer.parseInt(splitData[0]), Integer.parseInt(splitData[1]), Integer.parseInt(splitData[2]), Integer.parseInt(splitData[3]), Integer.parseInt(splitData[4]), Integer.parseInt(splitData[5]));
         msp.addInstanzname(splitAktRow[5]);
         msp.addStundenSumme(splitAktRow[6]);
-        System.out.println("strAktRow --> " + strAktRow);
-        System.out.println("strData --> " + strData);
+        //System.out.println("strAktRow --> " + strAktRow);
+        //System.out.println("strData --> " + strData);
         return msp;
     }
 

@@ -423,7 +423,7 @@ public class MainServlet extends HttpServlet {
             }
         } catch (Exception ex) {
             System.out.println(ex.toString());
-            System.out.println("test");
+            //System.out.println("test");
         }
         request.getRequestDispatcher("jsp/vordefiniert.jsp").forward(request, response);
     }
@@ -469,7 +469,7 @@ public class MainServlet extends HttpServlet {
         String[][] strDaten = new String[intZaehler][6];
         for (int i = 0; i < intZaehler; i++) {
             String strZeile = request.getParameter("hidden_element_data_" + (i + 1));
-            System.out.println("strZeile: " + strZeile);
+            //System.out.println("strZeile: " + strZeile);
             String[] splitString = strZeile.split(";");
             for (int j = 0; j < 7; j++) {
                 if (splitString[j].isEmpty()) {

@@ -1237,7 +1237,8 @@ public class DB_Access {
                 liStunden.add(mitgliedsStunden);
             }
         }
-        liStunden.sort(Comparator.comparing(MitgliedsStunden::getStrInstanzname));
+        //liStunden.sort(Comparator.comparing(MitgliedsStunden::getStrInstanzname).thenComparing(MitgliedsStunden::getStrStammblattnummer));
+        liStunden.sort(Comparator.comparing(MitgliedsStunden::getStrZuname).thenComparing(MitgliedsStunden::getStrVorname));
         connPool.releaseConnection(conn);
         return liStunden;
     }
@@ -3575,7 +3576,7 @@ public class DB_Access {
                     break;
                 default:
                     sbSqlString.append("m.").append(strSelectedCols[i]).append(",");
-                    System.out.println(sbSqlString.toString());
+                    //System.out.println(sbSqlString.toString());
                     break;
             }
             if (!liSpaltenUeberschriften.contains(strSelectedCols[i])) {
@@ -3800,7 +3801,7 @@ public class DB_Access {
             sbSqlString.append(" ");
         }
         sbSqlString.append(" )");
-        System.out.println("SQL String: " + sbSqlString);
+        //System.out.println("SQL String: " + sbSqlString);
         if (intBereichnr == -2) {
         } else if (intAbschnittnr == -2) {
             sbSqlString.append(" AND (fw.Bereich_Nr = ").append(intBereichnr).append(")");
@@ -3809,7 +3810,7 @@ public class DB_Access {
         } else {
             sbSqlString.append(" AND (m.instanznummer = '").append(strFubwehr).append("')");
         }
-        System.out.println("SQL String: " + sbSqlString);
+        //System.out.println("SQL String: " + sbSqlString);
         StringBuilder sbHtml = createDynamicReportGeneratorOutput(sbSqlString.toString(), strSelectedCols);
         return sbHtml;
     }
@@ -4091,7 +4092,7 @@ public class DB_Access {
         String strSTB;
         int count = 0;
         while (rs.next()) {
-            System.out.println(" .replace(/ " + rs.getString("Bezeichnung").toUpperCase() + " /i," + count + ")");
+            //System.out.println(" .replace(/ " + rs.getString("Bezeichnung").toUpperCase() + " /i," + count + ")");
             count++;
         }
 
