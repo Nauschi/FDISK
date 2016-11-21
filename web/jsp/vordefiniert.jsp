@@ -466,6 +466,7 @@
                             if (i % 3 == 0) {
                                 strZusatzHTML += "<tr>";
                             }
+                            
                             Object zeile = liFahrzeug.get(i);
                             strZusatzHTML += zeile.toString();
                             i++;

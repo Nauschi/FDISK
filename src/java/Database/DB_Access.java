@@ -862,7 +862,9 @@ public class DB_Access {
         Statement stat = conn.createStatement();
 
         String sqlString = "SELECT COUNT(m.id_mitgliedschaften) 'Teilnahmen'"
-                + " ,SUM(f.km) 'Km'"
+                + " ,(SELECT SUM(km) FROM"
+                + " FDISK.dbo.stmktaetigkeitsberichtefahrzeuge f"
+                + " where id_berichte = t.id_berichte)'Km'"
                 + " ,t.id_berichte 'BerichtId'"
                 + " ,t.instanznummer 'Instanznr'"
                 + " ,t.instanzname 'Instanzname'"
@@ -873,7 +875,6 @@ public class DB_Access {
                 + " ,t.ende 'Ende'"
                 + " FROM FDISK.dbo.stmktaetigkeitsberichte t"
                 + " INNER JOIN FDISK.dbo.stmktaetigkeitsberichtemitglieder m ON(t.id_berichte = m.id_berichte)"
-                + " INNER JOIN FDISK.dbo.stmktaetigkeitsberichtefahrzeuge f ON (t.id_berichte = f.id_berichte)"
                 + " INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(t.instanznummer = fw.instanznummer)"
                 + " WHERE t.taetigkeitsart = 'Kursbesuch an der FWZS' ";
 
@@ -898,6 +899,8 @@ public class DB_Access {
                 + " ,t.ende";
         ResultSet rs = stat.executeQuery(sqlString);
 
+        System.out.println("KURSSTATISTIK SQL STATEMENT: "+sqlString);
+        
         double doKm;
         int intTeilnehmer;
         int intIdBerichte;
@@ -973,7 +976,8 @@ public class DB_Access {
             sqlString += getSqlDateString(strVon, strBis, 4, false);
         }
 
-        sqlString += " GROUP BY "
+        sqlString += " "
+                + "GROUP BY "
                 + "k.id_kursarten "
                 + ",k.lehrgangsnummer "
                 + ",k.kursbezeichnung "
