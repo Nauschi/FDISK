@@ -18,7 +18,9 @@ import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorker;
+import com.itextpdf.tool.xml.parser.TagState;
 import com.itextpdf.tool.xml.parser.XMLParser;
+import com.itextpdf.tool.xml.parser.io.ParserMonitor;
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
@@ -37,15 +39,6 @@ public class PDF_KopfFußzeile extends PdfPageEventHelper {
     Image img;
     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
     PdfWriter pdfWriter;
-    String strThead;
-    
-    public String getStrThead() {
-        return strThead;
-    }
-
-    public void setStrThead(String strTHead) {
-        this.strThead = strTHead;
-    }
 
     public PDF_KopfFußzeile(String strFontPath, PdfWriter pdfWriter) {
         try {
@@ -63,10 +56,6 @@ public class PDF_KopfFußzeile extends PdfPageEventHelper {
     @Override
     public void onStartPage(PdfWriter writer, Document document) {
         pagenumber++;
-        if (pagenumber != 1) {
-            
-        }
-
     }
 
     /**
@@ -102,7 +91,6 @@ public class PDF_KopfFußzeile extends PdfPageEventHelper {
         } catch (DocumentException ex) {
             Logger.getLogger(PDF_KopfFußzeile.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
 }

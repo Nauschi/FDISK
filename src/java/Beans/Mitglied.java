@@ -185,7 +185,7 @@ public class Mitglied implements Serializable
         strZuname = bl.formatiereAusgabe(strZuname);
         strVorname = bl.formatiereAusgabe(strVorname);
 
-        String strHtml = "<tr><td id='multipleFb'>"
+        String strHtml = "<tr><td id='multipleFb' class='wehr'>"
                 + strFubwehr + "</td><td>"
                 + strStammblattnummer + "</td><td>"
                 + strDienstgrad + "</td><td>"

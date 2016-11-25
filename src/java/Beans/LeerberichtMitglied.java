@@ -22,9 +22,10 @@ public class LeerberichtMitglied implements Serializable
     public String strTitel;
     public String strVorname;
     public String strZuname;
+    public String strInstanznummer;
     private BL bl = new BL(); 
 
-    public LeerberichtMitglied(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname) throws ClassNotFoundException
+    public LeerberichtMitglied(int intId_Personen, String strStammblattnummer, String strDienstgrad, String strTitel, String strVorname, String strZuname, String strInstanznummer) throws ClassNotFoundException
     {
         this.intId_Personen = intId_Personen;
         this.strStammblattnummer = strStammblattnummer;
@@ -32,7 +33,15 @@ public class LeerberichtMitglied implements Serializable
         this.strTitel = strTitel;
         this.strVorname = strVorname;
         this.strZuname = strZuname;
+        this.strInstanznummer = strInstanznummer;
+    }
 
+    public String getStrInstanznummer() {
+        return strInstanznummer;
+    }
+
+    public void setStrInstanznummer(String strInstanznummer) {
+        this.strInstanznummer = strInstanznummer;
     }
 
     public int getIntId_Personen()
@@ -50,9 +59,13 @@ public class LeerberichtMitglied implements Serializable
         return strStammblattnummer;
     }
 
-    public void setIntStammblattnummer(String intStammblattnummer)
+    public void setStrStammblattnummer(String strStammblattnummer)
     {
         this.strStammblattnummer = strStammblattnummer;
+    }
+    
+    public int getIntStammblattnummer(){
+        return Integer.parseInt(this.strStammblattnummer);
     }
 
     public String getStrDienstgrad()
@@ -96,15 +109,15 @@ public class LeerberichtMitglied implements Serializable
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 5;
-        hash = 97 * hash + this.intId_Personen;
-        hash = 97 * hash + Objects.hashCode(this.strStammblattnummer);
-        hash = 97 * hash + Objects.hashCode(this.strDienstgrad);
-        hash = 97 * hash + Objects.hashCode(this.strTitel);
-        hash = 97 * hash + Objects.hashCode(this.strVorname);
-        hash = 97 * hash + Objects.hashCode(this.strZuname);
+        hash = 37 * hash + this.intId_Personen;
+        hash = 37 * hash + Objects.hashCode(this.strStammblattnummer);
+        hash = 37 * hash + Objects.hashCode(this.strDienstgrad);
+        hash = 37 * hash + Objects.hashCode(this.strTitel);
+        hash = 37 * hash + Objects.hashCode(this.strVorname);
+        hash = 37 * hash + Objects.hashCode(this.strZuname);
+        hash = 37 * hash + Objects.hashCode(this.strInstanznummer);
         return hash;
     }
 
@@ -144,6 +157,10 @@ public class LeerberichtMitglied implements Serializable
         {
             return false;
         }
+        if (!Objects.equals(this.strInstanznummer, other.strInstanznummer))
+        {
+            return false;
+        }
         return true;
     }
 
@@ -161,6 +178,9 @@ public class LeerberichtMitglied implements Serializable
         if (strZuname == null)
         {
             strZuname = "";
+        }
+        if(strInstanznummer == null){
+            strInstanznummer = "";
         }
 
         strVorname = bl.formatiereAusgabe(strVorname);

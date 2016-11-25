@@ -9,8 +9,10 @@ import Beans.MitgliedsStundenPDF;
 import Database.DB_Access;
 import Enum.EnLeerberichte;
 import PDF.PDF_KopfFußzeile;
+import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -26,11 +28,14 @@ import com.itextpdf.tool.xml.pipeline.css.CssResolverPipeline;
 import com.itextpdf.tool.xml.pipeline.end.PdfWriterPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.net.MalformedURLException;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -176,9 +181,12 @@ public class PDFServlet extends HttpServlet {
         String strCSSPath1 = strContextPath + File.separator + "css" + File.separator + "pdfSimpel.css";
         String strFontPath = strContextPath + File.separator + "res" + File.separator + "Cambria.ttf";
 
-
         //FAIL - just ignore
         //strAusgabe = strAusgabe.substring(0, pos+5) + ("<thead>" + strAusgabe.split("<thead>")[1].split("</thead>")[0] + "</thead>") + strAusgabe.substring(pos+5);
+        String strHead = "<thead>" + strAusgabe.split("<thead>")[1].split("</thead>")[0] + "</thead>";
+        String strUeberschrift = "<h1>" + strAusgabe.split("<h1>")[1].split("</h1")[0] + "</h1>";
+        strAusgabe = strAusgabe.replace("<table", "<table style='repeat-header: yes;'");
+        
         Rectangle rect;
         try {
             Document document;
@@ -216,8 +224,17 @@ public class PDFServlet extends HttpServlet {
 
             XMLWorker worker = new XMLWorker(pipeline, true);
             XMLParser p = new XMLParser(worker);
+            XMLParser p2 = new XMLParser(worker);
+            p.toString();
+            //ByteArrayInputStream bis = new ByteArrayInputStream(strAusgabe.toString().getBytes());
+            //ByteArrayInputStream cis = new ByteArrayInputStream(strCSSPath1.replace("Simple", "Hoch").toString().getBytes());
+            //XMLWorkerHelper.getInstance().parseXHtml(writer, document, bis, cis);
+            //p.selectState().selfClosing();
+            
+           
             p.parse(new StringReader(strAusgabe));
-
+            
+            
             document.close();
             writer.close();
             strBerichtname = strBerichtname.replaceAll(" ", "_");
@@ -396,7 +413,6 @@ public class PDFServlet extends HttpServlet {
         return strHTMLOutput;
     }
 
-    
     /**
      * Wird beim Starten des Servlets aufgerufen und initialisiert eine Liste
      * mit den Namen der Berichte die im Hochformat sind

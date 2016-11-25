@@ -11,18 +11,18 @@ package Enum;
  */
 public enum EnLeerberichtMitglied {
 
-    getLeerberichtMitgliedAlle("SELECT id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname' "
+    getLeerberichtMitgliedAlle("SELECT id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname', instanznummer 'Instanznummer' "
             + " FROM FDISK.dbo.stmkmitglieder "
             + " WHERE (FDISK.dbo.stmkmitglieder.abgemeldet = 0) AND (NOT (LEFT(FDISK.dbo.stmkmitglieder.instanznummer, 2) = 'GA')) AND (NOT (LEFT(FDISK.dbo.stmkmitglieder.instanzname, 7) = 'FW GAST')) "),
-    getLeerberichtMitgliedBereich("SELECT id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname' "
+    getLeerberichtMitgliedBereich("SELECT id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname', s.instanznummer 'Instanznummer' "
             + " FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer) "
             + " WHERE (s.abgemeldet = 0) AND (NOT (LEFT(s.instanznummer, 2) = 'GA')) AND (NOT (LEFT(s.instanzname, 7) = 'FW GAST')) "
             + " AND f.Bereich_Nr = ?"),
-    getLeerberichtMitgliedAbschnitt("SELECT id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname' "
+    getLeerberichtMitgliedAbschnitt("SELECT id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname', s.instanznummer 'Instanznummer' "
             + " FROM FDISK.dbo.stmkmitglieder s INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich f ON(s.instanznummer = f.instanznummer) "
             + " WHERE (s.abgemeldet = 0) AND (NOT (LEFT(s.instanznummer, 2) = 'GA')) AND (NOT (LEFT(s.instanzname, 7) = 'FW GAST')) "
             + " AND f.abschnitt_instanznummer = ?"),
-    getLeerberichtMitgliedFubwehr("SELECT id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname' "
+    getLeerberichtMitgliedFubwehr("SELECT id_personen 'PersID', standesbuchnummer 'STB', dienstgrad 'DGR', titel 'Titel', vorname 'Vorname', zuname 'Zuname', instanznummer 'Instanznummer' "
             + " FROM FDISK.dbo.stmkmitglieder "
             + " WHERE (FDISK.dbo.stmkmitglieder.abgemeldet = 0) AND (NOT (LEFT(FDISK.dbo.stmkmitglieder.instanznummer, 2) = 'GA')) AND (NOT (LEFT(FDISK.dbo.stmkmitglieder.instanzname, 7) = 'FW GAST')) "
             + " AND instanznummer = ?");

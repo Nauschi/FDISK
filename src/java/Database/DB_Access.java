@@ -1736,6 +1736,7 @@ public class DB_Access {
         String strTitel;
         String strVorname;
         String strZuname;
+        String strInstanznummer;
         int intPersID;
 
         while (rs.next()) {
@@ -1745,11 +1746,14 @@ public class DB_Access {
             strTitel = rs.getString("Titel");
             strVorname = rs.getString("Vorname");
             strZuname = rs.getString("Zuname");
+            strInstanznummer = rs.getString("Instanznummer");
 
-            LeerberichtMitglied mitglied = new LeerberichtMitglied(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname);
+            LeerberichtMitglied mitglied = new LeerberichtMitglied(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanznummer);
             liLeerberichtMitglieder.add(mitglied);
+            
+            
         }
-
+        liLeerberichtMitglieder.sort(Comparator.comparing(LeerberichtMitglied::getStrInstanznummer).thenComparing(LeerberichtMitglied::getIntStammblattnummer));
         connPool.releaseConnection(conn);
         return liLeerberichtMitglieder;
     }
@@ -1835,8 +1839,8 @@ public class DB_Access {
      * Liefert den Teil des SQL Strings, der für die Datumsabfrage benötigt
      * wird, zurück
      *
-     * intBericht = 1 => Einsatzbericht intBericht = 2 => Taetigkeitsbericht
-     * intBericht = 3 => Uebungsbericht intBericht = 4 => Kursstatistik
+     * intBericht = 1 => Einsatzbericht, intBericht = 2 => Taetigkeitsbericht
+     * intBericht = 3 => Uebungsbericht, intBericht = 4 => Kursstatistik
      *
      *
      * @param strVon
@@ -1985,6 +1989,7 @@ public class DB_Access {
             }
             sqlString += getSqlDateString(strVon, strBis, 2, false);
         }
+        System.out.println("TAETIGKEITSBERICHT SQL STATEMENT: "+sqlString);
 
         ResultSet rs = stat.executeQuery(sqlString);
 
@@ -4104,3 +4109,4 @@ public class DB_Access {
     }
 
 }
+
