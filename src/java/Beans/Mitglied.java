@@ -188,7 +188,7 @@ public class Mitglied implements Serializable
         String strHtml = "<tr><td id='multipleFb' class='wehr'>"
                 + strFubwehr + "</td><td>"
                 + strStammblattnummer + "</td><td>"
-                + strDienstgrad + "</td><td>"
+                + strDienstgrad + "</td><td class='titel'>"
                 + strTitel + "</td><td>"
                 + strVorname + "</td><td>"
                 + strZuname + "</td><td class='bemerkung'></td></tr>";

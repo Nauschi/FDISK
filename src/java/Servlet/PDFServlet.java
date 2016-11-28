@@ -185,7 +185,7 @@ public class PDFServlet extends HttpServlet {
         //strAusgabe = strAusgabe.substring(0, pos+5) + ("<thead>" + strAusgabe.split("<thead>")[1].split("</thead>")[0] + "</thead>") + strAusgabe.substring(pos+5);
         String strHead = "<thead>" + strAusgabe.split("<thead>")[1].split("</thead>")[0] + "</thead>";
         String strUeberschrift = "<h1>" + strAusgabe.split("<h1>")[1].split("</h1")[0] + "</h1>";
-        strAusgabe = strAusgabe.replace("<table", "<table style='repeat-header: yes;'");
+        strAusgabe = strAusgabe.replace("<table", "<table style='repeat-header: yes;' ");
         
         Rectangle rect;
         try {
