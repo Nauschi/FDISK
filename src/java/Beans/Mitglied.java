@@ -23,6 +23,7 @@ public class Mitglied implements Serializable
     public String strVorname;
     public String strZuname;
     public String strFubwehr;
+    public String strInstanzname;
     
     private BL bl = new BL(); 
 
@@ -105,6 +106,18 @@ public class Mitglied implements Serializable
         this.strZuname = strZuname;
     }
 
+    public int getStb(){
+        return Integer.parseInt(strStammblattnummer);
+    }
+
+    public String getStrInstanzname() {
+        return strInstanzname;
+    }
+
+    public void setStrInstanzname(String strInstanzname) {
+        this.strInstanzname = strInstanzname;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 5;

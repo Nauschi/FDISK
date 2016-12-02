@@ -183,10 +183,12 @@ public class PDFServlet extends HttpServlet {
 
         //FAIL - just ignore
         //strAusgabe = strAusgabe.substring(0, pos+5) + ("<thead>" + strAusgabe.split("<thead>")[1].split("</thead>")[0] + "</thead>") + strAusgabe.substring(pos+5);
-        String strHead = "<thead>" + strAusgabe.split("<thead>")[1].split("</thead>")[0] + "</thead>";
-        String strUeberschrift = "<h1>" + strAusgabe.split("<h1>")[1].split("</h1")[0] + "</h1>";
-        strAusgabe = strAusgabe.replace("<table", "<table style='repeat-header: yes;' ");
-        
+        //String strHead = "<thead>" + strAusgabe.split("<thead>")[1].split("</thead>")[0] + "</thead>";
+        //String strUeberschrift = "<h1>" + strAusgabe.split("<h1>")[1].split("</h1")[0] + "</h1>";
+        if (!strBerichtname.contains("leer")) {
+            strAusgabe = strAusgabe.replace("<table", "<table style='repeat-header: yes;' ");
+        }
+
         Rectangle rect;
         try {
             Document document;
@@ -230,11 +232,9 @@ public class PDFServlet extends HttpServlet {
             //ByteArrayInputStream cis = new ByteArrayInputStream(strCSSPath1.replace("Simple", "Hoch").toString().getBytes());
             //XMLWorkerHelper.getInstance().parseXHtml(writer, document, bis, cis);
             //p.selectState().selfClosing();
-            
-           
+
             p.parse(new StringReader(strAusgabe));
-            
-            
+
             document.close();
             writer.close();
             strBerichtname = strBerichtname.replaceAll(" ", "_");
@@ -429,8 +429,8 @@ public class PDFServlet extends HttpServlet {
         liBerHochformat.add("Einsatzbericht leer");
         liBerHochformat.add("Einfache Mitgliederliste");
         //liBerHochformat.add("Dienstzeitliste");
-        liBerHochformat.add("Geburtstagsliste");
-        liBerHochformat.add("Kursstatistik");
+        //liBerHochformat.add("Geburtstagsliste");
+        //liBerHochformat.add("Kursstatistik");
     }
 
     /**

@@ -445,6 +445,7 @@ public class MainServlet extends HttpServlet {
         String strZusatzInfo = "<table class='tablesorter ui celled table'><thead>";
         strZusatzInfo += "<tr>"
                 + "<th data-content='nach Kursbezeichnung sortieren' class='sort'>Kursbezeichnung</th>"
+                + "<th data-content='nach Mitglieder sortierten' class='sort'>Mitglieder</th>"
                 + "<th data-content='nach Anzahl Teilnehmer sortieren' class='sort'>Anz Teiln</th>"
                 + "</tr>";
         strZusatzInfo += "</thead><tbody>";

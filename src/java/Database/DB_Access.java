@@ -899,8 +899,8 @@ public class DB_Access {
                 + " ,t.ende";
         ResultSet rs = stat.executeQuery(sqlString);
 
-        System.out.println("KURSSTATISTIK SQL STATEMENT: "+sqlString);
-        
+        System.out.println("KURSSTATISTIK SQL STATEMENT: " + sqlString);
+
         double doKm;
         int intTeilnehmer;
         int intIdBerichte;
@@ -934,6 +934,72 @@ public class DB_Access {
     }
 
     /**
+     * Liefert alle Kursteilnehmer eines bestimmten Kurses in einer LinkedList
+     * zurück
+     *
+     * @param intIdKurse
+     * @return
+     */
+    public LinkedList<Mitglied> getKurssteilnehmer(int intIdKursart, int intBereichnr, int intAbschnittnr, String strFubwehr, String strVon, String strBis) throws Exception {
+        LinkedList<Mitglied> liTeilnehmer = new LinkedList<>();
+
+        Connection conn = connPool.getConnection();
+        Statement stat = conn.createStatement();
+
+        String sqlString = "SELECT m.vorname, m.zuname, m.id_personen, m.standesbuchnummer, m.titel, m.dienstgrad, m.geburtsdatum, m.instanznummer, m.instanzname, k.datum, k.id_kurse "
+                + "FROM FDISK.dbo.stmkmitglieder m "
+                + "INNER JOIN FDISK.dbo.stmkkursemitglieder km ON(m.id_mitgliedschaften = km.id_mitgliedschaften) "
+                + "INNER JOIN FDISK.dbo.stmkkurse k ON(k.id_kurse = km.id_kurse) "
+                + "INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(m.instanznummer = fw.instanznummer) "
+                + "WHERE k.id_kursarten = " + intIdKursart;
+        
+        if (intBereichnr == -2) {
+            sqlString += getSqlDateString(strVon, strBis, 4, false);
+        } else {
+            if (intAbschnittnr == -2) {
+                sqlString += " AND fw.Bereich_Nr = " + intBereichnr;
+            } else if (strFubwehr.equals("-2")) {
+                sqlString += " AND fw.abschnitt_instanznummer = " + intAbschnittnr;
+            } else {
+                sqlString += " AND m.instanznummer = '" + strFubwehr + "'";
+            }
+            sqlString += getSqlDateString(strVon, strBis, 4, false);
+        }
+
+        ResultSet rs = stat.executeQuery(sqlString);
+
+        String strVorname;
+        String strZunanme;
+        int intIdPers;
+        String strInstanznummer;
+        String strInstanzname;
+        String strSTB;
+        String strTitel;
+        String strDGR;
+
+        while (rs.next()) {
+            strVorname = rs.getString("vorname");
+            strZunanme = rs.getString("zuname");
+            intIdPers = rs.getInt("id_personen");
+            strInstanznummer = rs.getString("instanznummer");
+            strInstanzname = rs.getString("instanzname");
+            strSTB = rs.getString("standesbuchnummer");
+            strTitel = rs.getString("titel");
+            strDGR = rs.getString("dienstgrad");
+            Mitglied mitglied = new Mitglied(intIdPers, strSTB, strDGR, strTitel, strVorname, strZunanme, strInstanznummer);
+
+            mitglied.setStrInstanzname(strInstanzname);
+            
+            liTeilnehmer.add(mitglied);
+        }
+        
+        liTeilnehmer.sort(Comparator.comparing(Mitglied::getStrFubwehr).thenComparing(Mitglied::getStb).thenComparing(Mitglied::getStrZuname));
+        
+        connPool.releaseConnection(conn);
+        return liTeilnehmer;
+    }
+
+    /**
      * Liefert alle Kurse die in einem bestimmten Zeitraum sstattgefunden haben
      * als LinkedList zurück
      *
@@ -950,14 +1016,7 @@ public class DB_Access {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 
-        String sqlString = "SELECT k.id_kursarten KursartId "
-                + ",k.lehrgangsnummer Lehrgangsnr "
-                + ",k.kursbezeichnung Kursbez "
-                + ",k.kurskurzbezeichnung Kurskurzbez "
-                + ",k.id_instanzen_veranstalter Veran "
-                + ",k.id_instanzen_durchfuehrend Durchf "
-                + ",k.kursstatus 'Status' "
-                + ",COUNT(km.id_kurse) 'Anzahl_Teilnehmer' "
+        String sqlString = "SELECT DISTINCT id_kursarten, lehrgangsnummer, kursbezeichnung, kurskurzbezeichnung, id_instanzen_veranstalter, id_instanzen_durchfuehrend, kursstatus "
                 + "FROM FDISK.dbo.stmkkurse k "
                 + "INNER JOIN FDISK.dbo.stmkkursemitglieder km ON(k.id_kurse = km.id_kurse) "
                 + "INNER JOIN FDISK.dbo.stmkmitglieder m ON(km.id_mitgliedschaften = m.id_mitgliedschaften) "
@@ -971,49 +1030,102 @@ public class DB_Access {
             } else if (strFubwehr.equals("-2")) {
                 sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
             } else {
-                sqlString += " WHERE m.instanznummer = '" + 47030 + "'";
+                sqlString += " WHERE m.instanznummer = '" + strFubwehr + "'";
             }
             sqlString += getSqlDateString(strVon, strBis, 4, false);
         }
 
-        sqlString += " "
-                + "GROUP BY "
-                + "k.id_kursarten "
-                + ",k.lehrgangsnummer "
-                + ",k.kursbezeichnung "
-                + ",k.kurskurzbezeichnung "
-                + ",k.id_instanzen_veranstalter "
-                + ",k.id_instanzen_durchfuehrend "
-                + ",k.kursstatus "
-                + "order by k.kursbezeichnung ";
-
         ResultSet rs = stat.executeQuery(sqlString);
-
         int intKursartId;
         int intLehrgangsnr;
-        String strKursbez;
-        String strKurskurzbez;
+        String strKursbezeichnung;
+        String strKurskurzbezeichnung;
         int intIdVer;
         int intIdDurchf;
         String strStatus;
-        int intAnzahlTeilnehmer;
 
         while (rs.next()) {
-            intKursartId = rs.getInt("KursartId");
-            intLehrgangsnr = rs.getInt("Lehrgangsnr");
-            strKursbez = rs.getString("Kursbez");
-            strKurskurzbez = rs.getString("Kurskurzbez");
-            intIdVer = rs.getInt("Veran");
-            intIdDurchf = rs.getInt("Durchf");
-            strStatus = rs.getString("Status");
-            intAnzahlTeilnehmer = rs.getInt("Anzahl_Teilnehmer");
+            intKursartId = rs.getInt("id_kursarten");
+            intLehrgangsnr = rs.getInt("lehrgangsnummer");
+            strKursbezeichnung = rs.getString("kursbezeichnung");
+            strKurskurzbezeichnung = rs.getString("kurskurzbezeichnung");
+            intIdVer = rs.getInt("id_instanzen_veranstalter");
+            intIdDurchf = rs.getInt("id_instanzen_durchfuehrend");
+            strStatus = rs.getString("kursstatus");
 
-            Kurs kurs = new Kurs(intKursartId, intLehrgangsnr, strKursbez, strKurskurzbez, intIdVer, intIdDurchf, strStatus, intAnzahlTeilnehmer);
+            Kurs kurs = new Kurs(intKursartId, intLehrgangsnr, strKursbezeichnung, strKurskurzbezeichnung, intIdVer, intIdDurchf, strStatus, getKurssteilnehmer(intKursartId, intBereichnr, intAbschnittnr, strFubwehr, strVon, strBis));
             liKurse.add(kurs);
         }
-
+        liKurse.sort(Comparator.comparing(Kurs::getStrKursbezeichnung).thenComparing(Kurs::getIntAnzahlTeilnehmer));
+        
         connPool.releaseConnection(conn);
         return liKurse;
+
+        //*********Alte Kursstatistik-Auswertung vor 1.12.2016*********\\
+//        String sqlString = "SELECT k.id_kursarten KursartId "
+//                + ",k.lehrgangsnummer Lehrgangsnr "
+//                + ",k.kursbezeichnung Kursbez "
+//                + ",k.kurskurzbezeichnung Kurskurzbez "
+//                + ",k.id_instanzen_veranstalter Veran "
+//                + ",k.id_instanzen_durchfuehrend Durchf "
+//                + ",k.kursstatus 'Status' "
+//                + ",COUNT(km.id_kurse) 'Anzahl_Teilnehmer' "
+//                + "FROM FDISK.dbo.stmkkurse k "
+//                + "INNER JOIN FDISK.dbo.stmkkursemitglieder km ON(k.id_kurse = km.id_kurse) "
+//                + "INNER JOIN FDISK.dbo.stmkmitglieder m ON(km.id_mitgliedschaften = m.id_mitgliedschaften) "
+//                + "INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(m.instanznummer = fw.instanznummer) ";
+//
+//        if (intBereichnr == -2) {
+//            sqlString += getSqlDateString(strVon, strBis, 4, true);
+//        } else {
+//            if (intAbschnittnr == -2) {
+//                sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
+//            } else if (strFubwehr.equals("-2")) {
+//                sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
+//            } else {
+//                sqlString += " WHERE m.instanznummer = '" + 47030 + "'";
+//            }
+//            sqlString += getSqlDateString(strVon, strBis, 4, false);
+//        }
+//
+//        sqlString += " "
+//                + "GROUP BY "
+//                + "k.id_kursarten "
+//                + ",k.lehrgangsnummer "
+//                + ",k.kursbezeichnung "
+//                + ",k.kurskurzbezeichnung "
+//                + ",k.id_instanzen_veranstalter "
+//                + ",k.id_instanzen_durchfuehrend "
+//                + ",k.kursstatus "
+//                + "order by k.kursbezeichnung ";
+//
+//        ResultSet rs = stat.executeQuery(sqlString);
+//
+//        int intKursartId;
+//        int intLehrgangsnr;
+//        String strKursbez;
+//        String strKurskurzbez;
+//        int intIdVer;
+//        int intIdDurchf;
+//        String strStatus;
+//        int intAnzahlTeilnehmer;
+//
+//        while (rs.next()) {
+//            intKursartId = rs.getInt("KursartId");
+//            intLehrgangsnr = rs.getInt("Lehrgangsnr");
+//            strKursbez = rs.getString("Kursbez");
+//            strKurskurzbez = rs.getString("Kurskurzbez");
+//            intIdVer = rs.getInt("Veran");
+//            intIdDurchf = rs.getInt("Durchf");
+//            strStatus = rs.getString("Status");
+//            intAnzahlTeilnehmer = rs.getInt("Anzahl_Teilnehmer");
+//
+//            Kurs kurs = new Kurs(intKursartId, intLehrgangsnr, strKursbez, strKurskurzbez, intIdVer, intIdDurchf, strStatus, intAnzahlTeilnehmer);
+//            liKurse.add(kurs);
+//        }
+//
+//        connPool.releaseConnection(conn);
+//        return liKurse;
     }
 
     /**
@@ -1572,30 +1684,33 @@ public class DB_Access {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 
-        String sqlString = " SELECT DISTINCT kennzeichen 'Kennzeichen'"
-                + " FROM FDISK.dbo.stmkfahrzeuge sf INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(sf.instanznummer = fw.instanznummer)";
+        String sqlString = " SELECT DISTINCT kennzeichen 'Kennzeichen', taktischebezeichnung 'Bezeichnung'"
+                + " FROM FDISK.dbo.stmkfahrzeuge sf INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(sf.instanznummer = fw.instanznummer)"
+                + " WHERE sf.status = 'aktiv'";
 
         if (intBereichnr == -2) {
         } else if (intAbschnittnr == -2) {
-            sqlString += " WHERE fw.Bereich_Nr = " + intBereichnr;
+            sqlString += " AND fw.Bereich_Nr = " + intBereichnr;
         } else if (strFubwehr.equals("-2")) {
-            sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
+            sqlString += " AND fw.abschnitt_instanznummer = " + intAbschnittnr;
         } else {
-            sqlString += " WHERE sf.instanznummer = '" + strFubwehr + "'";
+            sqlString += " AND sf.instanznummer = '" + strFubwehr + "'";
         }
 
         ResultSet rs = stat.executeQuery(sqlString);
 
         String strKennzeichen;
+        String strBezeichnung;
 
         while (rs.next()) {
             strKennzeichen = rs.getString("Kennzeichen");
+            strBezeichnung = rs.getString("Bezeichnung");
 
             if (strKennzeichen != null && !strKennzeichen.trim().isEmpty() && !strKennzeichen.equals(" ") && !strKennzeichen.equals("")) {
                 strKennzeichen = strKennzeichen.replace("/", "").replace(".", "").replace(" ", "").replace("+", "").replace("-", "");
 
                 if (!strKennzeichen.trim().isEmpty() && !strKennzeichen.equals(" ") && !strKennzeichen.equals("")) {
-                    liKennzeichen.add(strKennzeichen);
+                    liKennzeichen.add(strBezeichnung + " (" + strKennzeichen + ")");
                 }
 
             }
@@ -1750,8 +1865,7 @@ public class DB_Access {
 
             LeerberichtMitglied mitglied = new LeerberichtMitglied(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, strInstanznummer);
             liLeerberichtMitglieder.add(mitglied);
-            
-            
+
         }
         liLeerberichtMitglieder.sort(Comparator.comparing(LeerberichtMitglied::getStrInstanznummer).thenComparing(LeerberichtMitglied::getIntStammblattnummer));
         connPool.releaseConnection(conn);
@@ -1989,7 +2103,7 @@ public class DB_Access {
             }
             sqlString += getSqlDateString(strVon, strBis, 2, false);
         }
-        System.out.println("TAETIGKEITSBERICHT SQL STATEMENT: "+sqlString);
+        System.out.println("TAETIGKEITSBERICHT SQL STATEMENT: " + sqlString);
 
         ResultSet rs = stat.executeQuery(sqlString);
 
@@ -4109,4 +4223,3 @@ public class DB_Access {
     }
 
 }
-

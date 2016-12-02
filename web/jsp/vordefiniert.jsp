@@ -71,7 +71,7 @@
 
             </div>
         </div>
-        <h1>Vordefiniert</h1>
+        <h1>Vordefinierte Berichte und Auswertungen</h1>
 
         <div class="ui grid" id="div_mitte">
             <div id="div_loader" class="ui active inverted dimmer">
