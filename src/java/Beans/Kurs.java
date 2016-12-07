@@ -241,11 +241,11 @@ public class Kurs implements Serializable {
             } else {
                 strHtml += "<div>" + teilnehmer.strStammblattnummer + " " + teilnehmer.strDienstgrad + " " + teilnehmer.strTitel + " " + teilnehmer.strZuname + " " + teilnehmer.strVorname + "</div>";
             }
-
+            
         }
         strHtml += "</td><td style='width: 50;'>" + liTeilnehmer.size() + "</td></tr>";
         System.out.println("STRHTML Kursstatistik: " + strHtml);
-
+                
         return strHtml;
     }
 

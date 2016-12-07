@@ -221,6 +221,7 @@ public class DB_Access {
             String strBezeichnung = rs.getString("Bezeichnung");
             if (intIDGruppe == 1 || intIDGruppe == 5 || intIDGruppe == 9 || intIDGruppe == 15 || intIDGruppe == 14) {
                 intIDGruppe = (intIDGruppe == 14) ? 5 : intIDGruppe;
+                strBezeichnung = intIDGruppe == 5 ? "Bereichskommandanten" : strBezeichnung;
                 LoginMitglied lm = new LoginMitglied(intUserID, strFubwehr, intIDGruppe, strBezeichnung);
                 liMitglieder.add(lm);
             }
@@ -1062,6 +1063,7 @@ public class DB_Access {
         return liKurse;
 
         //*********Alte Kursstatistik-Auswertung vor 1.12.2016*********\\
+        
 //        String sqlString = "SELECT k.id_kursarten KursartId "
 //                + ",k.lehrgangsnummer Lehrgangsnr "
 //                + ",k.kursbezeichnung Kursbez "
@@ -3458,7 +3460,7 @@ public class DB_Access {
                         }
                         break;
                     case "FUNKTIONSBEZEICHNUNG":
-                        if (i > 0 && (strEingabe[i - 1][5].equals("UND") || strEingabe[i - 1][5].equals("UND NICHT"))) {
+                        if (i > 0 && (strEingabe[i - 1][5].equals("UND") || strEingabe[i - 1][5].equals("UND NICHT") || strEingabe[i - 1][5].equals("ODER") || strEingabe[i - 1][5].equals("ODER NICHT"))) {
                             if (!liDoppelteFunktionsbezeichnung.contains(i)) {
                                 liDoppelteFunktionsbezeichnung.add(i);
                             }
@@ -3751,12 +3753,12 @@ public class DB_Access {
         if (boKurse == true) {
             if (liDoppelteKursbezeichnung.size() > 0) {
                 for (Integer i : liDoppelteKursbezeichnung) {
-                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkkursemitglieder km").append(i).append(" ON(m.id_personen = km").append(i).append(".id_mitgliedschaften) ").append(" INNER JOIN FDISK.dbo.stmkkurse k").append(i).append(" ON (k").append(i).append(".id_kurse = km").append(i)
+                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkkursemitglieder km").append(i).append(" ON(m.id_mitgliedschaften = km").append(i).append(".id_mitgliedschaften) ").append(" INNER JOIN FDISK.dbo.stmkkurse k").append(i).append(" ON (k").append(i).append(".id_kurse = km").append(i)
                             .append(".id_kurse) ");
                 }
 
             } else {
-                sbSqlString.append(" INNER JOIN FDISK.dbo.stmkkursemitglieder km ON(m.id_personen = km.id_mitgliedschaften) ")
+                sbSqlString.append(" INNER JOIN FDISK.dbo.stmkkursemitglieder km ON(m.id_mitgliedschaften = km.id_mitgliedschaften) ")
                         .append(" INNER JOIN FDISK.dbo.stmkkurse k ON (k.id_kurse = km.id_kurse) ");
             }
 
@@ -3785,11 +3787,11 @@ public class DB_Access {
         if (boFunktionen == true) {
             if (liDoppelteFunktionsbezeichnung.size() > 0) {
                 for (Integer i : liDoppelteFunktionsbezeichnung) {
-                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkfunktionenmitglieder fm").append(i).append(" ON(m.id_personen = fm").append(i).append(".id_mitgliedschaften) ").append(" INNER JOIN FDISK.dbo.stmkfunktionen f").append(i).append(" ON(f").append(i).append(".id_funktionen = fm").append(i)
+                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkfunktionenmitglieder fm").append(i).append(" ON(m.id_mitgliedschaften = fm").append(i).append(".id_mitgliedschaften) ").append(" INNER JOIN FDISK.dbo.stmkfunktionen f").append(i).append(" ON(f").append(i).append(".id_funktionen = fm").append(i)
                             .append(".id_funktionen) ");
                 }
             } else {
-                sbSqlString.append(" INNER JOIN FDISK.dbo.stmkfunktionenmitglieder fm ON(m.id_personen = fm.id_mitgliedschaften) ")
+                sbSqlString.append(" INNER JOIN FDISK.dbo.stmkfunktionenmitglieder fm ON(m.id_mitgliedschaften = fm.id_mitgliedschaften) ")
                         .append(" INNER JOIN FDISK.dbo.stmkfunktionen f ON(f.id_funktionen = fm.id_funktionen) ");
             }
         }
@@ -3881,12 +3883,13 @@ public class DB_Access {
                             break;
                         } else if (liDoppelteFunktionsbezeichnung.contains(i)) {
                             if (strColWhere.contains("f.")) {
-                                sbSqlString.append(strBracketOpen).append("UPPER(").append("f").append(i).append(".").append(strColWhere.substring(2)).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strBracketClose).append(strColLink).append(" ");
+                                sbSqlString.append(strBracketOpen).append("UPPER(").append("f").append(i).append(".").append(strColWhere.substring(2)).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ");
 
                             } else {
-                                sbSqlString.append(strBracketOpen).append("UPPER(").append("f").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strBracketClose).append(strColLink).append(" ");
+                                sbSqlString.append(strBracketOpen).append("UPPER(").append("f").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ");
 
                             }
+                            sbSqlString.append("AND ( fm").append(i).append(".datum_bis Is Null OR fm").append(i).append(".datum_bis = '' )").append(strBracketClose).append(strColLink).append(" ");
                             break;
 
                         } else if (liDoppelteKursbezeichnung.contains(i)) {

@@ -41,7 +41,7 @@
                 };
         String[] strFeldKlammerZu
                 = {
-                    "N/A", ")", "]", "}"
+                    "N/A", ")"
                 };
 
         String[] strFeldOperator
