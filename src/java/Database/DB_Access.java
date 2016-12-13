@@ -953,7 +953,7 @@ public class DB_Access {
                 + "INNER JOIN FDISK.dbo.stmkkurse k ON(k.id_kurse = km.id_kurse) "
                 + "INNER JOIN FDISK.dbo.qry_alle_feuerwehren_mit_Abschnitt_und_Bereich fw ON(m.instanznummer = fw.instanznummer) "
                 + "WHERE k.id_kursarten = " + intIdKursart;
-        
+
         if (intBereichnr == -2) {
             sqlString += getSqlDateString(strVon, strBis, 4, false);
         } else {
@@ -990,12 +990,12 @@ public class DB_Access {
             Mitglied mitglied = new Mitglied(intIdPers, strSTB, strDGR, strTitel, strVorname, strZunanme, strInstanznummer);
 
             mitglied.setStrInstanzname(strInstanzname);
-            
+
             liTeilnehmer.add(mitglied);
         }
-        
+
         liTeilnehmer.sort(Comparator.comparing(Mitglied::getStrFubwehr).thenComparing(Mitglied::getStb).thenComparing(Mitglied::getStrZuname));
-        
+
         connPool.releaseConnection(conn);
         return liTeilnehmer;
     }
@@ -1058,12 +1058,11 @@ public class DB_Access {
             liKurse.add(kurs);
         }
         liKurse.sort(Comparator.comparing(Kurs::getStrKursbezeichnung).thenComparing(Kurs::getIntAnzahlTeilnehmer));
-        
+
         connPool.releaseConnection(conn);
         return liKurse;
 
         //*********Alte Kursstatistik-Auswertung vor 1.12.2016*********\\
-        
 //        String sqlString = "SELECT k.id_kursarten KursartId "
 //                + ",k.lehrgangsnummer Lehrgangsnr "
 //                + ",k.kursbezeichnung Kursbez "
@@ -3362,6 +3361,23 @@ public class DB_Access {
      * @throws Exception
      */
     public StringBuilder getDynamischerBericht(String strEingabe[][], String strSelectedColumns, int intBereichnr, int intAbschnittnr, String strFubwehr) throws Exception {
+//        boolean correct = false;
+//        
+//        outerloop:
+//        for (String[] str1 : strEingabe) {
+//            for (String str2 : str1) {
+//                if (str2.equals("Funktionsbezeichnung")) {
+//                    strSelectedColumns = strSelectedColumns.replace("Antrittsdatum", "datum_von");
+//                    correct = true;
+//                    break outerloop;
+//                }
+//            }
+//        }
+//        if(!correct){
+//            
+//        }
+        strSelectedColumns = strSelectedColumns.replace("Amtsantritt", "datum_von");
+
         StringBuilder sbHelper = new StringBuilder(strSelectedColumns);
         sbHelper.insert(0, "Standesbuchnummer;Dienstgrad;Vorname;Zuname;");
         strSelectedColumns = sbHelper.toString();
@@ -3472,7 +3488,7 @@ public class DB_Access {
                         }
                         break;
                     case "FUNKTIONSINSTANZ":
-                        if (i > 0 && (strEingabe[i - 1][5].equals("UND") || strEingabe[i - 1][5].equals("UND NICHT"))) {
+                        if (i > 0 && (strEingabe[i - 1][5].equals("UND") || strEingabe[i - 1][5].equals("UND NICHT") || strEingabe[i - 1][5].equals("ODER") || strEingabe[i - 1][5].equals("ODER NICHT"))) {
                             if (!liDoppelteFunktionsinstanz.contains(i)) {
                                 liDoppelteFunktionsinstanz.add(i);
                             }
@@ -3484,7 +3500,7 @@ public class DB_Access {
                         }
                         break;
                     case "KURSBEZEICHNUNG":
-                        if (i > 0 && (strEingabe[i - 1][5].equals("UND") || strEingabe[i - 1][5].equals("UND NICHT"))) {
+                        if (i > 0 && (strEingabe[i - 1][5].equals("UND") || strEingabe[i - 1][5].equals("UND NICHT") || strEingabe[i - 1][5].equals("ODER") || strEingabe[i - 1][5].equals("ODER NICHT"))) {
                             if (!liDoppelteKursbezeichnung.contains(i)) {
                                 liDoppelteKursbezeichnung.add(i);
                             }
@@ -3496,7 +3512,7 @@ public class DB_Access {
                         }
                         break;
                     case "LEISTUNGSABZEICHEN STUFE":
-                        if (i > 0 && (strEingabe[i - 1][5].equals("UND") || strEingabe[i - 1][5].equals("UND NICHT"))) {
+                        if (i > 0 && (strEingabe[i - 1][5].equals("UND") || strEingabe[i - 1][5].equals("UND NICHT") || strEingabe[i - 1][5].equals("ODER") || strEingabe[i - 1][5].equals("ODER NICHT"))) {
                             if (!liDoppelteLeistungsabzeichenStufe.contains(i)) {
                                 liDoppelteLeistungsabzeichenStufe.add(i);
                             }
@@ -3508,7 +3524,7 @@ public class DB_Access {
                         }
                         break;
                     case "LEISTUNGSABZEICHENBEZEICHNUNG":
-                        if (i > 0 && (strEingabe[i - 1][5].equals("UND") || strEingabe[i - 1][5].equals("UND NICHT"))) {
+                        if (i > 0 && (strEingabe[i - 1][5].equals("UND") || strEingabe[i - 1][5].equals("UND NICHT") || strEingabe[i - 1][5].equals("ODER") || strEingabe[i - 1][5].equals("ODER NICHT"))) {
                             if (!liDoppelteLeistungsabzeichenbezeichnung.contains(i)) {
                                 liDoppelteLeistungsabzeichenbezeichnung.add(i);
                             }
@@ -3520,7 +3536,7 @@ public class DB_Access {
                         }
                         break;
                     case "UNTERSUCHUNGSART":
-                        if (i > 0 && (strEingabe[i - 1][5].equals("UND") || strEingabe[i - 1][5].equals("UND NICHT"))) {
+                        if (i > 0 && (strEingabe[i - 1][5].equals("UND") || strEingabe[i - 1][5].equals("UND NICHT") || strEingabe[i - 1][5].equals("ODER") || strEingabe[i - 1][5].equals("ODER NICHT"))) {
                             if (!liDoppelteUntersuchungsart.contains(i)) {
                                 liDoppelteUntersuchungsart.add(i);
                             }
@@ -3698,6 +3714,9 @@ public class DB_Access {
                     break;
                 case "Status":
                     sbSqlString.append("Jugend, Aktiv, Reserve, Abgemeldet, Ehrenmitglied, ");
+                    break;
+                case "datum_von":
+                    sbSqlString.append("fm0.").append(strSelectedCols[i]).append(",");
                     break;
                 default:
                     sbSqlString.append("m.").append(strSelectedCols[i]).append(",");
@@ -3937,6 +3956,7 @@ public class DB_Access {
             sbSqlString.append(" AND (m.instanznummer = '").append(strFubwehr).append("')");
         }
         //System.out.println("SQL String: " + sbSqlString);
+        System.out.println("SQL Dynamic: "+sbSqlString.toString());
         StringBuilder sbHtml = createDynamicReportGeneratorOutput(sbSqlString.toString(), strSelectedCols);
         return sbHtml;
     }

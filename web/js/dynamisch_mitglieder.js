@@ -32,6 +32,23 @@ function setTypen(liTypen2)
     liTypen = liTypen2;
 }
 
+function onCheckOutputTypen(select_typ) {
+
+    if (select_typ.value == "Amtsantritt") {
+        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Test Fehler";
+        $('#modal_fehler').modal('show');
+        console.log("IF");
+    } else {
+        console.log("ELSE");
+    }
+}
+
+/**
+ * Gibt den Wert einer request Variable zurück (z.B. Parameter oder Attribute)
+ * @param {type} name
+ * @returns {unresolved}
+ */
+
 
 /**
  * Fügt im Ausgabe Bereich der GUI ein neues Dropdown mit allen Typen hinzu
@@ -48,6 +65,31 @@ function addTypenAuswahl(lastType)//Für die typen die man ausgeben will
         var new_select = document.createElement("select");
         new_select.className = "ui fluid dropdown displayType";
         new_select.id = "select_typ_ausgabe_" + intCountTypen;
+        new_select.onchange = function () {
+
+
+            console.log("Select value: " + document.getElementById("select_typ_" + 1).value);
+            var correct = false;
+            if (new_select.value === "Amtsantritt") {
+
+                for (i = 1; i <= 5; i++) {
+                    if (document.getElementById("select_typ_" + i) !== null) {
+                        if (document.getElementById("select_typ_" + i).value === "Funktionsbezeichnung;cb") {
+                            correct = true;
+                            break;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+                if (!correct) {
+                    this.value = "Alter";
+                    document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Dieser Ausgabetyp kann für diese Abfrage nicht ausgewählt werden.";
+                    $('#modal_fehler').modal('show');
+
+                }
+            }
+        };
         intCountTypen++;
         for (var i = 0; i < liTypen.length; i++)
         {
@@ -134,6 +176,7 @@ function onTypChanged(select_typ, strLastFilter, strLastOperator)
         operatorFeld = mapOperatoren[strTyp.toUpperCase()].split(";");
     }
     aktualisiereOperator(strID, operatorFeld, strLastOperator);
+
 }
 
 /**
@@ -244,56 +287,57 @@ function onVorschau(intZahler)
     var boolCorrect = true;
     var boolBracketsOpen = false;
     var boolError = false;
-    for (var i = 1; i < intZahler; i++)
+    for (var i = 1; i <= intZahler; i++)
     {
 
-        var strWertVonVerknupfungSelect = document.getElementById("select_verknuepfung_" + i).value;
-        if (strWertVonVerknupfungSelect == "N/A")
-        {
-            boolCorrect = false;
+        if (i !== intZahler) {
+            var strWertVonVerknupfungSelect = document.getElementById("select_verknuepfung_" + i).value;
+            if (strWertVonVerknupfungSelect == "N/A")
+            {
+                boolCorrect = false;
+            }
         }
         var filterValue = getValueOfFilterObject(i);
-        
+
         if (filterValue == "")
         {
             boolCorrect = false;
         }
-        
-//        if (document.getElementById("select_klammer_" + i).value == '(') {
-//            if (!boolBracketsOpen) {
-//                boolBracketsOpen = true;
-//                console.log("Open? correct: " + boolBracketsOpen);
-//            } else {
-//                //FEHLER
-//                document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Alle Klammern müssen richtig gesetzt sein!";
-//                $('#modal_fehler').modal('show');
-//                console.log("Open? error: " + boolBracketsOpen);
-//                return false;
-//            }
-//        }
-//        if (document.getElementById("select_klammer_zu" + i).value == ')') {
-//            if (boolBracketsOpen) {
-//                boolBracketsOpen = false;
-//                console.log("Open? correct: " + boolBracketsOpen);
-//            } else {
-//                //FEHLER
-//                document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Alle Klammern müssen richtig gesetzt sein!";
-//                $('#modal_fehler').modal('show');
-//                console.log("Open? error: " + boolBracketsOpen);
-//                return false;
-//            }
-//        }
-        
 
+
+        if (document.getElementById("select_klammer_" + i).value === '(') {
+            if (!boolBracketsOpen) {
+                boolBracketsOpen = true;
+                console.log("Open? correct: " + boolBracketsOpen);
+            } else {
+                //FEHLER
+                document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Alle Klammern müssen richtig gesetzt sein!";
+                $('#modal_fehler').modal('show');
+                console.log("Open? error: " + boolBracketsOpen);
+                return false;
+            }
+        }
+        if (document.getElementById("select_klammer_zu_" + i).value === ')') {
+            if (boolBracketsOpen) {
+                boolBracketsOpen = false;
+                console.log("Open? correct: " + boolBracketsOpen);
+            } else {
+                //FEHLER
+                document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Alle Klammern müssen richtig gesetzt sein!";
+                $('#modal_fehler').modal('show');
+                console.log("Open? error: " + boolBracketsOpen);
+                return false;
+            }
+        }
     }
 
-//    if (boolBracketsOpen) {
-//        //FEHLER
-//        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Alle Klammern müssen richtig gesetzt sein!";
-//        $('#modal_fehler').modal('show');
-//        console.log("Open? error down: " + boolBracketsOpen);
-//        return false;
-//    }
+    if (boolBracketsOpen) {
+        //FEHLER
+        document.getElementById("modal_fehler").getElementsByTagName("p")[0].innerHTML = "Alle Klammern müssen richtig gesetzt sein!";
+        $('#modal_fehler').modal('show');
+        console.log("Open? error down: " + boolBracketsOpen);
+        return false;
+    }
 
     if (getValueOfFilterObject(intZahler) == "")
     {
@@ -340,6 +384,7 @@ function getValueOfFilterObject(index)
     {
         strFilter_value = document.getElementById("input_filter_datepicker_" + index).value;
     }
+    console.log("Value Of Filter Object: " + strFilter_value);
     return strFilter_value.trim();
 }
 
