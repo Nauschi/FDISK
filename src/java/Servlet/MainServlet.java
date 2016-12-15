@@ -468,7 +468,6 @@ public class MainServlet extends HttpServlet {
         String strTypen = request.getParameter("hidden_typen_daten");
         int intZaehler = Integer.parseInt(request.getParameter("hidden_zaehler"));
         String[][] strDaten = new String[intZaehler][6];
-        
         for (int i = 0; i < intZaehler; i++) {
             String strZeile = request.getParameter("hidden_element_data_" + (i + 1));
             //System.out.println("strZeile: " + strZeile);

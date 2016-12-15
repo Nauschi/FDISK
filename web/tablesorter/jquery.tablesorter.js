@@ -1203,22 +1203,23 @@
         },
         type: 'text'
         
-    })
+    })   
     
     ts.addParser({
-        id: 'germandate',
-        is: function (s) {
-            return false;
-        },
-        format: function (s) {
-            var a = s.split('.');
-            var x = a[2] + a[1] + a[0];
-
-            return x;
-
-        },
-        type: 'text'
-    });
+              
+            id: 'germandate',
+            is: function(s) {
+                    return false;
+            },
+            format: function(s) { 
+              var a = s.split('.');
+              var x = a[1] + a[0] + a[2]; 
+              
+              return x;
+              
+            },
+            type: 'text'
+          });
 
     ts.addParser({
         id: 'berichtdate',

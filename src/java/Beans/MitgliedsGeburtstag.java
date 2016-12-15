@@ -8,6 +8,7 @@ package Beans;
 import BL.BL;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -26,6 +27,14 @@ public class MitgliedsGeburtstag extends Mitglied implements Serializable {
         super(intId_Personen, strStammblattnummer, strDienstgrad, strTitel, strVorname, strZuname, strFubwehr);
         this.dateGeburtsdatum = dateGeburtsdatum;
         this.intZielalter = intAlter;
+    }
+    
+    public String getSortedDate(){
+        String strDate = sdf.format(dateGeburtsdatum);
+        String month = strDate.split("\\.")[1];
+        String day = strDate.split("\\.")[0];
+        String year = strDate.split("\\.")[2];
+        return month + day + year;
     }
 
     public Date getDateGeburtsdatum() {

@@ -671,6 +671,7 @@ public class DB_Access {
             MitgliedsGeburtstag mitgliedsGeb = new MitgliedsGeburtstag(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, false, dateGeburtsdatum, intZielalter, strFub);
             liMitgliedsGeburtstage.add(mitgliedsGeb);
         }
+         liMitgliedsGeburtstage.sort(Comparator.comparing(MitgliedsGeburtstag::getSortedDate).thenComparing(Mitglied::getStrFubwehr).thenComparing(Mitglied::getStb));
         connPool.releaseConnection(conn);
         return liMitgliedsGeburtstage;
     }
@@ -1173,19 +1174,19 @@ public class DB_Access {
                     sqlString += " WHERE  t.id_personen IN ( SELECT [id_personen] "
                             + " FROM [FDISK].[dbo].[stmkmitglieder] sm "
                             + " INNER JOIN FDISK.dbo.qry_alle_instanzen fw ON(fw.instanznummer = sm.instanznummer) "
-                            + " where fw.Bereich_Nr = " + intBereichnr + " )";
+                            + " where fw.Bereich_Nr = " + intBereichnr + " and (sm.abgemeldet = 0) AND (NOT (LEFT(sm.instanznummer, 2) = 'GA')) AND (NOT (LEFT(sm.instanzname, 7) = 'FW GAST')))";
                 } else if (strFubwehr.equals("-2")) {
                     //sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
                     sqlString += " WHERE  t.id_personen IN ( SELECT [id_personen] "
                             + " FROM [FDISK].[dbo].[stmkmitglieder] sm "
                             + " INNER JOIN FDISK.dbo.qry_alle_instanzen fw ON(fw.instanznummer = sm.instanznummer) "
-                            + " where fw.abschnitt_instanznummer = " + intAbschnittnr + " )";
+                            + " where fw.abschnitt_instanznummer = " + intAbschnittnr + " and (sm.abgemeldet = 0) AND (NOT (LEFT(sm.instanznummer, 2) = 'GA')) AND (NOT (LEFT(sm.instanzname, 7) = 'FW GAST')))";
                 } else {
                     //sqlString += " WHERE t.instanznummer = '" + strFubwehr + "'";
                     sqlString += " WHERE  t.id_personen IN ( SELECT [id_personen] "
                             + " FROM [FDISK].[dbo].[stmkmitglieder] sm "
                             + " INNER JOIN FDISK.dbo.qry_alle_instanzen fw ON(fw.instanznummer = sm.instanznummer) "
-                            + " where fw.instanznummer = " + strFubwehr + " )";
+                            + " where fw.instanznummer = " + strFubwehr + " and (sm.abgemeldet = 0) AND (NOT (LEFT(sm.instanznummer, 2) = 'GA')) AND (NOT (LEFT(sm.instanzname, 7) = 'FW GAST')))";
                 }
                 sqlString += getSqlDateString(strVon, strBis, 2, false);
             }
@@ -1193,7 +1194,7 @@ public class DB_Access {
             sqlString += " WHERE t.id_personen = " + intIDPerson;
             sqlString += getSqlDateString(strVon, strBis, 2, false);
         }
-
+        //and (sm.abgemeldet = 0) AND (NOT (LEFT(sm.instanznummer, 2) = 'GA')) AND (NOT (LEFT(sm.instanzname, 7) = 'FW GAST'))
         sqlString += " ) a GROUP BY PersID, instanznummer, vorname, zuname, stb, dgr, titel, instanzname "
                 + "UNION "
                 + "SELECT 2 'bereicht_id', PersID, vorname Vorname, zuname Zuname, instanznummer Instanznummer, STB, DGR, titel Titel ,SUM(DATEDIFF(mi,einsatzzeit_von,einsatzzeit_bis)) Minuten, name Instanzname, COUNT(*) Anzahl "
@@ -1213,19 +1214,19 @@ public class DB_Access {
                     sqlString += " WHERE  u.id_personen IN ( SELECT [id_personen] "
                             + " FROM [FDISK].[dbo].[stmkmitglieder] sm "
                             + " INNER JOIN FDISK.dbo.qry_alle_instanzen fw ON(fw.instanznummer = sm.instanznummer) "
-                            + " where fw.Bereich_Nr = " + intBereichnr + " )";
+                            + " where fw.Bereich_Nr = " + intBereichnr + " and (sm.abgemeldet = 0) AND (NOT (LEFT(sm.instanznummer, 2) = 'GA')) AND (NOT (LEFT(sm.instanzname, 7) = 'FW GAST')))";
                 } else if (strFubwehr.equals("-2")) {
                     //sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
                     sqlString += " WHERE  u.id_personen IN ( SELECT [id_personen] "
                             + " FROM [FDISK].[dbo].[stmkmitglieder] sm "
                             + " INNER JOIN FDISK.dbo.qry_alle_instanzen fw ON(fw.instanznummer = sm.instanznummer) "
-                            + " where fw.abschnitt_instanznummer = " + intAbschnittnr + " )";
+                            + " where fw.abschnitt_instanznummer = " + intAbschnittnr + " and (sm.abgemeldet = 0) AND (NOT (LEFT(sm.instanznummer, 2) = 'GA')) AND (NOT (LEFT(sm.instanzname, 7) = 'FW GAST')))";
                 } else {
                     //sqlString += " WHERE u.instanznummer = '" + strFubwehr + "'";
                     sqlString += " WHERE  u.id_personen IN ( SELECT [id_personen] "
                             + " FROM [FDISK].[dbo].[stmkmitglieder] sm "
                             + " INNER JOIN FDISK.dbo.qry_alle_instanzen fw ON(fw.instanznummer = sm.instanznummer) "
-                            + " where fw.instanznummer = " + strFubwehr + " )";
+                            + " where fw.instanznummer = " + strFubwehr + " and (sm.abgemeldet = 0) AND (NOT (LEFT(sm.instanznummer, 2) = 'GA')) AND (NOT (LEFT(sm.instanzname, 7) = 'FW GAST')))";
                 }
                 sqlString += getSqlDateString(strVon, strBis, 3, false);
             }
@@ -1253,19 +1254,19 @@ public class DB_Access {
                     sqlString += " WHERE  e.id_personen IN ( SELECT [id_personen] "
                             + " FROM [FDISK].[dbo].[stmkmitglieder] sm "
                             + " INNER JOIN FDISK.dbo.qry_alle_instanzen fw ON(fw.instanznummer = sm.instanznummer) "
-                            + " where fw.Bereich_Nr = " + intBereichnr + " )";
+                            + " where fw.Bereich_Nr = " + intBereichnr + " and (sm.abgemeldet = 0) AND (NOT (LEFT(sm.instanznummer, 2) = 'GA')) AND (NOT (LEFT(sm.instanzname, 7) = 'FW GAST')))";
                 } else if (strFubwehr.equals("-2")) {
                     //sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
                     sqlString += " WHERE  e.id_personen IN ( SELECT [id_personen] "
                             + " FROM [FDISK].[dbo].[stmkmitglieder] sm "
                             + " INNER JOIN FDISK.dbo.qry_alle_instanzen fw ON(fw.instanznummer = sm.instanznummer) "
-                            + " where fw.abschnitt_instanznummer = " + intAbschnittnr + " )";
+                            + " where fw.abschnitt_instanznummer = " + intAbschnittnr + " and (sm.abgemeldet = 0) AND (NOT (LEFT(sm.instanznummer, 2) = 'GA')) AND (NOT (LEFT(sm.instanzname, 7) = 'FW GAST')))";
                 } else {
                     //sqlString += " WHERE e.instanznummer = '" + strFubwehr + "'";
                     sqlString += " WHERE  e.id_personen IN ( SELECT [id_personen] "
                             + " FROM [FDISK].[dbo].[stmkmitglieder] sm "
                             + " INNER JOIN FDISK.dbo.qry_alle_instanzen fw ON(fw.instanznummer = sm.instanznummer) "
-                            + " where fw.instanznummer = " + strFubwehr + " )";
+                            + " where fw.instanznummer = " + strFubwehr + " and (sm.abgemeldet = 0) AND (NOT (LEFT(sm.instanznummer, 2) = 'GA')) AND (NOT (LEFT(sm.instanzname, 7) = 'FW GAST')))";
                 }
                 sqlString += getSqlDateString(strVon, strBis, 1, false);
             }
