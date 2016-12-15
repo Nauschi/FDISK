@@ -750,10 +750,10 @@
             }
         } else if (request.getParameter("input_aktbericht") != null && (request.getParameter("input_aktbericht").equals("Liste aller Tätigkeitsberichte")
                 || request.getParameter("input_aktbericht").equals("Liste aller Übungsberichte"))) {
-            return "$('.tablesorter').tablesorter({headers: {3: {sorter: 'berichtdate'},4: {sorter: 'berichtdate'}}});";
+            return "$('.tablesorter').tablesorter({headers: {2: {sorter: 'berichtNr'}, 3: {sorter: 'berichtdate'},4: {sorter: 'berichtdate'}}});";
         } else if (request.getParameter("input_aktbericht") != null
                 && request.getParameter("input_aktbericht").equals("Liste aller Einsatzberichte")) {
-            return "$('.tablesorter').tablesorter({headers: {2: {sorter: 'berichtdate'},3: {sorter: 'berichtdate'}}});";
+            return "$('.tablesorter').tablesorter({headers: {1: {sorter: 'berichtNr'}, 2: {sorter: 'berichtdate'},3: {sorter: 'berichtdate'}}});";
         } else if (request.getParameter("input_aktbericht") != null
                 && request.getParameter("input_aktbericht").equals("Liste aller Berichte")) {
             return "$('.tablesorter').tablesorter({headers: {0: {sorter: 'berichtdate'},1: {sorter: 'berichtdate'}}});";

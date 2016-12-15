@@ -1183,7 +1183,28 @@
         type: 'text'
     });
 
-
+    ts.addParser({
+        id: 'berichtNr',
+        is: function(s){
+            return false;
+        },
+        format: function(s){
+            var x = s.split('/')[0];
+            var y = s.split('/')[1];
+            switch (x.length){
+                case 1: x = "000" + x;break;
+                case 2: x = "00" + x;break;
+                case 3: x = "0" + x;
+            }
+            console.log(y.toString() + "" + x.toString());
+           
+            return y.toString() + "" + x.toString();
+           
+        },
+        type: 'text'
+        
+    })
+    
     ts.addParser({
         id: 'germandate',
         is: function (s) {
