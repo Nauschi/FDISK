@@ -1874,7 +1874,7 @@ public class DB_Access {
             liLeerberichtMitglieder.add(mitglied);
 
         }
-        liLeerberichtMitglieder.sort(Comparator.comparing(LeerberichtMitglied::getStrInstanznummer).thenComparing(LeerberichtMitglied::getIntStammblattnummer));
+        liLeerberichtMitglieder.sort(Comparator.comparing(LeerberichtMitglied::getStrInstanznummer).thenComparing(LeerberichtMitglied::getStrZuname).thenComparing(LeerberichtMitglied::getStrVorname).thenComparing(LeerberichtMitglied::getStrStammblattnummer));
         connPool.releaseConnection(conn);
         return liLeerberichtMitglieder;
     }
