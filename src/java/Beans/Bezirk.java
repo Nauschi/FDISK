@@ -12,83 +12,81 @@ import java.util.LinkedList;
  *
  * @author Corinna
  */
-public class Bezirk implements Serializable
-{
+public class Bezirk implements Serializable {
 
     private String strName;
     private int intBezirksNummer;
     private LinkedList<Abschnitt> liAbschnitte;
 
-    public Bezirk(String strName, int intBezNr, LinkedList<Abschnitt> liAbschnitte)
-    {
+    public Bezirk(String strName, int intBezNr, LinkedList<Abschnitt> liAbschnitte) {
         this.strName = strName;
         this.intBezirksNummer = intBezNr;
         this.liAbschnitte = liAbschnitte;
     }
 
-    public String getStrName()
-    {
+    public String getStrName() {
         return strName;
     }
 
-    public void setStrName(String strName)
-    {
+    public void setStrName(String strName) {
         this.strName = strName;
     }
 
-    public int getIntBezirksNummer()
-    {
+    public int getIntBezirksNummer() {
         return intBezirksNummer;
     }
 
-    public void setIntBezirksNummer(int intBezirksNummer)
-    {
+    public void setIntBezirksNummer(int intBezirksNummer) {
         this.intBezirksNummer = intBezirksNummer;
     }
 
-    public LinkedList<Abschnitt> getLiAbschnitte()
-    {
+    public LinkedList<Abschnitt> getLiAbschnitte() {
         return liAbschnitte;
     }
 
-    public void setLiAbschnitte(LinkedList<Abschnitt> liAbschnitte)
-    {
+    public void setLiAbschnitte(LinkedList<Abschnitt> liAbschnitte) {
         this.liAbschnitte = liAbschnitte;
     }
 
-    public void addAbschnitt(Abschnitt a)
-    {
-        if (!liAbschnitte.contains(a))
-        {
+    public void addAbschnitt(Abschnitt a) {
+        if (!liAbschnitte.contains(a)) {
             liAbschnitte.add(a);
         }
     }
 
     @Override
-    public String toString()
-    {
-        String strHTML = "<option value='" + intBezirksNummer + "'>" + strName+"</option>";
+    public String toString() {
+        String strHTML = "<option value='" + intBezirksNummer + "'>" + strName + "</option>";
         return strHTML;
     }
-    
-    public String toSelectedString()
-    {
-        String strHTML = "<option value='" + intBezirksNummer + "' selected>" + strName+"</option>";
+
+    public String toSelectedString() {
+        String strHTML = "<option value='" + intBezirksNummer + "' selected>" + strName + "</option>";
         return strHTML;
     }
-    
-    public String generiereHiddenDiv()
-    {
-        String strHTML = "<div style='display:none' id='div_"+intBezirksNummer+"' >";
-        if (liAbschnitte != null)
-        {
-            for (Abschnitt abschnitt : liAbschnitte)
-            {
-                strHTML+=abschnitt.toString();
+
+    public String generiereHiddenDiv() {
+        String strHTML = "<div style='display:none' id='div_" + intBezirksNummer + "' >";
+        if (liAbschnitte != null) {
+            for (Abschnitt abschnitt : liAbschnitte) {
+                strHTML += abschnitt.toString();
             }
         }
         strHTML += "</div>";
-        
+
+        return strHTML;
+    }
+
+    public String generiereHiddenDivFw() {
+        String strHTML = "<div style='display:none' id='divBz_" + intBezirksNummer + "' >";
+        if (liAbschnitte != null) {
+            for (Abschnitt abschnitt : liAbschnitte) {
+                for (Feuerwehr feuerwehr : abschnitt.getLiFeuerwehren()) {
+                    strHTML += feuerwehr.toString();
+                }
+            }
+        }
+        strHTML += "</div>";
         return strHTML;
     }
 }

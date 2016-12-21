@@ -574,8 +574,15 @@ function abschittChanged(select_abschnitt, strLetzteFW)
         $('#select_feuerwehr').dropdown();
     } else if (select_abschnitt.value == -2)
     {
+        var strFeuerwehrOptions = "";
+        var e = document.getElementById("select_bezirk");
+        var value = e.options[e.selectedIndex].value;
+        if (value != -2) {
+            strFeuerwehrOptions = document.getElementById("divBz_" + value).innerHTML;
+        }
+        
         document.getElementById("fieldset_feuerwehr").innerHTML = '<legend><b>Feuerwehr</b></legend><select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr"></select>';
-        document.getElementById("select_feuerwehr").innerHTML = "<option value='-2'>Alle Feuerwehren</option>"
+        document.getElementById("select_feuerwehr").innerHTML = "<option value='-2'>Alle Feuerwehren</option>" + strFeuerwehrOptions;
         $('#select_feuerwehr').dropdown();
         fixDropdowns("select_feuerwehr");
     }

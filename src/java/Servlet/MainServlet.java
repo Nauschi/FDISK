@@ -336,6 +336,9 @@ public class MainServlet extends HttpServlet {
             int intBereichNr = Integer.parseInt(request.getParameter("select_bezirk"));
             int intAbschnittNr = Integer.parseInt(request.getParameter("select_abschnitt"));
             String strFeuerwehr = request.getParameter("select_feuerwehr");
+            if (intAbschnittNr == -2 && strFeuerwehr != "-2"){
+                intAbschnittNr = access.getAbschnittsnummerForFubwehr(strFeuerwehr);
+            }
             if (strBericht.equals("Einfache Mitgliederliste"))//Einfache Mitgliederliste
             {
                     request.setAttribute("liste", access.getEinfacheMitgliederliste(intBereichNr, intAbschnittNr, strFeuerwehr));

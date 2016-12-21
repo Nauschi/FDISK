@@ -79,6 +79,10 @@
                     Dynamisch
                 </a>
                 <div class="right menu">
+                    <input type="hidden" name="instruction">
+                    <a href="http://www.lfv.steiermark.at/Portaldata/1/Resources/dokumente/6_innere_angelegenheiten/4_edv/manuals/Anleitung_dynamischer_Listengenerator.pdf" target="_blank" class="ui item linkMenu">
+                        Anleitung&nbsp;&nbsp;<i class="file pdf outline icon"></i>
+                    </a>
                     <form action="MainServlet" method="POST" name="form_logout">
                         <input type="hidden" name="logout">
                         <a href="#" onclick="document.form_logout.submit();" class="ui item linkMenu">
@@ -761,10 +765,12 @@
             LinkedList<Bezirk> liBezirke = (LinkedList<Bezirk>) session.getAttribute("alleBezirke");
             for (Bezirk bezirk : liBezirke) {
                 strAusgabe += bezirk.generiereHiddenDiv();
+                strAusgabe += bezirk.generiereHiddenDivFw();
             }
         } else if (intIDGruppe == 5) {
             Bezirk bezirk = (Bezirk) session.getAttribute("bezirk");
             strAusgabe += bezirk.generiereHiddenDiv();
+            strAusgabe += bezirk.generiereHiddenDivFw();
         }
 
         return strAusgabe;

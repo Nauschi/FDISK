@@ -201,7 +201,7 @@ function saveDataForPDF()
     {
         document.getElementById("hidden_pdfData").value = strName + "###" + strTable;
     }
-    console.log("Select_Jahr output: "+ document.getElementById("select_jahr").value); 
+    console.log("Select_Jahr output: " + document.getElementById("select_jahr").value);
     document.formPDF.submit();
 }
 
@@ -211,7 +211,7 @@ function saveDataForPDF()
  */
 function saveDataForCSV()
 {
-    
+
     var strName = document.getElementById("h2_bericht").innerHTML;
     if (strName == "Stundenauswertung je Mitglied je Instanz")
     {
@@ -235,7 +235,7 @@ function saveDataForCSV()
         document.getElementById("hidden_CSVData").value = strName + "###" + strCsvTable;
     }
     document.formCSV.submit();
-    
+
 }
 
 /**
@@ -292,8 +292,16 @@ function abschittChanged(select_abschnitt, strLetzteFW)
         $('#select_feuerwehr').dropdown();
     } else if (select_abschnitt.value == -2)
     {
+        var strFeuerwehrOptions = "";
+        var e = document.getElementById("select_bezirk");
+        var value = e.options[e.selectedIndex].value;
+        if (value != -2) {
+            strFeuerwehrOptions = document.getElementById("divBz_" + value).innerHTML;
+        }
+
+
         document.getElementById("fieldset_feuerwehr").innerHTML = '<legend><b>Feuerwehr</b></legend><select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr" onchange="feuerwehrChanged(this)"></select>';
-        document.getElementById("select_feuerwehr").innerHTML = "<option value='-2'>Alle Feuerwehren</option>"
+        document.getElementById("select_feuerwehr").innerHTML = "<option value='-2'>Alle Feuerwehren</option>" + strFeuerwehrOptions;
         $('#select_feuerwehr').dropdown();
         fixDropdowns("select_feuerwehr");
 
