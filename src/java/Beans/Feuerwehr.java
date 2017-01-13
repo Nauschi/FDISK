@@ -40,6 +40,17 @@ public class Feuerwehr implements Serializable
         this.strFeuerwehrNummer = strFeuerwehrNummer;
     }
 
+    public String getSortedFubwehr(){
+        return strFeuerwehrNummer.substring(2);
+    }
+    
+    public String getStrNameOhneArt(){
+        String strName2;
+        strName2 = strName.replace("FF", "");
+        strName2 = strName2.replace("BTF", "");
+        return strName2;
+    }
+    
     @Override
     public String toString()
     {

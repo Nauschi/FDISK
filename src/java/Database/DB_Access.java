@@ -301,6 +301,7 @@ public class DB_Access {
         for (String feuerwehrnummer : liFeuerwehrnummern) {
             liFeuerwehren.add(getFeuerwehr(feuerwehrnummer));
         }
+        liFeuerwehren.sort(Comparator.comparing(Feuerwehr::getStrNameOhneArt));
         Abschnitt abschnitt = new Abschnitt(getAbschnittsnameFuerAbschnittsnummer(abschnittnummer), abschnittnummer, liFeuerwehren);
         return abschnitt;
     }
@@ -671,7 +672,7 @@ public class DB_Access {
             MitgliedsGeburtstag mitgliedsGeb = new MitgliedsGeburtstag(intPersID, strSTB, strDGR, strTitel, strVorname, strZuname, false, dateGeburtsdatum, intZielalter, strFub);
             liMitgliedsGeburtstage.add(mitgliedsGeb);
         }
-         liMitgliedsGeburtstage.sort(Comparator.comparing(MitgliedsGeburtstag::getSortedDate).thenComparing(Mitglied::getStrFubwehr).thenComparing(Mitglied::getStb));
+        liMitgliedsGeburtstage.sort(Comparator.comparing(MitgliedsGeburtstag::getSortedDate).thenComparing(Mitglied::getStrFubwehr).thenComparing(Mitglied::getStb));
         connPool.releaseConnection(conn);
         return liMitgliedsGeburtstage;
     }
@@ -963,7 +964,7 @@ public class DB_Access {
             } else if (strFubwehr.equals("-2")) {
                 sqlString += " AND fw.abschnitt_instanznummer = " + intAbschnittnr;
             } else {
-                sqlString += " AND m.instanznummer = '" + strFubwehr + "'";
+                sqlString += " AND '" + strFubwehr + "' IN (SELECT instanznummer FROM FDISK.dbo.stmkmitglieder where id_personen = m.id_personen and abgemeldet = 0)";
             }
             sqlString += getSqlDateString(strVon, strBis, 4, false);
         }
@@ -1032,7 +1033,7 @@ public class DB_Access {
             } else if (strFubwehr.equals("-2")) {
                 sqlString += " WHERE fw.abschnitt_instanznummer = " + intAbschnittnr;
             } else {
-                sqlString += " WHERE m.instanznummer = '" + strFubwehr + "'";
+                sqlString += " WHERE '" + strFubwehr + "' IN (SELECT instanznummer FROM FDISK.dbo.stmkmitglieder where id_personen = m.id_personen and abgemeldet = 0)";
             }
             sqlString += getSqlDateString(strVon, strBis, 4, false);
         }
@@ -1476,7 +1477,7 @@ public class DB_Access {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
         int index1 = 0;
-        int index2 = 0; 
+        int index2 = 0;
         if (strEingabeKennzeichen != null && !strEingabeKennzeichen.isEmpty() && !strEingabeKennzeichen.equals(" ")) {
             strEingabeKennzeichen = strEingabeKennzeichen.replace("/", "").replace(".", " ").replace(" ", "").replace("+", "").replace("-", "");
             index1 = strEingabeKennzeichen.indexOf("(") + 1;
@@ -3716,7 +3717,7 @@ public class DB_Access {
             }
             switch (strSelectedCols[i]) {
                 case "Alter":
-                    sbSqlString.append("DATEDIFF(YY, geburtsdatum, GETgetDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum) > GETDATE() THEN 1 ELSE 0 END 'Lebensalter', ");
+                    sbSqlString.append("DATEDIFF(YY, geburtsdatum, GETDATE()) - CASE WHEN DATEADD(YY, DATEDIFF(YY,geburtsdatum, GETDATE()), geburtsdatum) > GETDATE() THEN 1 ELSE 0 END 'Lebensalter', ");
                     break;
                 case "Status":
                     sbSqlString.append("Jugend, Aktiv, Reserve, Abgemeldet, Ehrenmitglied, ");
@@ -3846,6 +3847,9 @@ public class DB_Access {
 
         for (int i = 0; i < intRows; i++) {
             String strColWhere = strEingabe[i][1];
+            if(strColWhere.toLowerCase().equals("auszeichnungsart")){
+                strColWhere = "auszeichnung";
+            }
             String strColSymbol = strEingabe[i][2];
             String strColValue = strEingabe[i][3];
             strColLink = strEingabe[i][5];
