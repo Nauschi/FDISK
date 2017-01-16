@@ -530,7 +530,9 @@
                             }
                         }).datepicker("option", {
                             changeMonth: 'true',
-                            changeYear: 'true'});
+                            changeYear: 'true',
+                            yearRange: '1960:2017',
+                            showAnim: 'slideDown'});
 
 
             <%

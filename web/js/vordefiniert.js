@@ -13,12 +13,16 @@ $(document).ready(function () {
     $('#input_von_datum').datepicker({
     }).datepicker("option", {
         changeMonth: 'true',
-        changeYear: 'true'});
+        changeYear: 'true',
+        yearRange: '1960:2017',
+        showAnim: 'slideDown'});
 
     $('#input_bis_datum').datepicker({
     }).datepicker("option", {
         changeMonth: 'true',
-        changeYear: 'true'});
+        changeYear: 'true',
+        yearRange: '1960:2017',
+        showAnim: 'slideDown'});
 
 });
 //Initialisiert die Datepicker
