@@ -30,7 +30,7 @@
         <link rel="stylesheet" type="text/css" href="css/jquery-ui_1.css">
         <link rel="stylesheet" type="text/css" href="css/jquery-ui_2.css">
         <title>Vordefiniert</title>
-
+        <script src="js/vordefiniert.js"></script>
     </head>
     <body>
         <%!
@@ -167,7 +167,6 @@
                                         <%
                                             String strBerichtEndeText = "30.11." + LocalDate.now().getYear();
                                         %>
-
                                         <input name="input_bis_datum" id="input_bis_datum" placeholder="bis..." autocomplete="off" readonly="true" type="text" 
                                                value='<%=(str_input_bis_datum != null) ? str_input_bis_datum : strBerichtEndeText%>'>
                                         <div id="div_remove_bis_datum" style="display: <%=(str_input_bis_datum == null || !str_input_bis_datum.isEmpty()) ? "block" : "none"%>;">
@@ -470,7 +469,7 @@
                             if (i % 3 == 0) {
                                 strZusatzHTML += "<tr>";
                             }
-                            
+
                             Object zeile = liFahrzeug.get(i);
                             strZusatzHTML += zeile.toString();
                             i++;

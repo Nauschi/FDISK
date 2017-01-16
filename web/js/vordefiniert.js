@@ -9,6 +9,18 @@ var boolDeleteOnChange = false;
 $('.ui.dropdown').dropdown();
 
 
+$(document).ready(function () {
+    $('#input_von_datum').datepicker({
+    }).datepicker("option", {
+        changeMonth: 'true',
+        changeYear: 'true'});
+
+    $('#input_bis_datum').datepicker({
+    }).datepicker("option", {
+        changeMonth: 'true',
+        changeYear: 'true'});
+
+});
 //Initialisiert die Datepicker
 $(function () {
     $("#input_von_datum").datepicker({
@@ -23,6 +35,8 @@ $(function () {
             $("#input_bis_datum").datepicker("option", "minDate", dt);
             $("#input_von_datum").datepicker("option", "showAnim", "slideDown");
             $("#input_von_datum").datepicker("option", "dateFormat", "dd.mm.yy");
+            $("#input_von_datum").datepicker("option", "changeMonth", "true");
+            $("#input_von_datum").datepicker("option", "changeYear", "true");
             $("#input_von_datum").datepicker("option", $.datepicker.regional['de']);
         }
     });
@@ -38,11 +52,12 @@ $(function () {
             $("#input_von_datum").datepicker("option", "maxDate", dt);
             $("#input_bis_datum").datepicker("option", "showAnim", "slideDown");
             $("#input_bis_datum").datepicker("option", "dateFormat", "dd.mm.yy");
+            $("#input_bis_datum").datepicker("option", "changeMonth", "true");
+            $("#input_bis_datum").datepicker("option", "changeYear", "true");
             $("#input_bis_datum").datepicker("option", $.datepicker.regional['de']);
         }
     });
 });
-
 /**
  * Wandelt den Date String in das Format "yyyy-MM-dd" um
  * @param {type} selected
@@ -87,7 +102,6 @@ function onChangeTypeOfDateUI(intTypeOfDateUI)
         document.getElementById("div_select_jahr").style.display = "none";
         document.getElementById("div_kennzeichen").style.display = "none";
         document.getElementById("div_hidden_hilfe").style.display = "block";
-
     } else if (intTypeOfDateUI == 3)
     {
         document.getElementById("div_input_von_datum").style.display = "block";
@@ -131,7 +145,6 @@ function onListItemClicked(item)
 
     var liItems = document.getElementById("div_liste").getElementsByTagName("a");
     var index;
-
     if (document.getElementById("div_zusatzDaten") != null)
     {
         document.getElementById("div_zusatzDaten").remove();
@@ -146,7 +159,6 @@ function onListItemClicked(item)
     var strTable = item.getElementsByTagName("div")[0].innerHTML;
     var strBerichtname = item.getElementsByTagName("span")[0].innerHTML;
     var intTypeOfDateUI = item.getElementsByTagName("div")[1].innerHTML;
-
     document.getElementById("div_daten").getElementsByTagName("h2")[0].innerHTML = strBerichtname;
     document.getElementById("input_hidden").value = strBerichtname;
     document.getElementById("div_table").innerHTML = strTable;
@@ -181,7 +193,6 @@ function onSucheInTabelle(input) {
         return !~text.indexOf(val);
     }).hide();
     $('#modal_search').modal('hide');
-
 }
 
 
@@ -235,7 +246,6 @@ function saveDataForCSV()
         document.getElementById("hidden_CSVData").value = strName + "###" + strCsvTable;
     }
     document.formCSV.submit();
-
 }
 
 /**
@@ -304,7 +314,6 @@ function abschittChanged(select_abschnitt, strLetzteFW)
         document.getElementById("select_feuerwehr").innerHTML = "<option value='-2'>Alle Feuerwehren</option>" + strFeuerwehrOptions;
         $('#select_feuerwehr').dropdown();
         fixDropdowns("select_feuerwehr");
-
     }
 }
 
@@ -344,7 +353,6 @@ function bezirkChanged(select_bezirk, strLetzteAbschnitt)
         document.getElementById("select_abschnitt").innerHTML = "<option value='-2'>Alle Abschnitte</option>";
         $('#select_abschnitt').dropdown();
         fixDropdowns("select_abschnitt");
-
     }
 }
 

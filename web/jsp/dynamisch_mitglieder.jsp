@@ -524,9 +524,15 @@
                             {
                                 $("#input_filter_datepicker_<%=i%>").datepicker("option", "showAnim", "slideDown");
                                 $("#input_filter_datepicker_<%=i%>").datepicker("option", "dateFormat", "dd.mm.yy");
+                                $("#input_filter_datepicker_<%=i%>").datepicker("option", "changeMonth", "true");
+                                $("#input_filter_datepicker_<%=i%>").datepicker("option", "changeYear", "true");
                                 $("#input_filter_datepicker_<%=i%>").datepicker("option", $.datepicker.regional['de']);
                             }
-                        });
+                        }).datepicker("option", {
+                            changeMonth: 'true',
+                            changeYear: 'true'});
+
+
             <%
                 }
             %>
@@ -615,8 +621,6 @@
             %>
                         };
                         setMapOperatoren(mapOperatoren);
-
-
             <%                for (int i = 1; i <= intZaehler; i++) {
             %>
                         var strLastFilter = null;
