@@ -864,7 +864,7 @@ public class DB_Access {
         Connection conn = connPool.getConnection();
         Statement stat = conn.createStatement();
 
-        String sqlString = "SELECT COUNT(m.id_mitgliedschaften) 'Teilnahmen'"
+        String sqlString = "SELECT COUNT(DISTINCT m.id_mitgliedschaften) 'Teilnahmen'"
                 + " ,(SELECT SUM(km) FROM"
                 + " FDISK.dbo.stmktaetigkeitsberichtefahrzeuge f"
                 + " where id_berichte = t.id_berichte)'Km'"
