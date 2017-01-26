@@ -36,6 +36,13 @@ import Enum.EnGeburtstagsliste;
 import Enum.EnLeerberichtFahrzeug;
 import Enum.EnLeerberichtMitglied;
 import Enum.EnStaticStatements;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -3282,6 +3289,21 @@ public class DB_Access {
         connPool.releaseConnection(conn);
         return liFilter;
     }
+    
+//    public LinkedList<String> getFilterFuerLeistungsabzeichenstufe2() throws FileNotFoundException, UnsupportedEncodingException, IOException{
+//        LinkedList<String> liFilter = new LinkedList<>();
+//        String strPath = System.getProperty("user.dir") + File.separator + "web" + File.separator + "res";
+//        File file = new File(strPath);
+//        
+//        FileInputStream fis = new FileInputStream(file);
+//        InputStreamReader isr = new InputStreamReader(fis, "ISO-8859-1");
+//        BufferedReader br = new BufferedReader(isr);
+//        String strReihe;
+//        
+//        while ((strReihe = br.readLine()) != null) {
+//            
+//        }
+//    }
 
     /**
      * Gibt alle in der Datenbank vorkommenden Leistungsabzeichenbezeichnungen
@@ -3847,7 +3869,7 @@ public class DB_Access {
 
         for (int i = 0; i < intRows; i++) {
             String strColWhere = strEingabe[i][1];
-            if(strColWhere.toLowerCase().equals("auszeichnungsart")){
+            if (strColWhere.toLowerCase().equals("auszeichnungsart")) {
                 strColWhere = "auszeichnung";
             }
             String strColSymbol = strEingabe[i][2];
@@ -3922,7 +3944,16 @@ public class DB_Access {
                             break;
 
                         } else if (liDoppelteKursbezeichnung.contains(i)) {
-                            sbSqlString.append(strBracketOpen).append("UPPER(").append("k").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strBracketClose).append(strColLink).append(" ");
+                            if (!strColSymbol.equals("HAT NICHT")) {
+                                sbSqlString.append(strBracketOpen).append("UPPER(").append("k").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strBracketClose).append(strColLink).append(" ");
+                            } else if (strColSymbol.equals("HAT NICHT")) {
+                                //HAT NICHT Abfrage
+                                sbSqlString.append(strBracketOpen).append(" (SELECT COUNT(*) FROM FDISK.dbo.stmkmitglieder m99 INNER JOIN FDISK.dbo.stmkkursemitglieder km99 ON(m99.id_mitgliedschaften = km99.id_mitgliedschaften)"
+                                        + " INNER JOIN FDISK.dbo.stmkkurse k99 ON(k99.id_kurse = km99.id_kurse)"
+                                        + " INNER JOIN FDISK.dbo.qry_alle_instanzen fw99 ON(m99.instanznummer = fw99.instanznummer)"
+                                        + " WHERE m99.id_mitgliedschaften = m.id_mitgliedschaften"
+                                        + " AND UPPER(k99.kursbezeichnung) = '" + strColValue.toUpperCase() + "') = 0").append(strBracketClose).append(strColLink).append(" ");
+                            }
                             break;
                         } else if (liDoppelteLeistungsabzeichenStufe.contains(i)) {
                             sbSqlString.append(strBracketOpen).append("UPPER(").append("la").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strBracketClose).append(strColLink).append(" ");

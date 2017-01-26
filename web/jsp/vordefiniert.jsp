@@ -596,7 +596,7 @@
                 if (request.getAttribute(
                         "select_kennzeichen_liste") != null) {
             %>
-                        $('.ui.search').search({minCharacters : 0, searchFullText: false, source: [
+                        $('.ui.search').search({minCharacters : 0, searchFullText: true, source: [
             <%
                 LinkedList<String> liKennzeichen = (LinkedList<String>) request.getAttribute("select_kennzeichen_liste");
                 for (String kennzeichen : liKennzeichen) {

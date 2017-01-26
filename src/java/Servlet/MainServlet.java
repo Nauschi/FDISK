@@ -336,7 +336,7 @@ public class MainServlet extends HttpServlet {
             int intBereichNr = Integer.parseInt(request.getParameter("select_bezirk"));
             int intAbschnittNr = Integer.parseInt(request.getParameter("select_abschnitt"));
             String strFeuerwehr = request.getParameter("select_feuerwehr");
-            if (intAbschnittNr == -2 && strFeuerwehr != "-2"){
+            if (intAbschnittNr == -2 && !strFeuerwehr.equals("-2")){
                 intAbschnittNr = access.getAbschnittsnummerForFubwehr(strFeuerwehr);
             }
             if (strBericht.equals("Einfache Mitgliederliste"))//Einfache Mitgliederliste
@@ -500,6 +500,9 @@ public class MainServlet extends HttpServlet {
             //47 --> Bereich 47
             //Test
             //-2 --> alles
+            if(intAbschnitt == -2 && !strFeuerwehr.equals("-2")){
+                intAbschnitt = access.getAbschnittsnummerForFubwehr(strFeuerwehr);
+            }
             StringBuilder sbDynHTML = access.getDynamischerBericht(strDaten, strTypen, intBezirk, intAbschnitt, strFeuerwehr);
             request.setAttribute("dyn_table", sbDynHTML);
         } catch (Exception ex) {

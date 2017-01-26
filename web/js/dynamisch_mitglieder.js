@@ -129,6 +129,97 @@ function deleteTypenAuswahl()
         $('#modal_fehler').modal('show');
     }
 }
+
+function onFilterChanged(select_filter, select_typ, strID) {
+    if (select_typ.value === "Leistungsabzeichenbezeichnung;cb") {
+        console.log("IF TEST");
+        if (document.getElementById('select_filter_cb_' + (strID + 1)) != null) {
+            console.log("DOES EXIST");
+
+            var div_filter = document.getElementById("div_filter_cb_" + (strID + 1));
+            div_filter.innerHTML = '<select name="select_filter_cb_' + (strID + 1) + '" class="ui fluid dropdown" id="select_filter_cb_' + (strID + 1) + '"></select>';
+            var select_filter2 = document.getElementById("select_filter_cb_" + (strID + 1));
+            var strHTMLFilter;
+
+
+            switch (select_filter.value)
+            {
+                case "Atemschutz Leistungsprüfung":
+                    strHTMLFilter = "Bronze;Silber;Gold";
+                    break;
+                case "Branddienst Leistungsprüfung":
+                    strHTMLFilter = "I - Bronze;II - Silber;III - Gold";
+                    break;
+                case "Fertigkeitsabzeichen Funk":
+                    strHTMLFilter = "Funk";
+                    break;
+                case "Feuerwehrfunkleistungsabzeichen":
+                    strHTMLFilter = "Bronze;Silber;Gold";
+                    break;
+                case "Feuerwehrjugend - Wissenstestabzeichen":
+                    strHTMLFilter = "Bronze;Silber;Gold";
+                    break;
+                case "Feuerwehrjugend - Wissenstestspiel":
+                    strHTMLFilter = "Bronze;Silber";
+                    break;
+                case "Feuerwehrjugendleistungsabzeichen":
+                    strHTMLFilter = "Bund;Bronze;Silber;Gold";
+                    break;
+                case "Feuerwehrjugendleistungsabzeichen - Bewerbsspiel":
+                    strHTMLFilter = "Bronze;Silber";
+                    break;
+                case "Feuerwehrleistungsabzeichen - Bundeseinheitlich":
+                    strHTMLFilter = "Bronze;Silber;Gold";
+                    break;
+                case "Feuerwehrleistungsabzeichen - Steiermark":
+                    strHTMLFilter = "Eisen;Bronze;Silber;Gold";
+                    break;
+                case "Feuerwehrleistungsabzeichen - Strahlenschutz":
+                    strHTMLFilter = "Bronze;Silber;Gold";
+                    break;
+                case "Multifunktionale Leistungsabzeichen":
+                    strHTMLFilter = "MLFA";
+                    break;
+                case "Pro Merito":
+                    strHTMLFilter = "Bruststern;Bronze;Silber;Gold;Gr. EZ Silber;Gr. EZ Gold";
+                    break;
+                case "Sanitätsleistungsabzeichen":
+                    strHTMLFilter = "I - Bronze;II - Silber;III - Gold";
+                    break;
+                case "Technische Leistungsprüfung":
+                    strHTMLFilter = "I - Bronze;II - Silber;III - Gold";
+                    break;
+                case "Wasserwehrleistungsabzeichen":
+                    strHTMLFilter = "Bronze;Silber;Gold";
+                    break;
+
+            }
+
+            var strSplitFilter = strHTMLFilter.split(';');
+            var opt1 = document.createElement('option');
+            for (var i = 0; i < strSplitFilter.length; i++)
+            {
+
+                var opt = document.createElement('option');
+
+                if (i === (strSplitFilter.length - 1)) {
+                    opt.setAttribute('selected', 'selected');
+                }
+                var opt_value = replaceAll(strSplitFilter[i], '"', "###")
+
+                opt.value = opt_value;
+                opt.innerHTML = strSplitFilter[i];
+                select_filter2.appendChild(opt);
+            }
+            $('#select_filter_cb_' + (strID + 1)).dropdown();
+        } else {
+            console.log("DOES NOT EXIST");
+        }
+    } else {
+        console.log("ELSE TEST");
+    }
+}
+
 //Wird aufgerufen wenn in einem Dropdown wo der Typ bestimmt wird sich etwas ändert
 /**
  * Stellt je nach Typ in der Zeile, den Filter auf ein Dropdown, Textfield oder Datepicker
@@ -170,7 +261,7 @@ function onTypChanged(select_typ, strLastFilter, strLastOperator)
             document.getElementById("input_filter_datepicker_" + strID).value = strLastFilter;
         }
     }
-    var operatorFeld = ["=", "<>", "<=", ">=", "<", ">"];
+    var operatorFeld = ["=", "<>", "<=", ">=", "<", ">", "HAT NICHT"];
     if (mapOperatoren[strTyp.toUpperCase()] != undefined)
     {
         operatorFeld = mapOperatoren[strTyp.toUpperCase()].split(";");
@@ -216,9 +307,71 @@ function initialisiereCBFilter(strTyp, strID, strLastFilter)
     if (map[strTyp.toUpperCase()] != undefined)
     {
         var div_filter = document.getElementById("div_filter_cb_" + strID);
-        div_filter.innerHTML = '<select name="select_filter_cb_' + strID + '>" class="ui fluid dropdown" id="select_filter_cb_' + strID + '"></select>';
+        div_filter.innerHTML = '<select name="select_filter_cb_' + strID + '" class="ui fluid dropdown" id="select_filter_cb_' + strID + '" onChange="onFilterChanged(this, document.getElementById(\'select_typ_' + strID + '\'),' + strID + ')"></select>';
         var select_filter = document.getElementById("select_filter_cb_" + strID);
         var strHTMLFilter = map[strTyp.toUpperCase()];
+
+        if (strID > 1) {
+            console.log("Select_typ --> " + document.getElementById("select_typ_" + (strID - 1).toString()).value);
+            console.log("strTyp --> " + strTyp);
+            if (document.getElementById("select_typ_" + (strID - 1).toString()).value === "Leistungsabzeichenbezeichnung;cb" && strTyp === "Leistungsabzeichen Stufe") {
+                console.log("select_filter -->" + document.getElementById("select_filter_cb_" + (strID - 1)).value);
+                switch (document.getElementById("select_filter_cb_" + (strID - 1)).value)
+                {
+                    case "Atemschutz Leistungsprüfung":
+                        strHTMLFilter = "Bronze;Silber;Gold";
+                        break;
+                    case "Branddienst Leistungsprüfung":
+                        strHTMLFilter = "I - Bronze;II - Silber;III - Gold";
+                        break;
+                    case "Fertigkeitsabzeichen Funk":
+                        strHTMLFilter = "Funk";
+                        break;
+                    case "Feuerwehrfunkleistungsabzeichen":
+                        strHTMLFilter = "Bronze;Silber;Gold";
+                        break;
+                    case "Feuerwehrjugend - Wissenstestabzeichen":
+                        strHTMLFilter = "Bronze;Silber;Gold";
+                        break;
+                    case "Feuerwehrjugend - Wissenstestspiel":
+                        strHTMLFilter = "Bronze;Silber";
+                        break;
+                    case "Feuerwehrjugendleistungsabzeichen":
+                        strHTMLFilter = "Bund;Bronze;Silber;Gold";
+                        break;
+                    case "Feuerwehrjugendleistungsabzeichen - Bewerbsspiel":
+                        strHTMLFilter = "Bronze;Silber";
+                        break;
+                    case "Feuerwehrleistungsabzeichen - Bundeseinheitlich":
+                        strHTMLFilter = "Bronze;Silber;Gold";
+                        break;
+                    case "Feuerwehrleistungsabzeichen - Steiermark":
+                        strHTMLFilter = "Eisen;Bronze;Silber;Gold";
+                        break;
+                    case "Feuerwehrleistungsabzeichen - Strahlenschutz":
+                        strHTMLFilter = "Bronze;Silber;Gold";
+                        break;
+                    case "Multifunktionale Leistungsabzeichen":
+                        strHTMLFilter = "MLFA";
+                        break;
+                    case "Pro Merito":
+                        strHTMLFilter = "Bruststern;Bronze;Silber;Gold;Gr. EZ Silber;Gr. EZ Gold";
+                        break;
+                    case "Sanitätsleistungsabzeichen":
+                        strHTMLFilter = "I - Bronze;II - Silber;III - Gold";
+                        break;
+                    case "Technische Leistungsprüfung":
+                        strHTMLFilter = "I - Bronze;II - Silber;III - Gold";
+                        break;
+                    case "Wasserwehrleistungsabzeichen":
+                        strHTMLFilter = "Bronze;Silber;Gold";
+                        break;
+
+                }
+            }
+        }
+
+
         var strSplitFilter = strHTMLFilter.split(';');
         var opt1 = document.createElement('option');
         for (var i = 0; i < strSplitFilter.length; i++)
@@ -272,7 +425,7 @@ function getStyle(el, styleProp)
     return document.defaultView.getComputedStyle(el, null)[styleProp];
 }
 
-//Wir aufgerufen wenn der Button vorschau gecklickt wird.
+//Wird aufgerufen wenn der Button vorschau gecklickt wird.
 /**
  * Überprüft ob keine Klammer falsch gesetzt wurde. Wenn doch -> Fehlermeldung
  * Überprüft ob die letzte Verknüpfung leer ist, 
@@ -580,7 +733,7 @@ function abschittChanged(select_abschnitt, strLetzteFW)
         if (value != -2) {
             strFeuerwehrOptions = document.getElementById("divBz_" + value).innerHTML;
         }
-        
+
         document.getElementById("fieldset_feuerwehr").innerHTML = '<legend><b>Feuerwehr</b></legend><select name="select_feuerwehr" class="ui fluid dropdown" id="select_feuerwehr"></select>';
         document.getElementById("select_feuerwehr").innerHTML = "<option value='-2'>Alle Feuerwehren</option>" + strFeuerwehrOptions;
         $('#select_feuerwehr').dropdown();

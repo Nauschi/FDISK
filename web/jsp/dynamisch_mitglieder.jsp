@@ -264,10 +264,10 @@
                     </div>
 
                     <div class="four wide column" id="div_filter_cb_<%=i%>" style="width: 100%; display: none;">
-                        <select class="ui fluid dropdown" id="select_filter_cb_<%=i%>">
+                       <!-- <select class="ui fluid dropdown" id="select_filter_cb_<%=i%>" onChange="onFilterChanged(this, document.getElementById('select_typ_'<%=i%>))">
                             <!--<option value="">Filter</option>-->
                             <%--<%=generiereSelect("select_filter_" + i, strFeldFilter, request)%>--%>
-                        </select>
+                        <!--</select>-->
                     </div>
                     <div class="four wide column" id="div_filter_txt_<%=i%>" style="width: 100%; display: none;">
                         <div class="ui input" style="width: 100%">
