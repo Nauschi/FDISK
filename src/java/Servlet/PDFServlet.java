@@ -199,6 +199,7 @@ public class PDFServlet extends HttpServlet {
                 document = new Document(PageSize.A4.rotate(), 36, 36, 70, 54);
                 rect = new Rectangle(36, 54, 805, 559);
             }
+
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PdfWriter writer = PdfWriter.getInstance(document, baos);
             PDF_KopfFußzeile event = new PDF_KopfFußzeile(strFontPath, writer);
@@ -431,6 +432,7 @@ public class PDFServlet extends HttpServlet {
         //liBerHochformat.add("Dienstzeitliste");
         //liBerHochformat.add("Geburtstagsliste");
         //liBerHochformat.add("Kursstatistik");
+
     }
 
     /**

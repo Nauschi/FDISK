@@ -25,7 +25,7 @@ Hausnummer;=;<>;<;>;<=;>=
 ISCO-Beruf;=;<>
 Kursbezeichnung;=;<>;HAT NICHT
 Kursdatum;=;<>;<;>;<=;>=
-Leistungsabzeichen Stufe;=;<>
+Leistungsabzeichen Stufe;=;<>;HAT NICHT
 Leistungsabzeichenbezeichnung;=;<>
 Leistungsabzeichendatum;=;<>;<;>;<=;>=
 Namenszusatz;=;<>

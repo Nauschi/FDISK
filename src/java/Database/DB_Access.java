@@ -50,6 +50,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -883,6 +884,7 @@ public class DB_Access {
                 + " ,t.nummer 'Nr'"
                 + " ,t.beginn 'Beginn'"
                 + " ,t.ende 'Ende'"
+                + " ,t.Bemerkung 'Bemerkung'"
                 + " FROM FDISK.dbo.stmktaetigkeitsberichte t"
                 + " INNER JOIN FDISK.dbo.stmktaetigkeitsberichtemitglieder m ON(t.id_berichte = m.id_berichte)"
                 + " INNER JOIN FDISK.dbo.qry_alle_instanzen fw ON(t.instanznummer = fw.instanznummer)"
@@ -906,7 +908,9 @@ public class DB_Access {
                 + " ,t.taetigkeitsunterart"
                 + " ,t.nummer"
                 + " ,t.beginn"
-                + " ,t.ende";
+                + " ,t.ende"
+                + " ,t.Bemerkung"
+                + " ORDER BY t.beginn";
         ResultSet rs = stat.executeQuery(sqlString);
 
         System.out.println("KURSSTATISTIK SQL STATEMENT: " + sqlString);
@@ -921,6 +925,7 @@ public class DB_Access {
         String strNummer;
         Date dateBeginn;
         Date dateEnde;
+        String strBemerkung;
 
         while (rs.next()) {
 
@@ -934,11 +939,14 @@ public class DB_Access {
             dateBeginn = rs.getTimestamp("Beginn");
             dateEnde = rs.getTimestamp("Ende");
             doKm = rs.getDouble("Km");
+            strBemerkung = rs.getString("Bemerkung");
 
-            Kurstaetigkeit kurstaetigkeit = new Kurstaetigkeit(intIdBerichte, intTeilnehmer, doKm, intInstanznummer, strInstanzname, strTaetigkeitsart, strTaetigkeitsunterart, strNummer, dateBeginn, dateEnde);
+            Kurstaetigkeit kurstaetigkeit = new Kurstaetigkeit(intIdBerichte, intTeilnehmer, doKm, intInstanznummer, strInstanzname, strTaetigkeitsart, strTaetigkeitsunterart, strNummer, dateBeginn, dateEnde, strBemerkung);
             liKursetaetigkeiten.add(kurstaetigkeit);
 
         }
+        //Sehr langsames sorting. Keine Ahnung warum!?
+        //liKursetaetigkeiten.sort(Comparator.comparing(Kurstaetigkeit::getDateBegin));
         connPool.releaseConnection(conn);
         return liKursetaetigkeiten;
     }
@@ -2058,6 +2066,7 @@ public class DB_Access {
                     + " ,ort 'Ort'"
                     + " ,meldung 'Meldung'"
                     + " ,Fehlalarm 'Fehlalarm'"
+                    + " ,Bemerkung 'Bemerkung'"
                     + " FROM FDISK.dbo.stmktaetigkeitsberichte";
             sqlString += getSqlDateString(strVon, strBis, 2, true);
         } else {
@@ -2077,6 +2086,7 @@ public class DB_Access {
                         + " ,ort 'Ort'"
                         + " ,meldung 'Meldung'"
                         + " ,Fehlalarm 'Fehlalarm'"
+                        + " ,Bemerkung 'Bemerkung'"
                         + " FROM FDISK.dbo.stmktaetigkeitsberichte tb INNER JOIN FDISK.dbo.qry_alle_instanzen f ON(tb.instanznummer = f.instanznummer)"
                         + " WHERE f.Bereich_Nr = " + intBereichnr;
             } else if (strFubwehr.equals("-2")) {
@@ -2095,6 +2105,7 @@ public class DB_Access {
                         + " ,ort 'Ort'"
                         + " ,meldung 'Meldung'"
                         + " ,Fehlalarm 'Fehlalarm'"
+                        + " ,Bemerkung 'Bemerkung'"
                         + " FROM FDISK.dbo.stmktaetigkeitsberichte tb INNER JOIN FDISK.dbo.qry_alle_instanzen f ON(tb.instanznummer = f.instanznummer)"
                         + " WHERE f.abschnitt_instanznummer = " + intAbschnittnr;
             } else {
@@ -2113,6 +2124,7 @@ public class DB_Access {
                         + " ,ort 'Ort'"
                         + " ,meldung 'Meldung'"
                         + " ,Fehlalarm 'Fehlalarm'"
+                        + " ,Bemerkung 'Bemerkung'"
                         + " FROM FDISK.dbo.stmktaetigkeitsberichte"
                         + " WHERE instanznummer = '" + strFubwehr + "'";
             }
@@ -2137,6 +2149,7 @@ public class DB_Access {
         String strOrt;
         String strMeldung;
         String strFehlalarm;
+        String strBemerkung;
 
         while (rs.next()) {
             intIdBericht = rs.getInt("ID");
@@ -2154,8 +2167,9 @@ public class DB_Access {
             strOrt = rs.getString("Ort");
             strMeldung = rs.getString("Meldung");
             strFehlalarm = rs.getString("Fehlalarm");
+            strBemerkung = rs.getString("Bemerkung");
 
-            Taetigkeitsbericht taetigkeitsbericht = new Taetigkeitsbericht(intIdBericht, intInstanznummer, strInstanzname, strTaetigkeitsart, strTaetigkeitsunterart, strNummer, dateBeginn, dateEnde, strStrasse, strNummerAdr, strStiege, strPlz, strOrt, strMeldung, strFehlalarm);
+            Taetigkeitsbericht taetigkeitsbericht = new Taetigkeitsbericht(intIdBericht, intInstanznummer, strInstanzname, strTaetigkeitsart, strTaetigkeitsunterart, strNummer, dateBeginn, dateEnde, strStrasse, strNummerAdr, strStiege, strPlz, strOrt, strMeldung, strFehlalarm, strBemerkung);
             liTaetigkeitsbericht.add(taetigkeitsbericht);
         }
 
@@ -2200,6 +2214,7 @@ public class DB_Access {
                     + " ,zuname 'Zuname'"
                     + " ,meldung 'Meldung'"
                     + " ,Fehlalarm 'Fehlalarm'"
+                    + " ,taetigkeit 'Taetigkeit'"
                     + " ,(SELECT Count(*)"
                     + "  FROM   fdisk.dbo.stmkeinsatzberichtemitglieder mitglied"
                     + "  WHERE  mitglied.id_berichte = eb.id_berichte) 'Anzahl'"
@@ -2224,6 +2239,7 @@ public class DB_Access {
                         + " ,zuname 'Zuname'"
                         + " ,meldung 'Meldung'"
                         + " ,Fehlalarm 'Fehlalarm'"
+                        + " ,taetigkeit 'Taetigkeit'"
                         + " ,(SELECT Count(*)"
                         + "  FROM   fdisk.dbo.stmkeinsatzberichtemitglieder mitglied"
                         + "  WHERE  mitglied.id_berichte = eb.id_berichte) 'Anzahl'"
@@ -2247,6 +2263,7 @@ public class DB_Access {
                         + " ,zuname 'Zuname'"
                         + " ,meldung 'Meldung'"
                         + " ,Fehlalarm 'Fehlalarm'"
+                        + " ,taetigkeit 'Taetigkeit'"
                         + " ,(SELECT Count(*)"
                         + "  FROM   fdisk.dbo.stmkeinsatzberichtemitglieder mitglied"
                         + "  WHERE  mitglied.id_berichte = eb.id_berichte) 'Anzahl'"
@@ -2270,6 +2287,7 @@ public class DB_Access {
                         + " ,zuname 'Zuname'"
                         + " ,meldung 'Meldung'"
                         + " ,Fehlalarm 'Fehlalarm'"
+                        + " ,taetigkeit 'Taetigkeit'"
                         + " ,(SELECT Count(*)"
                         + "  FROM   fdisk.dbo.stmkeinsatzberichtemitglieder mitglied"
                         + "  WHERE  mitglied.id_berichte = id_berichte) 'Anzahl'"
@@ -2299,6 +2317,7 @@ public class DB_Access {
         String strMeldung;
         String strFehlalarm;
         int intAnzahl;
+        String taetigkeit;
 
         while (rs.next()) {
             intIdBericht = rs.getInt("ID");
@@ -2319,12 +2338,13 @@ public class DB_Access {
             strMeldung = rs.getString("Meldung");
             strFehlalarm = rs.getString("Fehlalarm");
             intAnzahl = rs.getInt("Anzahl");
+            taetigkeit = rs.getString("Taetigkeit");
 
             Einsatzbericht einsatzbericht = new Einsatzbericht(intIdBericht,
                     intInstanznummer, strName, strEinsatzart, strNummer,
                     dateUhrzeit_Alarmierung, dateUhrzeit_Rueckkehr, strStrasse,
                     strNummerAdr, strStiege, strPlz, strOrt, intStandesbuchnummer,
-                    strVorname, strZuname, strMeldung, strFehlalarm, intAnzahl);
+                    strVorname, strZuname, strMeldung, strFehlalarm, intAnzahl, taetigkeit);
             liEinsatzbericht.add(einsatzbericht);
         }
 
@@ -3289,7 +3309,7 @@ public class DB_Access {
         connPool.releaseConnection(conn);
         return liFilter;
     }
-    
+
 //    public LinkedList<String> getFilterFuerLeistungsabzeichenstufe2() throws FileNotFoundException, UnsupportedEncodingException, IOException{
 //        LinkedList<String> liFilter = new LinkedList<>();
 //        String strPath = System.getProperty("user.dir") + File.separator + "web" + File.separator + "res";
@@ -3304,7 +3324,6 @@ public class DB_Access {
 //            
 //        }
 //    }
-
     /**
      * Gibt alle in der Datenbank vorkommenden Leistungsabzeichenbezeichnungen
      * zurück
@@ -3646,7 +3665,7 @@ public class DB_Access {
         //damit ich nicht zwei verschiedene listen für den gleichen Join habe
         liDoppelteAuszeichnungsart.addAll(liDoppelteAuszeichnungsstufe);
         liDoppelteFunktionsbezeichnung.addAll(liDoppelteFunktionsinstanz);
-        liDoppelteLeistungsabzeichenStufe.addAll(liDoppelteLeistungsabzeichenbezeichnung);
+        //liDoppelteLeistungsabzeichenStufe.addAll(liDoppelteLeistungsabzeichenbezeichnung);
 
         for (int i = 0; i < intRows; i++) {
             strSpaltenUeberschrift = strEingabe[i][1];
@@ -3785,17 +3804,27 @@ public class DB_Access {
         }
 
         if (boLeistungsabzeichen == true) {
-            if (liDoppelteLeistungsabzeichenStufe.size() > 0) {
-                for (Integer i : liDoppelteLeistungsabzeichenStufe) {
-                    sbSqlString.append(" INNER JOIN FDISK.dbo.stmkleistungsabzeichenmitglieder lam").append(i).append(" ON(m.id_personen = lam").append(i).append(".id_personen) ").append(" INNER JOIN FDISK.dbo.stmkleistungsabzeichen la").append(i).append(" ON(la").append(i).append(".id_leistungsabzeichen = lam").append(i)
-                            .append(".id_leistungsabzeichen) ");
-                }
 
+            if (liDoppelteLeistungsabzeichenbezeichnung.size() > 0) {
+                for (Integer i : liDoppelteLeistungsabzeichenbezeichnung) {
+                    sbSqlString.append("INNER JOIN FDISK.dbo.stmkleistungsabzeichenmitglieder lam").append(i).append(" ON(m.id_personen = lam").append(i).append(".id_personen) ").append(" INNER JOIN FDISK.dbo.stmkleistungsabzeichen la").append(i).append(" ON(la").append(i).append(".id_leistungsabzeichenstufe = lam").append(i).append(".id_leistungsabzeichenstufe) ");
+
+                }
             } else {
                 sbSqlString.append(" INNER JOIN FDISK.dbo.stmkleistungsabzeichenmitglieder lam ON(m.id_personen = lam.id_personen) ")
-                        .append(" INNER JOIN FDISK.dbo.stmkleistungsabzeichen la ON(la.id_leistungsabzeichen = lam.id_leistungsabzeichen) ");
+                        .append(" INNER JOIN FDISK.dbo.stmkleistungsabzeichen la ON(la.id_leistungsabzeichenstufe = lam.id_leistungsabzeichenstufe) ");
             }
 
+            if (liDoppelteLeistungsabzeichenStufe.size() > 0) {
+                //Wenn diese zwei Listen gleich groß sind (oder Leistungsabzeichen > als LeistungsabzeichenStufe), muss nicht noch einmal über die Tabelle stmkleistungsabzeichen gejoint werden
+                //Sind die Listen nicht gleich groß, muss zusätzlich über die Tabelle stmleistungsabzeichen gejoint werden
+                if (liDoppelteLeistungsabzeichenStufe.size() > liDoppelteLeistungsabzeichenbezeichnung.size()) {
+                    for (int i = liDoppelteLeistungsabzeichenbezeichnung.size(); i < liDoppelteLeistungsabzeichenStufe.size(); i++) {
+                        sbSqlString.append(" INNER JOIN FDISK.dbo.stmkleistungsabzeichenmitglieder lam").append(i).append(" ON(m.id_personen = lam").append(i).append(".id_personen) ").append(" INNER JOIN FDISK.dbo.stmkleistungsabzeichen la").append(i).append(" ON(la").append(i).append(".id_leistungsabzeichenstufe = lam").append(i)
+                                .append(".id_leistungsabzeichenstufe) ");
+                    }
+                }
+            }
         }
 
         if (boKurse == true) {
@@ -3866,7 +3895,8 @@ public class DB_Access {
         String strColLink = "";
         String strBracketOpen = "";
         String strBracketClose = "";
-
+        ArrayList<Integer> liLaIndices = new ArrayList<>();
+        boolean first = true;
         for (int i = 0; i < intRows; i++) {
             String strColWhere = strEingabe[i][1];
             if (strColWhere.toLowerCase().equals("auszeichnungsart")) {
@@ -3914,6 +3944,7 @@ public class DB_Access {
             if (strColWhere.equals("Vordienstzeit")) {
                 sbSqlString.append("ROUND(VD_ZEIT, 0, 1) ").append(strColSymbol).append(strColValue).append(" ");
             } else if (!strColWhere.equals("Alter") && !strColWhere.equals("Status")) {
+                
                 switch (strColWhereType) {
                     case "datetime":
                         sbSqlString.append(strBracketOpen).append(strColWhere).append(" ").append(strColSymbol).append(" CAST('").append(strColValue).append("' AS datetime) ").append(strBracketClose).append(strColLink).append(" ");
@@ -3955,9 +3986,43 @@ public class DB_Access {
                                         + " AND UPPER(k99.kursbezeichnung) = '" + strColValue.toUpperCase() + "') = 0").append(strBracketClose).append(strColLink).append(" ");
                             }
                             break;
-                        } else if (liDoppelteLeistungsabzeichenStufe.contains(i)) {
-                            sbSqlString.append(strBracketOpen).append("UPPER(").append("la").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strBracketClose).append(strColLink).append(" ");
+                        } else if (liDoppelteLeistungsabzeichenbezeichnung.contains(i)) {
+                            liLaIndices = new ArrayList<>();
+                            //sbSqlString.append(strBracketOpen).append("UPPER(").append("la").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strBracketClose).append(strColLink).append(" ");
+                            sbSqlString.append("(UPPER(la").append(i).append(".Bezeichnung)").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ");
+                            liLaIndices.add(i);
+                            for (int j = 0; j < liDoppelteLeistungsabzeichenStufe.size(); j++) {
+                                if (liDoppelteLeistungsabzeichenStufe.get(j).equals(i + 1 + j)) {
+                                    if (liDoppelteLeistungsabzeichenStufe.contains(i + 2 + j)) {
+                                        sbSqlString.append(" AND UPPER(la").append(i + 1 + j).append(".Bezeichnung)").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ");
+                                        liLaIndices.add(i + 1 + j);
+                                    } else {
+                                        sbSqlString.append(")");
+                                        if (!liLaIndices.isEmpty()) {
+                                            sbSqlString.append(" AND");
+                                        }
+                                        break;
+                                    }
+                                } else {
+                                    break;
+                                }
+                            }
                             break;
+                        } else if (liDoppelteLeistungsabzeichenStufe.contains(i)) {
+                            if(first){
+                                sbSqlString.append(" (");
+                            }
+                            sbSqlString.append(" UPPER(la").append(liLaIndices.get(0)).append(".Stufe)").append(strColSymbol).append(" '").append(strColValue).append("' ");
+                            liLaIndices.remove(0);
+                            if(!liLaIndices.isEmpty()){
+                                sbSqlString.append(" " + strColLink+ " ");
+                                first = false;
+                                break;
+                            }else{
+                                sbSqlString.append(" )");
+                                first = true;
+                                break;
+                            }
                         } else if (liDoppelteUntersuchungsart.contains(i)) {
                             sbSqlString.append(strBracketOpen).append("UPPER(").append("u").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strBracketClose).append(strColLink).append(" ");
                             break;
@@ -3966,6 +4031,7 @@ public class DB_Access {
                             break;
                         }
                     //default bei byte, tinyint, bigint, int
+
                     default:
                         sbSqlString.append(strBracketOpen).append(strColWhere).append(" ").append(strColSymbol).append(" '").append(strColValue).append("' ").append(strBracketClose).append(strColLink).append(" ");
                         break;
@@ -3982,22 +4048,30 @@ public class DB_Access {
             intIndex = sbSqlString.lastIndexOf(strColLink);
         }
 
-        if (intIndex != -1) {
+        if (intIndex
+                != -1) {
             sbSqlString.substring(0, intIndex);
             sbSqlString.append(" ");
         }
-        sbSqlString.append(" )");
+
+        sbSqlString.append(
+                " )");
         //System.out.println("SQL String: " + sbSqlString);
-        if (intBereichnr == -2) {
-        } else if (intAbschnittnr == -2) {
+        if (intBereichnr
+                == -2) {
+        } else if (intAbschnittnr
+                == -2) {
             sbSqlString.append(" AND (fw.Bereich_Nr = ").append(intBereichnr).append(")");
-        } else if (strFubwehr.equals("-2")) {
+        } else if (strFubwehr.equals(
+                "-2")) {
             sbSqlString.append(" AND (fw.abschnitt_instanznummer = ").append(intAbschnittnr).append(")");
         } else {
             sbSqlString.append(" AND (m.instanznummer = '").append(strFubwehr).append("')");
         }
         //System.out.println("SQL String: " + sbSqlString);
-        System.out.println("SQL Dynamic: " + sbSqlString.toString());
+
+        System.out.println(
+                "SQL Dynamic: " + sbSqlString.toString());
         StringBuilder sbHtml = createDynamicReportGeneratorOutput(sbSqlString.toString(), strSelectedCols);
         return sbHtml;
     }

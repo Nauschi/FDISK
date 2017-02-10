@@ -7,10 +7,10 @@ Stundenauswertung je Mitglied je Instanz;STB;DGR;Titel;Vorname;Zuname;Instanznam
 Tätigkeitsbericht leer; ;0;
 Einsatzbericht leer; ;0;
 Übungsbericht leer; ;0;
-Liste aller Einsatzberichte;Einsatzart;Nummer;Alarmierung;Rückkehr;Adresse;Mann;Fehlalarm;2;
-Liste aller Tätigkeitsberichte;Tätigkeitsart;Tätigkeitsunterart;Nummer;Beginn;Ende;Adresse;2;
+Liste aller Einsatzberichte;Einsatzart;Nummer;Alarmierung;Rückkehr;Adresse;Mann;Fehlalarm;Tätigkeit;2;
+Liste aller Tätigkeitsberichte;Tätigkeitsart;Tätigkeitsunterart;Nummer;Beginn;Ende;Adresse;Bemerkung;2;
 Liste aller Übungsberichte;Übungsart;Übungsunterart;Nummer;Beginn;Ende;Adresse;2;
 Liste aller Berichte;Beginn;Ende;Berichtart;Beschreibung;2;
-Kursstatistik;Anz Teiln;Anz Km;Tätigkeitsart;Tätigkeitsunterart;Beginn;Ende;2;
+Kursstatistik;Anz Teiln;Anz Km;Tätigkeitsart;Tätigkeitsunterart;Bemerkung;Beginn;Ende;2;
 Digitales Fahrtenbuch;Beschreibung;Beginn;Ende;Km;3;
 Einsatztaugliche Atemschutzgeräteträger;Wehr;STB;DGR;Titel;Vorname;Zuname;Geburtsdatum;Untersuchung;Nächste Untersuchung;0;

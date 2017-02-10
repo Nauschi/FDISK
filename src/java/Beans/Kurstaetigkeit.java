@@ -23,10 +23,11 @@ public class Kurstaetigkeit implements Serializable
     private String strNummer;
     private Date dateBegin;
     private Date dateEnde;
+    private String strBemerkung;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
     private BL bl = new BL(); 
 
-    public Kurstaetigkeit(int intIdBerichte, int intTeilnehmer, double doKm, int intInstanznummer, String strInstanzname, String strTaetigkeitsart, String strTaetigkeitsunterart, String strNummer, Date dateBeginn, Date dateEnde) throws ClassNotFoundException
+    public Kurstaetigkeit(int intIdBerichte, int intTeilnehmer, double doKm, int intInstanznummer, String strInstanzname, String strTaetigkeitsart, String strTaetigkeitsunterart, String strNummer, Date dateBeginn, Date dateEnde, String strBemerkung) throws ClassNotFoundException
     {
         this.intIdBerichte = intIdBerichte;
         this.intTeilnehmer = intTeilnehmer;
@@ -38,6 +39,15 @@ public class Kurstaetigkeit implements Serializable
         this.strNummer = strNummer;
         this.dateBegin = dateBeginn;
         this.dateEnde = dateEnde;
+        this.strBemerkung = strBemerkung;
+    }
+
+    public String getStrBemerkung() {
+        return strBemerkung;
+    }
+
+    public void setStrBemerkung(String strBemerkung) {
+        this.strBemerkung = strBemerkung;
     }
 
     public int getIntIdBerichte()
@@ -59,8 +69,6 @@ public class Kurstaetigkeit implements Serializable
     {
         this.intTeilnehmer = intTeilnehmer;
     }
-
-
 
     public double getDoKm()
     {
@@ -143,9 +151,19 @@ public class Kurstaetigkeit implements Serializable
     }
 
     @Override
-    public int hashCode()
-    {
-        int hash = 7;
+    public int hashCode() {
+        int hash = 5;
+        hash = 53 * hash + this.intIdBerichte;
+        hash = 53 * hash + this.intTeilnehmer;
+        hash = 53 * hash + (int) (Double.doubleToLongBits(this.doKm) ^ (Double.doubleToLongBits(this.doKm) >>> 32));
+        hash = 53 * hash + this.intInstanznummer;
+        hash = 53 * hash + Objects.hashCode(this.strInstanzname);
+        hash = 53 * hash + Objects.hashCode(this.strTaetigkeitsart);
+        hash = 53 * hash + Objects.hashCode(this.strTaetigkeitsunterart);
+        hash = 53 * hash + Objects.hashCode(this.strNummer);
+        hash = 53 * hash + Objects.hashCode(this.dateBegin);
+        hash = 53 * hash + Objects.hashCode(this.dateEnde);
+        hash = 53 * hash + Objects.hashCode(this.strBemerkung);
         return hash;
     }
 
@@ -197,6 +215,10 @@ public class Kurstaetigkeit implements Serializable
         {
             return false;
         }
+        if (!Objects.equals(this.strBemerkung, other.strBemerkung))
+        {
+            return false;
+        }
         return Objects.equals(this.dateEnde, other.dateEnde);
     }
 
@@ -211,6 +233,9 @@ public class Kurstaetigkeit implements Serializable
         {
             strTaetigkeitsunterart = "";
         }
+        if(strBemerkung == null){
+            strBemerkung = "";
+        }
 
         strTaetigkeitsart = bl.formatiereAusgabe(strTaetigkeitsart);
         strTaetigkeitsunterart = bl.formatiereAusgabe(strTaetigkeitsunterart);
@@ -220,6 +245,7 @@ public class Kurstaetigkeit implements Serializable
                 + doKm + "</td><td>"
                 + strTaetigkeitsart + "</td><td>"
                 + strTaetigkeitsunterart + "</td><td>"
+                + strBemerkung + "</td><td>"
                 + sdf.format(dateBegin) + "</td><td>"
                 + sdf.format(dateEnde) + "</td>"
                 + "</tr>";

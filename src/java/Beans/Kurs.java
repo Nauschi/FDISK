@@ -244,7 +244,7 @@ public class Kurs implements Serializable {
             
         }
         strHtml += "</td><td style='width: 50;'>" + liTeilnehmer.size() + "</td></tr>";
-        System.out.println("STRHTML Kursstatistik: " + strHtml);
+        //System.out.println("STRHTML Kursstatistik: " + strHtml);
                 
         return strHtml;
     }

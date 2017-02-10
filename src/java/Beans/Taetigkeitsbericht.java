@@ -15,8 +15,7 @@ import java.util.Objects;
  *
  * @author Yvonne
  */
-public class Taetigkeitsbericht implements Serializable
-{
+public class Taetigkeitsbericht implements Serializable {
 
     private int intId_StmkZaetigkeitsberichte;
     private int intInstanznummer;
@@ -33,12 +32,12 @@ public class Taetigkeitsbericht implements Serializable
     private String strOrt;
     private String strMeldung;
     private String strFehlalarm;
+    private String strBemerung;
 
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
-    private BL bl = new BL(); 
-    
-    public Taetigkeitsbericht(int intIdBericht, int intInstanznummer, String strInstanzname, String strTaetigkeitsart, String strTaetigkeitsunterart, String strNummer, Date dateBeginn, Date dateEnde, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, String strMeldung, String strFehlalarm) throws ClassNotFoundException
-    {
+    private BL bl = new BL();
+
+    public Taetigkeitsbericht(int intIdBericht, int intInstanznummer, String strInstanzname, String strTaetigkeitsart, String strTaetigkeitsunterart, String strNummer, Date dateBeginn, Date dateEnde, String strStrasse, String strNummerAdr, String strStiege, String strPlz, String strOrt, String strMeldung, String strFehlalarm, String strBemerkung) throws ClassNotFoundException {
         this.intId_StmkZaetigkeitsberichte = intIdBericht;
         this.intInstanznummer = intInstanznummer;
         this.strInstanzname = strInstanzname;
@@ -54,277 +53,228 @@ public class Taetigkeitsbericht implements Serializable
         this.strOrt = strOrt;
         this.strMeldung = strMeldung;
         this.strFehlalarm = strFehlalarm;
+        this.strBemerung = strBemerkung;
 
     }
 
-    public int getIntIdBericht()
-    {
+    public int getIntIdBericht() {
         return intId_StmkZaetigkeitsberichte;
     }
 
-    public void setIntIdBericht(int intIdBericht)
-    {
+    public void setIntIdBericht(int intIdBericht) {
         this.intId_StmkZaetigkeitsberichte = intIdBericht;
     }
 
-    public int getIntInstanznummer()
-    {
+    public int getIntInstanznummer() {
         return intInstanznummer;
     }
 
-    public void setIntInstanznummer(int intInstanznummer)
-    {
+    public void setIntInstanznummer(int intInstanznummer) {
         this.intInstanznummer = intInstanznummer;
     }
 
-    public String getStrInstanzname()
-    {
+    public String getStrInstanzname() {
         return strInstanzname;
     }
 
-    public void setStrInstanzname(String strInstanzname)
-    {
+    public void setStrInstanzname(String strInstanzname) {
         this.strInstanzname = strInstanzname;
     }
 
-    public String getStrTaetigkeitsart()
-    {
+    public String getStrTaetigkeitsart() {
         return strTaetigkeitsart;
     }
 
-    public void setStrTaetigkeitsart(String strTaetigkeitsart)
-    {
+    public void setStrTaetigkeitsart(String strTaetigkeitsart) {
         this.strTaetigkeitsart = strTaetigkeitsart;
     }
 
-    public String getStrTaetigkeitsunterart()
-    {
+    public String getStrTaetigkeitsunterart() {
         return strTaetigkeitsunterart;
     }
 
-    public void setStrTaetigkeitsunterart(String strTaetigkeitsunterart)
-    {
+    public void setStrTaetigkeitsunterart(String strTaetigkeitsunterart) {
         this.strTaetigkeitsunterart = strTaetigkeitsunterart;
     }
 
-    public String getStrNummer()
-    {
+    public String getStrNummer() {
         return strNummer;
     }
 
-    public void setStrNummer(String strNummer)
-    {
+    public void setStrNummer(String strNummer) {
         this.strNummer = strNummer;
     }
 
-    public Date getDateBeginn()
-    {
+    public Date getDateBeginn() {
         return dateBeginn;
     }
 
-    public void setDateBeginn(Date dateBeginn)
-    {
+    public void setDateBeginn(Date dateBeginn) {
         this.dateBeginn = dateBeginn;
     }
 
-    public Date getDateEnde()
-    {
+    public Date getDateEnde() {
         return dateEnde;
     }
 
-    public void setDateEnde(Date dateEnde)
-    {
+    public void setDateEnde(Date dateEnde) {
         this.dateEnde = dateEnde;
     }
 
-    public String getStrStrasse()
-    {
+    public String getStrStrasse() {
         return strStrasse;
     }
 
-    public void setStrStrasse(String strStrasse)
-    {
+    public void setStrStrasse(String strStrasse) {
         this.strStrasse = strStrasse;
     }
 
-    public String getStrNummerAdr()
-    {
+    public String getStrNummerAdr() {
         return strNummerAdr;
     }
 
-    public void setStrNummerAdr(String strNummerAdr)
-    {
+    public void setStrNummerAdr(String strNummerAdr) {
         this.strNummerAdr = strNummerAdr;
     }
 
-    public String getStrStiege()
-    {
+    public String getStrStiege() {
         return strStiege;
     }
 
-    public void setStrStiege(String strStiege)
-    {
+    public void setStrStiege(String strStiege) {
         this.strStiege = strStiege;
     }
 
-    public String getStrPlz()
-    {
+    public String getStrPlz() {
         return strPlz;
     }
 
-    public void setStrPlz(String strPlz)
-    {
+    public void setStrPlz(String strPlz) {
         this.strPlz = strPlz;
     }
 
-    public String getStrOrt()
-    {
+    public String getStrOrt() {
         return strOrt;
     }
 
-    public void setStrOrt(String strOrt)
-    {
+    public void setStrOrt(String strOrt) {
         this.strOrt = strOrt;
     }
 
-    public String getStrMeldung()
-    {
+    public String getStrMeldung() {
         return strMeldung;
     }
 
-    public void setStrMeldung(String strMeldung)
-    {
+    public void setStrMeldung(String strMeldung) {
         this.strMeldung = strMeldung;
     }
 
-    public String getStrFehlalarm()
-    {
+    public String getStrFehlalarm() {
         return strFehlalarm;
     }
 
-    public void setStrFehlalarm(String strFehlalarm)
-    {
+    public void setStrFehlalarm(String strFehlalarm) {
         this.strFehlalarm = strFehlalarm;
     }
 
+    public String getStrBemerung() {
+        return strBemerung;
+    }
+
+    public void setStrBemerung(String strBemerung) {
+        this.strBemerung = strBemerung;
+    }
+
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 3;
         return hash;
     }
 
     @Override
-    public boolean equals(Object obj)
-    {
-        if (obj == null)
-        {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass())
-        {
+        if (getClass() != obj.getClass()) {
             return false;
         }
         final Taetigkeitsbericht other = (Taetigkeitsbericht) obj;
-        if (this.intId_StmkZaetigkeitsberichte != other.intId_StmkZaetigkeitsberichte)
-        {
+        if (this.intId_StmkZaetigkeitsberichte != other.intId_StmkZaetigkeitsberichte) {
             return false;
         }
-        if (this.intInstanznummer != other.intInstanznummer)
-        {
+        if (this.intInstanznummer != other.intInstanznummer) {
             return false;
         }
-        if (!Objects.equals(this.strInstanzname, other.strInstanzname))
-        {
+        if (!Objects.equals(this.strInstanzname, other.strInstanzname)) {
             return false;
         }
-        if (!Objects.equals(this.strTaetigkeitsart, other.strTaetigkeitsart))
-        {
+        if (!Objects.equals(this.strTaetigkeitsart, other.strTaetigkeitsart)) {
             return false;
         }
-        if (!Objects.equals(this.strTaetigkeitsunterart, other.strTaetigkeitsunterart))
-        {
+        if (!Objects.equals(this.strTaetigkeitsunterart, other.strTaetigkeitsunterart)) {
             return false;
         }
-        if (!Objects.equals(this.strNummer, other.strNummer))
-        {
+        if (!Objects.equals(this.strNummer, other.strNummer)) {
             return false;
         }
-        if (!Objects.equals(this.dateBeginn, other.dateBeginn))
-        {
+        if (!Objects.equals(this.dateBeginn, other.dateBeginn)) {
             return false;
         }
-        if (!Objects.equals(this.dateEnde, other.dateEnde))
-        {
+        if (!Objects.equals(this.dateEnde, other.dateEnde)) {
             return false;
         }
-        if (!Objects.equals(this.strStrasse, other.strStrasse))
-        {
+        if (!Objects.equals(this.strStrasse, other.strStrasse)) {
             return false;
         }
-        if (!Objects.equals(this.strNummerAdr, other.strNummerAdr))
-        {
+        if (!Objects.equals(this.strNummerAdr, other.strNummerAdr)) {
             return false;
         }
-        if (!Objects.equals(this.strStiege, other.strStiege))
-        {
+        if (!Objects.equals(this.strStiege, other.strStiege)) {
             return false;
         }
-        if (!Objects.equals(this.strPlz, other.strPlz))
-        {
+        if (!Objects.equals(this.strPlz, other.strPlz)) {
             return false;
         }
-        if (!Objects.equals(this.strOrt, other.strOrt))
-        {
+        if (!Objects.equals(this.strOrt, other.strOrt)) {
             return false;
         }
-        if (!Objects.equals(this.strMeldung, other.strMeldung))
-        {
+        if (!Objects.equals(this.strMeldung, other.strMeldung)) {
             return false;
         }
-        if (!Objects.equals(this.strFehlalarm, other.strFehlalarm))
-        {
+        if (!Objects.equals(this.strFehlalarm, other.strFehlalarm)) {
             return false;
         }
         return true;
     }
 
     @Override
-    public String toString()
-    {
-        if (strTaetigkeitsart == null)
-        {
+    public String toString() {
+        if (strTaetigkeitsart == null) {
             strTaetigkeitsart = "";
         }
-        if (strTaetigkeitsunterart == null)
-        {
+        if (strTaetigkeitsunterart == null) {
             strTaetigkeitsunterart = "";
         }
-        if (strNummer == null)
-        {
+        if (strNummer == null) {
             strNummer = "";
         }
-        if (strStrasse == null)
-        {
+        if (strStrasse == null) {
             strStrasse = "";
         }
-        if (strNummerAdr == null)
-        {
+        if (strNummerAdr == null) {
             strNummerAdr = "";
         }
-        if (strStiege == null)
-        {
+        if (strStiege == null) {
             strStiege = "";
         }
-        if (strPlz == null)
-        {
+        if (strPlz == null) {
             strPlz = "";
         }
-        if (strOrt == null)
-        {
+        if (strOrt == null) {
             strOrt = "";
         }
-
+        String test = strBemerung;
         strTaetigkeitsunterart = bl.formatiereAusgabe(strTaetigkeitsunterart);
         strTaetigkeitsart = bl.formatiereAusgabe(strTaetigkeitsart);
         strStrasse = bl.formatiereAusgabe(strStrasse);
@@ -336,7 +286,8 @@ public class Taetigkeitsbericht implements Serializable
                 + strNummer + "</td><td>"
                 + sdf.format(dateBeginn) + "</td><td>"
                 + sdf.format(dateEnde) + "</td><td>"
-                + strStrasse + " " + strNummerAdr + " " + strStiege + " " + strPlz + " " + strOrt + "</td></tr>";
+                + strStrasse + " " + strNummerAdr + " " + strStiege + " " + strPlz + " " + strOrt + "</td><td>"
+                + "" + "</td></tr>";
 
         return strHtml;
     }

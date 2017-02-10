@@ -547,6 +547,7 @@
             %>
                         document.getElementById("div_csv_pdf").style.display = "block";
                         document.getElementById("div_table").getElementsByTagName("tbody")[0].innerHTML = "<%=strHTML%>";
+                        <% System.out.println(strHTML); %>
                         document.getElementById("div_csvTable").innerHTML = document.getElementById("div_table").innerHTML;
                         document.getElementById("div_csvTable").getElementsByTagName("tbody")[0].innerHTML = "<%=strCSVHtml%>";
             <%=setzeTablesort(request)%>
