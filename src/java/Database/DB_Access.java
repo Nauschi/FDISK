@@ -3944,7 +3944,7 @@ public class DB_Access {
             if (strColWhere.equals("Vordienstzeit")) {
                 sbSqlString.append("ROUND(VD_ZEIT, 0, 1) ").append(strColSymbol).append(strColValue).append(" ");
             } else if (!strColWhere.equals("Alter") && !strColWhere.equals("Status")) {
-                
+
                 switch (strColWhereType) {
                     case "datetime":
                         sbSqlString.append(strBracketOpen).append(strColWhere).append(" ").append(strColSymbol).append(" CAST('").append(strColValue).append("' AS datetime) ").append(strBracketClose).append(strColLink).append(" ");
@@ -4009,17 +4009,17 @@ public class DB_Access {
                             }
                             break;
                         } else if (liDoppelteLeistungsabzeichenStufe.contains(i)) {
-                            if(first){
+                            if (first) {
                                 sbSqlString.append(" (");
                             }
                             sbSqlString.append(" UPPER(la").append(liLaIndices.get(0)).append(".Stufe)").append(strColSymbol).append(" '").append(strColValue).append("' ");
                             liLaIndices.remove(0);
-                            if(!liLaIndices.isEmpty()){
-                                sbSqlString.append(" " + strColLink+ " ");
+                            if (!liLaIndices.isEmpty()) {
+                                sbSqlString.append(" " + strColLink + " ");
                                 first = false;
                                 break;
-                            }else{
-                                sbSqlString.append(" )");
+                            } else {
+                                sbSqlString.append(" ) ").append(strColLink + " ");
                                 first = true;
                                 break;
                             }
