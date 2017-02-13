@@ -3991,6 +3991,9 @@ public class DB_Access {
                             //sbSqlString.append(strBracketOpen).append("UPPER(").append("la").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strBracketClose).append(strColLink).append(" ");
                             sbSqlString.append("(UPPER(la").append(i).append(".Bezeichnung)").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ");
                             liLaIndices.add(i);
+                            if(liDoppelteLeistungsabzeichenStufe.isEmpty()){
+                                sbSqlString.append(")");
+                            }
                             for (int j = 0; j < liDoppelteLeistungsabzeichenStufe.size(); j++) {
                                 if (liDoppelteLeistungsabzeichenStufe.get(j).equals(i + 1 + j)) {
                                     if (liDoppelteLeistungsabzeichenStufe.contains(i + 2 + j)) {
@@ -4007,6 +4010,7 @@ public class DB_Access {
                                     break;
                                 }
                             }
+                            
                             break;
                         } else if (liDoppelteLeistungsabzeichenStufe.contains(i)) {
                             if (first) {
