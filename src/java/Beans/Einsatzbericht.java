@@ -345,21 +345,20 @@ public class Einsatzbericht implements Serializable {
         if (strFehlalarm == null) {
             strFehlalarm = "";
         }
-        if(strTaetigkeit == null){
+        if (strTaetigkeit == null) {
             strTaetigkeit = "";
         }
 
         strEinsatzart = bl.formatiereAusgabe(strEinsatzart);
+        strTaetigkeit = strTaetigkeit.replace(System.getProperty("line.separator"), "");
 
         String strHtml = "<tr><td>"
                 + strEinsatzart + "</td><td>"
                 + strNummer + "</td><td>"
                 + sdf.format(dateUhrzeit_Alarmierung) + "</td><td>"
                 + sdf.format(dateUhrzeit_Rueckkehr) + "</td><td>"
-                + strStrasse + " " + strNummerAdr + " " + strStiege + " " + strPlz + " " + strOrt + "</td><td style='width: 1px;"
-                + "    white-space: nowrap;'>"
-                + intAnzahl + "</td><td style='width: 1px;"
-                + "    white-space: nowrap;'>"
+                + strStrasse + " " + strNummerAdr + " " + strStiege + " " + strPlz + " " + strOrt + "</td><td>"
+                + intAnzahl + "</td><td>"
                 + strFehlalarm + "</td><td>"
                 + strTaetigkeit + "</td></tr>";
 

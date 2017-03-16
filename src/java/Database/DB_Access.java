@@ -2290,8 +2290,8 @@ public class DB_Access {
                         + " ,taetigkeit 'Taetigkeit'"
                         + " ,(SELECT Count(*)"
                         + "  FROM   fdisk.dbo.stmkeinsatzberichtemitglieder mitglied"
-                        + "  WHERE  mitglied.id_berichte = id_berichte) 'Anzahl'"
-                        + " FROM FDISK.dbo.stmkeinsatzberichte"
+                        + "  WHERE  mitglied.id_berichte = eb.id_berichte) 'Anzahl'"
+                        + " FROM FDISK.dbo.stmkeinsatzberichte eb"
                         + " WHERE instanznummer = '" + strFubwehr + "'";
             }
             sqlString += getSqlDateString(strVon, strBis, 1, false);
@@ -2828,8 +2828,8 @@ public class DB_Access {
                 + " ,p.vorname 'Vorname'"
                 + " ,p.zuname 'Zuname'"
                 + " ,p.geburtsdatum 'GebDate'"
-                + " ,p.untersuchungsdatum 'UDatum'"
-                + " ,p.naechste_untersuchung_am 'NaechsteUDate'"
+                + " ,MAX(p.untersuchungsdatum) 'UDatum'"
+                + " ,MAX(p.naechste_untersuchung_am) 'NaechsteUDate'"
                 + " ,p.id_personen 'PersID'"
                 + " ,p.id_instanzen 'IdInstanzen'"
                 + " ,g.Anzahl 'Anz'"
@@ -2848,6 +2848,19 @@ public class DB_Access {
         } else {
             strStatement += " WHERE p.instanznummer = '" + strFubwehr + "'";
         }
+
+        strStatement += " GROUP BY"
+                + " p.instanznummer"
+                + " ,p.standesbuchnummer"
+                + " ,p.dienstgrad"
+                + " ,p.titel"
+                + " ,p.vorname"
+                + " ,p.zuname"
+                + " ,p.geburtsdatum"
+                + " ,p.id_personen"
+                + " ,p.id_instanzen"
+                + " ,g.Anzahl"
+                + " ,g.instanzname";
 
         StringBuilder sqlString = new StringBuilder();
         sqlString.append(strStatement);
@@ -3428,6 +3441,7 @@ public class DB_Access {
 
         StringBuilder sbHelper = new StringBuilder(strSelectedColumns);
         sbHelper.insert(0, "Standesbuchnummer;Dienstgrad;Vorname;Zuname;");
+       
         strSelectedColumns = sbHelper.toString();
         String[] strSelectedCols = strSelectedColumns.split(";");
         LinkedList<String> liSpaltenUeberschriften = new LinkedList<>();
@@ -3602,71 +3616,92 @@ public class DB_Access {
                         break;
                     case "NACHNAME":
                         strEingabe[i][j] = "Zuname";
+                        //strSelectedColumns += "Zuname;";
                         break;
                     case "ANREDE":
                         strEingabe[i][j] = "Geschlecht";
                         boAnrede = true;
+                        //strSelectedColumns += "Geschlecht;";
                         break;
                     case "AUSZEICHNUNGSDATUM":
                         strEingabe[i][j] = "Verleihungsdatum";
+                        //strSelectedColumns += "Verleihungsdatum;";
                         break;
                     case "LEISTUNGSABZEICHENBEZEICHNUNG":
                         strEingabe[i][j] = "Bezeichnung";
+                        //strSelectedColumns += "Bezeichnung;";
                         break;
                     case "LEISTUNGSABZEICHEN STUFE":
                         strEingabe[i][j] = "Stufe";
+                        //strSelectedColumns += "Stufe;";
                         break;
                     case "LEISTUNGSABZEICHENDATUM":
                         strEingabe[i][j] = "lam.Datum";
+                        //strSelectedColumns += "lam.Datum;";
                         break;
                     case "KURSDATUM":
                         strEingabe[i][j] = "k.Datum";
+                        //strSelectedColumns += "k.Datum;";
                         break;
                     case "ERREICHBARKEIT":
                         strEingabe[i][j] = "Code";
+                        //strSelectedColumns += "Code;";
                         break;
                     case "FÜHRERSCHEINKLASSE":
                         strEingabe[i][j] = "Fahrgenehmigungsklasse";
+                        //strSelectedColumns += "Fahrgenehmigungsklasse;";
                         break;
                     case "FÜHRERSCHEINKLASSE - GÜLTIG BIS":
                         strEingabe[i][j] = "Gueltig_bis";
+                        //strSelectedColumns += "gf.Gueltig_bis;";
                         break;
                     case "FUNKTIONSINSTANZ":
                         strEingabe[i][j] = "id_instanztypen";
+                        //strSelectedColumns += "id_instanztypen;";
                         break;
                     case "FUNKTIONSBEZEICHNUNG":
                         strEingabe[i][j] = "f.bezeichnung";
+                        //strSelectedColumns += "bezeichnung;";
                         break;
                     case "FUNKTION VON":
                         strEingabe[i][j] = "datum_von";
+                        //strSelectedColumns += "datum_von;";
                         break;
                     case "FUNKTION BIS":
                         strEingabe[i][j] = "datum_bis";
+                        //strSelectedColumns += "datum_bis;";
                         break;
                     case "STAATSBÜRGERSCHAFT":
                         strEingabe[i][j] = "Staatsbuergerschaft";
+                        //strSelectedColumns += "Staatsbuergerschaft;";
                         break;
                     case "ISCO-BERUF":
                         strEingabe[i][j] = "Beruf";
+                        //strSelectedColumns += "Beruf;";
                         break;
                     case "VORDIENSTZEIT IN JAHREN":
                         strEingabe[i][j] = "Vordienstzeit";
+                        //strSelectedColumns += "Vordienstzeit;";
                         break;
                     case "UNTERSUCHUNGSART":
                         strEingabe[i][j] = "Expr1";
+                        //strSelectedColumns += "Expr1;";
                         break;
                     case "UNTERSUCHUNGSDATUM":
                         strEingabe[i][j] = "u.Datum";
+                       // strSelectedColumns += "u.Datum;";
                         break;
                 }
             }
         }
-
+        
+        //SELECT Values zuweisen
+        strSelectedCols = strSelectedColumns.split(";");
+        
         //damit ich nicht zwei verschiedene listen für den gleichen Join habe
         liDoppelteAuszeichnungsart.addAll(liDoppelteAuszeichnungsstufe);
         liDoppelteFunktionsbezeichnung.addAll(liDoppelteFunktionsinstanz);
         //liDoppelteLeistungsabzeichenStufe.addAll(liDoppelteLeistungsabzeichenbezeichnung);
-
         for (int i = 0; i < intRows; i++) {
             strSpaltenUeberschrift = strEingabe[i][1];
 
@@ -3751,7 +3786,7 @@ public class DB_Access {
                 case "ISCO-BERUF":
                     strSelectedCols[i] = "Beruf";
                     break;
-                case "Instanzname":
+                case "INSTANZNAME":
                     strSelectedCols[i] = "Instanzname";
                     break;
 
@@ -3765,6 +3800,9 @@ public class DB_Access {
                     break;
                 case "datum_von":
                     sbSqlString.append("fm0.").append(strSelectedCols[i]).append(",");
+                    break;
+                case "Gueltig_bis":
+                    sbSqlString.append("Gueltig_bis, ");
                     break;
                 default:
                     sbSqlString.append("m.").append(strSelectedCols[i]).append(",");
@@ -3988,35 +4026,42 @@ public class DB_Access {
                             break;
                         } else if (liDoppelteLeistungsabzeichenbezeichnung.contains(i)) {
                             liLaIndices = new ArrayList<>();
-                            //sbSqlString.append(strBracketOpen).append("UPPER(").append("la").append(i).append(".").append(strColWhere).append(") ").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ").append(strBracketClose).append(strColLink).append(" ");
+//                            if (strColSymbol.equals("HAT NICHT")) {
+//                                //HAT NICHT STATEMENT! VERI COMPLEX
+//                                //Das muss vielleicht doch in der Stufen Where Abfrage eingefügt werden
+//                            }
                             sbSqlString.append("(UPPER(la").append(i).append(".Bezeichnung)").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ");
                             liLaIndices.add(i);
-                            if(liDoppelteLeistungsabzeichenStufe.isEmpty()){
-                                sbSqlString.append(")");
-                            }
-                            for (int j = 0; j < liDoppelteLeistungsabzeichenStufe.size(); j++) {
-                                if (liDoppelteLeistungsabzeichenStufe.get(j).equals(i + 1 + j)) {
-                                    if (liDoppelteLeistungsabzeichenStufe.contains(i + 2 + j)) {
-                                        sbSqlString.append(" AND UPPER(la").append(i + 1 + j).append(".Bezeichnung)").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ");
-                                        liLaIndices.add(i + 1 + j);
-                                    } else {
-                                        sbSqlString.append(")");
-                                        if (!liLaIndices.isEmpty()) {
-                                            sbSqlString.append(" AND");
+                            if (liDoppelteLeistungsabzeichenStufe.isEmpty()) {
+                                sbSqlString.append(") ").append(strColLink).append(" ");
+                            } else {
+                                for (int j = 0; j < liDoppelteLeistungsabzeichenStufe.size(); j++) {
+                                    if (liDoppelteLeistungsabzeichenStufe.get(j).equals(i + 1 + j)) {
+                                        if (liDoppelteLeistungsabzeichenStufe.contains(i + 2 + j)) {
+                                            sbSqlString.append(" AND UPPER(la").append(i + 1 + j).append(".Bezeichnung)").append(strColSymbol).append(" '").append(strColValue.toUpperCase()).append("' ");
+                                            liLaIndices.add(i + 1 + j);
+                                        } else {
+                                            sbSqlString.append(")");
+                                            if (!liLaIndices.isEmpty()) {
+                                                sbSqlString.append(" AND");
+                                            }
+                                            break;
                                         }
+                                    } else {
                                         break;
                                     }
-                                } else {
-                                    break;
                                 }
                             }
-                            
                             break;
                         } else if (liDoppelteLeistungsabzeichenStufe.contains(i)) {
                             if (first) {
                                 sbSqlString.append(" (");
                             }
-                            sbSqlString.append(" UPPER(la").append(liLaIndices.get(0)).append(".Stufe)").append(strColSymbol).append(" '").append(strColValue).append("' ");
+                            if (!strColSymbol.equals("HAT NICHT")) {
+                                sbSqlString.append(" UPPER(la").append(liLaIndices.get(0)).append(".Stufe)").append(strColSymbol).append(" '").append(strColValue).append("' ");
+                            } else {
+                                //HAT NICHT STATEMENT
+                            }
                             liLaIndices.remove(0);
                             if (!liLaIndices.isEmpty()) {
                                 sbSqlString.append(" " + strColLink + " ");
