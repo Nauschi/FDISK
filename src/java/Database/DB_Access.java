@@ -706,13 +706,13 @@ public class DB_Access {
         String sqlString;
 
         if (intBereichnr == -2) {
-            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen', m.instanznummer 'Instanznummer' "
+            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', cast(z.DIENSTZEIT + DateDiff(day,GETDATE(),DATEADD(yy, DATEDIFF(yy, 0, GETDATE()) + 1, -1))/365.0 as numeric(6,2)) 'DIENSTZEIT', m.id_instanzen 'Instanzen', m.instanznummer 'Instanznummer' "
                     + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
                     + " WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST'))"
                     + " AND m.datum_abgemeldet IS NULL "
                     + " ORDER BY m.zuname, m.vorname";
         } else if (intAbschnittnr == -2) {
-            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen', m.instanznummer 'Instanznummer' "
+            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', cast(z.DIENSTZEIT + DateDiff(day,GETDATE(),DATEADD(yy, DATEDIFF(yy, 0, GETDATE()) + 1, -1))/365.0 as numeric(6,2)) 'DIENSTZEIT', m.id_instanzen 'Instanzen', m.instanznummer 'Instanznummer' "
                     + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
                     + " INNER JOIN FDISK.dbo.qry_alle_instanzen f ON(m.instanznummer = f.instanznummer)"
                     + " WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST'))"
@@ -720,7 +720,7 @@ public class DB_Access {
                     + " AND m.datum_abgemeldet IS NULL "
                     + " ORDER BY m.zuname, m.vorname";
         } else if (strFubwehr.equals("-2")) {
-            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen', m.instanznummer 'Instanznummer' "
+            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', cast(z.DIENSTZEIT + DateDiff(day,GETDATE(),DATEADD(yy, DATEDIFF(yy, 0, GETDATE()) + 1, -1))/365.0 as numeric(6,2)) 'DIENSTZEIT', m.id_instanzen 'Instanzen', m.instanznummer 'Instanznummer' "
                     + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
                     + " INNER JOIN FDISK.dbo.qry_alle_instanzen f ON(m.instanznummer = f.instanznummer)"
                     + " WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST'))"
@@ -728,7 +728,7 @@ public class DB_Access {
                     + " AND m.datum_abgemeldet IS NULL "
                     + " ORDER BY m.zuname, m.vorname";
         } else {
-            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', z.DIENSTZEIT, m.id_instanzen 'Instanzen', m.instanznummer 'Instanznummer' "
+            sqlString = "SELECT m.id_personen 'PersID', m.standesbuchnummer 'STB', m.dienstgrad 'DGR', m.titel 'Titel', m.vorname 'Vorname', m.zuname 'Zuname', m.geburtsdatum 'Geburtsdatum',  m.datum_abgemeldet 'Datum_abgemeldet', m.eintrittsdatum 'Eintrittsdatum', cast(z.DIENSTZEIT + DateDiff(day,GETDATE(),DATEADD(yy, DATEDIFF(yy, 0, GETDATE()) + 1, -1))/365.0 as numeric(6,2)) 'DIENSTZEIT', m.id_instanzen 'Instanzen', m.instanznummer 'Instanznummer' "
                     + " FROM FDISK.dbo.stmkmitglieder m LEFT OUTER JOIN FDISK.dbo.FDISK_MAPPING_DZ_ZEIT z ON(m.id_personen = z.id_personen)"
                     + " WHERE (m.abgemeldet = 0) AND (NOT (LEFT(m.instanznummer, 2) = 'GA')) AND (NOT (LEFT(m.instanzname, 7) = 'FW GAST'))"
                     + " AND m.instanznummer = '" + strFubwehr + "'"
